@@ -1,33 +1,150 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Talentera Huddle Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Talentera Sales Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { font-family: Arial, sans-serif; background-color: #f0f2f5; padding: 20px; }
-        .container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        h1 { color: #ff7a59; text-align: center; }
-        pre { background: #272822; color: #f8f8f2; padding: 15px; border-radius: 5px; overflow-x: auto; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        .stat-card { @apply bg-white p-6 rounded-xl shadow-sm border border-slate-100; }
     </style>
 </head>
-<body>
-    <div class="container">
-        <h1>لوحة بيانات HubSpot المحدثة</h1>
-        <p>آخر تحديث تلقائي من n8n:</p>
-        <div id="content">جاري تحميل أحدث البيانات...</div>
+<body class="p-4 md:p-8">
+    <div class="max-w-7xl mx-auto">
+        <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
+            <div>
+                <h1 class="text-3xl font-bold text-slate-900">Talentera Daily Huddle 🚀</h1>
+                <p class="text-slate-500" id="date-label">Loading reporting date...</p>
+            </div>
+            <div class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-semibold shadow-lg shadow-blue-200">
+                Generated at: <span id="gen-time">--:--</span>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+            <div class="stat-card">
+                <p class="text-slate-500 text-sm font-medium">Total Calls</p>
+                <h3 class="text-2xl font-bold text-slate-900" id="total-calls">0</h3>
+            </div>
+            <div class="stat-card border-l-4 border-l-green-500">
+                <p class="text-slate-500 text-sm font-medium">Connected</p>
+                <h3 class="text-2xl font-bold text-green-600" id="total-connected">0</h3>
+            </div>
+            <div class="stat-card border-l-4 border-l-purple-500">
+                <p class="text-slate-500 text-sm font-medium">Meetings</p>
+                <h3 class="text-2xl font-bold text-purple-600" id="total-meetings">0</h3>
+            </div>
+            <div class="stat-card border-l-4 border-l-blue-500">
+                <p class="text-slate-500 text-sm font-medium">Pipeline Value</p>
+                <h3 class="text-2xl font-bold text-blue-600" id="pipeline-value">$0</h3>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <div class="lg:col-span-2 space-y-8">
+                <div class="stat-card overflow-hidden">
+                    <h2 class="text-lg font-bold mb-4 flex items-center gap-2">
+                        <span>📊</span> Team Performance
+                    </h2>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead>
+                                <tr class="border-b border-slate-100 text-slate-400 text-xs uppercase tracking-wider">
+                                    <th class="pb-3 font-semibold">Rep Name</th>
+                                    <th class="pb-3 text-center">Calls</th>
+                                    <th class="pb-3 text-center">Connect</th>
+                                    <th class="pb-3 text-center">Rate</th>
+                                    <th class="pb-3 text-center">Meetings</th>
+                                </tr>
+                            </thead>
+                            <tbody id="rep-rows" class="text-slate-700">
+                                </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="stat-card bg-slate-900 text-white">
+                    <h2 class="text-lg font-bold mb-4 text-blue-400">💡 Smart Recommendations</h2>
+                    <div id="recs-list" class="space-y-3">
+                        </div>
+                </div>
+            </div>
+
+            <div class="space-y-6">
+                <div class="stat-card">
+                    <h2 class="text-lg font-bold mb-4">🏆 Closed Won Today</h2>
+                    <div id="won-list" class="space-y-3 text-sm">
+                        </div>
+                </div>
+
+                <div class="stat-card">
+                    <h2 class="text-lg font-bold mb-4">⚠️ Needs Action</h2>
+                    <div id="stuck-list" class="space-y-2 text-sm">
+                        </div>
+                </div>
+            </div>
+
+        </div>
     </div>
 
     <script>
-        // بجلب البيانات من ملف data.json اللي n8n بيحدثه
         fetch('data.json')
-            .then(response => response.json())
+            .then(res => res.json())
             .then(data => {
-                const contentDiv = document.getElementById('content');
-                contentDiv.innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+                // Update Metadata
+                document.getElementById('date-label').innerText = data.dateInfo?.yesterdayLabel || 'Daily Update';
+                document.getElementById('gen-time').innerText = data.dateInfo?.generatedAt || 'Now';
+
+                // Update Totals
+                document.getElementById('total-calls').innerText = data.totals.calls;
+                document.getElementById('total-connected').innerText = data.totals.connected;
+                document.getElementById('total-meetings').innerText = data.totals.meetings;
+                document.getElementById('pipeline-value').innerText = `$${Math.round(data.totals.pipeline_value/1000)}K`;
+
+                // Populate Rep Table
+                const tbody = document.getElementById('rep-rows');
+                Object.entries(data.summary).forEach(([name, d]) => {
+                    const rate = d.calls > 0 ? Math.round((d.connected/d.calls)*100) : 0;
+                    tbody.innerHTML += `
+                        <tr class="border-b border-slate-50">
+                            <td class="py-4 font-bold text-slate-800">${name}</td>
+                            <td class="py-4 text-center">${d.calls}</td>
+                            <td class="py-4 text-center text-green-600">${d.connected}</td>
+                            <td class="py-4 text-center">
+                                <span class="px-2 py-1 rounded text-xs ${rate > 60 ? 'bg-green-100 text-green-700' : 'bg-orange-100 text-orange-700'}">
+                                    ${rate}%
+                                </span>
+                            </td>
+                            <td class="py-4 text-center font-bold text-purple-600">${d.meetings}</td>
+                        </tr>
+                    `;
+                });
+
+                // Populate Recommendations
+                const recsDiv = document.getElementById('recs-list');
+                data.autoRecs.slice(0,5).forEach(rec => {
+                    recsDiv.innerHTML += `
+                        <div class="p-3 rounded-lg bg-slate-800 border-l-4 border-blue-500 text-sm">
+                            <span class="text-blue-400 font-bold uppercase text-[10px] block mb-1">${rec.owner}</span>
+                            ${rec.text}
+                        </div>
+                    `;
+                });
+
+                // Populate Closed Won
+                const wonDiv = document.getElementById('won-list');
+                if(data.closedWon && data.closedWon.length > 0) {
+                    data.closedWon.forEach(deal => {
+                        wonDiv.innerHTML += `<div class="p-2 bg-green-50 text-green-800 rounded">💰 <b>${deal.name}</b> - $${deal.amount.toLocaleString()}</div>`;
+                    });
+                } else {
+                    wonDiv.innerHTML = `<p class="text-slate-400 italic">No deals closed today.</p>`;
+                }
             })
-            .catch(err => {
-                document.getElementById('content').innerHTML = 'في انتظار وصول أول دفعة بيانات من n8n...';
-            });
+            .catch(e => console.error("Error loading data:", e));
     </script>
 </body>
 </html>
