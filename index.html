@@ -15,10 +15,16 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font
 ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
 .header{background:linear-gradient(180deg,#0d1526 0%,var(--bg) 100%);border-bottom:1px solid var(--border);padding:14px 24px;position:sticky;top:0;z-index:200;backdrop-filter:blur(12px)}
 .header-inner{max-width:1400px;margin:0 auto;display:flex;justify-content:space-between;align-items:center}
-.logo{display:flex;align-items:center;gap:12px}
-.logo-mark{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#1e3a5f 0%,var(--gold) 100%);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px;color:white;box-shadow:0 0 20px rgba(245,158,11,0.3)}
-.logo-text{font-size:15px;font-weight:700;color:white;letter-spacing:-0.02em}
-.logo-sub{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.12em;margin-top:1px}
+<div class="logo">
+    <img src="https://www.talentera.com/wp-content/themes/talentera-2018/images/new-design/Talentera-ATS-black-logo.svg" 
+         alt="Talentera Logo" 
+         style="height: 28px; width: auto; filter: brightness(0) invert(1); margin-right: 12px;">
+    
+    <div class="logo-text-wrapper">
+        <div class="logo-text">SALES COMMAND CENTER</div>
+        <div class="logo-sub">POWERED BY REVOPS</div>
+    </div>
+</div>
 .header-right{display:flex;align-items:center;gap:16px}
 .live-pill{display:flex;align-items:center;gap:6px;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.25);color:#34d399;font-size:10px;font-weight:600;padding:5px 12px;border-radius:20px;letter-spacing:0.05em}
 .live-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:blink 2s infinite}
