@@ -1,35 +1,362 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Talentera Dashboard</title>
-    <script src="https://cdn.tailwindcss.com"></script> </head>
-<body class="bg-gray-100 p-8">
-    <div class="max-w-6xl mx-auto">
-        <header class="mb-8 text-center">
-            <h1 class="text-3xl font-bold text-blue-900">Talentera Daily Huddle</h1>
-            <p id="last-update" class="text-gray-500"></p>
-        </header>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Talentera · Sales Command Center</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0e17;--bg2:#0f1520;--bg3:#151d2e;--border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.12);--text:#e2e8f0;--muted:#64748b;--muted2:#475569;--gold:#f59e0b;--green:#10b981;--red:#ef4444;--yellow:#f59e0b;--blue:#3b82f6;--purple:#8b5cf6;--cyan:#06b6d4;--font:'DM Sans',sans-serif;--mono:'DM Mono',monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;min-height:100vh}
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+.header{background:linear-gradient(180deg,#0d1526 0%,var(--bg) 100%);border-bottom:1px solid var(--border);padding:14px 24px;position:sticky;top:0;z-index:200;backdrop-filter:blur(12px)}
+.header-inner{max-width:1400px;margin:0 auto;display:flex;justify-content:space-between;align-items:center}
+.logo{display:flex;align-items:center;gap:12px}
+.logo-mark{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#1e3a5f 0%,var(--gold) 100%);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px;color:white;box-shadow:0 0 20px rgba(245,158,11,0.3)}
+.logo-text{font-size:15px;font-weight:700;color:white;letter-spacing:-0.02em}
+.logo-sub{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.12em;margin-top:1px}
+.header-right{display:flex;align-items:center;gap:16px}
+.live-pill{display:flex;align-items:center;gap:6px;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.25);color:#34d399;font-size:10px;font-weight:600;padding:5px 12px;border-radius:20px;letter-spacing:0.05em}
+.live-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+.header-date{font-size:13px;font-weight:600;color:var(--text)}
+.header-time{font-size:10px;color:var(--muted);margin-top:1px;text-align:right}
+.refresh-btn{background:var(--bg3);border:1px solid var(--border2);color:var(--muted);padding:7px 14px;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer;transition:all 0.2s;font-family:var(--font);display:flex;align-items:center;gap:6px}
+.refresh-btn:hover{background:var(--bg2);color:var(--text);border-color:var(--gold)}
+.spinning{animation:spin 0.8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.tabs-nav{background:var(--bg2);border-bottom:1px solid var(--border);position:sticky;top:65px;z-index:190}
+.tabs-inner{max-width:1400px;margin:0 auto;display:flex;overflow-x:auto;scrollbar-width:none}
+.tabs-inner::-webkit-scrollbar{display:none}
+.tab-btn{padding:14px 22px;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all 0.2s;display:flex;align-items:center;gap:8px;background:none;border-top:none;border-left:none;border-right:none;font-family:var(--font);letter-spacing:0.01em}
+.tab-btn:hover{color:var(--text);background:rgba(255,255,255,0.02)}
+.tab-btn.active{color:var(--gold);border-bottom-color:var(--gold)}
+.tab-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.tab-alert{background:rgba(239,68,68,0.2);color:#f87171;font-size:9px;font-weight:700;padding:1px 5px;border-radius:4px}
+.main{max-width:1400px;margin:0 auto;padding:20px 20px 60px}
+.panel{display:none;animation:fadeIn 0.3s ease}
+.panel.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.g5{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+.g8{display:grid;grid-template-columns:repeat(8,1fr);gap:1px;background:var(--border);border-radius:12px;overflow:hidden;border:1px solid var(--border);margin-bottom:16px}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:14px}
+.card-hd{padding:12px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.card-title{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em}
+.card-body{padding:16px 18px}
+.kpi-cell{background:var(--bg2);padding:16px 10px;text-align:center}
+.kpi-val{font-family:var(--mono);font-size:22px;font-weight:500;line-height:1}
+.kpi-lbl{font-size:8px;color:var(--muted);margin-top:5px;text-transform:uppercase;letter-spacing:0.1em;font-weight:600}
+.kpi-sub{font-size:9px;margin-top:2px;font-weight:500;opacity:0.6}
+.badge{display:inline-flex;align-items:center;gap:4px;font-size:9px;font-weight:700;padding:2px 8px;border-radius:20px}
+.badge-r{background:rgba(239,68,68,0.12);color:#f87171;border:1px solid rgba(239,68,68,0.2)}
+.badge-y{background:rgba(245,158,11,0.12);color:#fbbf24;border:1px solid rgba(245,158,11,0.2)}
+.badge-g{background:rgba(16,185,129,0.12);color:#34d399;border:1px solid rgba(16,185,129,0.2)}
+.badge-b{background:rgba(59,130,246,0.12);color:#60a5fa;border:1px solid rgba(59,130,246,0.2)}
+.badge-p{background:rgba(139,92,246,0.12);color:#a78bfa;border:1px solid rgba(139,92,246,0.2)}
+.tbl{width:100%;border-collapse:collapse}
+.tbl th{padding:9px 14px;text-align:left;font-size:9px;color:var(--muted2);text-transform:uppercase;letter-spacing:0.1em;font-weight:700;border-bottom:1px solid var(--border)}
+.tbl th.c,.tbl td.c{text-align:center}
+.tbl td{padding:11px 14px;border-bottom:1px solid rgba(255,255,255,0.03);font-size:12px;color:var(--text)}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover td{background:rgba(255,255,255,0.02)}
+.av{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;flex-shrink:0}
+.av-lg{width:48px;height:48px;border-radius:14px;font-size:20px}
+.prog-bg{background:rgba(255,255,255,0.06);border-radius:2px;overflow:hidden}
+.prog-fill{height:100%;border-radius:2px;transition:width 0.6s ease}
+.stat-chip{text-align:center;padding:12px 8px;background:var(--bg3);border-radius:8px;border:1px solid var(--border)}
+.stat-chip .v{font-family:var(--mono);font-size:20px;line-height:1}
+.stat-chip .l{font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;margin-top:4px;font-weight:600}
+.rec-row{display:flex;align-items:flex-start;gap:12px;padding:11px 18px;border-bottom:1px solid var(--border)}
+.rec-row:last-child{border-bottom:none}
+.rec-icon{font-size:14px;flex-shrink:0;margin-top:1px}
+.rec-text{flex:1;font-size:12px;color:#cbd5e1;line-height:1.6}
+.rec-meta{flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+.funnel-row{margin-bottom:8px}
+.funnel-lbl{font-size:10px;color:var(--muted);font-weight:500;display:flex;justify-content:space-between;margin-bottom:4px}
+.funnel-track{background:rgba(255,255,255,0.04);border-radius:4px;height:26px;position:relative;overflow:hidden}
+.funnel-fill{height:100%;border-radius:4px;display:flex;align-items:center;justify-content:center}
+.funnel-num{color:white;font-size:11px;font-weight:700;font-family:var(--mono)}
+.pipe-card{background:var(--bg3);border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.pipe-card-hd{padding:11px 13px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border)}
+.pipe-card-body{padding:8px 13px}
+.pipe-deal{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.04)}
+.pipe-deal:last-of-type{border-bottom:none}
+.pipe-name{font-size:10px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:130px}
+.pipe-stage{font-size:8px;color:var(--muted2);margin-top:1px}
+.pipe-amt{font-family:var(--mono);font-size:10px;font-weight:500;color:var(--text)}
+.news-row{display:flex;align-items:flex-start;gap:12px;padding:12px 18px;border-bottom:1px solid var(--border)}
+.news-row:last-child{border-bottom:none}
+.rep-hero{display:flex;align-items:center;gap:16px;margin-bottom:20px;padding:20px;background:var(--bg2);border:1px solid var(--border);border-radius:14px;position:relative;overflow:hidden}
+.rep-hero::before{content:'';position:absolute;top:-40px;right:-40px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,var(--rc,#888) 0%,transparent 70%);opacity:0.08}
+.rep-hero-info .name{font-size:22px;font-weight:800;letter-spacing:-0.02em}
+.rep-hero-info .full{font-size:12px;color:var(--muted);margin-top:2px}
+.rep-hero-stats{display:flex;gap:20px;margin-left:auto}
+.hero-stat{text-align:center}
+.hero-stat .v{font-family:var(--mono);font-size:24px;font-weight:500}
+.hero-stat .l{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;margin-top:2px}
+.deal-row{display:flex;justify-content:space-between;align-items:flex-start;padding:13px 18px;border-bottom:1px solid var(--border);gap:12px}
+.deal-row:last-child{border-bottom:none}
+.loading{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;gap:20px}
+.spinner{width:40px;height:40px;border:3px solid var(--border2);border-top-color:var(--gold);border-radius:50%;animation:spin 0.8s linear infinite}
+.load-txt{color:var(--muted);font-size:13px;font-weight:500}
+.period-cell{background:var(--bg2);padding:14px 16px}
+.period-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;text-align:center;margin-top:10px}
+.p-stat .v{font-family:var(--mono);font-size:18px;line-height:1}
+.p-stat .l{font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-top:3px;font-weight:600}
+@media(max-width:900px){.g8{grid-template-columns:repeat(4,1fr)}.g5{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.g8{grid-template-columns:repeat(2,1fr)}.g2,.g3,.g4{grid-template-columns:1fr}.rep-hero-stats{display:none}}
+</style>
+</head>
+<body>
 
-        <div id="stats-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8"></div>
+<div class="header">
+  <div class="header-inner">
+    <div class="logo">
+      <div class="logo-mark">T</div>
+      <div><div class="logo-text">Talentera</div><div class="logo-sub">Sales Command Center</div></div>
+    </div>
+    <div class="header-right">
+      <div class="live-pill"><span class="live-dot"></span>LIVE · HUBSPOT</div>
+      <div><div class="header-date" id="hDate">—</div><div class="header-time" id="hTime">Loading...</div></div>
+      <button class="refresh-btn" onclick="loadData()"><span id="ri">↻</span> Refresh</button>
+    </div>
+  </div>
+</div>
 
-        <div id="ai-insights" class="bg-white p-6 rounded-xl shadow-md border-l-4 border-purple-500 mb-8">
-            <h2 class="font-bold text-lg mb-4">AI Coaching Insights 🤖</h2>
-            <div id="insights-content" class="space-y-2 text-sm text-gray-700"></div>
+<div class="tabs-nav">
+  <div class="tabs-inner" id="tabsNav">
+    <button class="tab-btn active" id="tab-team" onclick="switchTab('team')">🏢 Team Overview</button>
+  </div>
+</div>
+
+<div class="main">
+  <div class="loading" id="loadingState">
+    <div class="spinner"></div>
+    <div class="load-txt">Loading dashboard data...</div>
+  </div>
+  <div id="dashMain" style="display:none">
+
+    <!-- TEAM PANEL -->
+    <div class="panel active" id="panel-team">
+      <div class="g8" id="kpiStrip"></div>
+      <div style="display:grid;grid-template-columns:1fr 260px;gap:14px;margin-bottom:14px">
+        <div class="card" style="margin-bottom:0"><div class="card-hd"><span class="card-title">💡 Insights & Recommendations</span><span class="badge badge-r" id="recBadge"></span></div><div id="recContainer"></div></div>
+        <div class="card" style="margin-bottom:0"><div class="card-hd"><span class="card-title">🔽 Pipeline Funnel</span></div><div class="card-body" id="funnelContainer"></div></div>
+      </div>
+      <div class="card">
+        <div class="card-hd"><span class="card-title">📊 Yesterday's Performance</span><span class="badge badge-b" id="perfDate"></span></div>
+        <div style="overflow-x:auto"><table class="tbl"><thead><tr>
+          <th>Rep</th><th class="c" style="color:#60a5fa">Logged</th><th class="c" style="color:#34d399">Conn.</th><th class="c" style="color:#f87171">Missed</th><th class="c">Rate</th><th class="c" style="color:#a78bfa">Meetings</th><th class="c" style="color:#fbbf24">Deals</th><th class="c" style="color:#67e8f9">Pipeline</th><th class="c" style="color:#f87171">A/B</th><th class="c">Health</th>
+        </tr></thead><tbody id="perfBody"></tbody></table></div>
+      </div>
+      <div class="card">
+        <div class="card-hd"><span class="card-title">🎯 Leads Overview</span><div id="leadsBadgeRow" style="display:flex;gap:6px"></div></div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border-bottom:1px solid var(--border)" id="leadsPeriods"></div>
+        <div style="padding:10px 18px;border-bottom:1px solid var(--border)">
+          <div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px">Status Breakdown (Yesterday)</div>
+          <div id="leadStatusRow" style="display:flex;gap:6px;flex-wrap:wrap"></div>
         </div>
+        <div style="overflow-x:auto"><table class="tbl"><thead><tr>
+          <th>Rep</th><th class="c">Leads</th><th class="c" style="color:#60a5fa">Inbound</th><th class="c" style="color:#fbbf24">Outbound</th><th class="c" style="color:#34d399">Covered</th><th class="c" style="color:#f87171">No Follow-up 🚩</th><th class="c">Coverage</th>
+        </tr></thead><tbody id="leadsRepBody"></tbody></table></div>
+      </div>
+      <div class="card">
+        <div class="card-hd"><span class="card-title">🎯 Rank A/B Coverage</span><div id="rankBadgeRow" style="display:flex;gap:6px"></div></div>
+        <div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Rank</th><th>Company</th><th class="c">Owner</th><th class="c">Employees</th><th class="c">Last Activity</th></tr></thead><tbody id="rankBody"></tbody></table></div>
+        <div id="rankFooter" style="padding:8px 18px;font-size:10px;color:var(--muted2);border-top:1px solid var(--border);text-align:center"></div>
+      </div>
+      <div style="margin-bottom:14px"><div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:10px">🔭 Open Pipeline by Rep</div><div class="g5" id="pipeCards"></div></div>
+      <div class="g2">
+        <div class="card" style="margin-bottom:0"><div class="card-hd" style="background:rgba(16,185,129,0.05)"><span class="card-title" style="color:#34d399">🏆 Closed Won</span><span class="badge badge-g" id="wonBadge"></span></div><div id="wonContainer"></div></div>
+        <div class="card" style="margin-bottom:0"><div class="card-hd" style="background:rgba(239,68,68,0.05)"><span class="card-title" style="color:#f87171">❌ Closed Lost</span><span class="badge badge-r" id="lostBadge"></span></div><div id="lostContainer"></div></div>
+      </div>
+      <div class="card"><div class="card-hd"><span class="card-title">🌍 Market News & Events</span><span style="font-size:10px;color:var(--muted)">HR · Middle East</span></div><div id="newsContainer"></div></div>
+      <div class="card">
+        <div class="card-hd"><span class="card-title">⚡ AI Coaching Insights</span><span class="badge badge-p">Claude AI</span></div>
+        <div style="padding:14px;display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:10px" id="aiGrid"></div>
+        <div style="margin:0 14px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px;border-top:2px solid var(--muted2)"><div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:5px">🎯 Manager Focus</div><div style="font-size:11px;color:var(--muted2);font-style:italic">Loading team insights...</div></div>
+      </div>
     </div>
 
-    <script>
-        async function loadDashboard() {
-            const response = await fetch('./data.json');
-            const data = await response.json();
-            
-            document.getElementById('last-update').innerText = `Generated At: ${data.generatedAt}`;
-            
-            // هنا تضع الكود البسيط الذي يوزع بيانات الـ Summary والـ Insights في الصفحة
-            // سيعمل هذا تلقائياً مع كل تحديث يرسله n8n
-        }
-        loadDashboard();
-    </script>
+    <div id="repPanels"></div>
+  </div>
+</div>
+
+<script>
+let D=null;
+const $=id=>document.getElementById(id);
+const fmt=n=>!n?'$0':n>=1e6?`$${(n/1e6).toFixed(1)}M`:n>=1e3?`$${Math.round(n/1e3)}K`:`$${Math.round(n)}`;
+const rc=r=>r>=85?'#10b981':r>=60?'#f59e0b':'#ef4444';
+const sev={action_required:{icon:'🔴',lbl:'Action Required',cls:'badge-r'},needs_attention:{icon:'⚠️',lbl:'Needs Attention',cls:'badge-y'},positive:{icon:'✅',lbl:'Positive',cls:'badge-g'}};
+
+function switchTab(id){
+  document.querySelectorAll('.tab-btn').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  $('tab-'+id)?.classList.add('active');
+  $('panel-'+id)?.classList.add('active');
+}
+
+async function loadData(){
+  const ri=$('ri'); ri.classList.add('spinning');
+  try{
+    const res=await fetch('./data.json?t='+Date.now());
+    if(!res.ok) throw new Error('data.json not found. Make sure n8n uploaded it.');
+    D=await res.json(); render();
+  }catch(e){
+    $('loadingState').innerHTML=`<div style="text-align:center"><div style="font-size:32px;margin-bottom:12px">⚠️</div><div style="font-size:15px;font-weight:700;color:#f87171;margin-bottom:6px">Cannot load data</div><div style="font-size:12px;color:var(--muted);max-width:360px;line-height:1.6">${e.message}</div><button onclick="loadData()" style="margin-top:16px;background:var(--bg3);border:1px solid var(--border2);color:var(--text);padding:8px 20px;border-radius:8px;cursor:pointer;font-family:var(--font);font-size:13px">↻ Retry</button></div>`;
+  }finally{ri.classList.remove('spinning')}
+}
+
+function render(){
+  $('loadingState').style.display='none';
+  $('dashMain').style.display='block';
+  const{meta,summary,totals,pipeline,stageCounts,rankByRep,rankTotals,topInactiveRankAccounts,leadsYesterday,leadsMtd,leadsYtd,closedWon,closedLost,autoRecs,marketNews,repColors,repFullNames}=D;
+  const repNames=Object.keys(summary);
+  const teamRate=meta.teamRate;
+
+  $('hDate').textContent=meta.yesterdayLabel;
+  $('hTime').textContent=`Updated ${meta.generatedAtFormatted} · Riyadh`;
+  $('perfDate').textContent=meta.yesterdayLabel;
+
+  // KPIs
+  $('kpiStrip').innerHTML=[
+    {v:totals.calls,l:'Calls',c:'#60a5fa',s:null},
+    {v:totals.connected,l:'Connected',c:'#10b981',s:`${teamRate}% rate`},
+    {v:totals.meetings,l:'Meetings',c:'#8b5cf6',s:`${totals.meetings_completed} done`},
+    {v:totals.deals,l:'Deals',c:'#f59e0b',s:null},
+    {v:fmt(totals.pipeline_value),l:'Pipeline',c:'#06b6d4',s:`${totals.open_deals} open`},
+    {v:leadsYesterday.total,l:'New Leads',c:'#22d3ee',s:`${leadsYesterday.inbound}↓ ${leadsYesterday.outbound}↑`},
+    {v:fmt(totals.won_value),l:'Won',c:'#10b981',s:`${closedWon.length} deals`},
+    {v:fmt(totals.lost_value),l:'Lost',c:'#ef4444',s:`${closedLost.length} deals`}
+  ].map(k=>`<div class="kpi-cell"><div class="kpi-val" style="color:${k.c}">${k.v}</div><div class="kpi-lbl">${k.l}</div>${k.s?`<div class="kpi-sub" style="color:${k.c}">${k.s}</div>`:''}</div>`).join('');
+
+  // Recs
+  const ac=autoRecs.filter(r=>r.severity==='action_required').length;
+  $('recBadge').textContent=`${ac} urgent`;
+  $('recContainer').innerHTML=autoRecs.slice(0,10).map(r=>{
+    const s=sev[r.severity];const oc=repColors[r.owner]||'#64748b';
+    return `<div class="rec-row" style="background:${r.severity==='action_required'?'rgba(239,68,68,0.04)':r.severity==='positive'?'rgba(16,185,129,0.03)':'rgba(245,158,11,0.03)'}"><div class="rec-icon">${s.icon}</div><div class="rec-text">${r.text}</div><div class="rec-meta"><span class="badge ${s.cls}">${s.lbl}</span>${r.owner!=='Team'?`<span class="badge" style="background:${oc}18;color:${oc};border:1px solid ${oc}30">${r.owner}</span>`:''}</div></div>`;
+  }).join('');
+
+  // Funnel
+  const fstages=[{k:'1521682643',l:'Lead',c:'#6366f1'},{k:'appointmentscheduled',l:'Demo Booked',c:'#3b82f6'},{k:'qualifiedtobuy',l:'Demo Done',c:'#06b6d4'},{k:'presentationscheduled',l:'Tech Meeting',c:'#10b981'},{k:'decisionmakerboughtin',l:'Proposal',c:'#f59e0b'},{k:'contractsent',l:'Signed',c:'#22c55e'}];
+  const mx=Math.max(...fstages.map(s=>stageCounts[s.k]||0),1);
+  $('funnelContainer').innerHTML=fstages.map(s=>{const cnt=stageCounts[s.k]||0;const pct=Math.round(cnt/mx*100);const w=Math.max(pct,15);const ml=(100-w)/2;return `<div class="funnel-row"><div class="funnel-lbl"><span>${s.l}</span><span style="color:${s.c};font-family:var(--mono)">${cnt}</span></div><div class="funnel-track"><div class="funnel-fill" style="width:${w}%;margin-left:${ml}%;background:${s.c}"><span class="funnel-num">${pct}%</span></div></div></div>`;}).join('')+`<div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--border)"><div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:10px;color:var(--muted)">Won</span><span style="font-size:11px;font-weight:600;color:#10b981;font-family:var(--mono)">${closedWon.length} · ${fmt(totals.won_value)}</span></div><div style="display:flex;justify-content:space-between"><span style="font-size:10px;color:var(--muted)">Lost</span><span style="font-size:11px;font-weight:600;color:#ef4444;font-family:var(--mono)">${closedLost.length} · ${fmt(totals.lost_value)}</span></div></div>`;
+
+  // Perf table
+  const trColor=rc(teamRate);
+  $('perfBody').innerHTML=repNames.map(name=>{
+    const d=summary[name];const p=pipeline[name];const rb=rankByRep[name];
+    const rate=d.calls>0?Math.round(d.connected/d.calls*100):0;const r=rc(rate);const c=repColors[name];
+    const top=name===meta.topPerformer;const bad=p.stuck.length>0||rate<30||d.calls<10||rb.no_activity.length>0;
+    return `<tr style="${bad?'border-left:2px solid #ef4444;':''}${top?'background:rgba(245,158,11,0.03);':''}"><td><div style="display:flex;align-items:center;gap:10px"><div class="av" style="background:${c}18;color:${c}">${name[0]}</div><div><div style="font-weight:700;font-size:12px;display:flex;align-items:center;gap:5px">${name}${top?'<span class="badge badge-y">★ TOP</span>':''}${bad?'<span class="badge badge-r">⚠</span>':''}</div><div style="font-size:10px;color:var(--muted);margin-top:1px">${repFullNames[name]}</div></div></div></td><td class="c" style="font-family:var(--mono);font-size:17px;color:${d.calls<10?'#ef4444':'var(--text)'}">${d.calls}</td><td class="c" style="font-family:var(--mono);font-size:17px;color:#10b981">${d.connected}</td><td class="c" style="font-family:var(--mono);font-size:17px;color:#ef4444">${d.calls-d.connected}</td><td class="c"><div style="font-size:14px;font-weight:700;color:${r};margin-bottom:3px">${rate}%</div><div class="prog-bg" style="width:44px;height:3px;margin:0 auto"><div class="prog-fill" style="width:${rate}%;background:${r}"></div></div></td><td class="c" style="font-family:var(--mono);font-size:17px;color:#8b5cf6">${d.meetings}${d.meetings_completed>0?`<div style="font-size:9px;color:#10b981;font-weight:600">${d.meetings_completed}✓</div>`:''}</td><td class="c" style="font-family:var(--mono);font-size:17px;color:#f59e0b">${d.deals}</td><td class="c"><div style="font-size:12px;font-weight:600">${p.deals.length}</div><div style="font-size:9px;color:#10b981;font-family:var(--mono)">${fmt(p.total_value)}</div></td><td class="c"><div style="font-size:10px;font-weight:600">${rb.A.length}A·${rb.B.length}B</div>${rb.no_activity.length>0?`<div style="font-size:9px;color:#ef4444">${rb.no_activity.length} idle</div>`:'<div style="font-size:9px;color:#10b981">✓</div>'}</td><td class="c">${p.stuck.length>0?`<span class="badge badge-r">${p.stuck.length} stuck</span>`:'<span style="font-size:10px;color:#10b981">✓</span>'}${p.no_activity.length>0?`<div style="font-size:9px;color:#f59e0b;margin-top:2px">${p.no_activity.length} cold</div>`:''}</td></tr>`;
+  }).join('');
+
+  // Leads
+  $('leadsBadgeRow').innerHTML=`<span class="badge badge-b">Yesterday: ${leadsYesterday.total}</span><span class="badge badge-g">MTD: ${leadsMtd.total}</span><span class="badge badge-p">YTD: ${leadsYtd.total}</span>`;
+  $('leadsPeriods').innerHTML=[{period:'Yesterday',data:leadsYesterday,c:'#60a5fa'},{period:'Month to Date',data:leadsMtd,c:'#10b981'},{period:'Year to Date',data:leadsYtd,c:'#8b5cf6'}].map(({period,data,c})=>`<div class="period-cell"><div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em">${period}</div><div class="period-stats"><div class="p-stat"><div class="v" style="color:${c}">${data.total}</div><div class="l">Total</div></div><div class="p-stat"><div class="v" style="color:#60a5fa">${data.inbound}</div><div class="l">Inbound</div></div><div class="p-stat"><div class="v" style="color:#f59e0b">${data.outbound}</div><div class="l">Outbound</div></div><div class="p-stat"><div class="v" style="color:${data.no_action>0?'#ef4444':'#10b981'}">${data.no_action}</div><div class="l">No Action</div></div></div><div style="margin-top:8px;display:flex;gap:5px;flex-wrap:wrap"><span class="badge badge-g">✓ ${data.covered}</span>${data.no_action>0?`<span class="badge badge-r">🚩 ${data.no_action}</span>`:''}</div></div>`).join('');
+  const smap={NEW:{cls:'badge-b',l:'New'},IN_PROGRESS:{cls:'badge-g',l:'In Progress'},OPEN_DEAL:{cls:'badge-p',l:'Open Deal'},ATTEMPTED_TO_CONTACT:{cls:'badge-y',l:'Attempted'},BAD_TIMING:{cls:'',l:'Bad Timing'},UNQUALIFIED:{cls:'badge-r',l:'Unqualified'},'Existing Client':{cls:'badge-g',l:'Existing'}};
+  $('leadStatusRow').innerHTML=Object.entries(leadsYesterday.by_status).filter(([,v])=>v>0).map(([s,c])=>{const sm=smap[s]||{cls:'',l:s};return `<span class="badge ${sm.cls}">${sm.l}: ${c}</span>`;}).join('');
+  $('leadsRepBody').innerHTML=repNames.map(name=>{
+    const l=leadsYesterday.by_rep[name]||{};const color=repColors[name];
+    const cr=l.total>0?Math.round((l.covered||0)/l.total*100):0;const cc=cr>=80?'#10b981':cr>=50?'#f59e0b':'#ef4444';
+    return `<tr><td><div style="display:flex;align-items:center;gap:8px"><div style="width:24px;height:24px;border-radius:6px;background:${color}18;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:${color}">${name[0]}</div><span style="font-weight:600">${name}</span></div></td><td class="c" style="font-family:var(--mono);font-size:15px;font-weight:600">${l.total||0}</td><td class="c" style="font-weight:600;color:#60a5fa">${l.inbound||0}</td><td class="c" style="font-weight:600;color:#f59e0b">${l.outbound||0}</td><td class="c" style="font-weight:600;color:#10b981">${l.covered||0}</td><td class="c">${(l.no_action||0)>0?`<span style="font-weight:700;color:#ef4444">${l.no_action} 🚩</span>`:'<span style="color:#10b981">✓</span>'}</td><td class="c"><div style="font-weight:700;color:${cc}">${cr}%</div><div class="prog-bg" style="width:44px;height:3px;margin:3px auto 0"><div class="prog-fill" style="width:${cr}%;background:${cc}"></div></div></td></tr>`;
+  }).join('');
+
+  // Rank A/B
+  $('rankBadgeRow').innerHTML=`<span class="badge badge-r">${rankTotals.A} A</span><span class="badge badge-y">${rankTotals.B} B</span>${rankTotals.no_activity_14d>0?`<span class="badge badge-r">⚡${rankTotals.no_activity_14d} idle</span>`:''}`;
+  $('rankBody').innerHTML=(topInactiveRankAccounts||[]).map(c=>{const dc=c.daysSinceActivity>14?'#ef4444':c.daysSinceActivity>7?'#f59e0b':'#10b981';return `<tr><td><span class="badge ${c.rank==='A'?'badge-r':'badge-y'}">${c.rank}</span></td><td style="font-weight:600">${c.name}</td><td class="c"><span class="badge" style="background:${c.repColor}18;color:${c.repColor};border:1px solid ${c.repColor}30">${c.rep}</span></td><td class="c" style="color:var(--muted)">${c.employees}</td><td class="c" style="font-weight:700;color:${dc}">${c.daysSinceActivity>900?'Never':c.daysSinceActivity+'d ago'}</td></tr>`;}).join('');
+  $('rankFooter').textContent=`Top 10 by days since last activity · ${rankTotals.total} total Rank A/B accounts`;
+
+  // Pipeline cards
+  $('pipeCards').innerHTML=repNames.map(name=>{
+    const p=pipeline[name];const rb=rankByRep[name];const c=repColors[name];
+    const top3=[...p.deals].sort((a,b)=>b.amount-a.amount).slice(0,3);
+    return `<div class="pipe-card" style="border-top:2px solid ${c}"><div class="pipe-card-hd"><div style="display:flex;align-items:center;gap:6px"><div style="width:20px;height:20px;border-radius:5px;background:${c}18;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;color:${c}">${name[0]}</div><span style="font-weight:700;color:${c};font-size:11px">${name}</span></div><div style="text-align:right"><div style="font-family:var(--mono);font-size:12px;font-weight:500">${fmt(p.total_value)}</div><div style="font-size:8px;color:var(--muted)">${p.deals.length}d · <span style="color:#ef4444">${rb.A.length}A</span> <span style="color:#f59e0b">${rb.B.length}B</span></div></div></div><div class="pipe-card-body">${top3.map(d=>`<div class="pipe-deal"><div style="flex:1;min-width:0"><div class="pipe-name">${d.name}</div><div class="pipe-stage">${d.stage}</div></div><div class="pipe-amt">$${d.amount.toLocaleString()}</div></div>`).join('')}<div style="display:flex;flex-wrap:wrap;gap:3px;margin-top:7px">${p.stuck.length>0?`<span class="badge badge-r">🔴${p.stuck.length}</span>`:''}${p.no_activity.length>0?`<span class="badge badge-y">🟡${p.no_activity.length}</span>`:''}${rb.no_activity.length>0?`<span class="badge badge-r">⚡${rb.no_activity.length}</span>`:''}${p.stuck.length===0&&p.no_activity.length===0&&rb.no_activity.length===0?`<span class="badge badge-g">✓ healthy</span>`:''}</div></div></div>`;
+  }).join('');
+
+  // Won/Lost
+  $('wonBadge').textContent=`${closedWon.length} · ${fmt(totals.won_value)}`;
+  $('wonContainer').innerHTML=closedWon.length>0?closedWon.map(d=>`<div class="deal-row"><div style="flex:1"><div style="display:flex;align-items:center;gap:7px;margin-bottom:4px"><div style="width:6px;height:6px;border-radius:50%;background:#10b981;box-shadow:0 0 8px rgba(16,185,129,0.5)"></div><span style="font-weight:700;font-size:13px">${d.name}</span></div><div style="display:flex;gap:6px;flex-wrap:wrap"><span style="font-size:10px;color:var(--muted)">${d.closedate}</span><span class="badge" style="background:${d.repColor}18;color:${d.repColor}">${d.rep}</span>${d.won_reason?`<span style="font-size:10px;color:#10b981">✓ ${d.won_reason}</span>`:''}</div></div><div style="font-family:var(--mono);font-size:18px;color:#10b981">$${d.amount.toLocaleString()}</div></div>`).join(''):'<div style="padding:24px;color:var(--muted);text-align:center;font-style:italic;font-size:13px">No won deals yesterday</div>';
+  $('lostBadge').textContent=`${closedLost.length} · ${fmt(totals.lost_value)}`;
+  $('lostContainer').innerHTML=closedLost.length>0?closedLost.map(d=>`<div class="deal-row"><div style="flex:1"><div style="display:flex;align-items:center;gap:7px;margin-bottom:4px"><div style="width:6px;height:6px;border-radius:50%;background:#ef4444"></div><span style="font-weight:700;font-size:13px">${d.name}</span></div><div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:5px"><span style="font-size:10px;color:var(--muted)">${d.closedate}</span><span class="badge" style="background:${d.repColor}18;color:${d.repColor}">${d.rep}</span></div>${d.lost_reason?`<span class="badge badge-r">❌ ${d.lost_reason}</span>`:''}</div><div style="text-align:right"><div style="font-family:var(--mono);font-size:18px;color:#ef4444">$${d.amount.toLocaleString()}</div><div style="font-size:9px;color:var(--muted)">lost</div></div></div>`).join(''):'<div style="padding:24px;color:var(--muted);text-align:center;font-style:italic;font-size:13px">No lost deals yesterday</div>';
+
+  // News
+  $('newsContainer').innerHTML=(marketNews||[]).map(n=>`<div class="news-row"><div style="font-size:18px;flex-shrink:0">${n.icon}</div><div style="flex:1"><div style="display:flex;align-items:center;gap:8px;margin-bottom:5px"><span class="badge" style="background:${n.color}15;color:${n.color};border:1px solid ${n.color}20">${n.tag}</span><span style="font-size:9px;color:var(--muted)">${n.source}</span></div><div style="font-size:12px;color:#cbd5e1;line-height:1.6">${n.text}</div></div></div>`).join('');
+
+  // AI grid
+  $('aiGrid').innerHTML=repNames.map(name=>`<div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px;border-top:2px solid ${repColors[name]}"><div style="display:flex;align-items:center;gap:6px;margin-bottom:7px"><div style="width:18px;height:18px;border-radius:5px;background:${repColors[name]}18;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;color:${repColors[name]}">${name[0]}</div><span style="font-weight:700;color:${repColors[name]};font-size:11px">${name}</span></div><div style="font-size:10px;color:var(--muted);font-style:italic">Loading...</div></div>`).join('');
+
+  // Rep tabs + panels
+  const nav=$('tabsNav'); const rpnl=$('repPanels'); rpnl.innerHTML='';
+  repNames.forEach(name=>{
+    const c=repColors[name];const d=summary[name];const p=pipeline[name];const rb=rankByRep[name];
+    const l=leadsYesterday.by_rep[name]||{};
+    const rate=d.calls>0?Math.round(d.connected/d.calls*100):0;const r=rc(rate);
+    const bad=p.stuck.length>0||rate<30||d.calls<10||rb.no_activity.length>0;
+    const repRecs=autoRecs.filter(x=>x.owner===name);
+    const topDeals=[...p.deals].sort((a,b)=>b.amount-a.amount).slice(0,8);
+    const stuckDeals=p.stuck.slice(0,5);
+
+    const btn=document.createElement('button');
+    btn.className='tab-btn';btn.id='tab-'+name.toLowerCase();
+    btn.onclick=()=>switchTab(name.toLowerCase());
+    btn.innerHTML=`<span class="tab-dot" style="background:${c}"></span>${name}${bad?'<span class="tab-alert">!</span>':''}`;
+    nav.appendChild(btn);
+
+    const panel=document.createElement('div');
+    panel.className='panel';panel.id='panel-'+name.toLowerCase();
+    panel.innerHTML=`
+    <div class="rep-hero" style="--rc:${c}">
+      <div class="av av-lg" style="background:${c}18;color:${c};border:2px solid ${c}30">${name[0]}</div>
+      <div class="rep-hero-info">
+        <div class="name" style="color:${c}">${name} ${bad?`<span class="badge badge-r">⚠ Needs Attention</span>`:`<span class="badge badge-g">✓ On Track</span>`}</div>
+        <div class="full">${repFullNames[name]} · ${meta.yesterdayLabel}</div>
+      </div>
+      <div class="rep-hero-stats">
+        ${[{v:d.calls,l:'Calls',c:d.calls<10?'#ef4444':'#60a5fa'},{v:`${rate}%`,l:'Rate',c:r},{v:d.meetings,l:'Meetings',c:'#8b5cf6'},{v:fmt(p.total_value),l:'Pipeline',c:'#06b6d4'}].map(s=>`<div class="hero-stat"><div class="v" style="color:${s.c}">${s.v}</div><div class="l">${s.l}</div></div>`).join('')}
+      </div>
+    </div>
+    <div class="g4" style="margin-bottom:14px">
+      ${[{v:d.calls,l:'Calls Logged',c:d.calls<10?'#ef4444':'#60a5fa'},{v:`${rate}%`,l:'Connection Rate',c:r},{v:d.meetings,l:'Meetings',c:'#8b5cf6'},{v:d.deals,l:'Deals Created',c:'#f59e0b'}].map(s=>`<div class="stat-chip" style="border-top:2px solid ${s.c}"><div class="v" style="color:${s.c}">${s.v}</div><div class="l">${s.l}</div></div>`).join('')}
+    </div>
+    ${repRecs.length>0?`<div class="card">${repRecs.map(x=>{const sv=sev[x.severity];return `<div class="rec-row" style="background:${x.severity==='action_required'?'rgba(239,68,68,0.04)':x.severity==='positive'?'rgba(16,185,129,0.03)':'rgba(245,158,11,0.03)'}"><div class="rec-icon">${sv.icon}</div><div class="rec-text">${x.text}</div><span class="badge ${sv.cls}">${sv.lbl}</span></div>`;}).join('')}</div>`:`<div class="card" style="margin-bottom:14px"><div class="card-body" style="background:rgba(16,185,129,0.04)"><div style="font-size:12px;color:#10b981;font-weight:600">✅ No urgent actions — ${name} is on track!</div></div></div>`}
+    <div class="g2">
+      <div class="card" style="margin-bottom:0">
+        <div class="card-hd"><span class="card-title">💼 Open Deals</span><span class="badge badge-b">${p.deals.length} · ${fmt(p.total_value)}</span></div>
+        <div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Deal</th><th>Stage</th><th class="c">Value</th><th class="c">Days in Stage</th><th class="c">Next Activity</th></tr></thead>
+        <tbody>${topDeals.map(dl=>`<tr><td style="font-weight:600;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${dl.name}</td><td><span class="badge badge-b">${dl.stage}</span></td><td class="c" style="font-family:var(--mono)">$${dl.amount.toLocaleString()}</td><td class="c"><span style="color:${dl.daysInStage>14?'#ef4444':'var(--text)'};font-weight:${dl.daysInStage>14?700:400}">${dl.daysInStage}d${dl.daysInStage>14?' ⚠':''}</span></td><td class="c">${dl.nextActivity?`<span style="color:#10b981;font-size:11px">${dl.nextActivity}</span>`:'<span style="color:#ef4444;font-size:11px">🚩 None</span>'}</td></tr>`).join('')}</tbody></table></div>
+      </div>
+      <div class="card" style="margin-bottom:0">
+        <div class="card-hd"><span class="card-title">🎯 Rank A/B Accounts</span><div style="display:flex;gap:5px"><span class="badge badge-r">${rb.A.length}A</span><span class="badge badge-y">${rb.B.length}B</span>${rb.no_activity.length>0?`<span class="badge badge-r">⚡${rb.no_activity.length} idle</span>`:''}</div></div>
+        <div class="card-body">
+          ${rb.A.length>0?`<div style="margin-bottom:10px"><div style="font-size:9px;font-weight:700;color:#ef4444;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px">RANK A</div>${rb.A.slice(0,6).map(n=>`<div style="font-size:12px;padding:3px 0;border-bottom:1px solid var(--border)">${n}</div>`).join('')}</div>`:''}
+          ${rb.B.length>0?`<div><div style="font-size:9px;font-weight:700;color:#f59e0b;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px">RANK B</div>${rb.B.slice(0,6).map(n=>`<div style="font-size:12px;padding:3px 0;border-bottom:1px solid var(--border)">${n}</div>`).join('')}</div>`:''}
+          ${rb.no_activity.length>0?`<div style="margin-top:10px;padding:10px;background:rgba(239,68,68,0.06);border-radius:6px;border-left:2px solid #ef4444"><div style="font-size:9px;font-weight:700;color:#ef4444;margin-bottom:5px">🔴 INACTIVE >14 DAYS</div>${rb.no_activity.slice(0,4).map(x=>`<div style="font-size:11px;padding:2px 0">${x.name} <span style="color:#ef4444;font-family:var(--mono)">(${x.days}d)</span></div>`).join('')}</div>`:`<div style="margin-top:10px;padding:10px;background:rgba(16,185,129,0.06);border-radius:6px;border-left:2px solid #10b981;font-size:11px;color:#10b981">✓ All accounts recently active</div>`}
+        </div>
+      </div>
+    </div>
+    ${stuckDeals.length>0?`<div class="card"><div class="card-hd"><span class="card-title">🔴 Stuck Deals (>14 days)</span><span class="badge badge-r">${stuckDeals.length}</span></div><div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Deal Name</th><th class="c">Stage</th><th class="c">Days Stuck</th></tr></thead><tbody>${stuckDeals.map(s=>`<tr><td style="font-weight:600">${s.name}</td><td class="c"><span class="badge badge-b">${s.stage}</span></td><td class="c" style="font-weight:700;color:#ef4444;font-family:var(--mono)">${s.days}d</td></tr>`).join('')}</tbody></table></div></div>`:''}
+    <div class="card">
+      <div class="card-hd"><span class="card-title">🎯 Leads · ${name} · Yesterday</span></div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border-bottom:1px solid var(--border)">
+        ${[{v:l.total||0,l:'Total',c},{v:l.inbound||0,l:'Inbound',c:'#60a5fa'},{v:l.outbound||0,l:'Outbound',c:'#f59e0b'},{v:l.no_action||0,l:'No Follow-up',c:(l.no_action||0)>0?'#ef4444':'#10b981'}].map(s=>`<div style="background:var(--bg2);padding:14px;text-align:center"><div style="font-family:var(--mono);font-size:20px;color:${s.c}">${s.v}</div><div style="font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-top:3px;font-weight:600">${s.l}</div></div>`).join('')}
+      </div>
+      ${(l.no_action||0)>0?`<div style="padding:10px 18px;background:rgba(239,68,68,0.05)"><span style="font-size:11px;color:#ef4444;font-weight:600">🚩 ${l.no_action} leads need follow-up today</span></div>`:`<div style="padding:10px 18px;background:rgba(16,185,129,0.04)"><span style="font-size:11px;color:#10b981;font-weight:600">✓ All leads covered</span></div>`}
+    </div>`;
+    rpnl.appendChild(panel);
+  });
+}
+
+loadData();
+setInterval(loadData,5*60*1000);
+</script>
 </body>
 </html>
