@@ -116,19 +116,36 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font
 </head>
 <body>
 
-<div class="header">
+<header class="header">
   <div class="header-inner">
     <div class="logo">
-      <div class="logo-mark">T</div>
-      <div><div class="logo-text">Talentera</div><div class="logo-sub">Sales Command Center</div></div>
+      <img src="https://www.talentera.com/wp-content/themes/talentera-2018/images/new-design/Talentera-ATS-black-logo.svg" 
+           alt="Talentera Logo" 
+           style="height: 35px; width: auto; filter: brightness(0) invert(1); margin-right: 15px;">
+      
+      <div style="display: flex; flex-direction: column; border-left: 1px solid var(--border2); padding-left: 15px;">
+        <span style="font-size: 14px; font-weight: 800; color: #fff; letter-spacing: 0.05em; line-height: 1.1;">
+            SALES COMMAND CENTER
+        </span>
+        <span style="font-size: 9px; color: var(--brand-blue); font-weight: 700; letter-spacing: 0.12em; margin-top: 2px;">
+            REVOPS INTELLIGENCE
+        </span>
+      </div>
     </div>
+
     <div class="header-right">
-      <div class="live-pill"><span class="live-dot"></span>LIVE · HUBSPOT</div>
-      <div><div class="header-date" id="hDate">—</div><div class="header-time" id="hTime">Loading...</div></div>
-      <button class="refresh-btn" onclick="loadData()"><span id="ri">↻</span> Refresh</button>
+      <div class="live-pill">
+        <div class="live-dot"></div>
+        LIVE · HUBSPOT
+      </div>
+      <div id="last-update-time" style="font-size:11px; color:var(--muted); font-weight:500">
+        </div>
+      <button class="btn" onclick="location.reload()" style="background: var(--bg3); border: 1px solid var(--border2); color: #fff; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: 600;">
+        <span style="margin-right: 5px;">🔄</span> Refresh
+      </button>
     </div>
   </div>
-</div>
+</header>
 
 <div class="tabs-nav">
   <div class="tabs-inner" id="tabsNav">
