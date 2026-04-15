@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>Talentera Huddle Dashboard</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f0f2f5; padding: 20px; }
+        .container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h1 { color: #ff7a59; text-align: center; }
+        pre { background: #272822; color: #f8f8f2; padding: 15px; border-radius: 5px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>لوحة بيانات HubSpot المحدثة</h1>
+        <p>آخر تحديث تلقائي من n8n:</p>
+        <div id="content">جاري تحميل أحدث البيانات...</div>
+    </div>
+
+    <script>
+        // بجلب البيانات من ملف data.json اللي n8n بيحدثه
+        fetch('data.json')
+            .then(response => response.json())
+            .then(data => {
+                const contentDiv = document.getElementById('content');
+                contentDiv.innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+            })
+            .catch(err => {
+                document.getElementById('content').innerHTML = 'في انتظار وصول أول دفعة بيانات من n8n...';
+            });
+    </script>
+</body>
+</html>
