@@ -1,5 +1,5 @@
 // 1. انسخ اللينك من n8n وحطه هنا
-const N8N_URL = "https://abdullah750.app.n8n.cloud/webhook-test/b473b25f-10e3-4168-bbfe-ae314d5e274c";
+const N8N_URL = "https://abdullah750.app.n8n.cloud/webhook/b473b25f-10e3-4168-bbfe-ae314d5e274c";
 
 async function fetchHuddleData() {
     try {
