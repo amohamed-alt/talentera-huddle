@@ -62,14 +62,11 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font
 .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
 .g4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
 .g5{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
-/* 3-bar KPI layout */
 .kpi-bar-wrap{margin-bottom:20px}
 .kpi-bar-label{font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.14em;margin-bottom:8px;display:flex;align-items:center;gap:8px}
 .kpi-bar-label::after{content:'';flex:1;height:1px;background:var(--border)}
 .kpi-row{display:grid;gap:12px;margin-bottom:6px}
 .kpi-row-8{grid-template-columns:repeat(8,1fr)}
-.kpi-row-7{grid-template-columns:repeat(7,1fr)}
-.kpi-row-2{grid-template-columns:repeat(2,1fr)}
 .kpi-cell{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px 12px;text-align:center;box-shadow:var(--shadow-sm);transition:all 0.25s;position:relative;overflow:hidden}
 .kpi-cell::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--kc,var(--accent));border-radius:var(--radius) var(--radius) 0 0}
 .kpi-cell:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
@@ -97,12 +94,11 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font
 .rec-icon{font-size:15px;flex-shrink:0;margin-top:1px}
 .rec-text{flex:1;font-size:12px;color:var(--text2);line-height:1.65}
 .rec-meta{flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:5px}
-/* Horizontal pipeline bar */
-.pipe-horiz{display:flex;gap:6px;height:90px;margin-bottom:4px}
+.pipe-horiz{display:flex;gap:6px;height:120px;margin-bottom:4px}
 .pipe-h-stage{min-width:0;display:flex;flex-direction:column;transition:flex 0.8s cubic-bezier(0.16,1,0.3,1)}
 .pipe-h-fill{flex:1;border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 4px;gap:2px}
 .pipe-h-name{font-size:9px;font-weight:700;color:rgba(255,255,255,0.85);text-align:center;line-height:1.2}
-.pipe-h-count{font-size:17px;font-weight:700;color:#fff;font-family:var(--mono)}
+.pipe-h-count{font-size:20px;font-weight:700;color:#fff;font-family:var(--mono)}
 .pipe-h-amt{font-size:9px;color:rgba(255,255,255,0.75);font-family:var(--mono)}
 .card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:16px;box-shadow:var(--shadow-sm);transition:box-shadow 0.2s}
 .card:hover{box-shadow:var(--shadow)}
@@ -116,7 +112,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font
 .pipe-deal{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border)}
 .pipe-deal:last-of-type{border-bottom:none}
 .pipe-name{font-size:10px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:130px;font-weight:600}
-.pipe-stage{font-size:8px;color:var(--muted);margin-top:1px;font-weight:500}
+.pipe-stage-lbl{font-size:8px;color:var(--muted);margin-top:1px;font-weight:500}
 .pipe-amt{font-family:var(--mono);font-size:10px;font-weight:600;color:var(--text2)}
 .news-row{display:flex;align-items:flex-start;gap:14px;padding:14px 20px;border-bottom:1px solid var(--border);transition:background 0.15s}
 .news-row:last-child{border-bottom:none}
@@ -133,17 +129,18 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font
 .deal-row{display:flex;justify-content:space-between;align-items:flex-start;padding:14px 20px;border-bottom:1px solid var(--border);gap:14px;transition:background 0.15s}
 .deal-row:last-child{border-bottom:none}
 .deal-row:hover{background:var(--bg3)}
-/* AI Coaching per-rep */
 .coaching-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:16px}
 .coaching-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px;border-top:3px solid var(--cc,#2563eb);transition:all 0.2s}
 .coaching-card:hover{box-shadow:var(--shadow);transform:translateY(-2px)}
 .coaching-rep-name{font-size:11px;font-weight:700;color:var(--cc,var(--accent));margin-bottom:10px;display:flex;align-items:center;gap:6px}
 .coaching-ok{font-size:11px;color:var(--green);font-weight:600;display:flex;align-items:center;gap:5px}
-.coaching-deal-item{margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.coaching-deal-item{margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid var(--border)}
 .coaching-deal-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
 .coaching-deal-name{font-size:11px;font-weight:600;color:var(--text);margin-bottom:4px;display:flex;align-items:center;gap:5px}
 .coaching-deal-amt{font-family:var(--mono);font-size:10px;color:var(--muted);margin-left:auto}
 .coaching-reason{font-size:10px;color:var(--gold);font-weight:600;padding:2px 0;display:flex;align-items:center;gap:4px}
+.see-more-btn{font-size:10px;color:var(--accent);font-weight:600;cursor:pointer;padding:6px 0;text-align:center;border-top:1px solid var(--border);margin-top:8px;background:none;border-left:none;border-right:none;border-bottom:none;width:100%;font-family:var(--font)}
+.see-more-btn:hover{color:var(--text)}
 .ret-tag{font-size:8px;font-weight:700;padding:2px 6px;border-radius:4px;background:var(--cyan-light);color:var(--cyan);border:1px solid rgba(8,145,178,0.2)}
 .loading{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;gap:20px}
 .spinner{width:44px;height:44px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin 0.9s cubic-bezier(0.5,0,0.5,1) infinite}
@@ -156,9 +153,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font
 .stat-chip .v{font-family:var(--mono);font-size:22px;line-height:1;color:var(--sc,var(--accent));font-weight:600}
 .stat-chip .l{font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:0.12em;margin-top:5px;font-weight:700}
 .period-cell{background:var(--bg2);padding:18px 20px}
-.period-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;text-align:center;margin-top:12px}
-.p-stat .v{font-family:var(--mono);font-size:20px;line-height:1;font-weight:600}
-.p-stat .l{font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;margin-top:4px;font-weight:700}
 @keyframes slideIn{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:translateX(0)}}
 .animate-in{animation:slideIn 0.4s cubic-bezier(0.16,1,0.3,1) both}
 @media(max-width:1100px){.kpi-row-8{grid-template-columns:repeat(4,1fr)}.g5{grid-template-columns:repeat(3,1fr)}.coaching-grid{grid-template-columns:repeat(2,1fr)}}
@@ -171,10 +165,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font
 <div class="header">
   <div class="header-inner">
     <a href="https://www.talentera.com" target="_blank" rel="noopener" class="logo">
-      <img class="logo-img"
-        src="https://www.talentera.com/wp-content/themes/talentera-2018/images/new-design/Talentera-ATS-black-logo.svg"
-        alt="Talentera"
-        onerror="this.style.display='none';document.getElementById('lf').style.display='flex'">
+      <img class="logo-img" src="https://www.talentera.com/wp-content/themes/talentera-2018/images/new-design/Talentera-ATS-black-logo.svg" alt="Talentera" onerror="this.style.display='none';document.getElementById('lf').style.display='flex'">
       <div id="lf" style="display:none;width:32px;height:32px;border-radius:9px;background:linear-gradient(135deg,#1e40af,#2563eb);align-items:center;justify-content:center;font-weight:800;font-size:15px;color:white;font-family:var(--font)">T</div>
       <div class="logo-divider"></div>
       <div class="logo-sub">Sales Command Center</div>
@@ -201,10 +192,10 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font
   <div id="dashMain" style="display:none">
     <div class="panel active" id="panel-team">
 
-      <!-- KPI: 3 bars -->
+      <!-- KPI 3 bars -->
       <div class="kpi-bar-wrap" id="kpiSection"></div>
 
-      <!-- Yesterday Perf table -->
+      <!-- Yesterday Perf -->
       <div class="card">
         <div class="card-hd"><span class="card-title">📊 Yesterday's Performance</span><span class="badge badge-b" id="perfDate"></span></div>
         <div style="overflow-x:auto"><table class="tbl"><thead><tr>
@@ -216,29 +207,33 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font
           <th class="c" style="color:var(--purple)">Meetings</th>
           <th class="c" style="color:var(--gold)">Open Deals</th>
           <th class="c" style="color:var(--cyan)">Pipeline</th>
-          <th class="c" style="color:var(--orange)">A/B</th>
-          <th class="c">Cold</th>
-          <th class="c">Stuck</th>
           <th class="c">Health</th>
         </tr></thead><tbody id="perfBody"></tbody></table></div>
       </div>
 
-      <!-- Insights + Pipeline horizontal -->
-      <div style="display:grid;grid-template-columns:1fr 340px;gap:16px;margin-bottom:16px">
+      <!-- Insights + Pipeline -->
+      <div style="display:grid;grid-template-columns:1fr 420px;gap:16px;margin-bottom:16px">
         <div class="card" style="margin-bottom:0">
           <div class="card-hd"><span class="card-title">💡 Insights & Recommendations</span><span class="badge badge-r" id="recBadge"></span></div>
           <div id="recContainer"></div>
         </div>
         <div class="card" style="margin-bottom:0">
-          <div class="card-hd"><span class="card-title">🔽 Acquisition Pipeline</span></div>
-          <div class="card-body" id="pipeHorizContainer"></div>
+          <div class="card-hd"><span class="card-title">🔽 Acquisition Pipeline</span><span class="badge badge-b" id="pipeTotal"></span></div>
+          <div style="padding:16px 20px" id="pipeHorizContainer"></div>
         </div>
       </div>
 
       <!-- Open pipeline cards -->
-      <div style="margin-bottom:16px"><div class="section-hd">🔭 Open Pipeline by Rep</div><div class="g5" id="pipeCards"></div></div>
+      <div style="margin-bottom:16px">
+        <div class="section-hd">🔭 Open Pipeline by Rep</div>
+        <div class="g5" id="pipeCards"></div>
+        <div id="pipeTotalRow" style="margin-top:10px;padding:12px 16px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-sm);display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:11px;font-weight:600;color:var(--muted)">Total Open Pipeline</span>
+          <span id="pipeTotalAmt" style="font-family:var(--mono);font-size:16px;font-weight:700;color:var(--accent)"></span>
+        </div>
+      </div>
 
-      <!-- AI Coaching per-rep -->
+      <!-- AI Coaching -->
       <div class="card">
         <div class="card-hd"><span class="card-title">⚡ AI Coaching Insights</span><span class="badge badge-p">Auto · No Next Activity</span></div>
         <div class="coaching-grid" id="aiGrid"></div>
@@ -285,7 +280,10 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font
       </div>
 
       <!-- News -->
-      <div class="card"><div class="card-hd"><span class="card-title">🌍 Market News & Events</span><span style="font-size:10px;color:var(--muted);font-weight:500">HR · Middle East</span></div><div id="newsContainer"></div></div>
+      <div class="card" style="margin-top:16px">
+        <div class="card-hd"><span class="card-title">🌍 Market News & Events</span><span style="font-size:10px;color:var(--muted);font-weight:500">HR · Middle East</span></div>
+        <div id="newsContainer"></div>
+      </div>
     </div>
 
     <div id="repPanels"></div>
@@ -297,7 +295,6 @@ let D=null;
 const $=id=>document.getElementById(id);
 const fmt=n=>!n?'$0':n>=1e6?`$${(n/1e6).toFixed(1)}M`:n>=1e3?`$${Math.round(n/1e3)}K`:`$${Math.round(n)}`;
 const rcHex=r=>r>=50?'#059669':r>=30?'#d97706':'#dc2626';
-const sev={action_required:{icon:'🔴',lbl:'Action Required',cls:'badge-r'},needs_attention:{icon:'⚠️',lbl:'Needs Attention',cls:'badge-y'},positive:{icon:'✅',lbl:'Positive',cls:'badge-g'}};
 const PIPE_COLORS=['#6366f1','#3b82f6','#06b6d4','#10b981','#f59e0b','#ef4444'];
 
 function switchTab(id){
@@ -311,135 +308,138 @@ async function loadData(){
   const ri=$('ri');ri.classList.add('spinning');
   try{
     const res=await fetch('./data.json?t='+Date.now());
-    if(!res.ok)throw new Error('data.json not found. Make sure n8n uploaded it.');
+    if(!res.ok)throw new Error('data.json not found.');
     D=await res.json();render();
   }catch(e){
-    $('loadingState').innerHTML=`<div style="text-align:center;padding:40px"><div style="font-size:48px;margin-bottom:16px">⚠️</div><div style="font-size:16px;font-weight:700;color:var(--red);margin-bottom:8px">Cannot load data</div><div style="font-size:13px;color:var(--muted);max-width:380px;line-height:1.7;margin:0 auto">${e.message}</div><button onclick="loadData()" style="margin-top:20px;background:var(--accent);border:none;color:#fff;padding:10px 24px;border-radius:var(--radius-sm);cursor:pointer;font-family:var(--font);font-size:13px;font-weight:600">↻ Retry</button></div>`;
+    $('loadingState').innerHTML=`<div style="text-align:center;padding:40px"><div style="font-size:48px;margin-bottom:16px">⚠️</div><div style="font-size:16px;font-weight:700;color:var(--red);margin-bottom:8px">Cannot load data</div><div style="font-size:13px;color:var(--muted)">${e.message}</div><button onclick="loadData()" style="margin-top:20px;background:var(--accent);border:none;color:#fff;padding:10px 24px;border-radius:var(--radius-sm);cursor:pointer;font-family:var(--font);font-size:13px;font-weight:600">↻ Retry</button></div>`;
   }finally{ri.classList.remove('spinning')}
+}
+
+function kpiCell(v,l,s,c,i){
+  return `<div class="kpi-cell animate-in" style="--kc:${c};animation-delay:${i*0.04}s">
+    <div class="kpi-val">${v}</div>
+    <div class="kpi-lbl">${l}</div>
+    ${s?`<div class="kpi-sub">${s}</div>`:''}
+  </div>`;
 }
 
 function render(){
   $('loadingState').style.display='none';
   $('dashMain').style.display='block';
 
-  // Support both v2 (new) and v1 (old) data.json structures
-  const isV2 = !!D.kpi;
-  const meta   = D.meta || {};
-  const repData= D.repData || [];
-  const team   = D.team   || D.totals || {};
-  const stageData = D.stageData || [];
+  const meta    = D.meta||{};
+  const repData = D.repData||[];
+  const team    = D.team||{};
+  const stageData = D.stageData||[];
+  const kpiY    = D.kpi?.yesterday||{};
+  const kpiM    = D.kpi?.mtd||{};
+  const kpiT    = D.kpi?.ytd||{};
+  const closedWon  = D.closedWon||[];
+  const closedLost = D.closedLost||[];
 
-  // ── KPI: 3 bars (Yesterday / MTD / YTD) ──
-  const kpiYest = isV2 ? D.kpi.yesterday : null;
-  const kpiMTD  = isV2 ? D.kpi.mtd       : null;
-  const kpiYTD  = isV2 ? D.kpi.ytd       : null;
+  $('hDate').textContent = meta.yesterdayLabel||'—';
+  $('hTime').textContent = `Updated ${meta.generatedAt||''} · Auto-refresh 5min`;
+  $('perfDate').textContent = meta.yesterdayLabel||'';
 
-  $('hDate').textContent = meta.yesterdayLabel || D.yesterdayLabel || '—';
-  $('hTime').textContent = `Updated ${meta.generatedAt||''} · Riyadh`;
-  $('perfDate').textContent = meta.yesterdayLabel || D.yesterdayLabel || '';
+  // ── Won/Lost per period ──
+  const wonYest    = closedWon.filter(d=>d.period==='yesterday');
+  const lostYest   = closedLost.filter(d=>d.period==='yesterday');
+  const wonYTDList = D.closedWonYTD||closedWon;
+  const lostYTDList= D.closedLostYTD||closedLost;
 
-  const kpiCell=(v,l,s,c,i)=>`<div class="kpi-cell animate-in" style="--kc:${c};animation-delay:${i*0.04}s"><div class="kpi-val">${v}</div><div class="kpi-lbl">${l}</div>${s?`<div class="kpi-sub">${s}</div>`:''}</div>`;
+  const wonAmtYest = wonYest.reduce((s,d)=>s+(d.amount||0),0);
+  const wonAmtMTD  = team.wonAmt||0;
+  const wonAmtYTD  = team.wonAmtYTD||wonAmtMTD;
+  const lostCntYest= lostYest.length;
+  const lostCntMTD = team.lost||0;
+  const lostCntYTD = team.lostYTD||lostCntMTD;
 
-  if(isV2 && kpiYest){
-    $('kpiSection').innerHTML=`
-    <div class="kpi-bar-label">📅 Yesterday — ${meta.yesterdayLabel||''}</div>
-    <div class="kpi-row kpi-row-8" style="margin-bottom:12px">
-      ${kpiCell(kpiYest.calls,'Calls',null,'#2563eb',0)}
-      ${kpiCell(kpiYest.connected,'Connected',`${kpiYest.connRate}% rate`,'#059669',1)}
-      ${kpiCell(kpiYest.meetings,'Meetings',null,'#7c3aed',2)}
-      ${kpiCell(kpiYest.openDeals,'Open Deals',null,'#d97706',3)}
-      ${kpiCell(fmt(kpiYest.pipeline),'Pipeline',null,'#0891b2',4)}
-      ${kpiCell(kpiYest.leads,'New Leads',null,'#0e7490',5)}
-      ${kpiCell(fmt(team.wonAmt||0),'Won MTD',`${team.won||0} deals`,'#059669',6)}
-      ${kpiCell(team.lost||0,'Lost MTD',null,'#dc2626',7)}
-    </div>
-    <div class="kpi-bar-label">📊 Month to Date</div>
-    <div class="kpi-row kpi-row-7" style="margin-bottom:12px">
-      ${kpiCell(kpiMTD.calls,'Calls MTD',null,'#2563eb',0)}
-      ${kpiCell(kpiMTD.connected,'Connected MTD',`${kpiMTD.connRate}% rate`,'#059669',1)}
-      ${kpiCell(kpiMTD.meetings,'Meetings MTD',null,'#7c3aed',2)}
-      ${kpiCell(kpiMTD.leads,'Leads MTD',null,'#0e7490',3)}
-      ${kpiCell(fmt(team.wonAmt||0),'Won Amount MTD',null,'#059669',4)}
-      ${kpiCell(team.won||0,'Won Deals MTD',null,'#22c55e',5)}
-      ${kpiCell(team.lost||0,'Lost MTD',null,'#dc2626',6)}
-    </div>
-    <div class="kpi-bar-label">📈 Year to Date</div>
-    <div class="kpi-row kpi-row-2" style="margin-bottom:4px">
-      ${kpiCell(kpiYTD.calls,'Calls YTD',null,'#2563eb',0)}
-      ${kpiCell(kpiYTD.leads,'Leads YTD',null,'#0e7490',1)}
-    </div>`;
-  } else {
-    // fallback: old data.json format — show 8-cell strip
-    const t=team;
-    $('kpiSection').innerHTML=`
-    <div class="kpi-bar-label">📅 Yesterday</div>
-    <div class="kpi-row kpi-row-8">
-      ${kpiCell(t.calls||0,'Calls',null,'#2563eb',0)}
-      ${kpiCell(t.connected||0,'Connected',`${t.connRateYest||0}% rate`,'#059669',1)}
-      ${kpiCell(t.meetings||0,'Meetings',null,'#7c3aed',2)}
-      ${kpiCell(t.openDeals||0,'Open Deals',null,'#d97706',3)}
-      ${kpiCell(fmt(t.pipeline||t.pipeline_value||0),'Pipeline',null,'#0891b2',4)}
-      ${kpiCell(t.leadsYest||0,'New Leads',null,'#0e7490',5)}
-      ${kpiCell(fmt(t.wonAmt||t.won_value||0),'Won MTD',`${t.won||0} deals`,'#059669',6)}
-      ${kpiCell(t.lost||0,'Lost MTD',null,'#dc2626',7)}
-    </div>`;
-  }
+  // ── KPI 3 rows ──
+  $('kpiSection').innerHTML=`
+  <div class="kpi-bar-label">📅 Yesterday — ${meta.yesterdayLabel||''}</div>
+  <div class="kpi-row kpi-row-8" style="margin-bottom:12px">
+    ${kpiCell(kpiY.calls||0,'Calls',null,'#2563eb',0)}
+    ${kpiCell(kpiY.connected||0,'Connected',`${kpiY.connRate||0}% rate`,'#059669',1)}
+    ${kpiCell(kpiY.meetings||0,'Meetings',null,'#7c3aed',2)}
+    ${kpiCell(kpiY.openDeals||0,'Open Deals',null,'#d97706',3)}
+    ${kpiCell(fmt(kpiY.pipeline||0),'Pipeline',null,'#0891b2',4)}
+    ${kpiCell(kpiY.leads||0,'New Leads',null,'#0e7490',5)}
+    ${kpiCell(fmt(wonAmtYest),'Won',`${wonYest.length} deals`,'#059669',6)}
+    ${kpiCell(lostCntYest,'Lost',null,'#dc2626',7)}
+  </div>
+  <div class="kpi-bar-label">📊 Month to Date</div>
+  <div class="kpi-row kpi-row-8" style="margin-bottom:12px">
+    ${kpiCell(kpiM.calls||0,'Calls MTD',null,'#2563eb',0)}
+    ${kpiCell(kpiM.connected||0,'Connected MTD',`${kpiM.connRate||0}% rate`,'#059669',1)}
+    ${kpiCell(kpiM.meetings||0,'Meetings MTD',null,'#7c3aed',2)}
+    ${kpiCell(kpiM.leads||0,'Leads MTD',null,'#0e7490',3)}
+    ${kpiCell(kpiY.openDeals||0,'Open Deals',null,'#d97706',4)}
+    ${kpiCell(fmt(kpiY.pipeline||0),'Pipeline',null,'#0891b2',5)}
+    ${kpiCell(fmt(wonAmtMTD),'Won MTD',`${team.won||0} deals`,'#059669',6)}
+    ${kpiCell(lostCntMTD,'Lost MTD',null,'#dc2626',7)}
+  </div>
+  <div class="kpi-bar-label">📈 Year to Date</div>
+  <div class="kpi-row kpi-row-8" style="margin-bottom:4px">
+    ${kpiCell(kpiT.calls||0,'Calls YTD',null,'#2563eb',0)}
+    ${kpiCell(kpiT.connected||0,'Connected YTD',`${kpiT.connRate||0}% rate`,'#059669',1)}
+    ${kpiCell(team.meetingsMTD||0,'Meetings YTD',null,'#7c3aed',2)}
+    ${kpiCell(kpiT.leads||0,'Leads YTD',null,'#0e7490',3)}
+    ${kpiCell(kpiY.openDeals||0,'Open Deals',null,'#d97706',4)}
+    ${kpiCell(fmt(kpiY.pipeline||0),'Pipeline',null,'#0891b2',5)}
+    ${kpiCell(fmt(wonAmtYTD),'Won YTD',`${team.wonYTD||team.won||0} deals`,'#059669',6)}
+    ${kpiCell(lostCntYTD,'Lost YTD',null,'#dc2626',7)}
+  </div>`;
 
-  // ── Yesterday Performance Table ──
+  // ── Yesterday Performance ──
   $('perfBody').innerHTML=repData.map(r=>{
-    const calls= isV2 ? r.calls.yest      : (r.calls||0);
-    const conn = isV2 ? r.calls.yestConn  : (r.connected||0);
-    const rate = isV2 ? r.connRateYest    : (calls>0?Math.round(conn/calls*100):0);
-    const mtgs = isV2 ? r.meetings.yest   : (r.meetings||0);
-    const rc   = rcHex(rate);
-    const c    = r.color;
-    const isRet= r.type==='ret';
-    const cold = (r.cold||[]).length;
-    const stuck= (r.stuck||[]).length;
-    const health= rate>=50&&cold===0?`<span class="badge badge-g">✓ Healthy</span>`:rate>=30?`<span class="badge badge-y">● Watch</span>`:`<span class="badge badge-r">● At Risk</span>`;
+    const calls=r.calls?.yest||0;
+    const conn=r.calls?.yestConn||0;
+    const rate=r.connRateYest||0;
+    const mtgs=r.meetings?.yest||0;
+    const rc=rcHex(rate);
+    const c=r.color;
+    const isRet=r.type==='ret';
+    const health=rate>=50?`<span class="badge badge-g">✓ Healthy</span>`:rate>=30?`<span class="badge badge-y">● Watch</span>`:`<span class="badge badge-r">● At Risk</span>`;
     return `<tr>
       <td><div style="display:flex;align-items:center;gap:10px">
         <div class="av" style="background:${c}15;color:${c};border:1.5px solid ${c}30">${r.name[0]}</div>
-        <div>
-          <div style="font-weight:700;font-size:12px;color:var(--text);display:flex;align-items:center;gap:5px">
-            ${r.name}${isRet?'<span class="ret-tag">RET</span>':''}
-          </div>
+        <div style="font-weight:700;font-size:12px;color:var(--text);display:flex;align-items:center;gap:5px">
+          ${r.name}${isRet?'<span class="ret-tag">RET</span>':''}
         </div>
       </div></td>
       <td class="c"><span style="font-family:var(--mono);font-size:15px;font-weight:600;color:${calls<5?'var(--red)':'var(--text)'}">${calls}</span></td>
       <td class="c"><span style="font-family:var(--mono);font-size:15px;font-weight:600;color:var(--green)">${conn}</span></td>
       <td class="c"><span style="font-family:var(--mono);font-size:15px;font-weight:600;color:var(--red)">${calls-conn}</span></td>
-      <td class="c"><div style="font-size:14px;font-weight:700;color:${rc};margin-bottom:3px">${rate}%</div><div style="width:44px;height:4px;background:var(--bg4);border-radius:2px;margin:0 auto;overflow:hidden"><div style="height:100%;width:${rate}%;background:${rc};border-radius:2px"></div></div></td>
+      <td class="c"><div style="font-size:14px;font-weight:700;color:${rc}">${rate}%</div><div style="width:44px;height:4px;background:var(--bg4);border-radius:2px;margin:4px auto 0;overflow:hidden"><div style="height:100%;width:${rate}%;background:${rc};border-radius:2px"></div></div></td>
       <td class="c"><span style="font-family:var(--mono);font-size:15px;font-weight:600;color:var(--purple)">${mtgs}</span></td>
       <td class="c"><span style="font-family:var(--mono);font-size:15px;font-weight:600;color:var(--gold)">${r.openDeals||0}</span></td>
-      <td class="c"><div style="font-size:12px;font-weight:700">${r.openDeals||0}</div><div style="font-size:9px;color:var(--cyan);font-family:var(--mono)">${fmt(r.pipelineAmt||0)}</div></td>
-      <td class="c"><span style="font-weight:700;font-size:11px">${r.rankA||0}A · ${r.rankB||0}B</span></td>
-      <td class="c"><span style="font-weight:700;color:${cold>3?'var(--red)':'var(--text2)'}">${cold}</span></td>
-      <td class="c"><span style="font-weight:700;color:${stuck>2?'var(--red)':'var(--text2)'}">${stuck}</span></td>
+      <td class="c"><div style="font-size:12px;font-weight:700">${fmt(r.pipeAmt||r.pipelineAmt||0)}</div></td>
       <td class="c">${health}</td>
     </tr>`;
   }).join('');
 
   // ── Insights ──
-  const recs=D.autoRecs||D.insights||[];
-  const ac=recs.filter(r=>r.type==='red'||r.severity==='action_required').length;
+  const recs=D.autoRecs||[];
+  const ac=recs.filter(r=>r.type==='red').length;
   $('recBadge').textContent=`${ac} urgent`;
-  $('recContainer').innerHTML=recs.slice(0,10).map(r=>{
-    const type=r.type||r.severity;
-    const icon=type==='red'||type==='action_required'?'🔴':type==='warn'||type==='needs_attention'?'⚠️':'✅';
-    const cls =type==='red'||type==='action_required'?'badge-r':type==='warn'||type==='needs_attention'?'badge-y':'badge-g';
-    const lbl =type==='red'||type==='action_required'?'Action Required':type==='warn'||type==='needs_attention'?'Needs Attention':'Positive';
-    const bg  =type==='red'||type==='action_required'?'rgba(220,38,38,0.04)':type==='positive'||type==='green'?'rgba(5,150,105,0.04)':'rgba(217,119,6,0.04)';
+  $('recContainer').innerHTML=recs.slice(0,8).map(r=>{
+    const icon=r.type==='red'?'🔴':r.type==='warn'?'⚠️':'✅';
+    const cls=r.type==='red'?'badge-r':r.type==='warn'?'badge-y':'badge-g';
+    const lbl=r.type==='red'?'Action Required':r.type==='warn'?'Needs Attention':'Positive';
+    const bg=r.type==='red'?'rgba(220,38,38,0.04)':r.type==='green'?'rgba(5,150,105,0.04)':'rgba(217,119,6,0.04)';
     return `<div class="rec-row" style="background:${bg}"><div class="rec-icon">${icon}</div><div class="rec-text">${r.text}</div><div class="rec-meta"><span class="badge ${cls}">${lbl}</span></div></div>`;
   }).join('');
 
-  // ── Horizontal Pipeline bar ──
+  // ── Pipeline Horizontal Bar (full width) ──
   if(stageData.length>0){
     const maxC=Math.max(...stageData.map(s=>s.count||0),1);
+    const totalDeals=stageData.reduce((s,x)=>s+(x.count||0),0);
+    const totalAmt=stageData.reduce((s,x)=>s+(x.amount||0),0);
+    $('pipeTotal').textContent=`${totalDeals} deals · ${fmt(totalAmt)}`;
     $('pipeHorizContainer').innerHTML=`
     <div class="pipe-horiz">
       ${stageData.map((s,i)=>{
-        const flex=Math.max(6,Math.round((s.count||0)/maxC*100));
+        const flex=Math.max(8,Math.round((s.count||0)/maxC*100));
         return `<div class="pipe-h-stage" style="flex:${flex}">
           <div class="pipe-h-fill" style="background:${PIPE_COLORS[i%PIPE_COLORS.length]}">
             <div class="pipe-h-name">${s.label}</div>
@@ -448,18 +448,20 @@ function render(){
           </div>
         </div>`;
       }).join('')}
-    </div>
-    <div style="margin-top:10px;display:flex;justify-content:space-between;font-size:10px;color:var(--muted);font-weight:600">
-      <span>${stageData.reduce((s,x)=>s+(x.count||0),0)} total open deals</span>
-      <span>${fmt(stageData.reduce((s,x)=>s+(x.amount||0),0))}</span>
     </div>`;
   }
 
   // ── Pipeline cards ──
+  let totalPipeAmt=0;
   $('pipeCards').innerHTML=repData.map(r=>{
     const c=r.color;const isRet=r.type==='ret';
-    const top3=(r.topDeals||[]).slice(0,3);
+    const allDeals=r.topDeals||[];
     const cold=(r.cold||[]).length;const stuck=(r.stuck||[]).length;
+    const pAmt=r.pipeAmt||r.pipelineAmt||0;
+    totalPipeAmt+=pAmt;
+    const show3=allDeals.slice(0,3);
+    const rest=allDeals.slice(3);
+    const cardId='pipe-'+r.name.replace(/\s/g,'-');
     return `<div class="pipe-card" style="border-top:3px solid ${c}">
       <div class="pipe-card-hd">
         <div style="display:flex;align-items:center;gap:7px">
@@ -468,15 +470,22 @@ function render(){
           ${isRet?'<span class="ret-tag">RET</span>':''}
         </div>
         <div style="text-align:right">
-          <div style="font-family:var(--mono);font-size:12px;font-weight:700;color:var(--text)">${fmt(r.pipelineAmt||0)}</div>
-          <div style="font-size:8px;color:var(--muted);margin-top:1px">${r.openDeals||0}d</div>
+          <div style="font-family:var(--mono);font-size:12px;font-weight:700;color:var(--text)">${fmt(pAmt)}</div>
+          <div style="font-size:8px;color:var(--muted);margin-top:1px">${r.openDeals||0} deals</div>
         </div>
       </div>
       <div class="pipe-card-body">
-        ${top3.map(d=>`<div class="pipe-deal">
-          <div style="flex:1;min-width:0"><div class="pipe-name">${d.name}</div><div class="pipe-stage">${d.stage||''}</div></div>
+        ${show3.map(d=>`<div class="pipe-deal">
+          <div style="flex:1;min-width:0"><div class="pipe-name">${d.name}</div><div class="pipe-stage-lbl">${d.stage||''}</div></div>
           <div class="pipe-amt">$${(d.amount||0).toLocaleString()}</div>
         </div>`).join('')}
+        <div id="${cardId}-more" style="display:none">
+          ${rest.map(d=>`<div class="pipe-deal">
+            <div style="flex:1;min-width:0"><div class="pipe-name">${d.name}</div><div class="pipe-stage-lbl">${d.stage||''}</div></div>
+            <div class="pipe-amt">$${(d.amount||0).toLocaleString()}</div>
+          </div>`).join('')}
+        </div>
+        ${rest.length>0?`<button class="see-more-btn" onclick="toggleMore('${cardId}',this)">▼ See ${rest.length} more deals</button>`:''}
         <div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:9px">
           ${stuck>0?`<span class="badge badge-r">🔴 ${stuck} stuck</span>`:''}
           ${cold>0?`<span class="badge badge-y">🟡 ${cold} cold</span>`:''}
@@ -485,43 +494,51 @@ function render(){
       </div>
     </div>`;
   }).join('');
+  $('pipeTotalAmt').textContent=fmt(totalPipeAmt);
 
-  // ── AI Coaching — per rep, deal names + reasons ──
+  // ── AI Coaching ──
   $('aiGrid').innerHTML=repData.map(r=>{
     const c=r.color;const isRet=r.type==='ret';
     const items=r.needsAttention||[];
+    const show=items.slice(0,3);
+    const rest=items.slice(3);
+    const cardId='coach-'+r.name.replace(/\s/g,'-');
     return `<div class="coaching-card" style="--cc:${c}">
       <div class="coaching-rep-name">
         <div style="width:20px;height:20px;border-radius:5px;background:${c}15;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;color:${c}">${r.name[0]}</div>
         ${r.name}${isRet?'<span class="ret-tag">RET</span>':''}
+        <span style="margin-left:auto;font-size:9px;color:var(--muted)">${items.length} deals</span>
       </div>
       ${items.length===0
         ?`<div class="coaching-ok">✅ All deals have next activity set</div>`
-        :items.map(item=>`<div class="coaching-deal-item">
-            <div class="coaching-deal-name">
-              📋 <span style="flex:1">${item.name}</span>
-              <span class="coaching-deal-amt">${fmt(item.amount||0)}</span>
-            </div>
-            ${(item.reasons||[]).map(reason=>`<div class="coaching-reason">⚠️ ${reason}</div>`).join('')}
-          </div>`).join('')
+        :`${show.map(item=>`<div class="coaching-deal-item">
+            <div class="coaching-deal-name">📋 <span style="flex:1">${item.name}</span><span class="coaching-deal-amt">${fmt(item.amount||0)}</span></div>
+            ${(item.reasons||[]).map(r=>`<div class="coaching-reason">⚠️ ${r}</div>`).join('')}
+          </div>`).join('')}
+          <div id="${cardId}-more" style="display:none">
+            ${rest.map(item=>`<div class="coaching-deal-item">
+              <div class="coaching-deal-name">📋 <span style="flex:1">${item.name}</span><span class="coaching-deal-amt">${fmt(item.amount||0)}</span></div>
+              ${(item.reasons||[]).map(r=>`<div class="coaching-reason">⚠️ ${r}</div>`).join('')}
+            </div>`).join('')}
+          </div>
+          ${rest.length>0?`<button class="see-more-btn" onclick="toggleMore('${cardId}',this)">▼ See ${rest.length} more</button>`:''}`
       }
     </div>`;
   }).join('');
 
   // ── Leads ──
-  const leadsY=D.leadsYest||D.leadsYesterday||{};
-  const leadsMTD=D.leadsMtd||D.leadsMTD||{};
-  const leadsYTD=D.leadsYtd||D.leadsYTD||{};
-  $('leadsBadgeRow').innerHTML=`<span class="badge badge-b">Yesterday: ${leadsY.total||team.leadsYest||0}</span><span class="badge badge-g">MTD: ${leadsMTD.total||team.leadsMTD||0}</span><span class="badge badge-p">YTD: ${leadsYTD.total||team.leadsYTD||0}</span>`;
+  $('leadsBadgeRow').innerHTML=`
+    <span class="badge badge-b">Yesterday: ${team.leadsYest||0}</span>
+    <span class="badge badge-g">MTD: ${team.leadsMTD||0}</span>
+    <span class="badge badge-p">YTD: ${team.leadsYTD||0}</span>`;
   $('leadsPeriods').innerHTML=[
-    {period:'Yesterday',total:leadsY.total||team.leadsYest||0,c:'var(--blue)'},
-    {period:'Month to Date',total:leadsMTD.total||team.leadsMTD||0,c:'var(--green)'},
-    {period:'Year to Date',total:leadsYTD.total||team.leadsYTD||0,c:'var(--purple)'}
+    {period:'Yesterday',total:team.leadsYest||0,c:'var(--blue)'},
+    {period:'Month to Date',total:team.leadsMTD||0,c:'var(--green)'},
+    {period:'Year to Date',total:team.leadsYTD||0,c:'var(--purple)'}
   ].map(({period,total,c})=>`<div class="period-cell">
     <div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.12em">${period}</div>
     <div style="font-family:var(--mono);font-size:28px;font-weight:600;color:${c};margin-top:8px">${total}</div>
   </div>`).join('');
-
   $('leadsRepBody').innerHTML=repData.map(r=>`<tr>
     <td><div style="display:flex;align-items:center;gap:8px">
       <div style="width:26px;height:26px;border-radius:7px;background:${r.color}15;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:${r.color}">${r.name[0]}</div>
@@ -547,12 +564,8 @@ function render(){
   }).join('');
   $('rankFooter').textContent=`Top 10 by days since last activity · ${rankTotals.total||0} total Rank A/B accounts`;
 
-  // ── Closed Won / Lost — MTD ──
-  const closedWon =D.closedWon ||[];
-  const closedLost=D.closedLost||[];
-  const wonAmt =team.wonAmt||team.won_value||0;
-  const lostAmt=team.lostAmt||team.lost_value||0;
-  $('wonBadge').textContent=`${closedWon.length} deals · ${fmt(wonAmt)} MTD`;
+  // ── Won / Lost ──
+  $('wonBadge').textContent=`${closedWon.length} deals · ${fmt(wonAmtMTD)}`;
   $('lostBadge').textContent=`${closedLost.length} deals MTD`;
   $('wonContainer').innerHTML=closedWon.length>0?closedWon.map(d=>`<div class="deal-row">
     <div style="flex:1">
@@ -583,7 +596,7 @@ function render(){
 
   // ── News ──
   const news=D.marketNews||[];
-  $('newsContainer').innerHTML=news.map(n=>`<div class="news-row">
+  $('newsContainer').innerHTML=news.length>0?news.map(n=>`<div class="news-row">
     <div style="font-size:20px;flex-shrink:0">${n.icon||'📰'}</div>
     <div style="flex:1">
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
@@ -592,20 +605,18 @@ function render(){
       </div>
       <div style="font-size:12px;color:var(--text2);line-height:1.65">${n.text||''}</div>
     </div>
-  </div>`).join('');
+  </div>`).join(''):`<div style="padding:20px;text-align:center;color:var(--muted);font-size:12px;font-style:italic">No news available</div>`;
 
-  // ── Rep tabs + panels ──
+  // ── Rep tabs ──
   const nav=$('tabsNav');const rpnl=$('repPanels');rpnl.innerHTML='';
   repData.forEach(r=>{
     const c=r.color;const isRet=r.type==='ret';
-    const calls= isV2?r.calls.yest:(r.calls||0);
-    const conn = isV2?r.calls.yestConn:(r.connected||0);
-    const rate = isV2?r.connRateYest:(calls>0?Math.round(conn/calls*100):0);
-    const mtgs = isV2?r.meetings.yest:(r.meetings||0);
-    const rc   = rcHex(rate);
+    const calls=r.calls?.yest||0;const conn=r.calls?.yestConn||0;
+    const rate=r.connRateYest||0;const mtgs=r.meetings?.yest||0;
+    const rc=rcHex(rate);
     const stuck=(r.stuck||[]).slice(0,5);
-    const needsAtt=(r.needsAttention||[]);
-    const bad  = rate<30||stuck.length>0||(r.cold||[]).length>3;
+    const needsAtt=r.needsAttention||[];
+    const bad=rate<30||stuck.length>0||(r.cold||[]).length>3;
     const topDeals=(r.topDeals||[]).slice(0,8);
 
     const btn=document.createElement('button');
@@ -620,40 +631,35 @@ function render(){
     <div class="rep-hero" style="--rc:${c}">
       <div class="av av-lg" style="background:${c}15;color:${c};border:2px solid ${c}30;font-weight:800">${r.name[0]}</div>
       <div class="rep-hero-info">
-        <div class="name">${r.name} ${isRet?`<span class="ret-tag" style="font-size:11px">RETENTION</span>`:''}
+        <div class="name">${r.name}${isRet?'<span class="ret-tag" style="font-size:11px;margin-left:8px">RETENTION</span>':''}
           ${bad?`<span class="badge badge-r" style="margin-left:8px">⚠ Needs Attention</span>`:`<span class="badge badge-g" style="margin-left:8px">✓ On Track</span>`}
         </div>
-        <div class="full">${isRet?'Retention Rep · Acq activities shown · ':''}${D.meta?.yesterdayLabel||D.yesterdayLabel||''}</div>
+        <div class="full">${isRet?'Retention Rep · Acq activities shown · ':''}${meta.yesterdayLabel||''}</div>
       </div>
       <div class="rep-hero-stats">
-        ${[{v:calls,l:'Calls',c:calls<5?'#dc2626':'#2563eb'},{v:`${rate}%`,l:'Rate',c:rc},{v:mtgs,l:'Meetings',c:'#7c3aed'},{v:fmt(r.pipelineAmt||0),l:'Pipeline',c:'#0891b2'}].map(s=>`<div class="hero-stat"><div class="v" style="color:${s.c}">${s.v}</div><div class="l">${s.l}</div></div>`).join('')}
+        ${[{v:calls,l:'Calls',c:calls<5?'#dc2626':'#2563eb'},{v:`${rate}%`,l:'Rate',c:rc},{v:mtgs,l:'Meetings',c:'#7c3aed'},{v:fmt(r.pipeAmt||r.pipelineAmt||0),l:'Pipeline',c:'#0891b2'}].map(s=>`<div class="hero-stat"><div class="v" style="color:${s.c}">${s.v}</div><div class="l">${s.l}</div></div>`).join('')}
       </div>
     </div>
-
     <div class="g4" style="margin-bottom:16px">
       ${[{v:calls,l:'Calls Yesterday',c:calls<5?'#dc2626':'#2563eb'},{v:`${rate}%`,l:'Connection Rate',c:rc},{v:mtgs,l:'Meetings Yesterday',c:'#7c3aed'},{v:r.openDeals||0,l:'Open Deals',c:'#d97706'}].map(s=>`<div class="stat-chip" style="--sc:${s.c}"><div class="v">${s.v}</div><div class="l">${s.l}</div></div>`).join('')}
     </div>
-
-    <!-- AI Coaching for this rep -->
     <div class="card" style="margin-bottom:16px">
-      <div class="card-hd"><span class="card-title">⚡ AI Coaching — ${r.name}</span><span class="badge badge-p">${needsAtt.length} deals need attention</span></div>
+      <div class="card-hd"><span class="card-title">⚡ AI Coaching — ${r.name}</span><span class="badge badge-p">${needsAtt.length} deals</span></div>
       <div style="padding:14px">
         ${needsAtt.length===0
-          ?`<div style="padding:12px;background:var(--green-light);border-radius:var(--radius-sm);border-left:3px solid var(--green);font-size:12px;font-weight:600;color:var(--green)">✅ All deals have next activity scheduled — great pipeline hygiene!</div>`
+          ?`<div style="padding:12px;background:var(--green-light);border-radius:var(--radius-sm);border-left:3px solid var(--green);font-size:12px;font-weight:600;color:var(--green)">✅ All deals have next activity scheduled</div>`
           :needsAtt.map(item=>`<div style="padding:12px;margin-bottom:8px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);border-left:3px solid var(--gold)">
               <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
                 <span style="font-weight:700;font-size:12px;color:var(--text)">📋 ${item.name}</span>
                 <span style="font-family:var(--mono);font-size:11px;color:var(--muted)">${fmt(item.amount||0)}</span>
               </div>
-              ${(item.reasons||[]).map(reason=>`<div style="font-size:11px;color:var(--gold);font-weight:600;display:flex;align-items:center;gap:5px">⚠️ ${reason}</div>`).join('')}
-            </div>`).join('')
-        }
+              ${(item.reasons||[]).map(reason=>`<div style="font-size:11px;color:var(--gold);font-weight:600">⚠️ ${reason}</div>`).join('')}
+            </div>`).join('')}
       </div>
     </div>
-
     <div class="g2">
       <div class="card" style="margin-bottom:0">
-        <div class="card-hd"><span class="card-title">💼 Open Deals</span><span class="badge badge-b">${r.openDeals||0} · ${fmt(r.pipelineAmt||0)}</span></div>
+        <div class="card-hd"><span class="card-title">💼 Open Deals</span><span class="badge badge-b">${r.openDeals||0} · ${fmt(r.pipeAmt||r.pipelineAmt||0)}</span></div>
         <div style="overflow-x:auto"><table class="tbl"><thead><tr>
           <th>Deal</th><th>Stage</th><th class="c">Value</th><th class="c">Next Activity</th>
         </tr></thead>
@@ -665,36 +671,34 @@ function render(){
         </tr>`).join('')}</tbody></table></div>
       </div>
       <div class="card" style="margin-bottom:0">
-        <div class="card-hd"><span class="card-title">🎯 Rank A/B Accounts</span><div style="display:flex;gap:5px"><span class="badge badge-r">${r.rankA||0}A</span><span class="badge badge-y">${r.rankB||0}B</span></div></div>
+        <div class="card-hd"><span class="card-title">🎯 Rank A/B</span><div style="display:flex;gap:5px"><span class="badge badge-r">${r.rankA||0}A</span><span class="badge badge-y">${r.rankB||0}B</span></div></div>
         <div class="card-body">
-          <div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px">RANK A — ${r.rankA||0} accounts</div>
+          <div style="font-size:9px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px">RANK A — ${r.rankA||0} accounts</div>
           <div style="font-size:9px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:0.1em;margin-top:12px;margin-bottom:8px">RANK B — ${r.rankB||0} accounts</div>
         </div>
       </div>
     </div>
-
     ${stuck.length>0?`<div class="card">
       <div class="card-hd" style="border-left:3px solid var(--red)"><span class="card-title" style="color:var(--red)">🔴 Stuck Deals (>14 days)</span><span class="badge badge-r">${stuck.length}</span></div>
-      <div style="overflow-x:auto"><table class="tbl"><thead><tr>
-        <th>Deal Name</th><th class="c">Days Stuck</th><th class="c">Amount</th>
-      </tr></thead><tbody>
-        ${stuck.map(s=>`<tr>
-          <td style="font-weight:600;color:var(--text)">${s.name}</td>
-          <td class="c"><span style="font-weight:700;color:var(--red);font-family:var(--mono)">${s.days}d</span></td>
-          <td class="c"><span style="font-family:var(--mono)">${fmt(s.amount||0)}</span></td>
-        </tr>`).join('')}
-      </tbody></table></div>
+      <table class="tbl"><thead><tr><th>Deal</th><th class="c">Days Stuck</th><th class="c">Amount</th></tr></thead>
+      <tbody>${stuck.map(s=>`<tr><td style="font-weight:600">${s.name}</td><td class="c"><span style="font-weight:700;color:var(--red);font-family:var(--mono)">${s.days}d</span></td><td class="c"><span style="font-family:var(--mono)">${fmt(s.amount||0)}</span></td></tr>`).join('')}</tbody></table>
     </div>`:''}
-
     <div class="card">
       <div class="card-hd"><span class="card-title">🎯 Leads · ${r.name}</span></div>
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border)">
         ${[{v:r.leadsYest||0,l:'Yesterday',c:'var(--blue)'},{v:r.leadsMTD||0,l:'MTD',c:'var(--green)'},{v:r.leadsYTD||0,l:'YTD',c:'var(--purple)'}].map(s=>`<div style="background:var(--bg2);padding:16px;text-align:center"><div style="font-family:var(--mono);font-size:22px;font-weight:700;color:${s.c}">${s.v}</div><div style="font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;margin-top:4px;font-weight:700">${s.l}</div></div>`).join('')}
       </div>
     </div>`;
-
     rpnl.appendChild(panel);
   });
+}
+
+function toggleMore(id,btn){
+  const el=document.getElementById(id+'-more');
+  if(!el)return;
+  const hidden=el.style.display==='none';
+  el.style.display=hidden?'block':'none';
+  btn.textContent=hidden?'▲ Show less':`▼ See more`;
 }
 
 function updateClock(){
