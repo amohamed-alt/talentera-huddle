@@ -388,21 +388,21 @@ function render(){
     ${kpiCell(kpiM.connected||0,'Connected MTD',`${kpiM.connRate||0}% rate`,'#059669',1)}
     ${kpiCell(kpiM.meetings||0,'Meetings MTD',null,'#7c3aed',2)}
     ${kpiCell(kpiM.leads||0,'Leads MTD',null,'#0e7490',3)}
-    ${kpiCell(kpiY.openDeals||0,'Open Deals',null,'#d97706',4)}
-    ${kpiCell(fmt(kpiY.pipeline||0),'Pipeline',null,'#0891b2',5)}
-    ${kpiCell(fmt(wonAmtMTD),'Won MTD',`${team.won||0} deals`,'#059669',6)}
-    ${kpiCell(team.lost||0,'Lost MTD',null,'#dc2626',7)}
+    ${kpiCell(kpiM.openDeals||kpiY.openDeals||0,'Open Deals',null,'#d97706',4)}
+    ${kpiCell(fmt(kpiM.pipeline||kpiY.pipeline||0),'Pipeline',null,'#0891b2',5)}
+    ${kpiCell(fmt(kpiM.wonAmt||wonAmtMTD),'Won MTD',`${kpiM.wonDeals||team.won||0} deals`,'#059669',6)}
+    ${kpiCell(kpiM.lost||team.lost||0,'Lost MTD',null,'#dc2626',7)}
   </div>
   <div class="kpi-bar-label">📈 Year to Date</div>
   <div class="kpi-row" style="margin-bottom:4px">
     ${kpiCell(kpiT.calls||0,'Calls YTD',null,'#2563eb',0)}
     ${kpiCell(kpiT.connected||0,'Connected YTD',`${kpiT.connRate||0}% rate`,'#059669',1)}
-    ${kpiCell(team.meetingsMTD||0,'Meetings YTD',null,'#7c3aed',2)}
+    ${kpiCell(kpiT.meetings||team.meetingsYTD||0,'Meetings YTD',null,'#7c3aed',2)}
     ${kpiCell(kpiT.leads||0,'Leads YTD',null,'#0e7490',3)}
-    ${kpiCell(kpiY.openDeals||0,'Open Deals',null,'#d97706',4)}
-    ${kpiCell(fmt(kpiY.pipeline||0),'Pipeline',null,'#0891b2',5)}
-    ${kpiCell(fmt(wonAmtYTD),'Won YTD',`${team.wonYTD||team.won||0} deals`,'#059669',6)}
-    ${kpiCell(team.lostYTD||team.lost||0,'Lost YTD',null,'#dc2626',7)}
+    ${kpiCell(kpiT.openDeals||kpiY.openDeals||0,'Open Deals',null,'#d97706',4)}
+    ${kpiCell(fmt(kpiT.pipeline||kpiY.pipeline||0),'Pipeline',null,'#0891b2',5)}
+    ${kpiCell(fmt(kpiT.wonAmt||wonAmtMTD),'Won YTD',`${kpiT.wonDeals||team.won||0} deals`,'#059669',6)}
+    ${kpiCell(kpiT.lost||team.lost||0,'Lost YTD',null,'#dc2626',7)}
   </div>`;
 
   // ── Yesterday Performance ──
