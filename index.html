@@ -574,9 +574,9 @@ function render(){
       ${sumCard(kpiY.calls||0,'Calls',null,'var(--blue)',0)}
       ${sumCard(kpiY.connected||0,'Connected',`${kpiY.connRate||0}% rate`,'var(--green)',1)}
       ${sumCard(kpiY.meetings||0,'Meetings',null,'var(--purple)',2)}
+      ${sumCard(kpiY.leads||0,'New Leads',null,'#0E7490',5)}
       ${sumCard(kpiY.openDeals||0,'Open Deals',null,'var(--amber)',3)}
       ${sumCard(fmt(kpiY.pipeline||0),'Pipeline',null,'var(--cyan)',4)}
-      ${sumCard(kpiY.leads||0,'New Leads',null,'#0E7490',5)}
       ${sumCard(fmt(wonAmtYest),'Won',`${wonYest.length} deals`,'var(--green)',6)}
       ${sumCard(lostYest.length,'Lost',null,'var(--red)',7)}
     </div>
