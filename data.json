@@ -1,20 +1,20 @@
 {
   "meta": {
-    "yesterdayLabel": "Sunday, 19 Apr 2026",
-    "generatedAt": "11:38 PM"
+    "yesterdayLabel": "Monday, 20 Apr 2026",
+    "generatedAt": "02:51 AM"
   },
   "kpi": {
     "yesterday": {
-      "calls": 111,
-      "connected": 33,
-      "connRate": 30,
+      "calls": 89,
+      "connected": 29,
+      "connRate": 33,
       "meetings": 8,
       "openDeals": 275,
       "pipeline": "$10.5M",
-      "leads": 1,
+      "leads": 6,
       "wonAmt": "$0",
       "wonDeals": 0,
-      "lost": 1
+      "lost": 4
     },
     "mtd": {
       "calls": 1424,
@@ -42,8 +42,8 @@
     }
   },
   "team": {
-    "callsYest": 111,
-    "callsConn": 33,
+    "callsYest": 89,
+    "callsConn": 29,
     "callsMTD": 1424,
     "callsMTDConn": 568,
     "callsYTD": 4661,
@@ -60,18 +60,18 @@
     "wonYTD": 3,
     "wonAmtYTD": 37005,
     "lost": 24,
-    "lostYest": 1,
+    "lostYest": 4,
     "lostYTD": 75,
-    "leadsYest": 1,
-    "leadsYestInbound": 0,
-    "leadsYestOutbound": 1,
+    "leadsYest": 6,
+    "leadsYestInbound": 2,
+    "leadsYestOutbound": 4,
     "leadsMTD": 562,
     "leadsMTDInbound": 35,
     "leadsMTDOutbound": 527,
     "leadsYTD": 1160,
     "leadsYTDInbound": 191,
     "leadsYTDOutbound": 969,
-    "connRateYest": 30,
+    "connRateYest": 33,
     "connRateMTD": 40,
     "connRateYTD": 38
   },
@@ -81,18 +81,18 @@
       "color": "#7c3aed",
       "type": "acq",
       "calls": {
-        "yest": 62,
-        "yestConn": 13,
+        "yest": 59,
+        "yestConn": 15,
         "mtd": 598,
         "mtdConn": 158,
         "ytd": 2531,
         "ytdConn": 762
       },
-      "connRateYest": 21,
+      "connRateYest": 25,
       "connRateMTD": 26,
       "connRateYTD": 30,
       "meetings": {
-        "yest": 2,
+        "yest": 0,
         "mtd": 13,
         "ytd": 142
       },
@@ -105,7 +105,7 @@
       "wonYTD": 1,
       "wonAmtYTD": 2000,
       "lost": 2,
-      "lostYest": 0,
+      "lostYest": 1,
       "lostYTD": 11,
       "rankA": 0,
       "rankB": 0,
@@ -318,7 +318,7 @@
       "connRateMTD": 70,
       "connRateYTD": 67,
       "meetings": {
-        "yest": 2,
+        "yest": 1,
         "mtd": 36,
         "ytd": 93
       },
@@ -1228,9 +1228,9 @@
           ]
         }
       ],
-      "leadsYest": 0,
-      "leadsYestInbound": 0,
-      "leadsYestOutbound": 0,
+      "leadsYest": 3,
+      "leadsYestInbound": 2,
+      "leadsYestOutbound": 1,
       "leadsMTD": 30,
       "leadsMTDInbound": 13,
       "leadsMTDOutbound": 17,
@@ -1325,8 +1325,8 @@
       "color": "#be185d",
       "type": "acq",
       "calls": {
-        "yest": 24,
-        "yestConn": 8,
+        "yest": 15,
+        "yestConn": 5,
         "mtd": 305,
         "mtdConn": 133,
         "ytd": 1043,
@@ -1336,7 +1336,7 @@
       "connRateMTD": 44,
       "connRateYTD": 42,
       "meetings": {
-        "yest": 2,
+        "yest": 4,
         "mtd": 45,
         "ytd": 268
       },
@@ -1349,7 +1349,7 @@
       "wonYTD": 2,
       "wonAmtYTD": 35005,
       "lost": 22,
-      "lostYest": 1,
+      "lostYest": 3,
       "lostYTD": 64,
       "rankA": 0,
       "rankB": 0,
@@ -1706,9 +1706,9 @@
           ]
         }
       ],
-      "leadsYest": 0,
+      "leadsYest": 2,
       "leadsYestInbound": 0,
-      "leadsYestOutbound": 0,
+      "leadsYestOutbound": 2,
       "leadsMTD": 79,
       "leadsMTDInbound": 9,
       "leadsMTDOutbound": 70,
@@ -1803,14 +1803,14 @@
       "color": "#b45309",
       "type": "acq",
       "calls": {
-        "yest": 18,
-        "yestConn": 8,
+        "yest": 8,
+        "yestConn": 5,
         "mtd": 248,
         "mtdConn": 136,
         "ytd": 450,
         "ytdConn": 242
       },
-      "connRateYest": 44,
+      "connRateYest": 63,
       "connRateMTD": 55,
       "connRateYTD": 54,
       "meetings": {
@@ -1956,7 +1956,7 @@
       "connRateMTD": 0,
       "connRateYTD": 89,
       "meetings": {
-        "yest": 0,
+        "yest": 1,
         "mtd": 4,
         "ytd": 108
       },
@@ -2382,7 +2382,7 @@
   "autoRecs": [
     {
       "type": "warn",
-      "text": "Connected rate 30% — approaching target. Keep the momentum."
+      "text": "Connected rate 33% — approaching target. Keep the momentum."
     },
     {
       "type": "green",
@@ -2406,7 +2406,7 @@
     },
     {
       "type": "warn",
-      "text": "1 deal(s) lost yesterday — review reasons with reps."
+      "text": "4 deal(s) lost yesterday — review reasons with reps."
     },
     {
       "type": "red",
@@ -2427,7 +2427,7 @@
       "rep": "Ursula Waked",
       "repColor": "#be185d",
       "closedate": "2026-04-19",
-      "period": "yesterday"
+      "period": "mtd"
     },
     {
       "name": "Syria HR company - New Deal",
@@ -2451,7 +2451,7 @@
       "rep": "Ursula Waked",
       "repColor": "#be185d",
       "closedate": "2026-04-20",
-      "period": "mtd"
+      "period": "yesterday"
     },
     {
       "name": "Moseco Group - New Deal",
@@ -2515,7 +2515,7 @@
       "rep": "Ursula Waked",
       "repColor": "#be185d",
       "closedate": "2026-04-20",
-      "period": "mtd"
+      "period": "yesterday"
     },
     {
       "name": "Afamia - Talentera New Deal",
@@ -2555,7 +2555,7 @@
       "rep": "Marita Chedid",
       "repColor": "#7c3aed",
       "closedate": "2026-04-20",
-      "period": "mtd"
+      "period": "yesterday"
     },
     {
       "name": "Connect6 Group - New Deal",
@@ -2571,7 +2571,7 @@
       "rep": "Ursula Waked",
       "repColor": "#be185d",
       "closedate": "2026-04-20",
-      "period": "mtd"
+      "period": "yesterday"
     },
     {
       "name": "Linguist Education Online- New Deal",
