@@ -1,7 +1,7 @@
 {
   "meta": {
     "yesterdayLabel": "Sunday, 19 Apr 2026",
-    "generatedAt": "08:52 PM"
+    "generatedAt": "11:31 PM"
   },
   "kpi": {
     "yesterday": {
@@ -10,11 +10,11 @@
       "connRate": 30,
       "meetings": 8,
       "openDeals": 275,
-      "pipeline": 10456320.32875,
-      "leads": 0,
-      "wonAmt": 0,
+      "pipeline": "$10.5M",
+      "leads": 1,
+      "wonAmt": "$0",
       "wonDeals": 0,
-      "lost": 24
+      "lost": 1
     },
     "mtd": {
       "calls": 1424,
@@ -22,9 +22,9 @@
       "connRate": 40,
       "meetings": 108,
       "openDeals": 275,
-      "pipeline": 10456320.32875,
-      "leads": 0,
-      "wonAmt": 0,
+      "pipeline": "$10.5M",
+      "leads": 562,
+      "wonAmt": "$0",
       "wonDeals": 0,
       "lost": 24
     },
@@ -34,11 +34,11 @@
       "connRate": 38,
       "meetings": 632,
       "openDeals": 275,
-      "pipeline": 10456320.32875,
+      "pipeline": "$10.5M",
       "leads": 1160,
-      "wonAmt": 0,
-      "wonDeals": 0,
-      "lost": 24
+      "wonAmt": "$37K",
+      "wonDeals": 3,
+      "lost": 75
     }
   },
   "team": {
@@ -55,13 +55,19 @@
     "pipeline": 10456320.32875,
     "won": 0,
     "wonAmt": 0,
+    "wonYest": 0,
+    "wonAmtYest": 0,
+    "wonYTD": 3,
+    "wonAmtYTD": 37005,
     "lost": 24,
-    "leadsYest": 0,
+    "lostYest": 1,
+    "lostYTD": 75,
+    "leadsYest": 1,
     "leadsYestInbound": 0,
-    "leadsYestOutbound": 0,
-    "leadsMTD": 0,
-    "leadsMTDInbound": 0,
-    "leadsMTDOutbound": 0,
+    "leadsYestOutbound": 1,
+    "leadsMTD": 562,
+    "leadsMTDInbound": 35,
+    "leadsMTDOutbound": 527,
     "leadsYTD": 1160,
     "leadsYTDInbound": 191,
     "leadsYTDOutbound": 969,
@@ -94,7 +100,13 @@
       "pipeAmt": 218491,
       "won": 0,
       "wonAmt": 0,
+      "wonYest": 0,
+      "wonAmtYest": 0,
+      "wonYTD": 1,
+      "wonAmtYTD": 2000,
       "lost": 2,
+      "lostYest": 0,
+      "lostYTD": 11,
       "rankA": 0,
       "rankB": 0,
       "stuck": [],
@@ -131,7 +143,7 @@
         },
         {
           "name": "Prunelle- New Deal",
-          "days": 25,
+          "days": 26,
           "amount": 5000
         },
         {
@@ -187,7 +199,7 @@
           "name": "Prunelle- New Deal",
           "amount": 5000,
           "reasons": [
-            "No activity for 25 days"
+            "No activity for 26 days"
           ]
         },
         {
@@ -201,9 +213,9 @@
       "leadsYest": 0,
       "leadsYestInbound": 0,
       "leadsYestOutbound": 0,
-      "leadsMTD": 0,
-      "leadsMTDInbound": 0,
-      "leadsMTDOutbound": 0,
+      "leadsMTD": 30,
+      "leadsMTDInbound": 5,
+      "leadsMTDOutbound": 25,
       "leadsYTD": 359,
       "leadsYTDInbound": 16,
       "leadsYTDOutbound": 343,
@@ -314,7 +326,13 @@
       "pipeAmt": 2425367.30875,
       "won": 0,
       "wonAmt": 0,
+      "wonYest": 0,
+      "wonAmtYest": 0,
+      "wonYTD": 0,
+      "wonAmtYTD": 0,
       "lost": 0,
+      "lostYest": 0,
+      "lostYTD": 0,
       "rankA": 0,
       "rankB": 0,
       "stuck": [],
@@ -1213,9 +1231,9 @@
       "leadsYest": 0,
       "leadsYestInbound": 0,
       "leadsYestOutbound": 0,
-      "leadsMTD": 0,
-      "leadsMTDInbound": 0,
-      "leadsMTDOutbound": 0,
+      "leadsMTD": 30,
+      "leadsMTDInbound": 13,
+      "leadsMTDOutbound": 17,
       "leadsYTD": 129,
       "leadsYTDInbound": 81,
       "leadsYTDOutbound": 48,
@@ -1326,7 +1344,13 @@
       "pipeAmt": 2127498.69,
       "won": 0,
       "wonAmt": 0,
+      "wonYest": 0,
+      "wonAmtYest": 0,
+      "wonYTD": 2,
+      "wonAmtYTD": 35005,
       "lost": 22,
+      "lostYest": 1,
+      "lostYTD": 64,
       "rankA": 0,
       "rankB": 0,
       "stuck": [],
@@ -1685,9 +1709,9 @@
       "leadsYest": 0,
       "leadsYestInbound": 0,
       "leadsYestOutbound": 0,
-      "leadsMTD": 0,
-      "leadsMTDInbound": 0,
-      "leadsMTDOutbound": 0,
+      "leadsMTD": 79,
+      "leadsMTDInbound": 9,
+      "leadsMTDOutbound": 70,
       "leadsYTD": 214,
       "leadsYTDInbound": 80,
       "leadsYTDOutbound": 134,
@@ -1798,18 +1822,24 @@
       "pipeAmt": 50000,
       "won": 0,
       "wonAmt": 0,
+      "wonYest": 0,
+      "wonAmtYest": 0,
+      "wonYTD": 0,
+      "wonAmtYTD": 0,
       "lost": 0,
+      "lostYest": 0,
+      "lostYTD": 0,
       "rankA": 0,
       "rankB": 0,
       "stuck": [],
       "cold": [],
       "needsAttention": [],
-      "leadsYest": 0,
+      "leadsYest": 1,
       "leadsYestInbound": 0,
-      "leadsYestOutbound": 0,
-      "leadsMTD": 0,
-      "leadsMTDInbound": 0,
-      "leadsMTDOutbound": 0,
+      "leadsYestOutbound": 1,
+      "leadsMTD": 55,
+      "leadsMTDInbound": 2,
+      "leadsMTDOutbound": 53,
       "leadsYTD": 80,
       "leadsYTDInbound": 3,
       "leadsYTDOutbound": 77,
@@ -1848,7 +1878,13 @@
       "pipeAmt": 0,
       "won": 0,
       "wonAmt": 0,
+      "wonYest": 0,
+      "wonAmtYest": 0,
+      "wonYTD": 0,
+      "wonAmtYTD": 0,
       "lost": 0,
+      "lostYest": 0,
+      "lostYTD": 0,
       "rankA": 0,
       "rankB": 0,
       "stuck": [],
@@ -1871,9 +1907,9 @@
       "leadsYest": 0,
       "leadsYestInbound": 0,
       "leadsYestOutbound": 0,
-      "leadsMTD": 0,
-      "leadsMTDInbound": 0,
-      "leadsMTDOutbound": 0,
+      "leadsMTD": 11,
+      "leadsMTDInbound": 5,
+      "leadsMTDOutbound": 6,
       "leadsYTD": 12,
       "leadsYTDInbound": 6,
       "leadsYTDOutbound": 6,
@@ -1928,7 +1964,13 @@
       "pipeAmt": 5634963.33,
       "won": 0,
       "wonAmt": 0,
+      "wonYest": 0,
+      "wonAmtYest": 0,
+      "wonYTD": 0,
+      "wonAmtYTD": 0,
       "lost": 0,
+      "lostYest": 0,
+      "lostYTD": 0,
       "rankA": 0,
       "rankB": 0,
       "stuck": [],
@@ -2215,9 +2257,9 @@
       "leadsYest": 0,
       "leadsYestInbound": 0,
       "leadsYestOutbound": 0,
-      "leadsMTD": 0,
-      "leadsMTDInbound": 0,
-      "leadsMTDOutbound": 0,
+      "leadsMTD": 357,
+      "leadsMTDInbound": 1,
+      "leadsMTDOutbound": 356,
       "leadsYTD": 366,
       "leadsYTDInbound": 5,
       "leadsYTDOutbound": 361,
@@ -2331,12 +2373,6 @@
       "amount": 5000
     },
     {
-      "id": "decisionmakerboughtin",
-      "label": "Negotiation",
-      "count": 105,
-      "amount": 6583009.13875
-    },
-    {
       "id": "closedwon",
       "label": "Closed Won",
       "count": 0,
@@ -2346,11 +2382,35 @@
   "autoRecs": [
     {
       "type": "warn",
-      "text": "Connected rate 30% — approaching target."
+      "text": "Connected rate 30% — approaching target. Keep the momentum."
+    },
+    {
+      "type": "green",
+      "text": "No stuck deals detected ✓ — pipeline is moving."
+    },
+    {
+      "type": "red",
+      "text": "135 cold deals (no activity 14+ days) — re-engage before they go dark."
+    },
+    {
+      "type": "red",
+      "text": "135 deals have no next activity scheduled — reps must log next steps immediately."
+    },
+    {
+      "type": "green",
+      "text": "8 meetings logged yesterday ✓"
+    },
+    {
+      "type": "green",
+      "text": "MTD call pace: 71/day avg ✓"
     },
     {
       "type": "warn",
-      "text": "135 cold deals (no activity >14d) — re-engage."
+      "text": "1 deal(s) lost yesterday — review reasons with reps."
+    },
+    {
+      "type": "red",
+      "text": "24 deals lost MTD — run win/loss analysis."
     }
   ],
   "rankTotals": {
@@ -2358,88 +2418,7 @@
     "B": 0,
     "total": 470
   },
-  "topInactiveRankAccounts": [
-    {
-      "name": "ASAS Digital Solutions Holding",
-      "rank": "?",
-      "rep": "Zein Fares",
-      "repColor": "#1d4ed8",
-      "daysSinceActivity": 0,
-      "employees": "—"
-    },
-    {
-      "name": "VOT",
-      "rank": "?",
-      "rep": "Zein Fares",
-      "repColor": "#1d4ed8",
-      "daysSinceActivity": 0,
-      "employees": "—"
-    },
-    {
-      "name": "EXCELLENCE BUSINESS GROUP INTERNATIONAL (EBGI)",
-      "rank": "?",
-      "rep": "Zein Fares",
-      "repColor": "#1d4ed8",
-      "daysSinceActivity": 0,
-      "employees": "—"
-    },
-    {
-      "name": "Integrated Recruitment Solutions",
-      "rank": "?",
-      "rep": "Ursula Waked",
-      "repColor": "#be185d",
-      "daysSinceActivity": 0,
-      "employees": "—"
-    },
-    {
-      "name": "SkyCore Cloud",
-      "rank": "?",
-      "rep": "Zein Fares",
-      "repColor": "#1d4ed8",
-      "daysSinceActivity": 0,
-      "employees": "—"
-    },
-    {
-      "name": "Silohub",
-      "rank": "?",
-      "rep": "Ursula Waked",
-      "repColor": "#be185d",
-      "daysSinceActivity": 0,
-      "employees": "—"
-    },
-    {
-      "name": "Delta partners",
-      "rank": "?",
-      "rep": "Ursula Waked",
-      "repColor": "#be185d",
-      "daysSinceActivity": 0,
-      "employees": "—"
-    },
-    {
-      "name": "مجموعة البندر",
-      "rank": "?",
-      "rep": "Ursula Waked",
-      "repColor": "#be185d",
-      "daysSinceActivity": 0,
-      "employees": "—"
-    },
-    {
-      "name": "Afamia",
-      "rank": "?",
-      "rep": "Ursula Waked",
-      "repColor": "#be185d",
-      "daysSinceActivity": 0,
-      "employees": "—"
-    },
-    {
-      "name": "Solutions Source Company",
-      "rank": "?",
-      "rep": "Zein Fares",
-      "repColor": "#1d4ed8",
-      "daysSinceActivity": 0,
-      "employees": "—"
-    }
-  ],
+  "topInactiveRankAccounts": [],
   "closedWon": [],
   "closedLost": [
     {
