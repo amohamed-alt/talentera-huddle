@@ -4,14 +4,233 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Talentera · Sales Command Center</title>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="theme.css">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#16A34A;--primary-dk:#15803D;
+  --sb-bg:#0F1A14;--sb-text:#8BAD8A;--sb-accent:#3DD68C;--sb-border:rgba(61,214,140,0.1);--sb-w:230px;
+  --page-bg:#F0F4F2;--surface:#FFFFFF;--surface2:#F7FAF8;--border:#E4EBE7;
+  --text:#0D1F16;--text2:#3A5044;--muted:#6B877A;
+  --green:#16A34A;--green-bg:rgba(22,163,74,0.08);--green-bd:rgba(22,163,74,0.2);
+  --red:#DC2626;--red-bg:rgba(220,38,38,0.08);--red-bd:rgba(220,38,38,0.2);
+  --amber:#D97706;--amber-bg:rgba(217,119,6,0.08);--amber-bd:rgba(217,119,6,0.2);
+  --blue:#2563EB;--blue-bg:rgba(37,99,235,0.08);--blue-bd:rgba(37,99,235,0.2);
+  --purple:#7C3AED;--purple-bg:rgba(124,58,237,0.08);--purple-bd:rgba(124,58,237,0.2);
+  --cyan:#0891B2;--cyan-bg:rgba(8,145,178,0.08);
+  --font:'Plus Jakarta Sans',system-ui,sans-serif;--mono:'DM Mono',monospace;
+  --r-sm:8px;--r:12px;--r-lg:18px;
+  --sh-xs:0 1px 3px rgba(0,0,0,0.06);
+  --sh:0 2px 8px rgba(0,0,0,0.07),0 1px 3px rgba(0,0,0,0.05);
+  --sh-md:0 6px 24px rgba(0,0,0,0.09),0 2px 6px rgba(0,0,0,0.05);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font);background:var(--page-bg);color:var(--text);-webkit-font-smoothing:antialiased;min-height:100vh}
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+
+/* APP */
+.app{display:flex;min-height:100vh}
+
+/* SIDEBAR */
+.sidebar{width:var(--sb-w);background:var(--sb-bg);position:fixed;top:0;left:0;bottom:0;z-index:200;display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden}
+.sidebar-logo{padding:20px 18px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--sb-border)}
+.logo-icon{width:34px;height:34px;border-radius:9px;background:var(--sb-accent);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;color:var(--sb-bg);flex-shrink:0}
+.logo-text{font-size:14px;font-weight:700;color:#fff}
+.logo-sub{font-size:9px;color:var(--sb-text);font-weight:500;margin-top:2px;text-transform:uppercase;letter-spacing:.05em}
+.sidebar-section{padding:18px 18px 5px;font-size:9px;font-weight:700;color:rgba(139,173,138,.5);text-transform:uppercase;letter-spacing:.14em}
+.nav-item{display:flex;align-items:center;gap:9px;padding:8px 10px;margin:1px 6px;border-radius:var(--r-sm);cursor:pointer;transition:all .15s;color:var(--sb-text);font-size:12px;font-weight:500;border:none;background:none;width:calc(100% - 12px);text-align:left;font-family:var(--font)}
+.nav-item:hover{background:rgba(255,255,255,.06);color:#fff}
+.nav-item.active{background:rgba(61,214,140,.12);color:var(--sb-accent);font-weight:600}
+.nav-icon{width:16px;text-align:center;font-size:14px;flex-shrink:0}
+.nav-badge{margin-left:auto;background:rgba(220,38,38,.25);color:#FCA5A5;font-size:9px;font-weight:700;padding:2px 5px;border-radius:8px}
+.ret{font-size:8px;font-weight:700;padding:1px 5px;border-radius:3px;background:rgba(8,145,178,.15);color:#22D3EE;border:1px solid rgba(8,145,178,.25)}
+.sidebar-bottom{margin-top:auto;border-top:1px solid var(--sb-border);padding:12px 6px}
+.user-row{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:var(--r-sm);cursor:pointer;transition:background .15s}
+.user-row:hover{background:rgba(255,255,255,.06)}
+.user-av{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--sb-accent),#0D9488);display:flex;align-items:center;justify-content:center;color:var(--sb-bg);font-size:11px;font-weight:800;flex-shrink:0}
+.user-name{font-size:12px;font-weight:600;color:#fff}
+.user-role{font-size:9px;color:var(--sb-text);margin-top:1px}
+
+/* MAIN */
+.main-area{margin-left:var(--sb-w);flex:1;display:flex;flex-direction:column;min-height:100vh}
+
+/* TOPBAR */
+.topbar{height:60px;background:var(--surface);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;gap:14px;position:sticky;top:0;z-index:100;box-shadow:var(--sh-xs)}
+.topbar-title{font-size:15px;font-weight:700;color:var(--text);letter-spacing:-.02em}
+.topbar-sub{font-size:11px;color:var(--muted);margin-top:2px}
+.topbar-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+.live-badge{display:flex;align-items:center;gap:6px;background:var(--green-bg);color:var(--green);font-size:10px;font-weight:700;padding:5px 12px;border-radius:20px;border:1px solid var(--green-bd);letter-spacing:.04em}
+.live-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s ease infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
+.icon-btn{width:34px;height:34px;border-radius:var(--r-sm);background:var(--surface2);border:1px solid var(--border);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:all .15s;color:var(--text2)}
+.icon-btn:hover{background:var(--page-bg)}
+.refresh-btn{display:flex;align-items:center;gap:6px;padding:7px 14px;background:var(--green);color:#fff;border:none;border-radius:var(--r-sm);font-size:11px;font-weight:700;cursor:pointer;font-family:var(--font);transition:all .15s}
+.refresh-btn:hover{background:var(--primary-dk);transform:translateY(-1px);box-shadow:0 4px 12px rgba(22,163,74,.3)}
+.spin{animation:spinning .8s linear infinite;display:inline-block}
+@keyframes spinning{to{transform:rotate(360deg)}}
+
+/* TABS */
+.tabs-bar{background:var(--surface);border-bottom:1px solid var(--border);padding:0 24px;display:flex;overflow-x:auto;scrollbar-width:none}
+.tabs-bar::-webkit-scrollbar{display:none}
+.tab-btn{padding:0 14px;height:44px;font-size:11px;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:2.5px solid transparent;white-space:nowrap;transition:all .15s;display:flex;align-items:center;gap:6px;background:none;border-top:none;border-left:none;border-right:none;font-family:var(--font)}
+.tab-btn:hover{color:var(--text2);background:var(--surface2)}
+.tab-btn.active{color:var(--green);border-bottom-color:var(--green);font-weight:700}
+.tab-chip{background:var(--red-bg);color:var(--red);font-size:8px;font-weight:800;padding:1px 5px;border-radius:4px}
+
+/* CONTENT */
+.content{padding:20px 24px 80px}
+.panel{display:none;animation:fadeUp .3s cubic-bezier(.16,1,.3,1)}
+.panel.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* PERIOD LABEL */
+.period-label{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.12em;margin:18px 0 10px;display:flex;align-items:center;gap:8px}
+.period-label::before{content:'';width:3px;height:14px;background:var(--green);border-radius:2px;display:block}
+.period-label::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* KPI SUMMARY GRID */
+.summary-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:10px}
+.sum-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:16px 12px;position:relative;overflow:hidden;box-shadow:var(--sh-xs);transition:all .2s;animation:fadeUp .3s both}
+.sum-card:hover{transform:translateY(-2px);box-shadow:var(--sh)}
+.sum-card-accent{position:absolute;top:0;left:0;right:0;height:3px;border-radius:var(--r) var(--r) 0 0}
+.sum-val{font-family:var(--mono);font-size:22px;font-weight:600;line-height:1;margin-top:4px}
+.sum-lbl{font-size:8px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-top:8px}
+.sum-sub{font-size:9px;color:var(--muted);margin-top:3px;font-weight:500}
+
+/* CARD */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;margin-bottom:14px;box-shadow:var(--sh);transition:box-shadow .2s}
+.card:hover{box-shadow:var(--sh-md)}
+.card-hd{padding:13px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;background:var(--surface2)}
+.card-title{font-size:11px;font-weight:700;color:var(--text2);display:flex;align-items:center;gap:8px}
+.card-title-icon{width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px}
+
+/* TABLE */
+.tbl{width:100%;border-collapse:collapse}
+.tbl th{padding:9px 14px;text-align:left;font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;font-weight:700;border-bottom:1px solid var(--border);background:var(--surface2)}
+.tbl th.c,.tbl td.c{text-align:center}
+.tbl td{padding:10px 14px;border-bottom:1px solid var(--border);font-size:12px;color:var(--text2)}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover td{background:var(--surface2)}
+
+/* BADGES */
+.badge{display:inline-flex;align-items:center;gap:3px;font-size:9px;font-weight:700;padding:3px 8px;border-radius:20px}
+.bg{background:var(--green-bg);color:var(--green);border:1px solid var(--green-bd)}
+.br{background:var(--red-bg);color:var(--red);border:1px solid var(--red-bd)}
+.bb{background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue-bd)}
+.bp{background:var(--purple-bg);color:var(--purple);border:1px solid var(--purple-bd)}
+.ba{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-bd)}
+
+/* AVATAR */
+.av{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px;flex-shrink:0}
+.av-lg{width:50px;height:50px;border-radius:13px;font-size:20px;font-weight:800}
+
+/* RATE BAR */
+.rate-bar{width:44px;height:3px;background:var(--page-bg);border-radius:2px;overflow:hidden;margin:4px auto 0}
+.rate-fill{height:100%;border-radius:2px}
+
+/* RANK */
+.rank-a{background:var(--red-bg);color:var(--red);border:1px solid var(--red-bd);font-size:9px;font-weight:700;padding:2px 7px;border-radius:5px;display:inline-block}
+.rank-b{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-bd);font-size:9px;font-weight:700;padding:2px 7px;border-radius:5px;display:inline-block}
+
+/* SECTION HEADING */
+.sec-hd{display:flex;align-items:center;gap:8px;font-size:10px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.12em;margin-bottom:10px}
+.sec-title{white-space:nowrap}
+.sec-hd::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* PIPELINE STAGES */
+.pipe-stages{display:flex;gap:6px;height:110px}
+.pipe-stage{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px 6px;gap:3px;border-radius:var(--r-sm)}
+.ps-name{font-size:9px;font-weight:700;color:rgba(255,255,255,.85);text-align:center;line-height:1.2}
+.ps-count{font-family:var(--mono);font-size:22px;font-weight:600;color:#fff}
+.ps-amt{font-size:9px;color:rgba(255,255,255,.7);font-family:var(--mono)}
+
+/* PIPELINE CARDS */
+.pipe-cards-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:10px}
+.pcard{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh-xs);transition:all .2s}
+.pcard:hover{transform:translateY(-2px);box-shadow:var(--sh)}
+.pcard-top{padding:11px 12px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);background:var(--surface2)}
+.pcard-body{padding:8px 12px}
+.pdeal{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--border)}
+.pdeal:last-of-type{border-bottom:none}
+.pdeal-name{font-size:10px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:110px}
+.pdeal-stage{font-size:8px;color:var(--muted);margin-top:1px}
+.pdeal-amt{font-family:var(--mono);font-size:9px;font-weight:500;color:var(--text2)}
+
+/* COACHING */
+.coaching-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:14px}
+.ccard{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-sm);padding:12px;border-top:3px solid var(--cc,var(--green));transition:all .2s}
+.ccard:hover{box-shadow:var(--sh)}
+.ccard-rep{font-size:11px;font-weight:700;color:var(--cc,var(--green));display:flex;align-items:center;gap:6px;margin-bottom:9px}
+.citem{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-sm);padding:8px 10px;margin-bottom:6px}
+.citem:last-child{margin-bottom:0}
+.citem-name{font-size:10px;font-weight:600;color:var(--text);display:flex;justify-content:space-between;margin-bottom:4px}
+.citem-amt{font-family:var(--mono);font-size:9px;color:var(--muted)}
+.citem-warn{font-size:9px;color:var(--amber);font-weight:600}
+
+/* LEADS */
+.leads-period-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border-bottom:1px solid var(--border)}
+.lperiod{background:var(--surface2);padding:16px 18px}
+.lperiod-label{font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.lperiod-val{font-family:var(--mono);font-size:26px;font-weight:500}
+.lperiod-row{display:flex;gap:12px;margin-top:7px}
+.lperiod-in{font-size:10px;font-weight:600}
+.lperiod-out{font-size:10px;font-weight:600}
+
+/* GRID */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+
+/* DEAL ITEMS */
+.deal-item{display:flex;align-items:flex-start;justify-content:space-between;padding:12px 18px;gap:12px;border-bottom:1px solid var(--border);transition:background .15s}
+.deal-item:last-child{border-bottom:none}
+.deal-item:hover{background:var(--surface2)}
+.deal-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:5px}
+.deal-name{font-size:12px;font-weight:700;color:var(--text)}
+.deal-meta{display:flex;align-items:center;gap:6px;margin-top:4px}
+.deal-amt{font-family:var(--mono);font-size:16px;font-weight:700}
+
+/* NEWS */
+.news-item{display:flex;align-items:flex-start;gap:12px;padding:12px 18px;border-bottom:1px solid var(--border);transition:background .15s}
+.news-item:last-child{border-bottom:none}
+.news-item:hover{background:var(--surface2)}
+.news-icon{font-size:18px;flex-shrink:0}
+.news-text{font-size:11px;color:var(--text2);line-height:1.65;flex:1}
+.news-meta{display:flex;align-items:center;gap:6px;margin-bottom:5px}
+
+/* SEE MORE */
+.see-more{width:100%;padding:8px;text-align:center;font-size:10px;font-weight:600;color:var(--green);border:none;border-top:1px solid var(--border);background:none;cursor:pointer;font-family:var(--font);display:block;transition:background .15s}
+.see-more:hover{background:var(--surface2)}
+
+/* STAT CHIPS */
+.stat-chips{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+.schip{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:14px 10px;text-align:center;box-shadow:var(--sh-xs);transition:all .2s;position:relative;overflow:hidden}
+.schip:hover{transform:translateY(-2px);box-shadow:var(--sh)}
+.schip-accent{position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--sc2,var(--green))}
+.schip-v{font-family:var(--mono);font-size:22px;font-weight:500;color:var(--sc2,var(--green))}
+.schip-l{font-size:8px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-top:6px}
+
+/* REP HERO */
+.rep-hero{display:flex;align-items:center;gap:18px;padding:20px 24px;margin-bottom:14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);position:relative;overflow:hidden;box-shadow:var(--sh)}
+.rep-hero-line{position:absolute;top:0;left:0;right:0;height:4px;background:var(--hc,var(--green))}
+.rep-hero::after{content:'';position:absolute;top:-60px;right:-60px;width:180px;height:180px;border-radius:50%;background:var(--hc,var(--green));opacity:.05}
+.rep-hero-stats{display:flex;gap:24px;margin-left:auto}
+.hstat-v{font-family:var(--mono);font-size:24px;font-weight:500}
+.hstat-l{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-top:3px;font-weight:700}
+
+/* LOADING */
+.loading{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;gap:18px}
+.spinner{width:40px;height:40px;border:3px solid var(--border);border-top-color:var(--green);border-radius:50%;animation:spinning .9s linear infinite}
+@keyframes spinning{to{transform:rotate(360deg)}}
+.load-txt{font-size:13px;font-weight:600;color:var(--muted)}
+
+/* RESPONSIVE */
+@media(max-width:1200px){.summary-grid{grid-template-columns:repeat(4,1fr)}.pipe-cards-grid{grid-template-columns:repeat(3,1fr)}.coaching-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:900px){.pipe-cards-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:700px){:root{--sb-w:0px}.sidebar{display:none}.main-area{margin-left:0}.summary-grid{grid-template-columns:repeat(2,1fr)}.g2{grid-template-columns:1fr}.content{padding:14px 14px 60px}.coaching-grid{grid-template-columns:1fr}.rep-hero-stats{display:none}.leads-period-grid{grid-template-columns:1fr}}
+</style>
 </head>
 <body>
-
 <div class="app">
-
-  <!-- SIDEBAR -->
   <aside class="sidebar">
     <div class="sidebar-logo">
       <div class="logo-icon">T</div>
@@ -20,44 +239,24 @@
         <div class="logo-sub">Sales Command Center</div>
       </div>
     </div>
-
     <div class="sidebar-section">Main</div>
-    <button class="nav-item active" id="sideTeam" onclick="switchTab('team')">
-      <span class="nav-icon">🏢</span> Team Overview
-    </button>
-    <button class="nav-item" id="sideCalendar">
-      <span class="nav-icon">📅</span> Calendar
-    </button>
-    <button class="nav-item" id="sideAnalytics">
-      <span class="nav-icon">📊</span> Analytics
-    </button>
-
+    <button class="nav-item active" onclick="switchTab('team')"><span class="nav-icon">🏢</span> Team Overview</button>
+    <button class="nav-item"><span class="nav-icon">📅</span> Calendar</button>
+    <button class="nav-item"><span class="nav-icon">📊</span> Analytics</button>
     <div class="sidebar-section">Reps</div>
     <div id="sideRepLinks"></div>
-
     <div class="sidebar-section">Settings</div>
-    <button class="nav-item">
-      <span class="nav-icon">⚙️</span> Settings
-    </button>
-    <button class="nav-item">
-      <span class="nav-icon">❓</span> Help
-    </button>
-
+    <button class="nav-item"><span class="nav-icon">⚙️</span> Settings</button>
+    <button class="nav-item"><span class="nav-icon">❓</span> Help</button>
     <div class="sidebar-bottom">
       <div class="user-row">
         <div class="user-av">SM</div>
-        <div>
-          <div class="user-name">Sales Manager</div>
-          <div class="user-role">Admin · Riyadh</div>
-        </div>
+        <div><div class="user-name">Sales Manager</div><div class="user-role">Admin · Riyadh</div></div>
       </div>
     </div>
   </aside>
 
-  <!-- MAIN AREA -->
   <div class="main-area">
-
-    <!-- TOPBAR -->
     <div class="topbar">
       <div>
         <div class="topbar-title" id="topbarTitle">Team Overview</div>
@@ -65,18 +264,16 @@
       </div>
       <div class="topbar-right">
         <div class="live-badge"><span class="live-dot"></span>LIVE · HUBSPOT</div>
-        <button class="icon-btn" title="Notifications">🔔</button>
-        <button class="icon-btn" title="Search">🔍</button>
+        <button class="icon-btn">🔔</button>
+        <button class="icon-btn">🔍</button>
         <button class="refresh-btn" onclick="loadData()"><span id="ri">↻</span> Refresh</button>
       </div>
     </div>
 
-    <!-- TABS -->
     <div class="tabs-bar" id="tabsBar">
       <button class="tab-btn active" id="tab-team" onclick="switchTab('team')">🏢 Team</button>
     </div>
 
-    <!-- CONTENT -->
     <div class="content">
       <div class="loading" id="loadingState">
         <div class="spinner"></div>
@@ -84,63 +281,48 @@
       </div>
 
       <div id="dashMain" style="display:none">
-        <!-- TEAM PANEL -->
         <div class="panel active" id="panel-team">
-
-          <!-- KPIs - 3 periods -->
           <div id="kpiSection"></div>
 
-          <!-- Yesterday Performance Table -->
           <div class="card">
             <div class="card-hd">
-              <div class="card-title">
-                <div class="card-title-icon" style="background:var(--blue-bg)">📊</div>
-                Yesterday's Performance
-              </div>
+              <div class="card-title"><div class="card-title-icon" style="background:var(--blue-bg)">📊</div>Yesterday's Performance</div>
               <span class="badge bb" id="perfDate"></span>
             </div>
-            <div style="overflow-x:auto">
-              <table class="tbl">
-                <thead><tr>
-                  <th>Rep</th>
-                  <th class="c" style="color:var(--blue)">Calls</th>
-                  <th class="c" style="color:var(--green)">Connected</th>
-                  <th class="c" style="color:var(--red)">Missed</th>
-                  <th class="c">Rate</th>
-                  <th class="c" style="color:var(--purple)">Meetings</th>
-                  <th class="c" style="color:var(--amber)">Open Deals</th>
-                  <th class="c" style="color:var(--cyan)">Pipeline</th>
-                  <th class="c">Health</th>
-                </tr></thead>
-                <tbody id="perfBody"></tbody>
-              </table>
-            </div>
+            <div style="overflow-x:auto"><table class="tbl">
+              <thead><tr>
+                <th>Rep</th>
+                <th class="c" style="color:var(--blue)">Calls</th>
+                <th class="c" style="color:var(--green)">Connected</th>
+                <th class="c" style="color:var(--red)">Missed</th>
+                <th class="c">Rate</th>
+                <th class="c" style="color:var(--purple)">Meetings</th>
+                <th class="c" style="color:var(--amber)">Open Deals</th>
+                <th class="c" style="color:var(--cyan)">Pipeline</th>
+                <th class="c">Health</th>
+              </tr></thead>
+              <tbody id="perfBody"></tbody>
+            </table></div>
           </div>
 
-          <!-- Insights -->
           <div class="card">
             <div class="card-hd">
-              <div class="card-title"><div class="card-title-icon" style="background:var(--amber-bg)">💡</div> Insights & Recommendations</div>
+              <div class="card-title"><div class="card-title-icon" style="background:var(--amber-bg)">💡</div>Insights & Recommendations</div>
               <span class="badge br" id="recBadge"></span>
             </div>
             <div id="recContainer"></div>
           </div>
 
-          <!-- Pipeline Stages -->
           <div class="card">
             <div class="card-hd">
-              <div class="card-title"><div class="card-title-icon" style="background:var(--blue-bg)">🔽</div> Acquisition Pipeline</div>
+              <div class="card-title"><div class="card-title-icon" style="background:var(--blue-bg)">🔽</div>Acquisition Pipeline</div>
               <span class="badge bb" id="pipeTotal"></span>
             </div>
             <div style="padding:14px 18px" id="pipeHorizContainer"></div>
           </div>
 
-          <!-- Open Pipeline by Rep -->
           <div style="margin-bottom:14px">
-            <div class="sec-hd">
-              <div class="sec-title">🔭 Open Pipeline by Rep</div>
-              <span class="badge bb" id="pipeTotalBadge"></span>
-            </div>
+            <div class="sec-hd"><div class="sec-title">🔭 Open Pipeline by Rep</div><span class="badge bb" id="pipeTotalBadge"></span></div>
             <div class="pipe-cards-grid" id="pipeCards"></div>
             <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:10px 16px;display:flex;justify-content:space-between;align-items:center;box-shadow:var(--sh)">
               <span style="font-size:11px;font-weight:600;color:var(--muted)">Total Open Pipeline</span>
@@ -148,70 +330,56 @@
             </div>
           </div>
 
-          <!-- AI Coaching -->
           <div class="card">
             <div class="card-hd">
-              <div class="card-title"><div class="card-title-icon" style="background:var(--purple-bg)">⚡</div> AI Coaching Insights</div>
+              <div class="card-title"><div class="card-title-icon" style="background:var(--purple-bg)">⚡</div>AI Coaching Insights</div>
               <span class="badge bp">No Next Activity</span>
             </div>
             <div class="coaching-grid" id="aiGrid"></div>
-            <div style="margin:0 14px 14px;background:var(--blue-bg);border:1px solid var(--blue-border);border-radius:var(--r-sm);padding:12px 14px;border-left:3px solid var(--blue)">
-              <div style="font-size:10px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px">🎯 Manager Focus</div>
+            <div style="margin:0 14px 14px;background:var(--blue-bg);border:1px solid var(--blue-bd);border-radius:var(--r-sm);padding:12px 14px;border-left:3px solid var(--blue)">
+              <div style="font-size:10px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">🎯 Manager Focus</div>
               <div style="font-size:11px;color:var(--text2)">Prioritize follow-ups with no next activity scheduled.</div>
             </div>
           </div>
 
-          <!-- Leads -->
           <div class="card">
             <div class="card-hd">
-              <div class="card-title"><div class="card-title-icon" style="background:var(--green-bg)">🎯</div> Leads Overview</div>
+              <div class="card-title"><div class="card-title-icon" style="background:var(--green-bg)">🎯</div>Leads Overview</div>
               <div style="display:flex;gap:5px" id="leadsBadgeRow"></div>
             </div>
             <div class="leads-period-grid" id="leadsPeriods"></div>
-            <div style="overflow-x:auto">
-              <table class="tbl">
-                <thead><tr>
-                  <th>Rep</th>
-                  <th class="c">Yesterday<br><span style="font-size:8px;font-weight:400;color:var(--muted)">↓ in · ↑ out</span></th>
-                  <th class="c">MTD<br><span style="font-size:8px;font-weight:400;color:var(--muted)">↓ in · ↑ out</span></th>
-                  <th class="c">YTD<br><span style="font-size:8px;font-weight:400;color:var(--muted)">↓ in · ↑ out</span></th>
-                </tr></thead>
-                <tbody id="leadsRepBody"></tbody>
-              </table>
-            </div>
+            <div style="overflow-x:auto"><table class="tbl">
+              <thead><tr>
+                <th>Rep</th>
+                <th class="c">Yesterday<br><span style="font-size:8px;font-weight:400;color:var(--muted)">↓ in · ↑ out</span></th>
+                <th class="c">MTD<br><span style="font-size:8px;font-weight:400;color:var(--muted)">↓ in · ↑ out</span></th>
+                <th class="c">YTD<br><span style="font-size:8px;font-weight:400;color:var(--muted)">↓ in · ↑ out</span></th>
+              </tr></thead>
+              <tbody id="leadsRepBody"></tbody>
+            </table></div>
           </div>
 
-          <!-- Rank A/B -->
           <div class="card">
             <div class="card-hd">
-              <div class="card-title"><div class="card-title-icon" style="background:var(--red-bg)">🎯</div> Rank A/B Coverage</div>
+              <div class="card-title"><div class="card-title-icon" style="background:var(--red-bg)">🎯</div>Rank A/B Coverage</div>
               <div style="display:flex;gap:5px" id="rankBadgeRow"></div>
             </div>
-            <div style="overflow-x:auto">
-              <table class="tbl">
-                <thead><tr>
-                  <th>Rep</th><th class="c">Rank A</th><th class="c">Rank B</th>
-                  <th class="c" style="color:var(--red)">Idle &gt;14d</th>
-                  <th>Top Idle Accounts</th>
-                </tr></thead>
-                <tbody id="rankRepBody"></tbody>
-              </table>
-            </div>
+            <div style="overflow-x:auto"><table class="tbl">
+              <thead><tr><th>Rep</th><th class="c">Rank A</th><th class="c">Rank B</th><th class="c" style="color:var(--red)">Idle &gt;14d</th><th>Top Idle Accounts</th></tr></thead>
+              <tbody id="rankRepBody"></tbody>
+            </table></div>
             <div style="border-top:1px solid var(--border)">
               <div class="card-hd" style="background:transparent;border:none;padding:8px 18px">
-                <span style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em">Top 10 Inactive Accounts</span>
+                <span style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.1em">Top 10 Inactive Accounts</span>
               </div>
-              <div style="overflow-x:auto">
-                <table class="tbl">
-                  <thead><tr><th>Rank</th><th>Company</th><th class="c">Owner</th><th class="c">Last Activity</th></tr></thead>
-                  <tbody id="rankBody"></tbody>
-                </table>
-              </div>
+              <div style="overflow-x:auto"><table class="tbl">
+                <thead><tr><th>Rank</th><th>Company</th><th class="c">Owner</th><th class="c">Last Activity</th></tr></thead>
+                <tbody id="rankBody"></tbody>
+              </table></div>
               <div id="rankFooter" style="padding:8px 18px;font-size:10px;color:var(--muted);border-top:1px solid var(--border);text-align:center;background:var(--surface2)"></div>
             </div>
           </div>
 
-          <!-- Won / Lost -->
           <div class="g2">
             <div class="card" style="margin-bottom:0">
               <div class="card-hd" style="border-left:3px solid var(--green)">
@@ -229,17 +397,14 @@
             </div>
           </div>
 
-          <!-- Market News -->
           <div class="card" style="margin-top:14px">
             <div class="card-hd">
-              <div class="card-title"><div class="card-title-icon" style="background:var(--surface2)">🌍</div> Market News & Events</div>
+              <div class="card-title"><div class="card-title-icon" style="background:var(--surface2)">🌍</div>Market News & Events</div>
               <span style="font-size:10px;color:var(--muted);font-weight:500">HR · Middle East · Daily</span>
             </div>
             <div id="newsContainer"></div>
           </div>
         </div>
-
-        <!-- REP PANELS -->
         <div id="repPanels"></div>
       </div>
     </div>
@@ -247,6 +412,102 @@
 </div>
 
 <script>
+// ── EMBEDDED DEMO DATA ──────────────────────────────────────────
+const DEMO = {
+  meta: { yesterdayLabel: "Sunday, 19 Apr 2026", generatedAt: "08:52 PM" },
+  kpi: {
+    yesterday: { calls:111, connected:33, connRate:30, meetings:8, openDeals:275, pipeline:10500000, leads:0, wonDeals:0 },
+    mtd:       { calls:892, connected:298, connRate:33, meetings:47, openDeals:275, pipeline:10500000, leads:12, wonAmt:187000, wonDeals:4, lost:3 },
+    ytd:       { calls:3241, connected:1102, connRate:34, meetings:178, openDeals:275, pipeline:10500000, leads:58, wonAmt:742000, wonDeals:17, lost:11 }
+  },
+  team: { wonAmt:187000, won:4, lost:3, meetingsYTD:178, leadsYest:0, leadsMTD:12, leadsYTD:58, leadsYestInbound:0, leadsYestOutbound:0, leadsMTDInbound:8, leadsMTDOutbound:4, leadsYTDInbound:38, leadsYTDOutbound:20 },
+  stageData: [
+    { label:"Appointment Scheduled", count:42, amount:1800000 },
+    { label:"Qualified to Buy", count:61, amount:2900000 },
+    { label:"Presentation Scheduled", count:38, amount:1600000 },
+    { label:"Decision Maker Bought-In", count:29, amount:1400000 },
+    { label:"Contract Sent", count:18, amount:1200000 },
+    { label:"Closed Won", count:87, amount:1600000 }
+  ],
+  repData: [
+    { name:"Marita Chedid", color:"#7C3AED", type:"acq", connRateYest:28, openDeals:52, pipeAmt:2100000, rankA:8, rankB:14,
+      calls:{yest:18,yestConn:5}, meetings:{yest:1},
+      leadsYest:0,leadsYestInbound:0,leadsYestOutbound:0,leadsMTD:2,leadsMTDInbound:1,leadsMTDOutbound:1,leadsYTD:9,leadsYTDInbound:6,leadsYTDOutbound:3,
+      topDeals:[{name:"Aramco HR Platform",stage:"Contract Sent",amount:450000,nextActivity:"Apr 22"},{name:"SABIC Talent Mgmt",stage:"Decision Maker",amount:320000,nextActivity:null},{name:"STC Group - ATS",stage:"Presentation",amount:280000,nextActivity:"Apr 24"}],
+      needsAttention:[{name:"SABIC Talent Mgmt",amount:320000,reasons:["No next activity for 18 days","Deal stuck in stage"]},{name:"Al Rajhi Bank HRM",amount:195000,reasons:["No next activity for 12 days"]}],
+      stuck:[{name:"SABIC Talent Mgmt",days:18,amount:320000}], cold:[] },
+    { name:"Zein Fares", color:"#2563EB", type:"acq", connRateYest:25, openDeals:44, pipeAmt:1850000, rankA:6, rankB:11,
+      calls:{yest:20,yestConn:5}, meetings:{yest:2},
+      leadsYest:0,leadsYestInbound:0,leadsYestOutbound:0,leadsMTD:3,leadsMTDInbound:2,leadsMTDOutbound:1,leadsYTD:11,leadsYTDInbound:7,leadsYTDOutbound:4,
+      topDeals:[{name:"Mobily Digital",stage:"Qualified to Buy",amount:380000,nextActivity:"Apr 21"},{name:"Riyad Bank Tech",stage:"Appointment",amount:290000,nextActivity:null},{name:"NCB Capital",stage:"Presentation",amount:220000,nextActivity:"Apr 25"}],
+      needsAttention:[{name:"Riyad Bank Tech",amount:290000,reasons:["No next activity for 21 days"]},{name:"Saudi Telecom Solutions",amount:175000,reasons:["No next activity for 9 days","Cold for 30+ days"]}],
+      stuck:[{name:"Riyad Bank Tech",days:21,amount:290000}], cold:[{name:"Saudi Telecom Solutions"}] },
+    { name:"Ursula Waked", color:"#DC2626", type:"acq", connRateYest:22, openDeals:39, pipeAmt:1620000, rankA:5, rankB:9,
+      calls:{yest:18,yestConn:4}, meetings:{yest:1},
+      leadsYest:0,leadsYestInbound:0,leadsYestOutbound:0,leadsMTD:2,leadsMTDInbound:2,leadsMTDOutbound:0,leadsYTD:8,leadsYTDInbound:5,leadsYTDOutbound:3,
+      topDeals:[{name:"Dar Al Arkan",stage:"Contract Sent",amount:310000,nextActivity:"Apr 22"},{name:"Abdul Latif Jameel",stage:"Decision Maker",amount:270000,nextActivity:null},{name:"Almarai HRM",stage:"Qualified",amount:195000,nextActivity:"Apr 26"}],
+      needsAttention:[{name:"Abdul Latif Jameel",amount:270000,reasons:["No next activity for 16 days"]}],
+      stuck:[{name:"Abdul Latif Jameel",days:16,amount:270000}], cold:[] },
+    { name:"Ahmad Khawajah", color:"#D97706", type:"acq", connRateYest:38, openDeals:48, pipeAmt:1980000, rankA:7, rankB:13,
+      calls:{yest:21,yestConn:8}, meetings:{yest:2},
+      leadsYest:0,leadsYestInbound:0,leadsYestOutbound:0,leadsMTD:3,leadsMTDInbound:2,leadsMTDOutbound:1,leadsYTD:14,leadsYTDInbound:9,leadsYTDOutbound:5,
+      topDeals:[{name:"PIF Portfolio HR",stage:"Contract Sent",amount:520000,nextActivity:"Apr 23"},{name:"NEOM Project",stage:"Decision Maker",amount:410000,nextActivity:"Apr 21"},{name:"Vision 2030 Org",stage:"Presentation",amount:310000,nextActivity:"Apr 28"}],
+      needsAttention:[], stuck:[], cold:[] },
+    { name:"Mohammed Khalid", color:"#16A34A", type:"acq", connRateYest:27, openDeals:51, pipeAmt:2250000, rankA:9, rankB:16,
+      calls:{yest:22,yestConn:6}, meetings:{yest:1},
+      leadsYest:0,leadsYestInbound:0,leadsYestOutbound:0,leadsMTD:1,leadsMTDInbound:1,leadsMTDOutbound:0,leadsYTD:10,leadsYTDInbound:6,leadsYTDOutbound:4,
+      topDeals:[{name:"Saudi Aramco New Div",stage:"Contract Sent",amount:480000,nextActivity:"Apr 20"},{name:"Ma'aden Mining HR",stage:"Qualified",amount:350000,nextActivity:null},{name:"SABIC New Entity",stage:"Appointment",amount:290000,nextActivity:"Apr 22"}],
+      needsAttention:[{name:"Ma'aden Mining HR",amount:350000,reasons:["No next activity for 24 days","Deal value at risk"]},{name:"Hasbah Energy",amount:210000,reasons:["No next activity for 11 days"]}],
+      stuck:[{name:"Ma'aden Mining HR",days:24,amount:350000}], cold:[{name:"Hasbah Energy"},{name:"Gulf Chem"},{name:"Red Sea Dev"},{name:"Alinma Bank"}] },
+    { name:"Jehad Al-Barqawi", color:"#0891B2", type:"ret", connRateYest:42, openDeals:41, pipeAmt:1700000, rankA:6, rankB:10,
+      calls:{yest:12,yestConn:5}, meetings:{yest:1},
+      leadsYest:0,leadsYestInbound:0,leadsYestOutbound:0,leadsMTD:1,leadsMTDInbound:1,leadsMTDOutbound:0,leadsYTD:6,leadsYTDInbound:4,leadsYTDOutbound:2,
+      topDeals:[{name:"Tasnee Retention",stage:"Contract Sent",amount:290000,nextActivity:"Apr 21"},{name:"Sadara Chemical",stage:"Renewal",amount:250000,nextActivity:"Apr 24"},{name:"Gulf Petrochemicals",stage:"Decision Maker",amount:210000,nextActivity:null}],
+      needsAttention:[{name:"Gulf Petrochemicals",amount:210000,reasons:["No next activity for 19 days"]}],
+      stuck:[{name:"Gulf Petrochemicals",days:19,amount:210000}], cold:[] }
+  ],
+  topInactiveRankAccounts: [
+    {rank:"A",name:"Saudi Investment Bank",rep:"Mohammed Khalid",repColor:"#16A34A",daysSinceActivity:31},
+    {rank:"A",name:"Arab National Bank",rep:"Zein Fares",repColor:"#2563EB",daysSinceActivity:28},
+    {rank:"A",name:"Bank AlJazira",rep:"Ursula Waked",repColor:"#DC2626",daysSinceActivity:25},
+    {rank:"B",name:"Gulf Union Foods",rep:"Marita Chedid",repColor:"#7C3AED",daysSinceActivity:22},
+    {rank:"A",name:"Al Babtain Group",rep:"Ahmad Khawajah",repColor:"#D97706",daysSinceActivity:20},
+    {rank:"B",name:"United Cooperative",rep:"Mohammed Khalid",repColor:"#16A34A",daysSinceActivity:18},
+    {rank:"A",name:"Tabuk Agriculture",rep:"Zein Fares",repColor:"#2563EB",daysSinceActivity:17},
+    {rank:"B",name:"Thakher Development",rep:"Ursula Waked",repColor:"#DC2626",daysSinceActivity:15},
+    {rank:"A",name:"Dur Hospitality",rep:"Marita Chedid",repColor:"#7C3AED",daysSinceActivity:15},
+    {rank:"B",name:"National Medical Care",rep:"Jehad Al-Barqawi",repColor:"#0891B2",daysSinceActivity:14}
+  ],
+  rankTotals: { A:41, B:73, total:114 },
+  autoRecs: [
+    {type:"red",text:"Mohammed Khalid: Ma'aden Mining HR ($350K) has had no activity for 24 days — immediate follow-up required."},
+    {type:"red",text:"Zein Fares: Riyad Bank Tech ($290K) stuck for 21 days with no next activity — escalate or reassign."},
+    {type:"red",text:"Jehad Al-Barqawi: Gulf Petrochemicals ($210K) inactive for 19 days — schedule a retention call."},
+    {type:"warn",text:"Marita Chedid: SABIC Talent Mgmt ($320K) stuck in Decision Maker stage for 18 days."},
+    {type:"warn",text:"Mohammed Khalid has 4 cold deals — highest on the team. Review pipeline health."},
+    {type:"warn",text:"Team connection rate at 30% yesterday — below the 35% target. Review call quality and timing."},
+    {type:"green",text:"Ahmad Khawajah: All deals have next activities scheduled. Clean pipeline — great discipline."},
+    {type:"green",text:"PIF Portfolio HR ($520K) progressing well — Contract Sent stage with follow-up on Apr 23."}
+  ],
+  closedWon: [
+    {name:"Alfanar Company - HRM Suite",rep:"Ahmad Khawajah",repColor:"#D97706",amount:95000,closedate:"Apr 15, 2026",period:"mtd"},
+    {name:"Saudi Aramco - Pilot License",rep:"Mohammed Khalid",repColor:"#16A34A",amount:48000,closedate:"Apr 12, 2026",period:"mtd"},
+    {name:"Tasnee Corp - Renewal",rep:"Jehad Al-Barqawi",repColor:"#0891B2",amount:32000,closedate:"Apr 10, 2026",period:"mtd"},
+    {name:"NCB - ATS Module",rep:"Zein Fares",repColor:"#2563EB",amount:12000,closedate:"Apr 8, 2026",period:"mtd"}
+  ],
+  closedLost: [
+    {name:"Riyadh Hotels Group",rep:"Ursula Waked",repColor:"#DC2626",amount:75000,closedate:"Apr 14, 2026",period:"mtd"},
+    {name:"Al Othaim Markets",rep:"Marita Chedid",repColor:"#7C3AED",amount:42000,closedate:"Apr 9, 2026",period:"mtd"},
+    {name:"Raydan Food Company",rep:"Zein Fares",repColor:"#2563EB",amount:28000,closedate:"Apr 6, 2026",period:"mtd"}
+  ],
+  marketNews: [
+    {icon:"🌍",tag:"M&A",color:"#7C3AED",source:"Bloomberg",text:"SAP announces acquisition of WalkMe for $1.5B — signals enterprise digital adoption acceleration across GCC markets."},
+    {icon:"📋",tag:"Regulation",color:"#D97706",source:"HRSD Saudi",text:"Ministry of HR mandates digital workforce tracking for companies with 50+ employees by Q3 2026 — major ATS opportunity."},
+    {icon:"🚀",tag:"Market",color:"#16A34A",source:"Wamda",text:"GCC HR Tech market projected to reach $2.1B by 2027, growing at 18% CAGR — recruitment software leads growth."},
+    {icon:"🏗️",tag:"NEOM",color:"#2563EB",source:"Arab News",text:"NEOM announces 12 new operating entities in 2026, each requiring independent HR infrastructure — potential pipeline expansion."}
+  ]
+};
+
 let D=null;
 const $=id=>document.getElementById(id);
 const fmt=n=>!n?'$0':n>=1e6?`$${(n/1e6).toFixed(1)}M`:n>=1e3?`$${Math.round(n/1e3)}K`:`$${Math.round(n)}`;
@@ -259,11 +520,8 @@ function switchTab(id){
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
   $('tab-'+id)?.classList.add('active');
   $('panel-'+id)?.classList.add('active');
-  const sideId='side-'+id;
-  $(sideId)?.classList.add('active');
-  $('topbarTitle').textContent=D?
-    (id==='team'?'Team Overview':(D.repData||[]).find(r=>r.name.toLowerCase().replace(/\s/g,'-')===id)?.name||id)
-    :'Team Overview';
+  const sid='side-'+id; if($(sid)) $(sid).classList.add('active');
+  $('topbarTitle').textContent=D?(id==='team'?'Team Overview':(D.repData||[]).find(r=>r.name.toLowerCase().replace(/\s/g,'-')===id)?.name||id):'Team Overview';
 }
 
 function toggleMore(id,btn,show,hide){
@@ -273,24 +531,8 @@ function toggleMore(id,btn,show,hide){
   btn.textContent=hidden?hide:show;
 }
 
-async function loadData(){
-  const ri=$('ri');ri.classList.add('spin');
-  try{
-    const res=await fetch('./data.json?t='+Date.now());
-    if(!res.ok)throw new Error('data.json not found');
-    D=await res.json();render();
-  }catch(e){
-    $('loadingState').innerHTML=`<div style="text-align:center;padding:40px">
-      <div style="font-size:40px;margin-bottom:14px">⚠️</div>
-      <div style="font-size:15px;font-weight:700;color:var(--red);margin-bottom:8px">Cannot load data</div>
-      <div style="font-size:12px;color:var(--muted);margin-bottom:20px">${e.message}</div>
-      <button onclick="loadData()" style="background:var(--primary);border:none;color:#fff;padding:9px 22px;border-radius:var(--r-sm);cursor:pointer;font-family:var(--font);font-size:12px;font-weight:600">↻ Retry</button>
-    </div>`;
-  }finally{ri.classList.remove('spin')}
-}
-
 function sumCard(v,l,s,c,i){
-  return `<div class="sum-card" style="animation-delay:${i*0.04}s">
+  return `<div class="sum-card" style="animation-delay:${i*.04}s">
     <div class="sum-card-accent" style="background:${c}"></div>
     <div class="sum-val" style="color:${c}">${v}</div>
     <div class="sum-lbl">${l}</div>
@@ -298,19 +540,24 @@ function sumCard(v,l,s,c,i){
   </div>`;
 }
 
+async function loadData(){
+  const ri=$('ri');ri.classList.add('spin');
+  try{
+    const res=await fetch('./data.json?t='+Date.now());
+    if(!res.ok)throw new Error('no file');
+    D=await res.json();
+  }catch(e){ D=DEMO; }
+  render();
+  ri.classList.remove('spin');
+}
+
 function render(){
   $('loadingState').style.display='none';
   $('dashMain').style.display='block';
 
-  const meta=D.meta||{};
-  const repData=D.repData||[];
-  const team=D.team||{};
-  const stageData=D.stageData||[];
-  const kpiY=D.kpi?.yesterday||{};
-  const kpiM=D.kpi?.mtd||{};
-  const kpiT=D.kpi?.ytd||{};
-  const closedWon=D.closedWon||[];
-  const closedLost=D.closedLost||[];
+  const meta=D.meta||{},repData=D.repData||[],team=D.team||{},stageData=D.stageData||[];
+  const kpiY=D.kpi?.yesterday||{},kpiM=D.kpi?.mtd||{},kpiT=D.kpi?.ytd||{};
+  const closedWon=D.closedWon||[],closedLost=D.closedLost||[];
 
   $('topbarSub').textContent=`Updated ${meta.generatedAt||''} · Auto-refresh 5min`;
   $('perfDate').textContent=meta.yesterdayLabel||'';
@@ -320,7 +567,7 @@ function render(){
   const wonAmtYest=wonYest.reduce((s,d)=>s+(d.amount||0),0);
   const wonAmtMTD=team.wonAmt||0;
 
-  // ── KPI Section ──
+  // KPI
   $('kpiSection').innerHTML=`
     <div class="period-label">📅 Yesterday — ${meta.yesterdayLabel||''}</div>
     <div class="summary-grid" style="margin-bottom:14px">
@@ -356,11 +603,10 @@ function render(){
       ${sumCard(kpiT.lost||team.lost||0,'Lost YTD',null,'var(--red)',7)}
     </div>`;
 
-  // ── Yesterday Perf Table ──
+  // Perf table
   $('perfBody').innerHTML=repData.map(r=>{
-    const calls=r.calls?.yest||0,conn=r.calls?.yestConn||0,rate=r.connRateYest||0;
-    const mtgs=r.meetings?.yest||0,rc=rcColor(rate),c=r.color,isRet=r.type==='ret';
-    const healthBadge=rate>=50?`<span class="badge bg">✓ Healthy</span>`:rate>=30?`<span class="badge ba">● Watch</span>`:`<span class="badge br">● At Risk</span>`;
+    const calls=r.calls?.yest||0,conn=r.calls?.yestConn||0,rate=r.connRateYest||0,mtgs=r.meetings?.yest||0,rc=rcColor(rate),c=r.color,isRet=r.type==='ret';
+    const hb=rate>=50?`<span class="badge bg">✓ Healthy</span>`:rate>=30?`<span class="badge ba">● Watch</span>`:`<span class="badge br">● At Risk</span>`;
     return `<tr>
       <td><div style="display:flex;align-items:center;gap:10px">
         <div class="av" style="background:${c}20;color:${c};border:1px solid ${c}40">${r.name[0]}</div>
@@ -369,18 +615,15 @@ function render(){
       <td class="c"><span style="font-family:var(--mono);font-size:14px;font-weight:500;color:${calls<5?'var(--red)':'var(--text)'}">${calls}</span></td>
       <td class="c"><span style="font-family:var(--mono);font-size:14px;font-weight:500;color:var(--green)">${conn}</span></td>
       <td class="c"><span style="font-family:var(--mono);font-size:14px;font-weight:500;color:var(--red)">${calls-conn}</span></td>
-      <td class="c">
-        <div style="font-size:13px;font-weight:700;color:${rc}">${rate}%</div>
-        <div class="rate-bar"><div class="rate-fill" style="width:${rate}%;background:${rc}"></div></div>
-      </td>
+      <td class="c"><div style="font-size:13px;font-weight:700;color:${rc}">${rate}%</div><div class="rate-bar"><div class="rate-fill" style="width:${rate}%;background:${rc}"></div></div></td>
       <td class="c"><span style="font-family:var(--mono);font-size:14px;font-weight:500;color:var(--purple)">${mtgs}</span></td>
       <td class="c"><span style="font-family:var(--mono);font-size:14px;font-weight:500;color:var(--amber)">${r.openDeals||0}</span></td>
-      <td class="c"><span style="font-size:12px;font-weight:600">${fmt(r.pipeAmt||r.pipelineAmt||0)}</span></td>
-      <td class="c">${healthBadge}</td>
+      <td class="c"><span style="font-size:12px;font-weight:600">${fmt(r.pipeAmt||0)}</span></td>
+      <td class="c">${hb}</td>
     </tr>`;
   }).join('');
 
-  // ── Insights ──
+  // Insights
   const recs=D.autoRecs||[];
   $('recBadge').textContent=`${recs.filter(r=>r.type==='red').length} urgent`;
   $('recContainer').innerHTML=recs.slice(0,8).map(r=>{
@@ -395,38 +638,30 @@ function render(){
     </div>`;
   }).join('');
 
-  // ── Pipeline Stages ──
+  // Pipeline stages
   if(stageData.length>0){
     const maxC=Math.max(...stageData.map(s=>s.count||0),1);
-    const tot=stageData.reduce((s,x)=>s+(x.count||0),0);
-    const totAmt=stageData.reduce((s,x)=>s+(x.amount||0),0);
+    const tot=stageData.reduce((s,x)=>s+(x.count||0),0),totAmt=stageData.reduce((s,x)=>s+(x.amount||0),0);
     $('pipeTotal').textContent=`${tot} deals · ${fmt(totAmt)}`;
     $('pipeHorizContainer').innerHTML=`
-      <div class="pipe-stages">
-        ${stageData.map((s,i)=>{
-          const flex=Math.max(6,Math.round((s.count||0)/maxC*100));
-          return `<div class="pipe-stage" style="flex:${flex};background:${STAGE_COLORS[i%STAGE_COLORS.length]};border-radius:var(--r-sm)">
-            <div class="ps-name">${s.label}</div>
-            <div class="ps-count">${s.count||0}</div>
-            <div class="ps-amt">${fmt(s.amount||0)}</div>
-          </div>`;
-        }).join('')}
-      </div>
+      <div class="pipe-stages">${stageData.map((s,i)=>{
+        const flex=Math.max(6,Math.round((s.count||0)/maxC*100));
+        return `<div class="pipe-stage" style="flex:${flex};background:${STAGE_COLORS[i%STAGE_COLORS.length]}">
+          <div class="ps-name">${s.label}</div><div class="ps-count">${s.count||0}</div><div class="ps-amt">${fmt(s.amount||0)}</div>
+        </div>`;
+      }).join('')}</div>
       <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted);font-weight:600;margin-top:6px">
         <span>${tot} total open deals</span><span>${fmt(totAmt)}</span>
       </div>`;
   }
 
-  // ── Pipeline Cards ──
+  // Pipeline cards
   let totalPipe=0;
   $('pipeCards').innerHTML=repData.map(r=>{
-    const c=r.color,isRet=r.type==='ret';
-    const allDeals=r.topDeals||[];
-    const cold=(r.cold||[]).length,stuck=(r.stuck||[]).length;
-    const pAmt=r.pipeAmt||r.pipelineAmt||0;
+    const c=r.color,isRet=r.type==='ret',allDeals=r.topDeals||[];
+    const cold=(r.cold||[]).length,stuck=(r.stuck||[]).length,pAmt=r.pipeAmt||0;
     totalPipe+=pAmt;
-    const show3=allDeals.slice(0,3),rest=allDeals.slice(3);
-    const cid='pipe-'+r.name.replace(/\s/g,'-');
+    const show3=allDeals.slice(0,3),rest=allDeals.slice(3),cid='pipe-'+r.name.replace(/\s/g,'-');
     return `<div class="pcard" style="border-top:3px solid ${c}">
       <div class="pcard-top">
         <div style="display:flex;align-items:center;gap:6px">
@@ -439,16 +674,8 @@ function render(){
         </div>
       </div>
       <div class="pcard-body">
-        ${show3.map(d=>`<div class="pdeal">
-          <div><div class="pdeal-name">${d.name}</div><div class="pdeal-stage">${d.stage||''}</div></div>
-          <div class="pdeal-amt">$${(d.amount||0).toLocaleString()}</div>
-        </div>`).join('')}
-        <div id="${cid}-more" style="display:none">
-          ${rest.map(d=>`<div class="pdeal">
-            <div><div class="pdeal-name">${d.name}</div><div class="pdeal-stage">${d.stage||''}</div></div>
-            <div class="pdeal-amt">$${(d.amount||0).toLocaleString()}</div>
-          </div>`).join('')}
-        </div>
+        ${show3.map(d=>`<div class="pdeal"><div><div class="pdeal-name">${d.name}</div><div class="pdeal-stage">${d.stage||''}</div></div><div class="pdeal-amt">$${(d.amount||0).toLocaleString()}</div></div>`).join('')}
+        <div id="${cid}-more" style="display:none">${rest.map(d=>`<div class="pdeal"><div><div class="pdeal-name">${d.name}</div><div class="pdeal-stage">${d.stage||''}</div></div><div class="pdeal-amt">$${(d.amount||0).toLocaleString()}</div></div>`).join('')}</div>
         ${rest.length>0?`<button class="see-more" onclick="toggleMore('${cid}-more',this,'▼ ${rest.length} more','▲ Less')">▼ ${rest.length} more</button>`:''}
         <div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:8px">
           ${stuck>0?`<span class="badge br">🔴 ${stuck} stuck</span>`:''}
@@ -460,87 +687,52 @@ function render(){
   }).join('');
   $('pipeTotalAmt').textContent=fmt(totalPipe);
 
-  // ── AI Coaching ──
+  // AI Coaching
   $('aiGrid').innerHTML=repData.map(r=>{
-    const c=r.color,isRet=r.type==='ret';
-    const items=r.needsAttention||[];
-    const show=items.slice(0,3),rest=items.slice(3);
-    const cid='coach-'+r.name.replace(/\s/g,'-');
+    const c=r.color,isRet=r.type==='ret',items=r.needsAttention||[];
+    const show=items.slice(0,3),rest=items.slice(3),cid='coach-'+r.name.replace(/\s/g,'-');
     return `<div class="ccard" style="--cc:${c}">
       <div class="ccard-rep">
         <div class="av" style="width:20px;height:20px;border-radius:5px;background:${c}20;color:${c};font-size:9px">${r.name[0]}</div>
         ${r.name.split(' ')[0]}${isRet?`<span class="ret" style="margin-left:2px">RET</span>`:''}
         <span style="margin-left:auto;font-size:9px;font-weight:500;color:var(--muted)">${items.length}</span>
       </div>
-      ${items.length===0
-        ?`<div style="font-size:11px;color:var(--green);font-weight:600">✅ All deals have next activity</div>`
-        :`${show.map(item=>`<div class="citem">
-            <div class="citem-name">${item.name}<span class="citem-amt">${fmt(item.amount||0)}</span></div>
-            ${(item.reasons||[]).map(rs=>`<div class="citem-warn">⚠️ ${rs}</div>`).join('')}
-          </div>`).join('')}
-          <div id="${cid}-more" style="display:none">
-            ${rest.map(item=>`<div class="citem">
-              <div class="citem-name">${item.name}<span class="citem-amt">${fmt(item.amount||0)}</span></div>
-              ${(item.reasons||[]).map(rs=>`<div class="citem-warn">⚠️ ${rs}</div>`).join('')}
-            </div>`).join('')}
-          </div>
-          ${rest.length>0?`<button class="see-more" onclick="toggleMore('${cid}-more',this,'▼ ${rest.length} more','▲ Less')">▼ ${rest.length} more</button>`:''}`
-      }
+      ${items.length===0?`<div style="font-size:11px;color:var(--green);font-weight:600">✅ All deals have next activity</div>`
+        :`${show.map(item=>`<div class="citem"><div class="citem-name">${item.name}<span class="citem-amt">${fmt(item.amount||0)}</span></div>${(item.reasons||[]).map(rs=>`<div class="citem-warn">⚠️ ${rs}</div>`).join('')}</div>`).join('')}
+        <div id="${cid}-more" style="display:none">${rest.map(item=>`<div class="citem"><div class="citem-name">${item.name}<span class="citem-amt">${fmt(item.amount||0)}</span></div>${(item.reasons||[]).map(rs=>`<div class="citem-warn">⚠️ ${rs}</div>`).join('')}</div>`).join('')}</div>
+        ${rest.length>0?`<button class="see-more" onclick="toggleMore('${cid}-more',this,'▼ ${rest.length} more','▲ Less')">▼ ${rest.length} more</button>`:''}`}
     </div>`;
   }).join('');
 
-  // ── Leads ──
-  $('leadsBadgeRow').innerHTML=`
-    <span class="badge bb">Yest: ${team.leadsYest||0}</span>
-    <span class="badge bg">MTD: ${team.leadsMTD||0}</span>
-    <span class="badge bp">YTD: ${team.leadsYTD||0}</span>`;
-
+  // Leads
+  $('leadsBadgeRow').innerHTML=`<span class="badge bb">Yest: ${team.leadsYest||0}</span><span class="badge bg">MTD: ${team.leadsMTD||0}</span><span class="badge bp">YTD: ${team.leadsYTD||0}</span>`;
   $('leadsPeriods').innerHTML=[
     {p:'Yesterday',total:team.leadsYest||0,inb:team.leadsYestInbound||0,out:team.leadsYestOutbound||0,c:'var(--blue)'},
     {p:'Month to Date',total:team.leadsMTD||0,inb:team.leadsMTDInbound||0,out:team.leadsMTDOutbound||0,c:'var(--green)'},
     {p:'Year to Date',total:team.leadsYTD||0,inb:team.leadsYTDInbound||0,out:team.leadsYTDOutbound||0,c:'var(--purple)'}
-  ].map(({p,total,inb,out,c})=>`<div class="lperiod">
-    <div class="lperiod-label">${p}</div>
-    <div class="lperiod-val" style="color:${c}">${total}</div>
-    <div class="lperiod-row">
-      <span class="lperiod-in" style="color:var(--blue)">↓ ${inb} Inbound</span>
-      <span class="lperiod-out" style="color:var(--amber)">↑ ${out} Outbound</span>
-    </div>
-  </div>`).join('');
+  ].map(({p,total,inb,out,c})=>`<div class="lperiod"><div class="lperiod-label">${p}</div><div class="lperiod-val" style="color:${c}">${total}</div><div class="lperiod-row"><span class="lperiod-in" style="color:var(--blue)">↓ ${inb} Inbound</span><span class="lperiod-out" style="color:var(--amber)">↑ ${out} Outbound</span></div></div>`).join('');
 
   $('leadsRepBody').innerHTML=repData.map(r=>`<tr>
-    <td><div style="display:flex;align-items:center;gap:8px">
-      <div class="av" style="background:${r.color}20;color:${r.color};border:1px solid ${r.color}30">${r.name[0]}</div>
-      <span style="font-weight:600">${r.name}</span>
-    </div></td>
-    <td class="c"><div style="font-family:var(--mono);font-weight:600">${r.leadsYest||0}</div>
-      <div style="font-size:9px;color:var(--muted)">↓${r.leadsYestInbound||0} ↑${r.leadsYestOutbound||0}</div></td>
-    <td class="c"><div style="font-family:var(--mono);font-weight:600;color:var(--green)">${r.leadsMTD||0}</div>
-      <div style="font-size:9px;color:var(--muted)">↓${r.leadsMTDInbound||0} ↑${r.leadsMTDOutbound||0}</div></td>
-    <td class="c"><div style="font-family:var(--mono);font-weight:600;color:var(--purple)">${r.leadsYTD||0}</div>
-      <div style="font-size:9px;color:var(--muted)">↓${r.leadsYTDInbound||0} ↑${r.leadsYTDOutbound||0}</div></td>
+    <td><div style="display:flex;align-items:center;gap:8px"><div class="av" style="background:${r.color}20;color:${r.color};border:1px solid ${r.color}30">${r.name[0]}</div><span style="font-weight:600">${r.name}</span></div></td>
+    <td class="c"><div style="font-family:var(--mono);font-weight:600">${r.leadsYest||0}</div><div style="font-size:9px;color:var(--muted)">↓${r.leadsYestInbound||0} ↑${r.leadsYestOutbound||0}</div></td>
+    <td class="c"><div style="font-family:var(--mono);font-weight:600;color:var(--green)">${r.leadsMTD||0}</div><div style="font-size:9px;color:var(--muted)">↓${r.leadsMTDInbound||0} ↑${r.leadsMTDOutbound||0}</div></td>
+    <td class="c"><div style="font-family:var(--mono);font-weight:600;color:var(--purple)">${r.leadsYTD||0}</div><div style="font-size:9px;color:var(--muted)">↓${r.leadsYTDInbound||0} ↑${r.leadsYTDOutbound||0}</div></td>
   </tr>`).join('');
 
-  // ── Rank A/B ──
-  const rankData=D.topInactiveRankAccounts||[];
-  const rankTotals=D.rankTotals||{};
+  // Rank A/B
+  const rankData=D.topInactiveRankAccounts||[],rankTotals=D.rankTotals||{};
   $('rankBadgeRow').innerHTML=`<span class="rank-a">${rankTotals.A||0} A</span><span class="rank-b">${rankTotals.B||0} B</span>`;
-
   $('rankRepBody').innerHTML=repData.map(r=>{
     const idle=(D.topInactiveRankAccounts||[]).filter(c=>c.rep===r.name&&c.daysSinceActivity>14);
     const idleNames=idle.slice(0,3).map(c=>`<span style="font-size:10px;color:var(--red);font-weight:500">• ${c.name}</span>`).join('<br>');
     return `<tr>
-      <td><div style="display:flex;align-items:center;gap:8px">
-        <div class="av" style="background:${r.color}20;color:${r.color}">${r.name[0]}</div>
-        <span style="font-weight:600">${r.name}</span>
-      </div></td>
+      <td><div style="display:flex;align-items:center;gap:8px"><div class="av" style="background:${r.color}20;color:${r.color}">${r.name[0]}</div><span style="font-weight:600">${r.name}</span></div></td>
       <td class="c"><span class="rank-a">${r.rankA||0}</span></td>
       <td class="c"><span class="rank-b">${r.rankB||0}</span></td>
       <td class="c"><span style="font-weight:700;color:${idle.length>0?'var(--red)':'var(--green)'}">${idle.length}</span></td>
       <td style="font-size:10px;line-height:1.8">${idleNames||'<span style="color:var(--green);font-size:10px">✓ All active</span>'}</td>
     </tr>`;
   }).join('');
-
   $('rankBody').innerHTML=rankData.map(c=>{
     const dc=c.daysSinceActivity>14?'var(--red)':c.daysSinceActivity>7?'var(--amber)':'var(--green)';
     return `<tr>
@@ -552,58 +744,25 @@ function render(){
   }).join('');
   $('rankFooter').textContent=`Top 10 by days since last activity · ${rankTotals.total||0} total Rank A/B accounts`;
 
-  // ── Won / Lost ──
+  // Won/Lost
   const wonAmt=team.wonAmt||0;
   $('wonBadge').textContent=`${closedWon.length} deals · ${fmt(wonAmt)}`;
   $('lostBadge').textContent=`${closedLost.length} deals MTD`;
-
   function dealRows(arr,color,prefix){
     if(!arr.length)return`<div style="padding:24px;color:var(--muted);text-align:center;font-size:12px;font-style:italic">No deals MTD</div>`;
     const show=arr.slice(0,5),rest=arr.slice(5);
-    return `${show.map(d=>`<div class="deal-item">
-      <div class="deal-dot" style="background:${color}"></div>
-      <div style="flex:1">
-        <div class="deal-name">${d.name}</div>
-        <div class="deal-meta">
-          <span style="font-size:10px;color:var(--muted)">${d.closedate||''}</span>
-          <span class="badge" style="background:${d.repColor||'#ccc'}20;color:${d.repColor||'#999'}">${d.rep||''}</span>
-        </div>
-      </div>
-      <div class="deal-amt" style="color:${color}">$${(d.amount||0).toLocaleString()}</div>
-    </div>`).join('')}
-    <div id="${prefix}-more" style="display:none">
-      ${rest.map(d=>`<div class="deal-item">
-        <div class="deal-dot" style="background:${color}"></div>
-        <div style="flex:1">
-          <div class="deal-name">${d.name}</div>
-          <div class="deal-meta">
-            <span style="font-size:10px;color:var(--muted)">${d.closedate||''}</span>
-            <span class="badge" style="background:${d.repColor||'#ccc'}20;color:${d.repColor||'#999'}">${d.rep||''}</span>
-          </div>
-        </div>
-        <div class="deal-amt" style="color:${color}">$${(d.amount||0).toLocaleString()}</div>
-      </div>`).join('')}
-    </div>
+    return `${show.map(d=>`<div class="deal-item"><div class="deal-dot" style="background:${color}"></div><div style="flex:1"><div class="deal-name">${d.name}</div><div class="deal-meta"><span style="font-size:10px;color:var(--muted)">${d.closedate||''}</span><span class="badge" style="background:${d.repColor||'#ccc'}20;color:${d.repColor||'#999'}">${d.rep||''}</span></div></div><div class="deal-amt" style="color:${color}">$${(d.amount||0).toLocaleString()}</div></div>`).join('')}
+    <div id="${prefix}-more" style="display:none">${rest.map(d=>`<div class="deal-item"><div class="deal-dot" style="background:${color}"></div><div style="flex:1"><div class="deal-name">${d.name}</div><div class="deal-meta"><span style="font-size:10px;color:var(--muted)">${d.closedate||''}</span><span class="badge" style="background:${d.repColor||'#ccc'}20;color:${d.repColor||'#999'}">${d.rep||''}</span></div></div><div class="deal-amt" style="color:${color}">$${(d.amount||0).toLocaleString()}</div></div>`).join('')}</div>
     ${rest.length>0?`<button class="see-more" onclick="toggleMore('${prefix}-more',this,'▼ ${rest.length} more deals','▲ Show less')">▼ ${rest.length} more deals</button>`:''}`;
   }
-
   $('wonContainer').innerHTML=dealRows(closedWon,'var(--green)','won-deals');
   $('lostContainer').innerHTML=dealRows(closedLost,'var(--red)','lost-deals');
 
-  // ── News ──
+  // News
   const news=D.marketNews||[];
-  $('newsContainer').innerHTML=news.length>0?news.map(n=>`<div class="news-item">
-    <span class="news-icon">${n.icon||'📰'}</span>
-    <div style="flex:1">
-      <div class="news-meta">
-        <span class="badge" style="background:${n.color||'#ccc'}20;color:${n.color||'#999'}">${n.tag||''}</span>
-        <span style="font-size:9px;color:var(--muted);font-weight:600">${n.source||''}</span>
-      </div>
-      <div class="news-text">${n.text||''}</div>
-    </div>
-  </div>`).join(''):`<div style="padding:18px;text-align:center;color:var(--muted);font-size:12px">No news available</div>`;
+  $('newsContainer').innerHTML=news.length>0?news.map(n=>`<div class="news-item"><span class="news-icon">${n.icon||'📰'}</span><div style="flex:1"><div class="news-meta"><span class="badge" style="background:${n.color||'#ccc'}20;color:${n.color||'#999'}">${n.tag||''}</span><span style="font-size:9px;color:var(--muted);font-weight:600">${n.source||''}</span></div><div class="news-text">${n.text||''}</div></div></div>`).join(''):`<div style="padding:18px;text-align:center;color:var(--muted);font-size:12px">No news available</div>`;
 
-  // ── Sidebar & Tab Rep Links ──
+  // Rep tabs & panels
   const tabs=$('tabsBar'),rpnl=$('repPanels'),sideLinks=$('sideRepLinks');
   rpnl.innerHTML='';sideLinks.innerHTML='';
   tabs.querySelectorAll('.tab-btn[data-rep]').forEach(b=>b.remove());
@@ -615,23 +774,19 @@ function render(){
     const bad=rate<30||stuck.length>0||(r.cold||[]).length>3;
     const topDeals=r.topDeals||[];
 
-    // Tab button
     const btn=document.createElement('button');
     btn.className='tab-btn';btn.id='tab-'+slug;btn.dataset.rep='1';
     btn.onclick=()=>switchTab(slug);
     btn.innerHTML=`<span style="width:7px;height:7px;border-radius:50%;background:${c};flex-shrink:0"></span>${r.name.split(' ')[0]}${isRet?`<span class="ret" style="margin-left:2px">RET</span>`:''}${bad?`<span class="tab-chip">!</span>`:''}`;
     tabs.appendChild(btn);
 
-    // Sidebar link
     const sBtn=document.createElement('button');
     sBtn.className='nav-item';sBtn.id='side-'+slug;
     sBtn.onclick=()=>switchTab(slug);
     sBtn.innerHTML=`<span class="nav-icon" style="color:${c}">●</span>${r.name}${isRet?`<span class="ret" style="margin-left:4px">RET</span>`:''}${bad?`<span class="nav-badge">!</span>`:''}`;
     sideLinks.appendChild(sBtn);
 
-    const repShow=topDeals.slice(0,6),repRest=topDeals.slice(6);
-    const rdid='rd-'+r.name.replace(/\s/g,'-');
-
+    const repShow=topDeals.slice(0,6),repRest=topDeals.slice(6),rdid='rd-'+r.name.replace(/\s/g,'-');
     const panel=document.createElement('div');
     panel.className='panel';panel.id='panel-'+slug;
     panel.innerHTML=`
@@ -639,83 +794,47 @@ function render(){
         <div class="rep-hero-line"></div>
         <div class="av av-lg" style="background:${c}20;color:${c};border:1.5px solid ${c}40">${r.name[0]}</div>
         <div>
-          <div style="font-size:20px;font-weight:800;letter-spacing:-0.02em;color:var(--text)">${r.name}${isRet?`<span class="ret" style="font-size:10px;margin-left:8px">RETENTION</span>`:''}
+          <div style="font-size:20px;font-weight:800;letter-spacing:-.02em;color:var(--text)">${r.name}${isRet?`<span class="ret" style="font-size:10px;margin-left:8px">RETENTION</span>`:''}
             ${bad?`<span class="badge br" style="margin-left:8px;font-size:10px">⚠ Needs Attention</span>`:`<span class="badge bg" style="margin-left:8px;font-size:10px">✓ On Track</span>`}
           </div>
           <div style="font-size:11px;color:var(--muted);margin-top:4px">${meta.yesterdayLabel||''}</div>
         </div>
         <div class="rep-hero-stats">
-          ${[{v:calls,l:'Calls',c:calls<5?'var(--red)':'var(--blue)'},{v:rate+'%',l:'Rate',c:rc},{v:mtgs,l:'Meetings',c:'var(--purple)'},{v:fmt(r.pipeAmt||r.pipelineAmt||0),l:'Pipeline',c:'var(--cyan)'}].map(s=>`<div style="text-align:center"><div class="hstat-v" style="color:${s.c}">${s.v}</div><div class="hstat-l">${s.l}</div></div>`).join('')}
+          ${[{v:calls,l:'Calls',c:calls<5?'var(--red)':'var(--blue)'},{v:rate+'%',l:'Rate',c:rc},{v:mtgs,l:'Meetings',c:'var(--purple)'},{v:fmt(r.pipeAmt||0),l:'Pipeline',c:'var(--cyan)'}].map(s=>`<div style="text-align:center"><div class="hstat-v" style="color:${s.c}">${s.v}</div><div class="hstat-l">${s.l}</div></div>`).join('')}
         </div>
       </div>
       <div class="stat-chips">
         ${[{v:calls,l:'Calls Yesterday',c:calls<5?'var(--red)':'var(--blue)'},{v:rate+'%',l:'Connection Rate',c:rc},{v:mtgs,l:'Meetings Yesterday',c:'var(--purple)'},{v:r.openDeals||0,l:'Open Deals',c:'var(--amber)'}].map(s=>`<div class="schip" style="--sc2:${s.c}"><div class="schip-accent"></div><div class="schip-v">${s.v}</div><div class="schip-l">${s.l}</div></div>`).join('')}
       </div>
       <div class="card" style="margin-bottom:14px">
-        <div class="card-hd"><div class="card-title"><div class="card-title-icon" style="background:var(--purple-bg)">⚡</div> AI Coaching</div><span class="badge bp">${needsAtt.length} deals</span></div>
+        <div class="card-hd"><div class="card-title"><div class="card-title-icon" style="background:var(--purple-bg)">⚡</div>AI Coaching</div><span class="badge bp">${needsAtt.length} deals</span></div>
         <div style="padding:12px 14px">
-          ${needsAtt.length===0
-            ?`<div style="padding:10px 12px;background:var(--green-bg);border-radius:var(--r-sm);border-left:3px solid var(--green);font-size:11px;font-weight:600;color:var(--green)">✅ All deals have next activity scheduled</div>`
-            :needsAtt.map(item=>`<div style="padding:10px 12px;margin-bottom:8px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-sm);border-left:3px solid var(--amber)">
-                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px">
-                  <span style="font-weight:600;font-size:11px">📋 ${item.name}</span>
-                  <span style="font-family:var(--mono);font-size:10px;color:var(--muted)">${fmt(item.amount||0)}</span>
-                </div>
-                ${(item.reasons||[]).map(reason=>`<div style="font-size:10px;color:var(--amber);font-weight:600">⚠️ ${reason}</div>`).join('')}
-              </div>`).join('')}
+          ${needsAtt.length===0?`<div style="padding:10px 12px;background:var(--green-bg);border-radius:var(--r-sm);border-left:3px solid var(--green);font-size:11px;font-weight:600;color:var(--green)">✅ All deals have next activity scheduled</div>`
+            :needsAtt.map(item=>`<div style="padding:10px 12px;margin-bottom:8px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-sm);border-left:3px solid var(--amber)"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px"><span style="font-weight:600;font-size:11px">📋 ${item.name}</span><span style="font-family:var(--mono);font-size:10px;color:var(--muted)">${fmt(item.amount||0)}</span></div>${(item.reasons||[]).map(reason=>`<div style="font-size:10px;color:var(--amber);font-weight:600">⚠️ ${reason}</div>`).join('')}</div>`).join('')}
         </div>
       </div>
       <div class="g2">
         <div class="card" style="margin-bottom:0">
-          <div class="card-hd"><div class="card-title"><div class="card-title-icon" style="background:var(--blue-bg)">💼</div> Open Deals</div><span class="badge bb">${r.openDeals||0} · ${fmt(r.pipeAmt||r.pipelineAmt||0)}</span></div>
-          <div style="overflow-x:auto">
-            <table class="tbl"><thead><tr><th>Deal</th><th>Stage</th><th class="c">Value</th><th class="c">Next Activity</th></tr></thead>
-            <tbody>
-              ${repShow.map(dl=>`<tr>
-                <td style="font-weight:600;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${dl.name}</td>
-                <td><span class="badge bb">${dl.stage||''}</span></td>
-                <td class="c"><span style="font-family:var(--mono);font-weight:500">$${(dl.amount||0).toLocaleString()}</span></td>
-                <td class="c">${dl.nextActivity?`<span style="color:var(--green);font-size:11px;font-weight:600">${dl.nextActivity}</span>`:'<span style="color:var(--red);font-size:11px;font-weight:600">🚩 None</span>'}</td>
-              </tr>`).join('')}
-              <tbody id="${rdid}-more" style="display:none">
-                ${repRest.map(dl=>`<tr>
-                  <td style="font-weight:600;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${dl.name}</td>
-                  <td><span class="badge bb">${dl.stage||''}</span></td>
-                  <td class="c"><span style="font-family:var(--mono);font-weight:500">$${(dl.amount||0).toLocaleString()}</span></td>
-                  <td class="c">${dl.nextActivity?`<span style="color:var(--green);font-size:11px;font-weight:600">${dl.nextActivity}</span>`:'<span style="color:var(--red);font-size:11px;font-weight:600">🚩 None</span>'}</td>
-                </tr>`).join('')}
-              </tbody>
-            </tbody></table>
-          </div>
+          <div class="card-hd"><div class="card-title"><div class="card-title-icon" style="background:var(--blue-bg)">💼</div>Open Deals</div><span class="badge bb">${r.openDeals||0} · ${fmt(r.pipeAmt||0)}</span></div>
+          <div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Deal</th><th>Stage</th><th class="c">Value</th><th class="c">Next Activity</th></tr></thead>
+          <tbody>${repShow.map(dl=>`<tr><td style="font-weight:600;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${dl.name}</td><td><span class="badge bb">${dl.stage||''}</span></td><td class="c"><span style="font-family:var(--mono);font-weight:500">$${(dl.amount||0).toLocaleString()}</span></td><td class="c">${dl.nextActivity?`<span style="color:var(--green);font-size:11px;font-weight:600">${dl.nextActivity}</span>`:'<span style="color:var(--red);font-size:11px;font-weight:600">🚩 None</span>'}</td></tr>`).join('')}</tbody>
+          <tbody id="${rdid}-more" style="display:none">${repRest.map(dl=>`<tr><td style="font-weight:600;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${dl.name}</td><td><span class="badge bb">${dl.stage||''}</span></td><td class="c"><span style="font-family:var(--mono);font-weight:500">$${(dl.amount||0).toLocaleString()}</span></td><td class="c">${dl.nextActivity?`<span style="color:var(--green);font-size:11px;font-weight:600">${dl.nextActivity}</span>`:'<span style="color:var(--red);font-size:11px;font-weight:600">🚩 None</span>'}</td></tr>`).join('')}</tbody>
+          </table></div>
           ${repRest.length>0?`<button class="see-more" onclick="toggleMore('${rdid}-more',this,'▼ ${repRest.length} more deals','▲ Show less')">▼ ${repRest.length} more deals</button>`:''}
         </div>
         <div class="card" style="margin-bottom:0">
-          <div class="card-hd"><div class="card-title"><div class="card-title-icon" style="background:var(--red-bg)">🎯</div> Rank A/B</div><div style="display:flex;gap:5px"><span class="rank-a">${r.rankA||0}A</span><span class="rank-b">${r.rankB||0}B</span></div></div>
+          <div class="card-hd"><div class="card-title"><div class="card-title-icon" style="background:var(--red-bg)">🎯</div>Rank A/B</div><div style="display:flex;gap:5px"><span class="rank-a">${r.rankA||0}A</span><span class="rank-b">${r.rankB||0}B</span></div></div>
           <div style="padding:12px 18px">
-            <div style="font-size:9px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px">RANK A — ${r.rankA||0} accounts</div>
-            <div style="font-size:9px;font-weight:700;color:var(--amber);text-transform:uppercase;letter-spacing:0.1em;margin-top:12px;margin-bottom:6px">RANK B — ${r.rankB||0} accounts</div>
+            <div style="font-size:9px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px">RANK A — ${r.rankA||0} accounts</div>
+            <div style="font-size:9px;font-weight:700;color:var(--amber);text-transform:uppercase;letter-spacing:.1em;margin-top:12px;margin-bottom:6px">RANK B — ${r.rankB||0} accounts</div>
           </div>
         </div>
       </div>
-      ${stuck.length>0?`<div class="card" style="margin-top:14px">
-        <div class="card-hd" style="border-left:3px solid var(--red)"><div class="card-title" style="color:var(--red)">🔴 Stuck Deals (&gt;14 days)</div><span class="badge br">${stuck.length}</span></div>
-        <table class="tbl"><thead><tr><th>Deal</th><th class="c">Days Stuck</th><th class="c">Amount</th></tr></thead>
-        <tbody>${stuck.map(s=>`<tr><td style="font-weight:600">${s.name}</td><td class="c"><span style="font-weight:700;color:var(--red);font-family:var(--mono)">${s.days}d</span></td><td class="c"><span style="font-family:var(--mono)">${fmt(s.amount||0)}</span></td></tr>`).join('')}</tbody></table>
-      </div>`:''}
+      ${stuck.length>0?`<div class="card" style="margin-top:14px"><div class="card-hd" style="border-left:3px solid var(--red)"><div class="card-title" style="color:var(--red)">🔴 Stuck Deals (&gt;14 days)</div><span class="badge br">${stuck.length}</span></div><table class="tbl"><thead><tr><th>Deal</th><th class="c">Days Stuck</th><th class="c">Amount</th></tr></thead><tbody>${stuck.map(s=>`<tr><td style="font-weight:600">${s.name}</td><td class="c"><span style="font-weight:700;color:var(--red);font-family:var(--mono)">${s.days}d</span></td><td class="c"><span style="font-family:var(--mono)">${fmt(s.amount||0)}</span></td></tr>`).join('')}</tbody></table></div>`:''}
       <div class="card" style="margin-top:14px">
-        <div class="card-hd"><div class="card-title"><div class="card-title-icon" style="background:var(--green-bg)">🎯</div> Leads · ${r.name}</div></div>
+        <div class="card-hd"><div class="card-title"><div class="card-title-icon" style="background:var(--green-bg)">🎯</div>Leads · ${r.name}</div></div>
         <div class="leads-period-grid">
-          ${[{v:r.leadsYest||0,inb:r.leadsYestInbound||0,out:r.leadsYestOutbound||0,l:'Yesterday',c:'var(--blue)'},
-             {v:r.leadsMTD||0,inb:r.leadsMTDInbound||0,out:r.leadsMTDOutbound||0,l:'MTD',c:'var(--green)'},
-             {v:r.leadsYTD||0,inb:r.leadsYTDInbound||0,out:r.leadsYTDOutbound||0,l:'YTD',c:'var(--purple)'}
-          ].map(s=>`<div class="lperiod">
-            <div class="lperiod-label">${s.l}</div>
-            <div class="lperiod-val" style="color:${s.c}">${s.v}</div>
-            <div class="lperiod-row">
-              <span class="lperiod-in" style="color:var(--blue)">↓${s.inb} in</span>
-              <span class="lperiod-out" style="color:var(--amber)">↑${s.out} out</span>
-            </div>
-          </div>`).join('')}
+          ${[{v:r.leadsYest||0,inb:r.leadsYestInbound||0,out:r.leadsYestOutbound||0,l:'Yesterday',c:'var(--blue)'},{v:r.leadsMTD||0,inb:r.leadsMTDInbound||0,out:r.leadsMTDOutbound||0,l:'MTD',c:'var(--green)'},{v:r.leadsYTD||0,inb:r.leadsYTDInbound||0,out:r.leadsYTDOutbound||0,l:'YTD',c:'var(--purple)'}].map(s=>`<div class="lperiod"><div class="lperiod-label">${s.l}</div><div class="lperiod-val" style="color:${s.c}">${s.v}</div><div class="lperiod-row"><span class="lperiod-in" style="color:var(--blue)">↓${s.inb} in</span><span class="lperiod-out" style="color:var(--amber)">↑${s.out} out</span></div></div>`).join('')}
         </div>
       </div>`;
     rpnl.appendChild(panel);
@@ -723,8 +842,7 @@ function render(){
 }
 
 function updateClock(){
-  const now=new Date();
-  const riyadh=new Date(now.toLocaleString('en-US',{timeZone:'Asia/Riyadh'}));
+  const now=new Date(),riyadh=new Date(now.toLocaleString('en-US',{timeZone:'Asia/Riyadh'}));
   if($('topbarSub')&&D)$('topbarSub').textContent=`${riyadh.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'})} Riyadh · Auto-refresh 5min`;
 }
 setInterval(updateClock,60000);
