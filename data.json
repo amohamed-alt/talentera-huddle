@@ -1,7 +1,7 @@
 {
   "meta": {
     "yesterdayLabel": "Monday, 20 Apr 2026",
-    "generatedAt": "09:29 PM"
+    "generatedAt": "10:10 PM"
   },
   "kpi": {
     "yesterday": {
@@ -174,7 +174,7 @@
         },
         {
           "name": "Prunelle- New Deal",
-          "days": 26,
+          "days": 27,
           "amount": 5000
         },
         {
@@ -230,7 +230,7 @@
           "name": "Prunelle- New Deal",
           "amount": 5000,
           "reasons": [
-            "No activity for 26 days"
+            "No activity for 27 days"
           ]
         },
         {
