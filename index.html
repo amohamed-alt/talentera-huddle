@@ -389,13 +389,7 @@ body{font-family:var(--font);background:var(--page-bg);color:var(--text);-webkit
             </div>
           </div>
 
-          <div class="card" style="margin-top:14px">
-            <div class="card-hd">
-              <div class="card-title"><div class="card-title-icon" style="background:var(--surface2)">🌍</div>Market News & Events</div>
-              <span style="font-size:10px;color:var(--muted);font-weight:500">HR · Middle East · Daily</span>
-            </div>
-            <div id="newsContainer"></div>
-          </div>
+
         </div>
         <div id="repPanels"></div>
       </div>
@@ -753,8 +747,7 @@ function render(){
   }
   $id('lostContainer').innerHTML=lostHTML;
 
-  // ── Market News ───────────────────────────────────────────
-  renderNews(D.marketNews || []);
+
 
   const tabs=$id('tabsBar'),rpnl=$id('repPanels'),sideLinks=$id('sideRepLinks');
   rpnl.innerHTML='';sideLinks.innerHTML='';
@@ -894,11 +887,7 @@ function render(){
   });
 }
 
-function renderNews(news){
-  $id('newsContainer').innerHTML=news.length>0
-    ?news.map(n=>`<div class="news-item"><span class="news-icon">${n.icon||'📰'}</span><div style="flex:1"><div class="news-meta"><span class="badge" style="background:${n.color||'#ccc'}20;color:${n.color||'#999'}">${n.tag||''}</span><span style="font-size:9px;color:var(--muted);font-weight:600">${n.source||''}</span></div><div class="news-text">${n.text||''}</div></div></div>`).join('')
-    :`<div style="padding:18px;text-align:center;color:var(--muted);font-size:12px">No news available</div>`;
-}
+
 
 function updateClock(){
   const now=new Date(),riyadh=new Date(now.toLocaleString('en-US',{timeZone:'Asia/Riyadh'}));
