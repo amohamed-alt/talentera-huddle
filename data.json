@@ -1,7 +1,7 @@
 {
   "meta": {
     "yesterdayLabel": "Monday, 20 Apr 2026",
-    "generatedAt": "03:35 PM"
+    "generatedAt": "06:40 PM"
   },
   "kpi": {
     "yesterday": {
@@ -10,8 +10,8 @@
       "connRate": 33,
       "meetings": 8,
       "openDeals": 3,
-      "openDealsSnap": 271,
-      "pipeline": 5000238.94100338,
+      "openDealsSnap": 268,
+      "pipeline": 4982088.94100338,
       "leads": 6,
       "wonAmt": 50006.25,
       "wonDeals": 1,
@@ -19,67 +19,67 @@
       "lostAmt": 22700
     },
     "mtd": {
-      "calls": 1508,
-      "connected": 599,
+      "calls": 1531,
+      "connected": 606,
       "connRate": 40,
-      "meetings": 113,
+      "meetings": 115,
       "openDeals": 46,
-      "openDealsSnap": 271,
-      "pipeline": 5000238.94100338,
-      "leads": 565,
+      "openDealsSnap": 268,
+      "pipeline": 4982088.94100338,
+      "leads": 569,
       "wonAmt": 50006.25,
       "wonDeals": 1,
-      "lost": 26,
-      "lostAmt": 1170192.72
+      "lost": 29,
+      "lostAmt": 1188342.72
     },
     "ytd": {
-      "calls": 4745,
-      "connected": 1805,
+      "calls": 4768,
+      "connected": 1812,
       "connRate": 38,
-      "meetings": 637,
+      "meetings": 639,
       "openDeals": 570,
-      "openDealsSnap": 271,
-      "pipeline": 5000238.94100338,
-      "leads": 1163,
+      "openDealsSnap": 268,
+      "pipeline": 4982088.94100338,
+      "leads": 1167,
       "wonAmt": 92211.25,
       "wonDeals": 5,
-      "lost": 77,
-      "lostAmt": 1488948.72
+      "lost": 80,
+      "lostAmt": 1507098.72
     }
   },
   "team": {
     "callsYest": 89,
     "callsConn": 29,
-    "callsMTD": 1508,
-    "callsMTDConn": 599,
-    "callsYTD": 4745,
-    "callsYTDConn": 1805,
+    "callsMTD": 1531,
+    "callsMTDConn": 606,
+    "callsYTD": 4768,
+    "callsYTDConn": 1812,
     "meetings": 8,
-    "meetingsMTD": 113,
-    "meetingsYTD": 637,
-    "openDeals": 271,
-    "pipeline": 5000238.94100338,
+    "meetingsMTD": 115,
+    "meetingsYTD": 639,
+    "openDeals": 268,
+    "pipeline": 4982088.94100338,
     "won": 1,
     "wonAmt": 50006.25,
     "wonYest": 1,
     "wonAmtYest": 50006.25,
     "wonYTD": 5,
     "wonAmtYTD": 92211.25,
-    "lost": 26,
-    "lostAmt": 1170192.72,
+    "lost": 29,
+    "lostAmt": 1188342.72,
     "lostYest": 4,
     "lostAmtYest": 22700,
-    "lostYTD": 77,
-    "lostAmtYTD": 1488948.72,
+    "lostYTD": 80,
+    "lostAmtYTD": 1507098.72,
     "leadsYest": 6,
     "leadsYestInbound": 2,
     "leadsYestOutbound": 4,
-    "leadsMTD": 565,
+    "leadsMTD": 569,
     "leadsMTDInbound": 35,
-    "leadsMTDOutbound": 530,
-    "leadsYTD": 1163,
+    "leadsMTDOutbound": 534,
+    "leadsYTD": 1167,
     "leadsYTDInbound": 191,
-    "leadsYTDOutbound": 972,
+    "leadsYTDOutbound": 976,
     "connRateYest": 33,
     "connRateMTD": 40,
     "connRateYTD": 38
@@ -92,10 +92,10 @@
       "calls": {
         "yest": 59,
         "yestConn": 15,
-        "mtd": 637,
-        "mtdConn": 173,
-        "ytd": 2570,
-        "ytdConn": 777
+        "mtd": 648,
+        "mtdConn": 175,
+        "ytd": 2581,
+        "ytdConn": 779
       },
       "connRateYest": 25,
       "connRateMTD": 27,
@@ -144,7 +144,7 @@
       "cold": [
         {
           "name": "IssaHolding - New Deal",
-          "days": 55,
+          "days": 56,
           "amount": 24836
         },
         {
@@ -169,7 +169,7 @@
         },
         {
           "name": "District Company- New Deal",
-          "days": 25,
+          "days": 26,
           "amount": 0
         },
         {
@@ -179,7 +179,7 @@
         },
         {
           "name": "Hallab 1881 - New Deal",
-          "days": 15,
+          "days": 16,
           "amount": 5850
         }
       ],
@@ -188,7 +188,7 @@
           "name": "IssaHolding - New Deal",
           "amount": 24836,
           "reasons": [
-            "No activity for 55 days"
+            "No activity for 56 days"
           ]
         },
         {
@@ -223,7 +223,7 @@
           "name": "District Company- New Deal",
           "amount": 0,
           "reasons": [
-            "No activity for 25 days"
+            "No activity for 26 days"
           ]
         },
         {
@@ -237,19 +237,19 @@
           "name": "Hallab 1881 - New Deal",
           "amount": 5850,
           "reasons": [
-            "No activity for 15 days"
+            "No activity for 16 days"
           ]
         }
       ],
       "leadsYest": 1,
       "leadsYestInbound": 1,
       "leadsYestOutbound": 0,
-      "leadsMTD": 33,
+      "leadsMTD": 34,
       "leadsMTDInbound": 6,
-      "leadsMTDOutbound": 27,
-      "leadsYTD": 362,
+      "leadsMTDOutbound": 28,
+      "leadsYTD": 363,
       "leadsYTDInbound": 17,
-      "leadsYTDOutbound": 345,
+      "leadsYTDOutbound": 346,
       "topDeals": [
         {
           "name": "SHBC Mechanical Engineering - New Deal",
@@ -350,8 +350,8 @@
       "connRateYTD": 67,
       "meetings": {
         "yest": 1,
-        "mtd": 37,
-        "ytd": 94
+        "mtd": 38,
+        "ytd": 95
       },
       "openDeals": 113,
       "pipeAmt": 1427350.7810500003,
@@ -469,7 +469,7 @@
       "cold": [
         {
           "name": "Green building solutions company | Abdullah Alsughaier | ",
-          "days": 15,
+          "days": 16,
           "amount": 0
         },
         {
@@ -514,7 +514,7 @@
         },
         {
           "name": "Al Jazeera Paints Limited - New Deal",
-          "days": 85,
+          "days": 86,
           "amount": 15000
         },
         {
@@ -584,7 +584,7 @@
         },
         {
           "name": "تالنت سكوير - New Deal",
-          "days": 229,
+          "days": 230,
           "amount": 0
         },
         {
@@ -629,7 +629,7 @@
         },
         {
           "name": "SSC Company",
-          "days": 139,
+          "days": 140,
           "amount": 12000
         },
         {
@@ -814,7 +814,7 @@
         },
         {
           "name": "CLA - New Deal",
-          "days": 77,
+          "days": 78,
           "amount": 3300
         },
         {
@@ -833,7 +833,7 @@
           "name": "Green building solutions company | Abdullah Alsughaier | ",
           "amount": 0,
           "reasons": [
-            "No activity for 15 days"
+            "No activity for 16 days"
           ]
         },
         {
@@ -896,7 +896,7 @@
           "name": "Al Jazeera Paints Limited - New Deal",
           "amount": 15000,
           "reasons": [
-            "No activity for 85 days"
+            "No activity for 86 days"
           ]
         },
         {
@@ -994,7 +994,7 @@
           "name": "تالنت سكوير - New Deal",
           "amount": 0,
           "reasons": [
-            "No activity for 229 days"
+            "No activity for 230 days"
           ]
         },
         {
@@ -1057,7 +1057,7 @@
           "name": "SSC Company",
           "amount": 12000,
           "reasons": [
-            "No activity for 139 days"
+            "No activity for 140 days"
           ]
         },
         {
@@ -1316,7 +1316,7 @@
           "name": "CLA - New Deal",
           "amount": 3300,
           "reasons": [
-            "No activity for 77 days"
+            "No activity for 78 days"
           ]
         },
         {
@@ -1433,33 +1433,33 @@
       "calls": {
         "yest": 15,
         "yestConn": 5,
-        "mtd": 318,
-        "mtdConn": 136,
-        "ytd": 1056,
-        "ytdConn": 441
+        "mtd": 325,
+        "mtdConn": 137,
+        "ytd": 1063,
+        "ytdConn": 442
       },
       "connRateYest": 33,
-      "connRateMTD": 43,
+      "connRateMTD": 42,
       "connRateYTD": 42,
       "meetings": {
         "yest": 4,
         "mtd": 46,
         "ytd": 269
       },
-      "openDeals": 106,
-      "pipeAmt": 1148137.5521997998,
+      "openDeals": 103,
+      "pipeAmt": 1129987.5521997998,
       "won": 0,
       "wonAmt": 0,
       "wonYest": 0,
       "wonAmtYest": 0,
       "wonYTD": 3,
       "wonAmtYTD": 40205,
-      "lost": 24,
-      "lostAmt": 1165992.72,
+      "lost": 27,
+      "lostAmt": 1184142.72,
       "lostYest": 3,
       "lostAmtYest": 20500,
-      "lostYTD": 66,
-      "lostAmtYTD": 1440311.72,
+      "lostYTD": 69,
+      "lostAmtYTD": 1458461.72,
       "rankA": 31,
       "rankAContacted": 31,
       "rankANotContacted": 0,
@@ -1531,12 +1531,12 @@
         },
         {
           "name": "Salam Technology - New Deal",
-          "days": 169,
+          "days": 170,
           "amount": 15000
         },
         {
           "name": "Emirates Stallions Group -",
-          "days": 83,
+          "days": 84,
           "amount": 20000
         },
         {
@@ -1551,7 +1551,7 @@
         },
         {
           "name": "Commercial Bank of Kuwait - Renewal",
-          "days": 274,
+          "days": 275,
           "amount": 9315
         },
         {
@@ -1571,8 +1571,13 @@
         },
         {
           "name": "Abwaab - New Deal",
-          "days": 161,
+          "days": 162,
           "amount": 21200
+        },
+        {
+          "name": "Agrimatco - New Deal",
+          "days": 26,
+          "amount": 7500
         },
         {
           "name": "Fine Hygienic Holding - Jordan - New Deal",
@@ -1611,12 +1616,12 @@
         },
         {
           "name": "Maven Workforce - New Deal",
-          "days": 166,
+          "days": 167,
           "amount": 3000
         },
         {
           "name": "EtihadWE - New Deal",
-          "days": 25,
+          "days": 26,
           "amount": 5075.92
         },
         {
@@ -1692,14 +1697,14 @@
           "name": "Salam Technology - New Deal",
           "amount": 15000,
           "reasons": [
-            "No activity for 169 days"
+            "No activity for 170 days"
           ]
         },
         {
           "name": "Emirates Stallions Group -",
           "amount": 20000,
           "reasons": [
-            "No activity for 83 days"
+            "No activity for 84 days"
           ]
         },
         {
@@ -1720,7 +1725,7 @@
           "name": "Commercial Bank of Kuwait - Renewal",
           "amount": 9315,
           "reasons": [
-            "No activity for 274 days"
+            "No activity for 275 days"
           ]
         },
         {
@@ -1748,7 +1753,14 @@
           "name": "Abwaab - New Deal",
           "amount": 21200,
           "reasons": [
-            "No activity for 161 days"
+            "No activity for 162 days"
+          ]
+        },
+        {
+          "name": "Agrimatco - New Deal",
+          "amount": 7500,
+          "reasons": [
+            "No activity for 26 days"
           ]
         },
         {
@@ -1804,14 +1816,14 @@
           "name": "Maven Workforce - New Deal",
           "amount": 3000,
           "reasons": [
-            "No activity for 166 days"
+            "No activity for 167 days"
           ]
         },
         {
           "name": "EtihadWE - New Deal",
           "amount": 5075.92,
           "reasons": [
-            "No activity for 25 days"
+            "No activity for 26 days"
           ]
         },
         {
@@ -1853,12 +1865,12 @@
       "leadsYest": 2,
       "leadsYestInbound": 0,
       "leadsYestOutbound": 2,
-      "leadsMTD": 79,
+      "leadsMTD": 82,
       "leadsMTDInbound": 9,
-      "leadsMTDOutbound": 70,
-      "leadsYTD": 214,
+      "leadsMTDOutbound": 73,
+      "leadsYTD": 217,
       "leadsYTDInbound": 80,
-      "leadsYTDOutbound": 134,
+      "leadsYTDOutbound": 137,
       "topDeals": [
         {
           "name": "Khalifa University - New Deal",
@@ -1949,18 +1961,18 @@
       "calls": {
         "yest": 8,
         "yestConn": 5,
-        "mtd": 263,
-        "mtdConn": 145,
-        "ytd": 465,
-        "ytdConn": 251
+        "mtd": 264,
+        "mtdConn": 146,
+        "ytd": 466,
+        "ytdConn": 252
       },
       "connRateYest": 63,
       "connRateMTD": 55,
       "connRateYTD": 54,
       "meetings": {
         "yest": 2,
-        "mtd": 7,
-        "ytd": 16
+        "mtd": 8,
+        "ytd": 17
       },
       "openDeals": 2,
       "pipeAmt": 50000,
@@ -2022,13 +2034,13 @@
       "calls": {
         "yest": 0,
         "yestConn": 0,
-        "mtd": 227,
-        "mtdConn": 101,
-        "ytd": 448,
-        "ytdConn": 191
+        "mtd": 231,
+        "mtdConn": 104,
+        "ytd": 452,
+        "ytdConn": 194
       },
       "connRateYest": 0,
-      "connRateMTD": 44,
+      "connRateMTD": 45,
       "connRateYTD": 43,
       "meetings": {
         "yest": 0,
@@ -2176,7 +2188,7 @@
         },
         {
           "name": "Al Majal Group - New Deal",
-          "days": 249,
+          "days": 250,
           "amount": 66930
         },
         {
@@ -2186,7 +2198,7 @@
         },
         {
           "name": "MBC Media Solutions - New Deal",
-          "days": 231,
+          "days": 232,
           "amount": 105013.1336425809
         },
         {
@@ -2201,7 +2213,7 @@
         },
         {
           "name": "شركة القمة المتقدمة المحدودة - New Deal",
-          "days": 253,
+          "days": 254,
           "amount": 0
         },
         {
@@ -2236,7 +2248,7 @@
         },
         {
           "name": "ACWA Power - TALENTERA ENTERPEISE - ATS ",
-          "days": 42,
+          "days": 43,
           "amount": 368000
         },
         {
@@ -2251,7 +2263,7 @@
         },
         {
           "name": "Umm Alqura",
-          "days": 48,
+          "days": 49,
           "amount": 24891.999111
         },
         {
@@ -2291,7 +2303,7 @@
           "name": "Al Majal Group - New Deal",
           "amount": 66930,
           "reasons": [
-            "No activity for 249 days"
+            "No activity for 250 days"
           ]
         },
         {
@@ -2305,7 +2317,7 @@
           "name": "MBC Media Solutions - New Deal",
           "amount": 105013.1336425809,
           "reasons": [
-            "No activity for 231 days"
+            "No activity for 232 days"
           ]
         },
         {
@@ -2326,7 +2338,7 @@
           "name": "شركة القمة المتقدمة المحدودة - New Deal",
           "amount": 0,
           "reasons": [
-            "No activity for 253 days"
+            "No activity for 254 days"
           ]
         },
         {
@@ -2375,7 +2387,7 @@
           "name": "ACWA Power - TALENTERA ENTERPEISE - ATS ",
           "amount": 368000,
           "reasons": [
-            "No activity for 42 days"
+            "No activity for 43 days"
           ]
         },
         {
@@ -2396,7 +2408,7 @@
           "name": "Umm Alqura",
           "amount": 24891.999111,
           "reasons": [
-            "No activity for 48 days"
+            "No activity for 49 days"
           ]
         },
         {
@@ -2535,8 +2547,8 @@
     {
       "id": "4571370698",
       "label": "Quotation Sent",
-      "count": 107,
-      "amount": 1182209.0742748
+      "count": 104,
+      "amount": 1164059.0742748
     },
     {
       "id": "presentationscheduled",
@@ -2565,8 +2577,8 @@
     {
       "id": "closedlost",
       "label": "Closed Lost",
-      "count": 186,
-      "amount": 3408259.2051196606
+      "count": 189,
+      "amount": 3426409.2051196606
     }
   ],
   "autoRecs": [
@@ -2580,11 +2592,11 @@
     },
     {
       "type": "red",
-      "text": "131 cold deals (no activity 14+ days) — re-engage before they go dark."
+      "text": "132 cold deals (no activity 14+ days) — re-engage before they go dark."
     },
     {
       "type": "red",
-      "text": "131 deals have no next activity scheduled — reps must log next steps immediately."
+      "text": "132 deals have no next activity scheduled — reps must log next steps immediately."
     },
     {
       "type": "green",
@@ -2592,7 +2604,7 @@
     },
     {
       "type": "green",
-      "text": "MTD call pace: 72/day avg ✓"
+      "text": "MTD call pace: 73/day avg ✓"
     },
     {
       "type": "green",
@@ -2608,7 +2620,7 @@
     },
     {
       "type": "red",
-      "text": "26 deals lost MTD — run win/loss analysis."
+      "text": "29 deals lost MTD — run win/loss analysis."
     }
   ],
   "rankTotals": {
@@ -2619,8 +2631,7 @@
     "BContacted": 553,
     "BNotContacted": 29,
     "AB": 736,
-    "total": 2411,
-    "_sampleCompanyKeys": "hubspot_owner_id,rank"
+    "total": 2412
   },
   "topInactiveRankAccounts": [
     {
@@ -2721,6 +2732,7 @@
       "amount": 14000,
       "rep": "Ursula Waked",
       "repColor": "#be185d",
+      "reason": "Timing and Project Issues",
       "closedate": "2026-04-19",
       "period": "mtd"
     },
@@ -2729,6 +2741,7 @@
       "amount": 4500,
       "rep": "Ursula Waked",
       "repColor": "#be185d",
+      "reason": "Timing and Project Issues",
       "closedate": "2026-04-12",
       "period": "mtd"
     },
@@ -2737,6 +2750,7 @@
       "amount": 7100,
       "rep": "Ursula Waked",
       "repColor": "#be185d",
+      "reason": "Timing and Project Issues",
       "closedate": "2026-04-12",
       "period": "mtd"
     },
@@ -2745,6 +2759,7 @@
       "amount": 13500,
       "rep": "Ursula Waked",
       "repColor": "#be185d",
+      "reason": "Lead Profile Issues",
       "closedate": "2026-04-20",
       "period": "yesterday"
     },
@@ -2753,6 +2768,7 @@
       "amount": 16000,
       "rep": "Ursula Waked",
       "repColor": "#be185d",
+      "reason": "Timing and Project Issues",
       "closedate": "2026-04-12",
       "period": "mtd"
     },
@@ -2761,6 +2777,7 @@
       "amount": 3500,
       "rep": "Ursula Waked",
       "repColor": "#be185d",
+      "reason": "Unresponsive",
       "closedate": "2026-04-21",
       "period": "mtd"
     },
@@ -2769,6 +2786,7 @@
       "amount": 15000,
       "rep": "Ursula Waked",
       "repColor": "#be185d",
+      "reason": "Timing and Project Issues",
       "closedate": "2026-04-13",
       "period": "mtd"
     },
@@ -2777,7 +2795,17 @@
       "amount": 9500,
       "rep": "Ursula Waked",
       "repColor": "#be185d",
+      "reason": "Unresponsive",
       "closedate": "2026-04-15",
+      "period": "mtd"
+    },
+    {
+      "name": "CXG - Evalufy Pro Proposal",
+      "amount": 3350,
+      "rep": "Ursula Waked",
+      "repColor": "#be185d",
+      "reason": "Unresponsive",
+      "closedate": "2026-04-21",
       "period": "mtd"
     },
     {
@@ -2785,7 +2813,17 @@
       "amount": 27793.22,
       "rep": "Ursula Waked",
       "repColor": "#be185d",
+      "reason": "Timing and Project Issues",
       "closedate": "2026-04-02",
+      "period": "mtd"
+    },
+    {
+      "name": "We Buy Any House ",
+      "amount": 10200,
+      "rep": "Ursula Waked",
+      "repColor": "#be185d",
+      "reason": "Unresponsive",
+      "closedate": "2026-04-21",
       "period": "mtd"
     },
     {
@@ -2793,6 +2831,7 @@
       "amount": 24300,
       "rep": "Ursula Waked",
       "repColor": "#be185d",
+      "reason": "Timing and Project Issues",
       "closedate": "2026-04-16",
       "period": "mtd"
     },
@@ -2801,6 +2840,7 @@
       "amount": 8000,
       "rep": "Ursula Waked",
       "repColor": "#be185d",
+      "reason": "Contact-ability Issues",
       "closedate": "2026-04-15",
       "period": "mtd"
     },
@@ -2809,6 +2849,7 @@
       "amount": 12337,
       "rep": "Ursula Waked",
       "repColor": "#be185d",
+      "reason": "Other",
       "closedate": "2026-04-12",
       "period": "mtd"
     },
@@ -2817,6 +2858,7 @@
       "amount": 4500,
       "rep": "Ursula Waked",
       "repColor": "#be185d",
+      "reason": "Unresponsive",
       "closedate": "2026-04-20",
       "period": "yesterday"
     },
@@ -2825,6 +2867,7 @@
       "amount": 3750,
       "rep": "Ursula Waked",
       "repColor": "#be185d",
+      "reason": "Timing and Project Issues",
       "closedate": "2026-04-06",
       "period": "mtd"
     },
@@ -2833,6 +2876,7 @@
       "amount": 2000,
       "rep": "Marita Chedid",
       "repColor": "#7c3aed",
+      "reason": "Lead Profile Issues",
       "closedate": "2026-04-07",
       "period": "mtd"
     },
@@ -2841,6 +2885,7 @@
       "amount": 5000,
       "rep": "Ursula Waked",
       "repColor": "#be185d",
+      "reason": "Timing and Project Issues",
       "closedate": "2026-04-15",
       "period": "mtd"
     },
@@ -2849,6 +2894,7 @@
       "amount": 20412.5,
       "rep": "Ursula Waked",
       "repColor": "#be185d",
+      "reason": "Timing and Project Issues",
       "closedate": "2026-04-07",
       "period": "mtd"
     },
@@ -2857,6 +2903,7 @@
       "amount": 2200,
       "rep": "Marita Chedid",
       "repColor": "#7c3aed",
+      "reason": "Lead Profile Issues",
       "closedate": "2026-04-20",
       "period": "yesterday"
     },
@@ -2865,6 +2912,16 @@
       "amount": 4300,
       "rep": "Ursula Waked",
       "repColor": "#be185d",
+      "reason": "Unresponsive",
+      "closedate": "2026-04-21",
+      "period": "mtd"
+    },
+    {
+      "name": "New Grand Career Solutions- New Deal",
+      "amount": 4600,
+      "rep": "Ursula Waked",
+      "repColor": "#be185d",
+      "reason": "Unresponsive",
       "closedate": "2026-04-21",
       "period": "mtd"
     },
@@ -2873,6 +2930,7 @@
       "amount": 7500,
       "rep": "Ursula Waked",
       "repColor": "#be185d",
+      "reason": "Unresponsive",
       "closedate": "2026-04-06",
       "period": "mtd"
     },
@@ -2881,6 +2939,7 @@
       "amount": 2500,
       "rep": "Ursula Waked",
       "repColor": "#be185d",
+      "reason": "Unresponsive",
       "closedate": "2026-04-20",
       "period": "yesterday"
     },
@@ -2889,6 +2948,7 @@
       "amount": 4000,
       "rep": "Ursula Waked",
       "repColor": "#be185d",
+      "reason": "Lead Profile Issues",
       "closedate": "2026-04-06",
       "period": "mtd"
     },
@@ -2897,6 +2957,7 @@
       "amount": 0,
       "rep": "Ursula Waked",
       "repColor": "#be185d",
+      "reason": "Contact-ability Issues",
       "closedate": "2026-04-12",
       "period": "mtd"
     },
@@ -2905,6 +2966,7 @@
       "amount": 950000,
       "rep": "Ursula Waked",
       "repColor": "#be185d",
+      "reason": "Contact-ability Issues",
       "closedate": "2026-04-06",
       "period": "mtd"
     },
@@ -2913,6 +2975,7 @@
       "amount": 5500,
       "rep": "Ursula Waked",
       "repColor": "#be185d",
+      "reason": "Other",
       "closedate": "2026-04-12",
       "period": "mtd"
     },
@@ -2921,6 +2984,7 @@
       "amount": 3000,
       "rep": "Ursula Waked",
       "repColor": "#be185d",
+      "reason": "Other",
       "closedate": "2026-04-12",
       "period": "mtd"
     }
