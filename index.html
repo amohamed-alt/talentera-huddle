@@ -754,8 +754,7 @@ function render(){
   $id('lostContainer').innerHTML=lostHTML;
 
   // ── Market News ───────────────────────────────────────────
-  $id('newsContainer').innerHTML=`<div style="padding:18px;text-align:center;color:var(--muted);font-size:12px">Loading market news…</div>`;
-  fetchMarketNews();
+  renderNews(D.marketNews || []);
 
   const tabs=$id('tabsBar'),rpnl=$id('repPanels'),sideLinks=$id('sideRepLinks');
   rpnl.innerHTML='';sideLinks.innerHTML='';
@@ -893,48 +892,6 @@ function render(){
       </div>`;
     rpnl.appendChild(panel);
   });
-}
-
-async function fetchMarketNews(){
-  const cached=sessionStorage.getItem('mktNews');
-  if(cached){
-    renderNews(JSON.parse(cached));
-    return;
-  }
-  try{
-    const res=await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      headers:{
-        'Content-Type':'application/json',
-        'x-api-key':'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',
-        'anthropic-version':'2023-06-01',
-        'anthropic-dangerous-direct-browser-access':'true'
-      },
-      body:JSON.stringify({
-        model:'claude-haiku-4-5-20251001',
-        max_tokens:600,
-        messages:[{role:'user',content:`You are a market intelligence analyst for Talentera, an ATS platform in MENA under Bayt.com.
-
-Return ONLY valid JSON. No markdown. No code blocks. Start with [ and end with ].
-
-Generate 3 realistic HR tech market news items relevant to MENA region today (Saudi Arabia, UAE, Kuwait, Lebanon market).
-Focus on: ATS adoption, HR digitization, labor regulations, Vision 2030, Nitaqat, Emiratization, competitor moves.
-
-[
-  {"icon":"📋","tag":"Regulation","color":"#D97706","source":"HRSD","text":"one sentence news item"},
-  {"icon":"🌍","tag":"M&A","color":"#7C3AED","source":"Bloomberg","text":"one sentence news item"},
-  {"icon":"📈","tag":"Trend","color":"#2563EB","source":"Gartner","text":"one sentence news item"}
-]`}]
-      })
-    });
-    const data=await res.json();
-    const raw=data.content?.[0]?.text||'[]';
-    const news=JSON.parse(raw.replace(/```json|```/g,'').trim());
-    sessionStorage.setItem('mktNews',JSON.stringify(news));
-    renderNews(news);
-  }catch(e){
-    $id('newsContainer').innerHTML=`<div style="padding:18px;text-align:center;color:var(--muted);font-size:12px">No news available</div>`;
-  }
 }
 
 function renderNews(news){
