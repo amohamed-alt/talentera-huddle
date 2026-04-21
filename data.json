@@ -1,7 +1,7 @@
 {
   "meta": {
     "yesterdayLabel": "Monday, 20 Apr 2026",
-    "generatedAt": "02:51 AM"
+    "generatedAt": "03:07 AM"
   },
   "kpi": {
     "yesterday": {
@@ -9,10 +9,11 @@
       "connected": 29,
       "connRate": 33,
       "meetings": 8,
-      "openDeals": 275,
-      "pipeline": "$10.5M",
+      "openDeals": 3,
+      "openDealsSnap": 275,
+      "pipeline": 10456320.32875,
       "leads": 6,
-      "wonAmt": "$0",
+      "wonAmt": 0,
       "wonDeals": 0,
       "lost": 4
     },
@@ -21,10 +22,11 @@
       "connected": 568,
       "connRate": 40,
       "meetings": 108,
-      "openDeals": 275,
-      "pipeline": "$10.5M",
+      "openDeals": 42,
+      "openDealsSnap": 275,
+      "pipeline": 10456320.32875,
       "leads": 562,
-      "wonAmt": "$0",
+      "wonAmt": 0,
       "wonDeals": 0,
       "lost": 24
     },
@@ -33,10 +35,11 @@
       "connected": 1774,
       "connRate": 38,
       "meetings": 632,
-      "openDeals": 275,
-      "pipeline": "$10.5M",
+      "openDeals": 566,
+      "openDealsSnap": 275,
+      "pipeline": 10456320.32875,
       "leads": 1160,
-      "wonAmt": "$37K",
+      "wonAmt": 37005,
       "wonDeals": 3,
       "lost": 75
     }
@@ -2355,28 +2358,58 @@
       "amount": 1168871
     },
     {
+      "id": "1474351306",
+      "label": "Demo No Show",
+      "count": 0,
+      "amount": 0
+    },
+    {
       "id": "appointmentscheduled",
-      "label": "Meeting Sched.",
+      "label": "Demo Booked",
       "count": 24,
       "amount": 0
     },
     {
       "id": "qualifiedtobuy",
-      "label": "Demo",
+      "label": "Demo Done",
       "count": 6,
       "amount": 5150
     },
     {
+      "id": "4571370698",
+      "label": "Quotation Sent",
+      "count": 107,
+      "amount": 2229806.69
+    },
+    {
       "id": "presentationscheduled",
-      "label": "Proposal",
+      "label": "Technical Meeting Done",
       "count": 1,
       "amount": 5000
     },
     {
+      "id": "decisionmakerboughtin",
+      "label": "Proposal Shared",
+      "count": 105,
+      "amount": 6583009.13875
+    },
+    {
+      "id": "contractsent",
+      "label": "Signed Contract/Booking",
+      "count": 6,
+      "amount": 442502.5
+    },
+    {
       "id": "closedwon",
-      "label": "Closed Won",
-      "count": 0,
-      "amount": 0
+      "label": "Cashing",
+      "count": 9,
+      "amount": 169526
+    },
+    {
+      "id": "closedlost",
+      "label": "Closed Lost",
+      "count": 184,
+      "amount": 3363892.37
     }
   ],
   "autoRecs": [
@@ -2402,7 +2435,7 @@
     },
     {
       "type": "green",
-      "text": "MTD call pace: 71/day avg ✓"
+      "text": "MTD call pace: 68/day avg ✓"
     },
     {
       "type": "warn",
@@ -2416,7 +2449,9 @@
   "rankTotals": {
     "A": 0,
     "B": 0,
-    "total": 470
+    "AB": 0,
+    "total": 470,
+    "_sampleCompanyKeys": "hubspot_owner_id"
   },
   "topInactiveRankAccounts": [],
   "closedWon": [],
