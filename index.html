@@ -165,7 +165,6 @@ body{font-family:var(--font);background:var(--page-bg);color:var(--text);-webkit
 .rep-hero-stats{display:flex;gap:24px;margin-left:auto}
 .hstat-v{font-family:var(--mono);font-size:24px;font-weight:500}
 .hstat-l{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-top:3px;font-weight:700}
-/* Loss Reasons Breakdown */
 .loss-reasons-section{border-top:1px solid var(--border);margin-top:4px;padding:16px 18px;background:linear-gradient(180deg,rgba(220,38,38,0.02) 0%,transparent 100%)}
 .loss-reasons-title{font-size:10px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.12em;margin-bottom:12px;display:flex;align-items:center;gap:8px}
 .loss-reasons-title::before{content:'';width:3px;height:12px;background:var(--red);border-radius:2px;display:block}
@@ -181,7 +180,6 @@ body{font-family:var(--font);background:var(--page-bg);color:var(--text);-webkit
 .loss-reason-bar{height:3px;background:var(--page-bg);border-radius:2px;margin-top:8px;overflow:hidden}
 .loss-reason-bar-fill{height:100%;background:linear-gradient(90deg,var(--red),#f87171);border-radius:2px;transition:width .4s ease}
 .deal-reason-badge{font-size:8px;font-weight:700;padding:2px 7px;border-radius:10px;background:var(--red-bg);color:var(--red);border:1px solid var(--red-bd);letter-spacing:.02em}
-/* Untouched companies list */
 .untouched-list{margin-top:6px;padding:8px 10px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-sm);max-height:160px;overflow-y:auto}
 .untouched-item{font-size:10px;font-weight:500;padding:3px 0;border-bottom:1px solid var(--border);color:var(--text2)}
 .untouched-item:last-child{border-bottom:none}
@@ -347,13 +345,7 @@ body{font-family:var(--font);background:var(--page-bg);color:var(--text);-webkit
                 <span style="font-size:10px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.1em">📋 Untouched Rank A Accounts</span>
                 <span class="badge br" id="untouchedABadge"></span>
               </div>
-              <div style="overflow-x:auto"><table class="tbl">
-                <thead><tr>
-                  <th>Rep</th>
-                  <th>Company</th>
-                </tr></thead>
-                <tbody id="untouchedABody"></tbody>
-              </table></div>
+              <div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Rep</th><th>Company</th></tr></thead><tbody id="untouchedABody"></tbody></table></div>
               <div id="untouchedAMore" style="display:none"><table class="tbl"><tbody id="untouchedABodyMore"></tbody></table></div>
               <button class="see-more" id="untouchedAToggle" style="display:none" onclick="toggleUntouched('A')">▼ Show more</button>
             </div>
@@ -363,13 +355,7 @@ body{font-family:var(--font);background:var(--page-bg);color:var(--text);-webkit
                 <span style="font-size:10px;font-weight:700;color:var(--amber);text-transform:uppercase;letter-spacing:.1em">📋 Untouched Rank B Accounts</span>
                 <span class="badge ba" id="untouchedBBadge"></span>
               </div>
-              <div style="overflow-x:auto"><table class="tbl">
-                <thead><tr>
-                  <th>Rep</th>
-                  <th>Company</th>
-                </tr></thead>
-                <tbody id="untouchedBBody"></tbody>
-              </table></div>
+              <div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Rep</th><th>Company</th></tr></thead><tbody id="untouchedBBody"></tbody></table></div>
               <div id="untouchedBMore" style="display:none"><table class="tbl"><tbody id="untouchedBBodyMore"></tbody></table></div>
               <button class="see-more" id="untouchedBToggle" style="display:none" onclick="toggleUntouched('B')">▼ Show more</button>
             </div>
@@ -641,8 +627,8 @@ function render(){
   $id('rankRepBody').innerHTML=repData.map(r=>{
     const idle=rankData.filter(c=>c.rep===r.name&&c.daysSinceActivity>14);
     const idleNames=idle.slice(0,2).map(c=>`<span style="font-size:10px;color:var(--red);font-weight:500">• ${c.name}</span>`).join('<br>');
-    const aOk=r.rankAContacted||0, aMiss=r.rankANotContacted||0;
-    const bOk=r.rankBContacted||0, bMiss=r.rankBNotContacted||0;
+    const aOk=r.rankAContacted||0,aMiss=r.rankANotContacted||0;
+    const bOk=r.rankBContacted||0,bMiss=r.rankBNotContacted||0;
     return`<tr>
       <td><div style="display:flex;align-items:center;gap:8px">
         <div class="av" style="background:${r.color}20;color:${r.color}">${r.name[0]}</div>
@@ -659,36 +645,24 @@ function render(){
     </tr>`;
   }).join('');
 
-  const allUntouchedA = repData.flatMap(r=>(r.rankAUntouched||[]).map(c=>({rep:r.name,repColor:r.color,name:c.name})));
-  const allUntouchedB = repData.flatMap(r=>(r.rankBUntouched||[]).map(c=>({rep:r.name,repColor:r.color,name:c.name})));
-
+  const allUntouchedA=repData.flatMap(r=>(r.rankAUntouched||[]).map(c=>({rep:r.name,repColor:r.color,name:c.name})));
+  const allUntouchedB=repData.flatMap(r=>(r.rankBUntouched||[]).map(c=>({rep:r.name,repColor:r.color,name:c.name})));
   $id('untouchedABadge').textContent=`${allUntouchedA.length} accounts`;
   $id('untouchedBBadge').textContent=`${allUntouchedB.length} accounts`;
 
   function buildUntouchedRows(arr){
-    if(!arr.length) return`<tr><td colspan="2" style="text-align:center;color:var(--green);font-style:italic;padding:12px">✓ All accounts contacted</td></tr>`;
-    return arr.map(c=>`<tr>
-      <td><span class="badge" style="background:${c.repColor}20;color:${c.repColor}">${c.rep.split(' ')[0]}</span></td>
-      <td style="font-weight:600">${c.name}</td>
-    </tr>`).join('');
+    if(!arr.length)return`<tr><td colspan="2" style="text-align:center;color:var(--green);font-style:italic;padding:12px">✓ All accounts contacted</td></tr>`;
+    return arr.map(c=>`<tr><td><span class="badge" style="background:${c.repColor}20;color:${c.repColor}">${c.rep.split(' ')[0]}</span></td><td style="font-weight:600">${c.name}</td></tr>`).join('');
   }
 
-  const showA=allUntouchedA.slice(0,5), restA=allUntouchedA.slice(5);
-  const showB=allUntouchedB.slice(0,5), restB=allUntouchedB.slice(5);
-
+  const showA=allUntouchedA.slice(0,5),restA=allUntouchedA.slice(5);
+  const showB=allUntouchedB.slice(0,5),restB=allUntouchedB.slice(5);
   $id('untouchedABody').innerHTML=buildUntouchedRows(showA);
   $id('untouchedABodyMore').innerHTML=buildUntouchedRows(restA);
-  if(restA.length>0){
-    $id('untouchedAToggle').style.display='block';
-    $id('untouchedAToggle').textContent=`▼ Show ${restA.length} more`;
-  }
-
+  if(restA.length>0){$id('untouchedAToggle').style.display='block';$id('untouchedAToggle').textContent=`▼ Show ${restA.length} more`;}
   $id('untouchedBBody').innerHTML=buildUntouchedRows(showB);
   $id('untouchedBBodyMore').innerHTML=buildUntouchedRows(restB);
-  if(restB.length>0){
-    $id('untouchedBToggle').style.display='block';
-    $id('untouchedBToggle').textContent=`▼ Show ${restB.length} more`;
-  }
+  if(restB.length>0){$id('untouchedBToggle').style.display='block';$id('untouchedBToggle').textContent=`▼ Show ${restB.length} more`;}
 
   $id('rankBody').innerHTML=rankData.map(c=>{
     const dc=c.daysSinceActivity>14?'var(--red)':c.daysSinceActivity>7?'var(--amber)':'var(--green)';
@@ -701,15 +675,11 @@ function render(){
   }).join('');
   $id('rankFooter').textContent=`Top 10 by days since last activity · ${rankTotals.total||0} total Rank A/B accounts`;
 
-  // ────────────────────────────────────────────────────────────
-  // ✅ WON / LOST — Enhanced with Lost Reasons
-  // ────────────────────────────────────────────────────────────
   const wonAmt=team.wonAmt||0;
   const lostAmtMTD=closedLost.reduce((s,d)=>s+(d.amount||0),0);
   $id('wonBadge').textContent=`${closedWon.length} deals · ${fmt(wonAmt)}`;
   $id('lostBadge').textContent=`${closedLost.length} deals · ${fmt(lostAmtMTD)}`;
 
-  // ── Won rows (no reason) ──
   function wonDealRows(arr,color,prefix){
     if(!arr.length)return`<div style="padding:24px;color:var(--muted);text-align:center;font-size:12px;font-style:italic">No deals MTD</div>`;
     const show=arr.slice(0,5),rest=arr.slice(5);
@@ -724,12 +694,9 @@ function render(){
       </div>
       <div class="deal-amt" style="color:${color}">$${(d.amount||0).toLocaleString()}</div>
     </div>`;
-    return`${show.map(renderRow).join('')}
-    <div id="${prefix}-more" style="display:none">${rest.map(renderRow).join('')}</div>
-    ${rest.length>0?`<button class="see-more" onclick="toggleMore('${prefix}-more',this,'▼ ${rest.length} more deals','▲ Show less')">▼ ${rest.length} more deals</button>`:''}`;
+    return`${show.map(renderRow).join('')}<div id="${prefix}-more" style="display:none">${rest.map(renderRow).join('')}</div>${rest.length>0?`<button class="see-more" onclick="toggleMore('${prefix}-more',this,'▼ ${rest.length} more deals','▲ Show less')">▼ ${rest.length} more deals</button>`:''}`;
   }
 
-  // ── Lost rows (WITH reason badge) ──
   function lostDealRows(arr,prefix){
     if(!arr.length)return`<div style="padding:24px;color:var(--muted);text-align:center;font-size:12px;font-style:italic">No deals MTD</div>`;
     const show=arr.slice(0,5),rest=arr.slice(5);
@@ -745,27 +712,20 @@ function render(){
       </div>
       <div class="deal-amt" style="color:var(--red)">$${(d.amount||0).toLocaleString()}</div>
     </div>`;
-    return`${show.map(renderRow).join('')}
-    <div id="${prefix}-more" style="display:none">${rest.map(renderRow).join('')}</div>
-    ${rest.length>0?`<button class="see-more" onclick="toggleMore('${prefix}-more',this,'▼ ${rest.length} more deals','▲ Show less')">▼ ${rest.length} more deals</button>`:''}`;
+    return`${show.map(renderRow).join('')}<div id="${prefix}-more" style="display:none">${rest.map(renderRow).join('')}</div>${rest.length>0?`<button class="see-more" onclick="toggleMore('${prefix}-more',this,'▼ ${rest.length} more deals','▲ Show less')">▼ ${rest.length} more deals</button>`:''}`;
   }
 
   $id('wonContainer').innerHTML=wonDealRows(closedWon,'var(--green)','won-deals');
 
-  // ── Lost Container — Professional with Reasons Breakdown ──
-  const lostByReason = D.lostByReason || {};
-  const lostReasonSummary = Object.entries(lostByReason)
-    .map(([reason, data]) => ({ reason, ...data }))
-    .sort((a, b) => b.amount - a.amount);
+  const lostByReason=D.lostByReason||{};
+  const lostReasonSummary=Object.entries(lostByReason).map(([reason,data])=>({reason,...data})).sort((a,b)=>b.amount-a.amount);
+  let lostHTML=lostDealRows(closedLost,'lost-deals');
 
-  let lostHTML = lostDealRows(closedLost,'lost-deals');
-
-  if (lostReasonSummary.length > 0 && closedLost.length > 0) {
-    const totalLostAmt = lostReasonSummary.reduce((s,r)=>s+r.amount,0);
-    const topReason = lostReasonSummary[0];
-    const topReasonPct = totalLostAmt > 0 ? Math.round((topReason.amount / totalLostAmt) * 100) : 0;
-
-    lostHTML += `
+  if(lostReasonSummary.length>0&&closedLost.length>0){
+    const totalLostAmt=lostReasonSummary.reduce((s,r)=>s+r.amount,0);
+    const topReason=lostReasonSummary[0];
+    const topReasonPct=totalLostAmt>0?Math.round((topReason.amount/totalLostAmt)*100):0;
+    lostHTML+=`
       <div class="loss-reasons-section">
         <div class="loss-reasons-title">
           📊 Loss Reasons Breakdown
@@ -776,15 +736,12 @@ function render(){
           <div style="font-size:12px;font-weight:700;color:var(--text)">${topReason.reason} — ${topReasonPct}% of lost value (${fmt(topReason.amount)})</div>
         </div>
         <div class="loss-reason-grid">
-          ${lostReasonSummary.map(r => {
-            const pct = totalLostAmt > 0 ? (r.amount / totalLostAmt) * 100 : 0;
-            return `<div class="loss-reason-card">
+          ${lostReasonSummary.map(r=>{
+            const pct=totalLostAmt>0?(r.amount/totalLostAmt)*100:0;
+            return`<div class="loss-reason-card">
               <div class="loss-reason-name">${r.reason}</div>
               <div class="loss-reason-stats">
-                <span class="loss-reason-count">
-                  <span style="width:6px;height:6px;border-radius:50%;background:var(--red);display:inline-block"></span>
-                  ${r.count} ${r.count===1?'deal':'deals'}
-                </span>
+                <span class="loss-reason-count"><span style="width:6px;height:6px;border-radius:50%;background:var(--red);display:inline-block"></span>${r.count} ${r.count===1?'deal':'deals'}</span>
                 <span class="loss-reason-amt">${fmt(r.amount)}</span>
               </div>
               <div class="loss-reason-bar"><div class="loss-reason-bar-fill" style="width:${pct}%"></div></div>
@@ -794,12 +751,13 @@ function render(){
         </div>
       </div>`;
   }
+  $id('lostContainer').innerHTML=lostHTML;
 
-  $id('lostContainer').innerHTML = lostHTML;
-
- const news = D.marketNews || [];
-    ?news.map(n=>`<div class="news-item"><span class="news-icon">${n.icon||'📰'}</span><div style="flex:1"><div class="news-meta"><span class="badge" style="background:${n.color||'#ccc'}20;color:${n.color||'#999'}">${n.tag||''}</span><span style="font-size:9px;color:var(--muted);font-weight:600">${n.source||''}</span></div><div class="news-text">${n.text||''}</div></div></div>`).join('')
-    :`<div style="padding:18px;text-align:center;color:var(--muted);font-size:12px">No news available</div>`;
+  // ── Market News ───────────────────────────────────────────
+  const news = D.marketNews || [];
+  $id('newsContainer').innerHTML = news.length > 0
+    ? news.map(n=>`<div class="news-item"><span class="news-icon">${n.icon||'📰'}</span><div style="flex:1"><div class="news-meta"><span class="badge" style="background:${n.color||'#ccc'}20;color:${n.color||'#999'}">${n.tag||''}</span><span style="font-size:9px;color:var(--muted);font-weight:600">${n.source||''}</span></div><div class="news-text">${n.text||''}</div></div></div>`).join('')
+    : `<div style="padding:18px;text-align:center;color:var(--muted);font-size:12px">No news available</div>`;
 
   const tabs=$id('tabsBar'),rpnl=$id('repPanels'),sideLinks=$id('sideRepLinks');
   rpnl.innerHTML='';sideLinks.innerHTML='';
@@ -830,17 +788,15 @@ function render(){
 
     const repUntA=(r.rankAUntouched||[]);
     const repUntB=(r.rankBUntouched||[]);
-
-    // Rep-specific lost deals
-    const repLostDeals = (D.closedLost||[]).filter(d=>d.rep===r.name);
-    const repLostByReason = {};
+    const repLostDeals=(D.closedLost||[]).filter(d=>d.rep===r.name);
+    const repLostByReason={};
     repLostDeals.forEach(d=>{
-      const reason = d.reason || 'Not specified';
-      if (!repLostByReason[reason]) repLostByReason[reason] = { count:0, amount:0 };
+      const reason=d.reason||'Not specified';
+      if(!repLostByReason[reason])repLostByReason[reason]={count:0,amount:0};
       repLostByReason[reason].count++;
-      repLostByReason[reason].amount += (d.amount||0);
+      repLostByReason[reason].amount+=(d.amount||0);
     });
-    const repLostReasonList = Object.entries(repLostByReason).map(([reason,d])=>({reason,...d})).sort((a,b)=>b.amount-a.amount);
+    const repLostReasonList=Object.entries(repLostByReason).map(([reason,d])=>({reason,...d})).sort((a,b)=>b.amount-a.amount);
 
     panel.innerHTML=`
       <div class="rep-hero" style="--hc:${c}">
@@ -873,33 +829,23 @@ function render(){
           <div class="card-title" style="color:var(--red)"><div class="card-title-icon" style="background:var(--red-bg)">❌</div>Lost Deals Analysis — ${r.name.split(' ')[0]}</div>
           <span class="badge br">${repLostDeals.length} · ${fmt(repLostDeals.reduce((s,d)=>s+(d.amount||0),0))}</span>
         </div>
-        <div>
-          ${repLostDeals.slice(0,5).map(d=>`<div class="deal-item">
-            <div class="deal-dot" style="background:var(--red)"></div>
-            <div style="flex:1">
-              <div class="deal-name">${d.name}</div>
-              <div class="deal-meta">
-                <span style="font-size:10px;color:var(--muted)">${d.closedate||''}</span>
-                ${d.reason?`<span class="deal-reason-badge">⚠ ${d.reason}</span>`:''}
-              </div>
-            </div>
-            <div class="deal-amt" style="color:var(--red)">$${(d.amount||0).toLocaleString()}</div>
-          </div>`).join('')}
-        </div>
+        <div>${repLostDeals.slice(0,5).map(d=>`<div class="deal-item">
+          <div class="deal-dot" style="background:var(--red)"></div>
+          <div style="flex:1"><div class="deal-name">${d.name}</div>
+          <div class="deal-meta"><span style="font-size:10px;color:var(--muted)">${d.closedate||''}</span>${d.reason?`<span class="deal-reason-badge">⚠ ${d.reason}</span>`:''}</div></div>
+          <div class="deal-amt" style="color:var(--red)">$${(d.amount||0).toLocaleString()}</div>
+        </div>`).join('')}</div>
         ${repLostReasonList.length>0?`
         <div class="loss-reasons-section" style="border-top:1px solid var(--border)">
           <div class="loss-reasons-title">📊 Why ${r.name.split(' ')[0]} Lost These Deals</div>
           <div class="loss-reason-grid">
             ${repLostReasonList.map(lr=>{
-              const totalR = repLostReasonList.reduce((s,x)=>s+x.amount,0);
-              const pct = totalR>0 ? (lr.amount/totalR)*100 : 0;
-              return `<div class="loss-reason-card">
+              const totalR=repLostReasonList.reduce((s,x)=>s+x.amount,0);
+              const pct=totalR>0?(lr.amount/totalR)*100:0;
+              return`<div class="loss-reason-card">
                 <div class="loss-reason-name">${lr.reason}</div>
                 <div class="loss-reason-stats">
-                  <span class="loss-reason-count">
-                    <span style="width:6px;height:6px;border-radius:50%;background:var(--red);display:inline-block"></span>
-                    ${lr.count} ${lr.count===1?'deal':'deals'}
-                  </span>
+                  <span class="loss-reason-count"><span style="width:6px;height:6px;border-radius:50%;background:var(--red);display:inline-block"></span>${lr.count} ${lr.count===1?'deal':'deals'}</span>
                   <span class="loss-reason-amt">${fmt(lr.amount)}</span>
                 </div>
                 <div class="loss-reason-bar"><div class="loss-reason-bar-fill" style="width:${pct}%"></div></div>
@@ -920,37 +866,22 @@ function render(){
         <div class="card" style="margin-bottom:0">
           <div class="card-hd">
             <div class="card-title"><div class="card-title-icon" style="background:var(--red-bg)">🎯</div>Rank A/B Coverage</div>
-            <div style="display:flex;gap:5px">
-              <span class="rank-a">${r.rankA||0}A</span>
-              <span class="rank-b">${r.rankB||0}B</span>
-            </div>
+            <div style="display:flex;gap:5px"><span class="rank-a">${r.rankA||0}A</span><span class="rank-b">${r.rankB||0}B</span></div>
           </div>
           <div style="padding:12px 18px">
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
               <span style="font-size:10px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.08em">Rank A — ${r.rankA||0}</span>
-              <div style="display:flex;gap:8px;font-size:10px;font-weight:600">
-                <span style="color:var(--green)">✓ ${r.rankAContacted||0}</span>
-                <span style="color:var(--red)">✗ ${r.rankANotContacted||0}</span>
-              </div>
+              <div style="display:flex;gap:8px;font-size:10px;font-weight:600"><span style="color:var(--green)">✓ ${r.rankAContacted||0}</span><span style="color:var(--red)">✗ ${r.rankANotContacted||0}</span></div>
             </div>
             ${repUntA.length>0
-              ?`<div style="background:var(--red-bg);border:1px solid var(--red-bd);border-radius:var(--r-sm);padding:8px 10px;margin-bottom:12px">
-                  <div style="font-size:9px;font-weight:700;color:var(--red);margin-bottom:5px">Not contacted yet:</div>
-                  ${repUntA.map(c=>`<div style="font-size:10px;color:var(--text2);padding:2px 0;border-bottom:1px solid var(--red-bd)">• ${c.name}</div>`).join('')}
-                </div>`
+              ?`<div style="background:var(--red-bg);border:1px solid var(--red-bd);border-radius:var(--r-sm);padding:8px 10px;margin-bottom:12px"><div style="font-size:9px;font-weight:700;color:var(--red);margin-bottom:5px">Not contacted yet:</div>${repUntA.map(c=>`<div style="font-size:10px;color:var(--text2);padding:2px 0;border-bottom:1px solid var(--red-bd)">• ${c.name}</div>`).join('')}</div>`
               :`<div style="font-size:10px;color:var(--green);font-weight:600;margin-bottom:12px">✓ All Rank A accounts contacted</div>`}
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
               <span style="font-size:10px;font-weight:700;color:var(--amber);text-transform:uppercase;letter-spacing:.08em">Rank B — ${r.rankB||0}</span>
-              <div style="display:flex;gap:8px;font-size:10px;font-weight:600">
-                <span style="color:var(--green)">✓ ${r.rankBContacted||0}</span>
-                <span style="color:var(--amber)">✗ ${r.rankBNotContacted||0}</span>
-              </div>
+              <div style="display:flex;gap:8px;font-size:10px;font-weight:600"><span style="color:var(--green)">✓ ${r.rankBContacted||0}</span><span style="color:var(--amber)">✗ ${r.rankBNotContacted||0}</span></div>
             </div>
             ${repUntB.length>0
-              ?`<div style="background:var(--amber-bg);border:1px solid var(--amber-bd);border-radius:var(--r-sm);padding:8px 10px">
-                  <div style="font-size:9px;font-weight:700;color:var(--amber);margin-bottom:5px">Not contacted yet:</div>
-                  ${repUntB.map(c=>`<div style="font-size:10px;color:var(--text2);padding:2px 0;border-bottom:1px solid var(--amber-bd)">• ${c.name}</div>`).join('')}
-                </div>`
+              ?`<div style="background:var(--amber-bg);border:1px solid var(--amber-bd);border-radius:var(--r-sm);padding:8px 10px"><div style="font-size:9px;font-weight:700;color:var(--amber);margin-bottom:5px">Not contacted yet:</div>${repUntB.map(c=>`<div style="font-size:10px;color:var(--text2);padding:2px 0;border-bottom:1px solid var(--amber-bd)">• ${c.name}</div>`).join('')}</div>`
               :`<div style="font-size:10px;color:var(--green);font-weight:600">✓ All Rank B accounts contacted</div>`}
           </div>
         </div>
