@@ -1,7 +1,7 @@
 {
   "meta": {
     "yesterdayLabel": "Monday, 20 Apr 2026",
-    "generatedAt": "08:38 PM"
+    "generatedAt": "08:50 PM"
   },
   "kpi": {
     "yesterday": {
@@ -3165,9 +3165,6 @@
         }
       ]
     }
-  },
-  "intelligence": {
-    "error": "parse_failed"
   },
   "marketNews": []
 }
