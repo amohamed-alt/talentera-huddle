@@ -1,7 +1,7 @@
 {
   "meta": {
     "yesterdayLabel": "Monday, 20 Apr 2026",
-    "generatedAt": "03:07 AM"
+    "generatedAt": "03:59 AM"
   },
   "kpi": {
     "yesterday": {
@@ -15,7 +15,8 @@
       "leads": 6,
       "wonAmt": 0,
       "wonDeals": 0,
-      "lost": 4
+      "lost": 4,
+      "lostAmt": 22700
     },
     "mtd": {
       "calls": 1424,
@@ -28,7 +29,8 @@
       "leads": 562,
       "wonAmt": 0,
       "wonDeals": 0,
-      "lost": 24
+      "lost": 24,
+      "lostAmt": 1162392.72
     },
     "ytd": {
       "calls": 4661,
@@ -41,7 +43,8 @@
       "leads": 1160,
       "wonAmt": 37005,
       "wonDeals": 3,
-      "lost": 75
+      "lost": 75,
+      "lostAmt": 1481148.72
     }
   },
   "team": {
@@ -63,8 +66,11 @@
     "wonYTD": 3,
     "wonAmtYTD": 37005,
     "lost": 24,
+    "lostAmt": 1162392.72,
     "lostYest": 4,
+    "lostAmtYest": 22700,
     "lostYTD": 75,
+    "lostAmtYTD": 1481148.72,
     "leadsYest": 6,
     "leadsYestInbound": 2,
     "leadsYestOutbound": 4,
@@ -108,10 +114,32 @@
       "wonYTD": 1,
       "wonAmtYTD": 2000,
       "lost": 2,
+      "lostAmt": 4200,
       "lostYest": 1,
+      "lostAmtYest": 2200,
       "lostYTD": 11,
-      "rankA": 0,
-      "rankB": 0,
+      "lostAmtYTD": 48637,
+      "rankA": 13,
+      "rankAContacted": 13,
+      "rankANotContacted": 0,
+      "rankAUntouched": [],
+      "rankB": 108,
+      "rankBContacted": 105,
+      "rankBNotContacted": 3,
+      "rankBUntouched": [
+        {
+          "id": "371770751211",
+          "name": "Bank Audi"
+        },
+        {
+          "id": "420369219833",
+          "name": "Dhofar University"
+        },
+        {
+          "id": "422921081032",
+          "name": " Asnan Tower"
+        }
+      ],
       "stuck": [],
       "cold": [
         {
@@ -226,7 +254,7 @@
         {
           "name": "SHBC Mechanical Engineering - New Deal",
           "amount": 38850,
-          "stage": "4571370698",
+          "stage": "Quotation Sent",
           "nextActivity": null,
           "isStuck": false,
           "isCold": false
@@ -234,7 +262,7 @@
         {
           "name": "IssaHolding - New Deal",
           "amount": 24836,
-          "stage": "decisionmakerboughtin",
+          "stage": "Proposal Shared",
           "nextActivity": null,
           "isStuck": false,
           "isCold": true
@@ -242,7 +270,7 @@
         {
           "name": "Trafalgar Luxury Group - New Deal",
           "amount": 24625,
-          "stage": "decisionmakerboughtin",
+          "stage": "Proposal Shared",
           "nextActivity": null,
           "isStuck": false,
           "isCold": true
@@ -250,7 +278,7 @@
         {
           "name": "Jordan Islamic Bank - New Deal",
           "amount": 11825,
-          "stage": "4571370698",
+          "stage": "Quotation Sent",
           "nextActivity": null,
           "isStuck": false,
           "isCold": false
@@ -258,7 +286,7 @@
         {
           "name": "PepsiKuwait - New Deal",
           "amount": 11500,
-          "stage": "1521682643",
+          "stage": "Lead",
           "nextActivity": null,
           "isStuck": false,
           "isCold": false
@@ -266,7 +294,7 @@
         {
           "name": "Euro Arab Insurance Group - New Deal",
           "amount": 11150,
-          "stage": "1521682643",
+          "stage": "Lead",
           "nextActivity": null,
           "isStuck": false,
           "isCold": false
@@ -274,7 +302,7 @@
         {
           "name": "Harb Electric - New Deal",
           "amount": 10500,
-          "stage": "4571370698",
+          "stage": "Quotation Sent",
           "nextActivity": null,
           "isStuck": false,
           "isCold": true
@@ -282,7 +310,7 @@
         {
           "name": "Bellevue Medical Center- New Deal",
           "amount": 10075,
-          "stage": "4571370698",
+          "stage": "Quotation Sent",
           "nextActivity": null,
           "isStuck": false,
           "isCold": true
@@ -290,7 +318,7 @@
         {
           "name": "Enshaat Al Sayer - New Deal",
           "amount": 9775,
-          "stage": "decisionmakerboughtin",
+          "stage": "Proposal Shared",
           "nextActivity": null,
           "isStuck": false,
           "isCold": false
@@ -298,7 +326,7 @@
         {
           "name": "B D Holding - New Deal",
           "amount": 7600,
-          "stage": "4571370698",
+          "stage": "Quotation Sent",
           "nextActivity": null,
           "isStuck": false,
           "isCold": false
@@ -334,10 +362,109 @@
       "wonYTD": 0,
       "wonAmtYTD": 0,
       "lost": 0,
+      "lostAmt": 0,
       "lostYest": 0,
+      "lostAmtYest": 0,
       "lostYTD": 0,
-      "rankA": 0,
-      "rankB": 0,
+      "lostAmtYTD": 0,
+      "rankA": 50,
+      "rankAContacted": 46,
+      "rankANotContacted": 4,
+      "rankAUntouched": [
+        {
+          "id": "80804273385",
+          "name": "Saudi Geological Survey"
+        },
+        {
+          "id": "80374936770",
+          "name": "National eLearning Centre"
+        },
+        {
+          "id": "80338728148",
+          "name": "Aseer Development Authority (ASDA)"
+        },
+        {
+          "id": "97869709503",
+          "name": "Cruise Saudi"
+        }
+      ],
+      "rankB": 124,
+      "rankBContacted": 106,
+      "rankBNotContacted": 18,
+      "rankBUntouched": [
+        {
+          "id": "80976499909",
+          "name": "المعهد الوطني لأبحاث الصحة Saudi NIH"
+        },
+        {
+          "id": "80569251007",
+          "name": "Jash Group of Companies / EES Vessel Heads"
+        },
+        {
+          "id": "80974700764",
+          "name": "Future Careers Middle East"
+        },
+        {
+          "id": "80988635365",
+          "name": "AlManarah Comm. & IT Ltd."
+        },
+        {
+          "id": "80988635366",
+          "name": "Al Faisal University"
+        },
+        {
+          "id": "80374936768",
+          "name": "Unicharm Gulf Hygienic Industries Ltd."
+        },
+        {
+          "id": "80934223090",
+          "name": "Detasad - Detecon Al Saudia Co. Ltd"
+        },
+        {
+          "id": "80988635376",
+          "name": "STC Solutions"
+        },
+        {
+          "id": "80994031841",
+          "name": "National Center for Waste Management | المركز الوطني لإدارة النفايات"
+        },
+        {
+          "id": "80810731741",
+          "name": "Mena Business Investment Group"
+        },
+        {
+          "id": "80353158369",
+          "name": "Donia Productions"
+        },
+        {
+          "id": "80979647676",
+          "name": "Riyadh Cable Group Of Companies"
+        },
+        {
+          "id": "80338728142",
+          "name": "Dyar Health Company"
+        },
+        {
+          "id": "80971104485",
+          "name": "Alessa Industries Co."
+        },
+        {
+          "id": "94449383654",
+          "name": "Riyadh Parking"
+        },
+        {
+          "id": "96347752641",
+          "name": "Nourah Information Technology Company"
+        },
+        {
+          "id": "374633293007",
+          "name": "Fursan"
+        },
+        {
+          "id": "423101461710",
+          "name": "Shahia"
+        }
+      ],
       "stuck": [],
       "cold": [
         {
@@ -454,11 +581,6 @@
           "name": "Stom - Saudi Tabreed Co. - New Deal",
           "days": 96,
           "amount": 53333
-        },
-        {
-          "name": "Reach - New Deal",
-          "days": 14,
-          "amount": 20000
         },
         {
           "name": "تالنت سكوير - New Deal",
@@ -609,11 +731,6 @@
           "name": "Infinite pl - New Deal",
           "days": 103,
           "amount": 13333
-        },
-        {
-          "name": "Be Group - New Deal",
-          "days": 14,
-          "amount": 16000
         },
         {
           "name": "6 Pence - New Deal",
@@ -874,13 +991,6 @@
           ]
         },
         {
-          "name": "Reach - New Deal",
-          "amount": 20000,
-          "reasons": [
-            "No activity for 14 days"
-          ]
-        },
-        {
           "name": "تالنت سكوير - New Deal",
           "amount": 0,
           "reasons": [
@@ -1091,13 +1201,6 @@
           ]
         },
         {
-          "name": "Be Group - New Deal",
-          "amount": 16000,
-          "reasons": [
-            "No activity for 14 days"
-          ]
-        },
-        {
           "name": "6 Pence - New Deal",
           "amount": 10000,
           "reasons": [
@@ -1244,7 +1347,7 @@
         {
           "name": "General Authority of Civil Aviation (GACA) - New Deal",
           "amount": 220524,
-          "stage": "decisionmakerboughtin",
+          "stage": "Proposal Shared",
           "nextActivity": null,
           "isStuck": false,
           "isCold": true
@@ -1252,7 +1355,7 @@
         {
           "name": "Aster Hospitals & Clinics - KSA - New Deal",
           "amount": 150000,
-          "stage": "1521682643",
+          "stage": "Lead",
           "nextActivity": null,
           "isStuck": false,
           "isCold": false
@@ -1260,7 +1363,7 @@
         {
           "name": "مهارة للموارد البشرية - New Deal",
           "amount": 146921,
-          "stage": "1521682643",
+          "stage": "Lead",
           "nextActivity": null,
           "isStuck": false,
           "isCold": false
@@ -1268,7 +1371,7 @@
         {
           "name": "TDDC - Enterprise",
           "amount": 131600,
-          "stage": "4571370698",
+          "stage": "Quotation Sent",
           "nextActivity": null,
           "isStuck": false,
           "isCold": false
@@ -1276,7 +1379,7 @@
         {
           "name": "Aster Hospitals & Clinics - KSA - New Deal",
           "amount": 120000,
-          "stage": "1521682643",
+          "stage": "Lead",
           "nextActivity": null,
           "isStuck": false,
           "isCold": false
@@ -1284,7 +1387,7 @@
         {
           "name": "Floward - Talentera ATS",
           "amount": 82500,
-          "stage": "1521682643",
+          "stage": "Lead",
           "nextActivity": null,
           "isStuck": false,
           "isCold": false
@@ -1292,7 +1395,7 @@
         {
           "name": "YR Global Holding - New Deal",
           "amount": 82500,
-          "stage": "1521682643",
+          "stage": "Lead",
           "nextActivity": null,
           "isStuck": false,
           "isCold": false
@@ -1300,7 +1403,7 @@
         {
           "name": "Humain AI - New Deal",
           "amount": 73000,
-          "stage": "decisionmakerboughtin",
+          "stage": "Proposal Shared",
           "nextActivity": null,
           "isStuck": false,
           "isCold": true
@@ -1308,7 +1411,7 @@
         {
           "name": "وزارة السياحة - ATS",
           "amount": 58000,
-          "stage": "1521682643",
+          "stage": "Lead",
           "nextActivity": null,
           "isStuck": false,
           "isCold": true
@@ -1316,7 +1419,7 @@
         {
           "name": "Atmaal - New Deal",
           "amount": 55000,
-          "stage": "decisionmakerboughtin",
+          "stage": "Proposal Shared",
           "nextActivity": null,
           "isStuck": false,
           "isCold": false
@@ -1352,10 +1455,48 @@
       "wonYTD": 2,
       "wonAmtYTD": 35005,
       "lost": 22,
+      "lostAmt": 1158192.72,
       "lostYest": 3,
+      "lostAmtYest": 20500,
       "lostYTD": 64,
-      "rankA": 0,
-      "rankB": 0,
+      "lostAmtYTD": 1432511.72,
+      "rankA": 31,
+      "rankAContacted": 31,
+      "rankANotContacted": 0,
+      "rankAUntouched": [],
+      "rankB": 158,
+      "rankBContacted": 151,
+      "rankBNotContacted": 7,
+      "rankBUntouched": [
+        {
+          "id": "81003499720",
+          "name": "Bahrain Airport Services"
+        },
+        {
+          "id": "80674612449",
+          "name": "Bahrain Institute of Banking & Finance (BIBF)"
+        },
+        {
+          "id": "80387526869",
+          "name": "Bank ABC"
+        },
+        {
+          "id": "80969305276",
+          "name": "Quds Bank"
+        },
+        {
+          "id": "162766794980",
+          "name": "University of Nizwa, Sultanate of Oman"
+        },
+        {
+          "id": "208822084812",
+          "name": "Mu'tah Universityجامعة مؤته"
+        },
+        {
+          "id": "254124581107",
+          "name": "ministry of labour"
+        }
+      ],
       "stuck": [],
       "cold": [
         {
@@ -1722,7 +1863,7 @@
         {
           "name": "Gama construction - Renewal",
           "amount": 545851.51,
-          "stage": "4571370698",
+          "stage": "Quotation Sent",
           "nextActivity": null,
           "isStuck": false,
           "isCold": false
@@ -1730,7 +1871,7 @@
         {
           "name": "MBC Masr - New Deal",
           "amount": 360262.02,
-          "stage": "4571370698",
+          "stage": "Quotation Sent",
           "nextActivity": null,
           "isStuck": false,
           "isCold": false
@@ -1738,7 +1879,7 @@
         {
           "name": "FAA - New Deal",
           "amount": 92914.25,
-          "stage": "4571370698",
+          "stage": "Quotation Sent",
           "nextActivity": null,
           "isStuck": false,
           "isCold": false
@@ -1746,7 +1887,7 @@
         {
           "name": "Khalifa University - New Deal",
           "amount": 55775,
-          "stage": "4571370698",
+          "stage": "Quotation Sent",
           "nextActivity": null,
           "isStuck": false,
           "isCold": false
@@ -1754,7 +1895,7 @@
         {
           "name": "Gulf Insurance Group (Gulf) B.S.C - New Deal",
           "amount": 50000,
-          "stage": "4571370698",
+          "stage": "Quotation Sent",
           "nextActivity": null,
           "isStuck": false,
           "isCold": false
@@ -1762,7 +1903,7 @@
         {
           "name": "Al Faisal Holding - New Deal",
           "amount": 41650,
-          "stage": "decisionmakerboughtin",
+          "stage": "Proposal Shared",
           "nextActivity": null,
           "isStuck": false,
           "isCold": true
@@ -1770,7 +1911,7 @@
         {
           "name": "Presidential Flight - New Deal",
           "amount": 40000,
-          "stage": "4571370698",
+          "stage": "Quotation Sent",
           "nextActivity": null,
           "isStuck": false,
           "isCold": false
@@ -1778,7 +1919,7 @@
         {
           "name": "BDO UAE - New Deal",
           "amount": 39000,
-          "stage": "4571370698",
+          "stage": "Quotation Sent",
           "nextActivity": null,
           "isStuck": false,
           "isCold": false
@@ -1786,7 +1927,7 @@
         {
           "name": "Al Ain Farms Group - New Deal",
           "amount": 37250,
-          "stage": "4571370698",
+          "stage": "Quotation Sent",
           "nextActivity": null,
           "isStuck": false,
           "isCold": false
@@ -1794,7 +1935,7 @@
         {
           "name": "Minapharm - New Deal",
           "amount": 33395,
-          "stage": "4571370698",
+          "stage": "Quotation Sent",
           "nextActivity": null,
           "isStuck": false,
           "isCold": false
@@ -1830,10 +1971,19 @@
       "wonYTD": 0,
       "wonAmtYTD": 0,
       "lost": 0,
+      "lostAmt": 0,
       "lostYest": 0,
+      "lostAmtYest": 0,
       "lostYTD": 0,
-      "rankA": 0,
-      "rankB": 0,
+      "lostAmtYTD": 0,
+      "rankA": 27,
+      "rankAContacted": 27,
+      "rankANotContacted": 0,
+      "rankAUntouched": [],
+      "rankB": 65,
+      "rankBContacted": 65,
+      "rankBNotContacted": 0,
+      "rankBUntouched": [],
       "stuck": [],
       "cold": [],
       "needsAttention": [],
@@ -1850,7 +2000,7 @@
         {
           "name": "MUC اتحاد ميار - New Deal",
           "amount": 50000,
-          "stage": "1521682643",
+          "stage": "Lead",
           "nextActivity": null,
           "isStuck": false,
           "isCold": false
@@ -1886,10 +2036,24 @@
       "wonYTD": 0,
       "wonAmtYTD": 0,
       "lost": 0,
+      "lostAmt": 0,
       "lostYest": 0,
+      "lostAmtYest": 0,
       "lostYTD": 0,
-      "rankA": 0,
-      "rankB": 0,
+      "lostAmtYTD": 0,
+      "rankA": 31,
+      "rankAContacted": 31,
+      "rankANotContacted": 0,
+      "rankAUntouched": [],
+      "rankB": 118,
+      "rankBContacted": 117,
+      "rankBNotContacted": 1,
+      "rankBUntouched": [
+        {
+          "id": "139426453744",
+          "name": "SHAM Contracting Co. Ltd"
+        }
+      ],
       "stuck": [],
       "cold": [
         {
@@ -1920,7 +2084,7 @@
         {
           "name": "- New Deal",
           "amount": 0,
-          "stage": "appointmentscheduled",
+          "stage": "Demo Booked",
           "nextActivity": null,
           "isStuck": false,
           "isCold": true
@@ -1928,7 +2092,7 @@
         {
           "name": "AlGihaz Goup Holding- New Deal",
           "amount": 0,
-          "stage": "appointmentscheduled",
+          "stage": "Demo Booked",
           "nextActivity": null,
           "isStuck": false,
           "isCold": false
@@ -1936,7 +2100,7 @@
         {
           "name": "هيئة تطوير الأحساء- New Deal",
           "amount": 0,
-          "stage": "appointmentscheduled",
+          "stage": "Demo Booked",
           "nextActivity": null,
           "isStuck": false,
           "isCold": false
@@ -1972,10 +2136,19 @@
       "wonYTD": 0,
       "wonAmtYTD": 0,
       "lost": 0,
+      "lostAmt": 0,
       "lostYest": 0,
+      "lostAmtYest": 0,
       "lostYTD": 0,
-      "rankA": 0,
-      "rankB": 0,
+      "lostAmtYTD": 0,
+      "rankA": 2,
+      "rankAContacted": 2,
+      "rankANotContacted": 0,
+      "rankAUntouched": [],
+      "rankB": 9,
+      "rankBContacted": 9,
+      "rankBNotContacted": 0,
+      "rankBUntouched": [],
       "stuck": [],
       "cold": [
         {
@@ -2270,7 +2443,7 @@
         {
           "name": "DP world ",
           "amount": 795000,
-          "stage": "decisionmakerboughtin",
+          "stage": "Proposal Shared",
           "nextActivity": null,
           "isStuck": false,
           "isCold": true
@@ -2278,7 +2451,7 @@
         {
           "name": "King faisal speciality hospital ",
           "amount": 783000,
-          "stage": "decisionmakerboughtin",
+          "stage": "Proposal Shared",
           "nextActivity": null,
           "isStuck": false,
           "isCold": true
@@ -2286,7 +2459,7 @@
         {
           "name": "IMC - new deal",
           "amount": 600000,
-          "stage": "decisionmakerboughtin",
+          "stage": "Proposal Shared",
           "nextActivity": null,
           "isStuck": false,
           "isCold": true
@@ -2294,7 +2467,7 @@
         {
           "name": "MBC Media Solutions - New Deal",
           "amount": 393750,
-          "stage": "decisionmakerboughtin",
+          "stage": "Proposal Shared",
           "nextActivity": null,
           "isStuck": false,
           "isCold": true
@@ -2302,7 +2475,7 @@
         {
           "name": "Talentera Enterprise Plan: King Faisal Specialist Hospital & Research Center - Dara Hospital",
           "amount": 390000,
-          "stage": "decisionmakerboughtin",
+          "stage": "Proposal Shared",
           "nextActivity": null,
           "isStuck": false,
           "isCold": true
@@ -2310,7 +2483,7 @@
         {
           "name": "ACWA Power - TALENTERA ENTERPEISE - ATS ",
           "amount": 368000,
-          "stage": "decisionmakerboughtin",
+          "stage": "Proposal Shared",
           "nextActivity": null,
           "isStuck": false,
           "isCold": true
@@ -2318,7 +2491,7 @@
         {
           "name": "TALENTERA - ATS",
           "amount": 280000,
-          "stage": "decisionmakerboughtin",
+          "stage": "Proposal Shared",
           "nextActivity": null,
           "isStuck": false,
           "isCold": true
@@ -2326,7 +2499,7 @@
         {
           "name": "الملاحة الجوية السعودية - New Deal-SANS",
           "amount": 251200,
-          "stage": "decisionmakerboughtin",
+          "stage": "Proposal Shared",
           "nextActivity": null,
           "isStuck": false,
           "isCold": true
@@ -2334,7 +2507,7 @@
         {
           "name": "smsc",
           "amount": 225000,
-          "stage": "decisionmakerboughtin",
+          "stage": "Proposal Shared",
           "nextActivity": null,
           "isStuck": false,
           "isCold": true
@@ -2342,7 +2515,7 @@
         {
           "name": "Magrabi Health ",
           "amount": 200000,
-          "stage": "contractsent",
+          "stage": "Signed Contract/Booking",
           "nextActivity": null,
           "isStuck": false,
           "isCold": true
@@ -2423,11 +2596,11 @@
     },
     {
       "type": "red",
-      "text": "135 cold deals (no activity 14+ days) — re-engage before they go dark."
+      "text": "133 cold deals (no activity 14+ days) — re-engage before they go dark."
     },
     {
       "type": "red",
-      "text": "135 deals have no next activity scheduled — reps must log next steps immediately."
+      "text": "133 deals have no next activity scheduled — reps must log next steps immediately."
     },
     {
       "type": "green",
@@ -2447,13 +2620,98 @@
     }
   ],
   "rankTotals": {
-    "A": 0,
-    "B": 0,
-    "AB": 0,
-    "total": 470,
-    "_sampleCompanyKeys": "hubspot_owner_id"
+    "A": 154,
+    "AContacted": 150,
+    "ANotContacted": 4,
+    "B": 582,
+    "BContacted": 553,
+    "BNotContacted": 29,
+    "AB": 736,
+    "total": 2409,
+    "_sampleCompanyKeys": "hubspot_owner_id,rank"
   },
-  "topInactiveRankAccounts": [],
+  "topInactiveRankAccounts": [
+    {
+      "name": "المعهد الوطني لأبحاث الصحة Saudi NIH",
+      "rank": "B",
+      "rep": "Zein Fares",
+      "repColor": "#1d4ed8",
+      "daysSinceActivity": 999,
+      "employees": "—"
+    },
+    {
+      "name": "Bahrain Airport Services",
+      "rank": "B",
+      "rep": "Ursula Waked",
+      "repColor": "#be185d",
+      "daysSinceActivity": 999,
+      "employees": "1500"
+    },
+    {
+      "name": "Jash Group of Companies / EES Vessel Heads",
+      "rank": "B",
+      "rep": "Zein Fares",
+      "repColor": "#1d4ed8",
+      "daysSinceActivity": 999,
+      "employees": "930"
+    },
+    {
+      "name": "Bahrain Institute of Banking & Finance (BIBF)",
+      "rank": "B",
+      "rep": "Ursula Waked",
+      "repColor": "#be185d",
+      "daysSinceActivity": 999,
+      "employees": "190"
+    },
+    {
+      "name": "Future Careers Middle East",
+      "rank": "B",
+      "rep": "Zein Fares",
+      "repColor": "#1d4ed8",
+      "daysSinceActivity": 999,
+      "employees": "—"
+    },
+    {
+      "name": "Bank ABC",
+      "rank": "B",
+      "rep": "Ursula Waked",
+      "repColor": "#be185d",
+      "daysSinceActivity": 999,
+      "employees": "5265"
+    },
+    {
+      "name": "AlManarah Comm. & IT Ltd.",
+      "rank": "B",
+      "rep": "Zein Fares",
+      "repColor": "#1d4ed8",
+      "daysSinceActivity": 999,
+      "employees": "420"
+    },
+    {
+      "name": "Saudi Geological Survey",
+      "rank": "A",
+      "rep": "Zein Fares",
+      "repColor": "#1d4ed8",
+      "daysSinceActivity": 999,
+      "employees": "930"
+    },
+    {
+      "name": "Al Faisal University",
+      "rank": "B",
+      "rep": "Zein Fares",
+      "repColor": "#1d4ed8",
+      "daysSinceActivity": 999,
+      "employees": "1000"
+    },
+    {
+      "name": "Quds Bank",
+      "rank": "B",
+      "rep": "Ursula Waked",
+      "repColor": "#be185d",
+      "daysSinceActivity": 999,
+      "employees": "—"
+    }
+  ],
   "closedWon": [],
   "closedLost": [
     {
