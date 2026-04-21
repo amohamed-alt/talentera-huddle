@@ -1,7 +1,7 @@
 {
   "meta": {
     "yesterdayLabel": "Monday, 20 Apr 2026",
-    "generatedAt": "08:01 PM"
+    "generatedAt": "08:21 PM"
   },
   "kpi": {
     "yesterday": {
@@ -2988,5 +2988,186 @@
       "closedate": "2026-04-12",
       "period": "mtd"
     }
-  ]
+  ],
+  "lostByReason": {
+    "Timing and Project Issues": {
+      "count": 10,
+      "amount": 137855.72,
+      "deals": [
+        {
+          "name": "Almuftah Group - New Deal",
+          "amount": 14000,
+          "rep": "Ursula Waked"
+        },
+        {
+          "name": "Syria HR company - New Deal",
+          "amount": 4500,
+          "rep": "Ursula Waked"
+        },
+        {
+          "name": "AlBaraka Bank Syria s.a. - New Deal",
+          "amount": 7100,
+          "rep": "Ursula Waked"
+        },
+        {
+          "name": "Moseco Group - New Deal",
+          "amount": 16000,
+          "rep": "Ursula Waked"
+        },
+        {
+          "name": "Hamilton Aquatics ",
+          "amount": 15000,
+          "rep": "Ursula Waked"
+        },
+        {
+          "name": "Bread Fast - New Deal",
+          "amount": 27793.22,
+          "rep": "Ursula Waked"
+        },
+        {
+          "name": "Hamdan Bin Mohammed Smart University (HBMSU)",
+          "amount": 24300,
+          "rep": "Ursula Waked"
+        },
+        {
+          "name": "Afamia - Talentera New Deal",
+          "amount": 3750,
+          "rep": "Ursula Waked"
+        },
+        {
+          "name": "HRInvest - New Deal",
+          "amount": 5000,
+          "rep": "Ursula Waked"
+        },
+        {
+          "name": "Look Insure - New Deal",
+          "amount": 20412.5,
+          "rep": "Ursula Waked"
+        }
+      ]
+    },
+    "Lead Profile Issues": {
+      "count": 4,
+      "amount": 21700,
+      "deals": [
+        {
+          "name": "Al Waha for Cars - New Deal",
+          "amount": 13500,
+          "rep": "Ursula Waked"
+        },
+        {
+          "name": "Axceltrees - New Deal",
+          "amount": 2000,
+          "rep": "Marita Chedid"
+        },
+        {
+          "name": "TREX - New Deal",
+          "amount": 2200,
+          "rep": "Marita Chedid"
+        },
+        {
+          "name": "Linguist Education Online- New Deal",
+          "amount": 4000,
+          "rep": "Ursula Waked"
+        }
+      ]
+    },
+    "Unresponsive": {
+      "count": 9,
+      "amount": 49950,
+      "deals": [
+        {
+          "name": "International Committee of the Red Cross - New Deal",
+          "amount": 3500,
+          "rep": "Ursula Waked"
+        },
+        {
+          "name": "Shelter Group - New Deal",
+          "amount": 9500,
+          "rep": "Ursula Waked"
+        },
+        {
+          "name": "CXG - Evalufy Pro Proposal",
+          "amount": 3350,
+          "rep": "Ursula Waked"
+        },
+        {
+          "name": "We Buy Any House ",
+          "amount": 10200,
+          "rep": "Ursula Waked"
+        },
+        {
+          "name": "THE SOUQAIR - New Deal",
+          "amount": 4500,
+          "rep": "Ursula Waked"
+        },
+        {
+          "name": "Vertex Consultancy - New Deal",
+          "amount": 4300,
+          "rep": "Ursula Waked"
+        },
+        {
+          "name": "New Grand Career Solutions- New Deal",
+          "amount": 4600,
+          "rep": "Ursula Waked"
+        },
+        {
+          "name": "Connect6 Group - New Deal",
+          "amount": 7500,
+          "rep": "Ursula Waked"
+        },
+        {
+          "name": "German University of Technology in Oman - New Deal",
+          "amount": 2500,
+          "rep": "Ursula Waked"
+        }
+      ]
+    },
+    "Contact-ability Issues": {
+      "count": 3,
+      "amount": 958000,
+      "deals": [
+        {
+          "name": "Black & Grey HR - ",
+          "amount": 8000,
+          "rep": "Ursula Waked"
+        },
+        {
+          "name": "VCHRO- New Deal",
+          "amount": 0,
+          "rep": "Ursula Waked"
+        },
+        {
+          "name": "Alpha Data - New Deal",
+          "amount": 950000,
+          "rep": "Ursula Waked"
+        }
+      ]
+    },
+    "Other": {
+      "count": 3,
+      "amount": 20837,
+      "deals": [
+        {
+          "name": "Aman Holding - New Deal",
+          "amount": 12337,
+          "rep": "Ursula Waked"
+        },
+        {
+          "name": "Itqan Pharma - New Deal",
+          "amount": 5500,
+          "rep": "Ursula Waked"
+        },
+        {
+          "name": "Tatweer Middle East and Africa - New Deal",
+          "amount": 3000,
+          "rep": "Ursula Waked"
+        }
+      ]
+    }
+  },
+  "marketNews": [],
+  "intelligence": {
+    "error": "parse_failed"
+  }
 }
