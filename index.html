@@ -797,7 +797,9 @@ function render(){
 
   $id('lostContainer').innerHTML = lostHTML;
 
-  const news=D.marketNews||[];
+  const news = (D.marketNews && D.marketNews.length > 0)
+  ? D.marketNews
+  : (D.intelligence?.market_news ?? []);
   $id('newsContainer').innerHTML=news.length>0
     ?news.map(n=>`<div class="news-item"><span class="news-icon">${n.icon||'📰'}</span><div style="flex:1"><div class="news-meta"><span class="badge" style="background:${n.color||'#ccc'}20;color:${n.color||'#999'}">${n.tag||''}</span><span style="font-size:9px;color:var(--muted);font-weight:600">${n.source||''}</span></div><div class="news-text">${n.text||''}</div></div></div>`).join('')
     :`<div style="padding:18px;text-align:center;color:var(--muted);font-size:12px">No news available</div>`;
