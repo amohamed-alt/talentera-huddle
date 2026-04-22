@@ -1,7 +1,7 @@
 {
   "meta": {
     "yesterdayLabel": "Tuesday, 21 Apr 2026",
-    "generatedAt": "01:26 AM"
+    "generatedAt": "03:27 PM"
   },
   "kpi": {
     "yesterday": {
@@ -10,8 +10,8 @@
       "connRate": 36,
       "meetings": 7,
       "openDeals": 4,
-      "openDealsSnap": 268,
-      "pipeline": 4982088.94100338,
+      "openDealsSnap": 264,
+      "pipeline": 4899071.45183338,
       "leads": 7,
       "wonAmt": 0,
       "wonDeals": 0,
@@ -19,69 +19,69 @@
       "lostAmt": 25950
     },
     "mtd": {
-      "calls": 1531,
-      "connected": 606,
-      "connRate": 40,
-      "meetings": 115,
+      "calls": 1589,
+      "connected": 627,
+      "connRate": 39,
+      "meetings": 120,
       "openDeals": 46,
-      "openDealsSnap": 268,
-      "pipeline": 4982088.94100338,
-      "leads": 569,
-      "wonAmt": 50006.25,
-      "wonDeals": 1,
-      "lost": 29,
-      "lostAmt": 1188342.72
+      "openDealsSnap": 264,
+      "pipeline": 4899071.45183338,
+      "leads": 572,
+      "wonAmt": 72009,
+      "wonDeals": 2,
+      "lost": 32,
+      "lostAmt": 1207142.72
     },
     "ytd": {
-      "calls": 4768,
-      "connected": 1812,
+      "calls": 4826,
+      "connected": 1833,
       "connRate": 38,
-      "meetings": 639,
-      "openDeals": 570,
-      "openDealsSnap": 268,
-      "pipeline": 4982088.94100338,
-      "leads": 1167,
-      "wonAmt": 92211.25,
-      "wonDeals": 5,
-      "lost": 80,
-      "lostAmt": 1507098.72
+      "meetings": 644,
+      "openDeals": 569,
+      "openDealsSnap": 264,
+      "pipeline": 4899071.45183338,
+      "leads": 1172,
+      "wonAmt": 114214,
+      "wonDeals": 6,
+      "lost": 82,
+      "lostAmt": 1525898.72
     }
   },
   "team": {
     "callsYest": 107,
     "callsConn": 38,
-    "callsMTD": 1531,
-    "callsMTDConn": 606,
-    "callsYTD": 4768,
-    "callsYTDConn": 1812,
+    "callsMTD": 1589,
+    "callsMTDConn": 627,
+    "callsYTD": 4826,
+    "callsYTDConn": 1833,
     "meetings": 7,
-    "meetingsMTD": 115,
-    "meetingsYTD": 639,
-    "openDeals": 268,
-    "pipeline": 4982088.94100338,
-    "won": 1,
-    "wonAmt": 50006.25,
+    "meetingsMTD": 120,
+    "meetingsYTD": 644,
+    "openDeals": 264,
+    "pipeline": 4899071.45183338,
+    "won": 2,
+    "wonAmt": 72009,
     "wonYest": 0,
     "wonAmtYest": 0,
-    "wonYTD": 5,
-    "wonAmtYTD": 92211.25,
-    "lost": 29,
-    "lostAmt": 1188342.72,
+    "wonYTD": 6,
+    "wonAmtYTD": 114214,
+    "lost": 32,
+    "lostAmt": 1207142.72,
     "lostYest": 5,
     "lostAmtYest": 25950,
-    "lostYTD": 80,
-    "lostAmtYTD": 1507098.72,
+    "lostYTD": 82,
+    "lostAmtYTD": 1525898.72,
     "leadsYest": 7,
     "leadsYestInbound": 0,
     "leadsYestOutbound": 7,
-    "leadsMTD": 569,
+    "leadsMTD": 572,
     "leadsMTDInbound": 35,
-    "leadsMTDOutbound": 534,
-    "leadsYTD": 1167,
-    "leadsYTDInbound": 191,
-    "leadsYTDOutbound": 976,
+    "leadsMTDOutbound": 537,
+    "leadsYTD": 1172,
+    "leadsYTDInbound": 192,
+    "leadsYTDOutbound": 980,
     "connRateYest": 36,
-    "connRateMTD": 40,
+    "connRateMTD": 39,
     "connRateYTD": 38
   },
   "repData": [
@@ -92,21 +92,21 @@
       "calls": {
         "yest": 50,
         "yestConn": 17,
-        "mtd": 648,
-        "mtdConn": 175,
-        "ytd": 2581,
-        "ytdConn": 779
+        "mtd": 676,
+        "mtdConn": 186,
+        "ytd": 2609,
+        "ytdConn": 790
       },
       "connRateYest": 34,
-      "connRateMTD": 27,
+      "connRateMTD": 28,
       "connRateYTD": 30,
       "meetings": {
         "yest": 1,
-        "mtd": 14,
-        "ytd": 143
+        "mtd": 15,
+        "ytd": 144
       },
-      "openDeals": 23,
-      "pipeAmt": 225791,
+      "openDeals": 24,
+      "pipeAmt": 228091.26083,
       "won": 0,
       "wonAmt": 0,
       "wonYest": 0,
@@ -119,12 +119,21 @@
       "lostAmtYest": 0,
       "lostYTD": 11,
       "lostAmtYTD": 48637,
-      "rankA": 13,
-      "rankAContacted": 13,
-      "rankANotContacted": 0,
-      "rankAUntouched": [],
-      "rankB": 108,
-      "rankBContacted": 105,
+      "rankA": 71,
+      "rankAContacted": 69,
+      "rankANotContacted": 2,
+      "rankAUntouched": [
+        {
+          "id": "138964863215",
+          "name": "SKYBAND"
+        },
+        {
+          "id": "140632795352",
+          "name": "ALMUHAIDB DENTAL GROUP"
+        }
+      ],
+      "rankB": 109,
+      "rankBContacted": 106,
       "rankBNotContacted": 3,
       "rankBUntouched": [
         {
@@ -148,23 +157,18 @@
           "amount": 24836
         },
         {
-          "name": "Trafalgar Luxury Group - New Deal",
-          "days": 19,
-          "amount": 24625
-        },
-        {
           "name": "Tanmia- New Deal",
-          "days": 42,
+          "days": 43,
           "amount": 6900
         },
         {
           "name": "Harb Electric - New Deal",
-          "days": 20,
+          "days": 21,
           "amount": 10500
         },
         {
           "name": "Bellevue Medical Center- New Deal",
-          "days": 26,
+          "days": 27,
           "amount": 10075
         },
         {
@@ -176,6 +180,11 @@
           "name": "Prunelle- New Deal",
           "days": 27,
           "amount": 5000
+        },
+        {
+          "name": "Hôpital du Sacré-Coeur Centre Universitaire- New Deal",
+          "days": 15,
+          "amount": 0
         },
         {
           "name": "Hallab 1881 - New Deal",
@@ -192,31 +201,24 @@
           ]
         },
         {
-          "name": "Trafalgar Luxury Group - New Deal",
-          "amount": 24625,
-          "reasons": [
-            "No activity for 19 days"
-          ]
-        },
-        {
           "name": "Tanmia- New Deal",
           "amount": 6900,
           "reasons": [
-            "No activity for 42 days"
+            "No activity for 43 days"
           ]
         },
         {
           "name": "Harb Electric - New Deal",
           "amount": 10500,
           "reasons": [
-            "No activity for 20 days"
+            "No activity for 21 days"
           ]
         },
         {
           "name": "Bellevue Medical Center- New Deal",
           "amount": 10075,
           "reasons": [
-            "No activity for 26 days"
+            "No activity for 27 days"
           ]
         },
         {
@@ -234,6 +236,13 @@
           ]
         },
         {
+          "name": "Hôpital du Sacré-Coeur Centre Universitaire- New Deal",
+          "amount": 0,
+          "reasons": [
+            "No activity for 15 days"
+          ]
+        },
+        {
           "name": "Hallab 1881 - New Deal",
           "amount": 5850,
           "reasons": [
@@ -244,12 +253,12 @@
       "leadsYest": 3,
       "leadsYestInbound": 0,
       "leadsYestOutbound": 3,
-      "leadsMTD": 34,
+      "leadsMTD": 36,
       "leadsMTDInbound": 6,
-      "leadsMTDOutbound": 28,
-      "leadsYTD": 363,
+      "leadsMTDOutbound": 30,
+      "leadsYTD": 366,
       "leadsYTDInbound": 17,
-      "leadsYTDOutbound": 346,
+      "leadsYTDOutbound": 349,
       "topDeals": [
         {
           "name": "SHBC Mechanical Engineering - New Deal",
@@ -273,7 +282,7 @@
           "stage": "Proposal Shared",
           "nextActivity": null,
           "isStuck": false,
-          "isCold": true
+          "isCold": false
         },
         {
           "name": "Jordan Islamic Bank - New Deal",
@@ -350,17 +359,17 @@
       "connRateYTD": 67,
       "meetings": {
         "yest": 2,
-        "mtd": 38,
-        "ytd": 95
+        "mtd": 39,
+        "ytd": 96
       },
-      "openDeals": 113,
-      "pipeAmt": 1427350.7810500003,
-      "won": 0,
-      "wonAmt": 0,
+      "openDeals": 111,
+      "pipeAmt": 1373343.0310500003,
+      "won": 1,
+      "wonAmt": 22002.75,
       "wonYest": 0,
       "wonAmtYest": 0,
-      "wonYTD": 0,
-      "wonAmtYTD": 0,
+      "wonYTD": 1,
+      "wonAmtYTD": 22002.75,
       "lost": 0,
       "lostAmt": 0,
       "lostYest": 0,
@@ -474,42 +483,42 @@
         },
         {
           "name": "Saudi National Bank SNB - New Deal",
-          "days": 99,
+          "days": 100,
           "amount": 23069.55
         },
         {
           "name": "Al-Qahtani Holding - New Deal",
-          "days": 187,
+          "days": 188,
           "amount": 0
         },
         {
           "name": "Wadi Taiba Company - New Deal",
-          "days": 91,
+          "days": 92,
           "amount": 7733
         },
         {
           "name": "D360 Bank - New Deal",
-          "days": 92,
+          "days": 93,
           "amount": 26670
         },
         {
           "name": "almoosahospital.com.sa - New Deal",
-          "days": 153,
+          "days": 154,
           "amount": 20000
         },
         {
           "name": "Al- Othman Holding - New Deal",
-          "days": 230,
+          "days": 231,
           "amount": 8667.75
         },
         {
           "name": "MARCO - New Deal",
-          "days": 73,
+          "days": 74,
           "amount": 10401.3
         },
         {
           "name": "SAUDIA REAL ESTATE - New Deal",
-          "days": 299,
+          "days": 300,
           "amount": 14951.86875
         },
         {
@@ -519,67 +528,67 @@
         },
         {
           "name": "Coca Cola Bottling Co. Of Saudi Arabia - New Deal",
-          "days": 90,
+          "days": 91,
           "amount": 13335
         },
         {
           "name": "MEMF Electrical Industries Co - New Deal",
-          "days": 205,
+          "days": 206,
           "amount": 9467.85
         },
         {
           "name": "Herfy Food Services Co. Ltd. - New Deal",
-          "days": 44,
+          "days": 45,
           "amount": 12001.5
         },
         {
           "name": "Dukan Retailing Company - New Deal",
-          "days": 187,
+          "days": 188,
           "amount": 7200.9
         },
         {
           "name": "MGC - New Deal",
-          "days": 180,
+          "days": 181,
           "amount": 11121.39
         },
         {
           "name": "IBN ROSHD Educational Holding Company - New Deal",
-          "days": 180,
+          "days": 181,
           "amount": 8321.04
         },
         {
           "name": "Abdulla Fouad Group - New Deal",
-          "days": 176,
+          "days": 177,
           "amount": 13201.65
         },
         {
           "name": "المركز الوطني للتنافسية - New Deal",
-          "days": 118,
+          "days": 119,
           "amount": 8133
         },
         {
           "name": "Ninja - New Deal",
-          "days": 160,
+          "days": 161,
           "amount": 14000
         },
         {
           "name": "fad international company - New Deal",
-          "days": 55,
+          "days": 56,
           "amount": 7200
         },
         {
           "name": "SAFE National Security Services Company -Evalufy New Deal",
-          "days": 92,
+          "days": 93,
           "amount": 16000
         },
         {
           "name": "Stom - Saudi Tabreed Co. - New Deal",
-          "days": 97,
+          "days": 98,
           "amount": 53333
         },
         {
           "name": "Reach - New Deal",
-          "days": 15,
+          "days": 16,
           "amount": 20000
         },
         {
@@ -589,42 +598,42 @@
         },
         {
           "name": "Applus - New Deal",
-          "days": 105,
+          "days": 106,
           "amount": 23000
         },
         {
           "name": "Umm Al-Qura University - New Deal",
-          "days": 112,
+          "days": 113,
           "amount": 30000
         },
         {
           "name": "Shade Corporation Lit - New Deal",
-          "days": 141,
+          "days": 142,
           "amount": 40000
         },
         {
           "name": "abc - New Deal",
-          "days": 105,
+          "days": 106,
           "amount": 5600.7
         },
         {
           "name": "Saudi Manpower Solutions Co - New Deal",
-          "days": 140,
+          "days": 141,
           "amount": 50000
         },
         {
           "name": "Hayat Hospitals - New Deal",
-          "days": 44,
+          "days": 45,
           "amount": 28000
         },
         {
           "name": "General Authority of Civil Aviation (GACA) - New Deal",
-          "days": 169,
+          "days": 170,
           "amount": 58813.7508
         },
         {
           "name": "King Saud University - New Deal",
-          "days": 187,
+          "days": 188,
           "amount": 23066
         },
         {
@@ -634,182 +643,177 @@
         },
         {
           "name": "Shade Corporation Lit - New Deal",
-          "days": 141,
+          "days": 142,
           "amount": 40000
         },
         {
           "name": "Alsalama Hospital - New Deal",
-          "days": 188,
+          "days": 189,
           "amount": 0
         },
         {
           "name": "ITSC - New Deal",
-          "days": 180,
+          "days": 181,
           "amount": 20000
         },
         {
           "name": "Front End Limited Company - New Deal",
-          "days": 48,
+          "days": 49,
           "amount": 16000
         },
         {
           "name": "Humain AI - New Deal",
-          "days": 90,
+          "days": 91,
           "amount": 19469.1
         },
         {
           "name": "Tamkeen Technologies - New Deal",
-          "days": 148,
+          "days": 149,
           "amount": 6007.1508
         },
         {
           "name": "fives group - New Deal",
-          "days": 183,
+          "days": 184,
           "amount": 5000
         },
         {
           "name": "Racing Force Group - New Deal",
-          "days": 169,
+          "days": 170,
           "amount": 17000
         },
         {
           "name": "Bahrain Credit - New Deal",
-          "days": 194,
+          "days": 195,
           "amount": 10000
         },
         {
           "name": "سارمكس,صروح المشاريع - New Deal",
-          "days": 191,
+          "days": 192,
           "amount": 20000
         },
         {
           "name": "Al Nasser Group - New Deal",
-          "days": 186,
+          "days": 187,
           "amount": 2075.92
         },
         {
           "name": "Sahara Net - New Deal",
-          "days": 99,
+          "days": 100,
           "amount": 2400.92
         },
         {
           "name": "InPro - New Deal",
-          "days": 166,
+          "days": 167,
           "amount": 5075.92
         },
         {
           "name": "Enayah Health Society ",
-          "days": 16,
+          "days": 17,
           "amount": 2293.62
         },
         {
           "name": "Masar Engineer - New Deal",
-          "days": 166,
+          "days": 167,
           "amount": 6000.75
         },
         {
           "name": "Innovative Solutions - New Deal",
-          "days": 160,
+          "days": 161,
           "amount": 13000
         },
         {
           "name": "Sultan bin Abdulaziz Humanitarian City - New Deal",
-          "days": 98,
+          "days": 99,
           "amount": 23066
         },
         {
           "name": "The HR Helpdesk - New Deal",
-          "days": 84,
+          "days": 85,
           "amount": 12000
         },
         {
           "name": "Infinite pl - New Deal",
-          "days": 104,
+          "days": 105,
           "amount": 13333
         },
         {
-          "name": "Be Group - New Deal",
-          "days": 15,
-          "amount": 16000
-        },
-        {
           "name": "6 Pence - New Deal",
-          "days": 99,
+          "days": 100,
           "amount": 10000
         },
         {
           "name": "Kaza-meza",
-          "days": 145,
+          "days": 146,
           "amount": 2000
         },
         {
           "name": "Ghanem - New Deal",
-          "days": 106,
+          "days": 107,
           "amount": 2000
         },
         {
           "name": "Saudi Aramco Base Oil - Luberef - New Deal",
-          "days": 22,
+          "days": 23,
           "amount": 20000
         },
         {
           "name": "AH - New Deal",
-          "days": 100,
+          "days": 101,
           "amount": 12001.5
         },
         {
           "name": "الخليج - New Deal",
-          "days": 91,
+          "days": 92,
           "amount": 8000
         },
         {
           "name": "MECL Sony - New Deal",
-          "days": 104,
+          "days": 105,
           "amount": 10666
         },
         {
           "name": "Better Real Estate - New Deal",
-          "days": 88,
+          "days": 89,
           "amount": 8001
         },
         {
           "name": "Amal - New Deal",
-          "days": 65,
+          "days": 66,
           "amount": 0
         },
         {
           "name": "AhmedDaoud - New Deal",
-          "days": 55,
+          "days": 56,
           "amount": 0
         },
         {
           "name": "EmilyGrace - New Deal",
-          "days": 49,
+          "days": 50,
           "amount": 0
         },
         {
           "name": "AhmedDAOUD - New Deal",
-          "days": 27,
+          "days": 28,
           "amount": 0
         },
         {
           "name": "BwaTech- New Deal",
-          "days": 26,
+          "days": 27,
           "amount": 0
         },
         {
           "name": "Turbo United Trading Com- New Deal",
-          "days": 321,
+          "days": 322,
           "amount": 0
         },
         {
           "name": "Disty- New Deal",
-          "days": 21,
+          "days": 22,
           "amount": 0
         },
         {
           "name": "اصل البرجر - New Deal",
-          "days": 75,
+          "days": 76,
           "amount": 11000
         },
         {
@@ -818,13 +822,13 @@
           "amount": 3300
         },
         {
-          "name": "ZOMCO - New Deal",
-          "days": 44,
+          "name": "ZOMCO - Core ATS",
+          "days": 45,
           "amount": 7734.3
         },
         {
           "name": "وزارة السياحة - ATS",
-          "days": 77,
+          "days": 78,
           "amount": 15468.6
         }
       ],
@@ -840,56 +844,56 @@
           "name": "Saudi National Bank SNB - New Deal",
           "amount": 23069.55,
           "reasons": [
-            "No activity for 99 days"
+            "No activity for 100 days"
           ]
         },
         {
           "name": "Al-Qahtani Holding - New Deal",
           "amount": 0,
           "reasons": [
-            "No activity for 187 days"
+            "No activity for 188 days"
           ]
         },
         {
           "name": "Wadi Taiba Company - New Deal",
           "amount": 7733,
           "reasons": [
-            "No activity for 91 days"
+            "No activity for 92 days"
           ]
         },
         {
           "name": "D360 Bank - New Deal",
           "amount": 26670,
           "reasons": [
-            "No activity for 92 days"
+            "No activity for 93 days"
           ]
         },
         {
           "name": "almoosahospital.com.sa - New Deal",
           "amount": 20000,
           "reasons": [
-            "No activity for 153 days"
+            "No activity for 154 days"
           ]
         },
         {
           "name": "Al- Othman Holding - New Deal",
           "amount": 8667.75,
           "reasons": [
-            "No activity for 230 days"
+            "No activity for 231 days"
           ]
         },
         {
           "name": "MARCO - New Deal",
           "amount": 10401.3,
           "reasons": [
-            "No activity for 73 days"
+            "No activity for 74 days"
           ]
         },
         {
           "name": "SAUDIA REAL ESTATE - New Deal",
           "amount": 14951.86875,
           "reasons": [
-            "No activity for 299 days"
+            "No activity for 300 days"
           ]
         },
         {
@@ -903,91 +907,91 @@
           "name": "Coca Cola Bottling Co. Of Saudi Arabia - New Deal",
           "amount": 13335,
           "reasons": [
-            "No activity for 90 days"
+            "No activity for 91 days"
           ]
         },
         {
           "name": "MEMF Electrical Industries Co - New Deal",
           "amount": 9467.85,
           "reasons": [
-            "No activity for 205 days"
+            "No activity for 206 days"
           ]
         },
         {
           "name": "Herfy Food Services Co. Ltd. - New Deal",
           "amount": 12001.5,
           "reasons": [
-            "No activity for 44 days"
+            "No activity for 45 days"
           ]
         },
         {
           "name": "Dukan Retailing Company - New Deal",
           "amount": 7200.9,
           "reasons": [
-            "No activity for 187 days"
+            "No activity for 188 days"
           ]
         },
         {
           "name": "MGC - New Deal",
           "amount": 11121.39,
           "reasons": [
-            "No activity for 180 days"
+            "No activity for 181 days"
           ]
         },
         {
           "name": "IBN ROSHD Educational Holding Company - New Deal",
           "amount": 8321.04,
           "reasons": [
-            "No activity for 180 days"
+            "No activity for 181 days"
           ]
         },
         {
           "name": "Abdulla Fouad Group - New Deal",
           "amount": 13201.65,
           "reasons": [
-            "No activity for 176 days"
+            "No activity for 177 days"
           ]
         },
         {
           "name": "المركز الوطني للتنافسية - New Deal",
           "amount": 8133,
           "reasons": [
-            "No activity for 118 days"
+            "No activity for 119 days"
           ]
         },
         {
           "name": "Ninja - New Deal",
           "amount": 14000,
           "reasons": [
-            "No activity for 160 days"
+            "No activity for 161 days"
           ]
         },
         {
           "name": "fad international company - New Deal",
           "amount": 7200,
           "reasons": [
-            "No activity for 55 days"
+            "No activity for 56 days"
           ]
         },
         {
           "name": "SAFE National Security Services Company -Evalufy New Deal",
           "amount": 16000,
           "reasons": [
-            "No activity for 92 days"
+            "No activity for 93 days"
           ]
         },
         {
           "name": "Stom - Saudi Tabreed Co. - New Deal",
           "amount": 53333,
           "reasons": [
-            "No activity for 97 days"
+            "No activity for 98 days"
           ]
         },
         {
           "name": "Reach - New Deal",
           "amount": 20000,
           "reasons": [
-            "No activity for 15 days"
+            "No activity for 16 days"
           ]
         },
         {
@@ -1001,56 +1005,56 @@
           "name": "Applus - New Deal",
           "amount": 23000,
           "reasons": [
-            "No activity for 105 days"
+            "No activity for 106 days"
           ]
         },
         {
           "name": "Umm Al-Qura University - New Deal",
           "amount": 30000,
           "reasons": [
-            "No activity for 112 days"
+            "No activity for 113 days"
           ]
         },
         {
           "name": "Shade Corporation Lit - New Deal",
           "amount": 40000,
           "reasons": [
-            "No activity for 141 days"
+            "No activity for 142 days"
           ]
         },
         {
           "name": "abc - New Deal",
           "amount": 5600.7,
           "reasons": [
-            "No activity for 105 days"
+            "No activity for 106 days"
           ]
         },
         {
           "name": "Saudi Manpower Solutions Co - New Deal",
           "amount": 50000,
           "reasons": [
-            "No activity for 140 days"
+            "No activity for 141 days"
           ]
         },
         {
           "name": "Hayat Hospitals - New Deal",
           "amount": 28000,
           "reasons": [
-            "No activity for 44 days"
+            "No activity for 45 days"
           ]
         },
         {
           "name": "General Authority of Civil Aviation (GACA) - New Deal",
           "amount": 58813.7508,
           "reasons": [
-            "No activity for 169 days"
+            "No activity for 170 days"
           ]
         },
         {
           "name": "King Saud University - New Deal",
           "amount": 23066,
           "reasons": [
-            "No activity for 187 days"
+            "No activity for 188 days"
           ]
         },
         {
@@ -1064,252 +1068,245 @@
           "name": "Shade Corporation Lit - New Deal",
           "amount": 40000,
           "reasons": [
-            "No activity for 141 days"
+            "No activity for 142 days"
           ]
         },
         {
           "name": "Alsalama Hospital - New Deal",
           "amount": 0,
           "reasons": [
-            "No activity for 188 days"
+            "No activity for 189 days"
           ]
         },
         {
           "name": "ITSC - New Deal",
           "amount": 20000,
           "reasons": [
-            "No activity for 180 days"
+            "No activity for 181 days"
           ]
         },
         {
           "name": "Front End Limited Company - New Deal",
           "amount": 16000,
           "reasons": [
-            "No activity for 48 days"
+            "No activity for 49 days"
           ]
         },
         {
           "name": "Humain AI - New Deal",
           "amount": 19469.1,
           "reasons": [
-            "No activity for 90 days"
+            "No activity for 91 days"
           ]
         },
         {
           "name": "Tamkeen Technologies - New Deal",
           "amount": 6007.1508,
           "reasons": [
-            "No activity for 148 days"
+            "No activity for 149 days"
           ]
         },
         {
           "name": "fives group - New Deal",
           "amount": 5000,
           "reasons": [
-            "No activity for 183 days"
+            "No activity for 184 days"
           ]
         },
         {
           "name": "Racing Force Group - New Deal",
           "amount": 17000,
           "reasons": [
-            "No activity for 169 days"
+            "No activity for 170 days"
           ]
         },
         {
           "name": "Bahrain Credit - New Deal",
           "amount": 10000,
           "reasons": [
-            "No activity for 194 days"
+            "No activity for 195 days"
           ]
         },
         {
           "name": "سارمكس,صروح المشاريع - New Deal",
           "amount": 20000,
           "reasons": [
-            "No activity for 191 days"
+            "No activity for 192 days"
           ]
         },
         {
           "name": "Al Nasser Group - New Deal",
           "amount": 2075.92,
           "reasons": [
-            "No activity for 186 days"
+            "No activity for 187 days"
           ]
         },
         {
           "name": "Sahara Net - New Deal",
           "amount": 2400.92,
           "reasons": [
-            "No activity for 99 days"
+            "No activity for 100 days"
           ]
         },
         {
           "name": "InPro - New Deal",
           "amount": 5075.92,
           "reasons": [
-            "No activity for 166 days"
+            "No activity for 167 days"
           ]
         },
         {
           "name": "Enayah Health Society ",
           "amount": 2293.62,
           "reasons": [
-            "No activity for 16 days"
+            "No activity for 17 days"
           ]
         },
         {
           "name": "Masar Engineer - New Deal",
           "amount": 6000.75,
           "reasons": [
-            "No activity for 166 days"
+            "No activity for 167 days"
           ]
         },
         {
           "name": "Innovative Solutions - New Deal",
           "amount": 13000,
           "reasons": [
-            "No activity for 160 days"
+            "No activity for 161 days"
           ]
         },
         {
           "name": "Sultan bin Abdulaziz Humanitarian City - New Deal",
           "amount": 23066,
           "reasons": [
-            "No activity for 98 days"
+            "No activity for 99 days"
           ]
         },
         {
           "name": "The HR Helpdesk - New Deal",
           "amount": 12000,
           "reasons": [
-            "No activity for 84 days"
+            "No activity for 85 days"
           ]
         },
         {
           "name": "Infinite pl - New Deal",
           "amount": 13333,
           "reasons": [
-            "No activity for 104 days"
-          ]
-        },
-        {
-          "name": "Be Group - New Deal",
-          "amount": 16000,
-          "reasons": [
-            "No activity for 15 days"
+            "No activity for 105 days"
           ]
         },
         {
           "name": "6 Pence - New Deal",
           "amount": 10000,
           "reasons": [
-            "No activity for 99 days"
+            "No activity for 100 days"
           ]
         },
         {
           "name": "Kaza-meza",
           "amount": 2000,
           "reasons": [
-            "No activity for 145 days"
+            "No activity for 146 days"
           ]
         },
         {
           "name": "Ghanem - New Deal",
           "amount": 2000,
           "reasons": [
-            "No activity for 106 days"
+            "No activity for 107 days"
           ]
         },
         {
           "name": "Saudi Aramco Base Oil - Luberef - New Deal",
           "amount": 20000,
           "reasons": [
-            "No activity for 22 days"
+            "No activity for 23 days"
           ]
         },
         {
           "name": "AH - New Deal",
           "amount": 12001.5,
           "reasons": [
-            "No activity for 100 days"
+            "No activity for 101 days"
           ]
         },
         {
           "name": "الخليج - New Deal",
           "amount": 8000,
           "reasons": [
-            "No activity for 91 days"
+            "No activity for 92 days"
           ]
         },
         {
           "name": "MECL Sony - New Deal",
           "amount": 10666,
           "reasons": [
-            "No activity for 104 days"
+            "No activity for 105 days"
           ]
         },
         {
           "name": "Better Real Estate - New Deal",
           "amount": 8001,
           "reasons": [
-            "No activity for 88 days"
+            "No activity for 89 days"
           ]
         },
         {
           "name": "Amal - New Deal",
           "amount": 0,
           "reasons": [
-            "No activity for 65 days"
+            "No activity for 66 days"
           ]
         },
         {
           "name": "AhmedDaoud - New Deal",
           "amount": 0,
           "reasons": [
-            "No activity for 55 days"
+            "No activity for 56 days"
           ]
         },
         {
           "name": "EmilyGrace - New Deal",
           "amount": 0,
           "reasons": [
-            "No activity for 49 days"
+            "No activity for 50 days"
           ]
         },
         {
           "name": "AhmedDAOUD - New Deal",
           "amount": 0,
           "reasons": [
-            "No activity for 27 days"
+            "No activity for 28 days"
           ]
         },
         {
           "name": "BwaTech- New Deal",
           "amount": 0,
           "reasons": [
-            "No activity for 26 days"
+            "No activity for 27 days"
           ]
         },
         {
           "name": "Turbo United Trading Com- New Deal",
           "amount": 0,
           "reasons": [
-            "No activity for 321 days"
+            "No activity for 322 days"
           ]
         },
         {
           "name": "Disty- New Deal",
           "amount": 0,
           "reasons": [
-            "No activity for 21 days"
+            "No activity for 22 days"
           ]
         },
         {
           "name": "اصل البرجر - New Deal",
           "amount": 11000,
           "reasons": [
-            "No activity for 75 days"
+            "No activity for 76 days"
           ]
         },
         {
@@ -1320,17 +1317,17 @@
           ]
         },
         {
-          "name": "ZOMCO - New Deal",
+          "name": "ZOMCO - Core ATS",
           "amount": 7734.3,
           "reasons": [
-            "No activity for 44 days"
+            "No activity for 45 days"
           ]
         },
         {
           "name": "وزارة السياحة - ATS",
           "amount": 15468.6,
           "reasons": [
-            "No activity for 77 days"
+            "No activity for 78 days"
           ]
         }
       ],
@@ -1377,14 +1374,6 @@
           "isCold": true
         },
         {
-          "name": "Aster Hospitals & Clinics - KSA - New Deal",
-          "amount": 40005,
-          "stage": "Lead",
-          "nextActivity": null,
-          "isStuck": false,
-          "isCold": false
-        },
-        {
           "name": "Shade Corporation Lit - New Deal",
           "amount": 40000,
           "stage": "Proposal Shared",
@@ -1423,6 +1412,14 @@
           "nextActivity": null,
           "isStuck": false,
           "isCold": false
+        },
+        {
+          "name": "TDDC - Enterprise",
+          "amount": 35097.72,
+          "stage": "Quotation Sent",
+          "nextActivity": null,
+          "isStuck": false,
+          "isCold": false
         }
       ]
     },
@@ -1433,37 +1430,46 @@
       "calls": {
         "yest": 20,
         "yestConn": 4,
-        "mtd": 325,
-        "mtdConn": 137,
-        "ytd": 1063,
-        "ytdConn": 442
+        "mtd": 338,
+        "mtdConn": 141,
+        "ytd": 1076,
+        "ytdConn": 446
       },
       "connRateYest": 20,
       "connRateMTD": 42,
-      "connRateYTD": 42,
+      "connRateYTD": 41,
       "meetings": {
         "yest": 1,
         "mtd": 46,
         "ytd": 269
       },
-      "openDeals": 103,
-      "pipeAmt": 1129987.5521997998,
+      "openDeals": 100,
+      "pipeAmt": 1098677.5521997998,
       "won": 0,
       "wonAmt": 0,
       "wonYest": 0,
       "wonAmtYest": 0,
       "wonYTD": 3,
       "wonAmtYTD": 40205,
-      "lost": 27,
-      "lostAmt": 1184142.72,
+      "lost": 30,
+      "lostAmt": 1202942.72,
       "lostYest": 5,
       "lostAmtYest": 25950,
-      "lostYTD": 69,
-      "lostAmtYTD": 1458461.72,
-      "rankA": 31,
-      "rankAContacted": 31,
-      "rankANotContacted": 0,
-      "rankAUntouched": [],
+      "lostYTD": 71,
+      "lostAmtYTD": 1477261.72,
+      "rankA": 68,
+      "rankAContacted": 66,
+      "rankANotContacted": 2,
+      "rankAUntouched": [
+        {
+          "id": "136235699425",
+          "name": "NASCO - National Advanced Systems Co. Ltd."
+        },
+        {
+          "id": "140632792281",
+          "name": "Gulf Business Horizon Company | GBH"
+        }
+      ],
       "rankB": 158,
       "rankBContacted": 151,
       "rankBNotContacted": 7,
@@ -1501,52 +1507,27 @@
       "cold": [
         {
           "name": "CIS College - Renewal",
-          "days": 407,
+          "days": 408,
           "amount": 8000
         },
         {
           "name": "Al Faisal Holding - New Deal",
-          "days": 19,
+          "days": 20,
           "amount": 41650
         },
         {
-          "name": "New Mowasat Hospital - New Deal",
-          "days": 28,
-          "amount": 2000
-        },
-        {
-          "name": "The OD Company - New Deal",
-          "days": 43,
-          "amount": 15000
-        },
-        {
-          "name": "FDC - New Deal",
-          "days": 166,
-          "amount": 10500
-        },
-        {
           "name": "Health Assurance Hospitals Company - DHAMAN - New Deal",
-          "days": 58,
+          "days": 59,
           "amount": 13000
         },
         {
-          "name": "Salam Technology - New Deal",
-          "days": 170,
-          "amount": 15000
-        },
-        {
-          "name": "Emirates Stallions Group -",
-          "days": 84,
-          "amount": 20000
-        },
-        {
           "name": "INDEVCO Consultancy - New Deal",
-          "days": 169,
+          "days": 170,
           "amount": 3500
         },
         {
           "name": "MSI - Renewal",
-          "days": 293,
+          "days": 294,
           "amount": 4666
         },
         {
@@ -1555,69 +1536,39 @@
           "amount": 9315
         },
         {
-          "name": "Progressive Generation Holding - New Deal",
-          "days": 43,
-          "amount": 3500
-        },
-        {
-          "name": "Omega Electrical Industries - New Deal",
-          "days": 170,
-          "amount": 5000
-        },
-        {
-          "name": "Tahboub Group - New Deal",
-          "days": 153,
-          "amount": 10500
-        },
-        {
-          "name": "Abwaab - New Deal",
-          "days": 162,
-          "amount": 21200
-        },
-        {
-          "name": "Agrimatco - New Deal",
-          "days": 26,
-          "amount": 7500
-        },
-        {
           "name": "Fine Hygienic Holding - Jordan - New Deal",
-          "days": 153,
+          "days": 154,
           "amount": 3500
         },
         {
           "name": "Digital Gates - New Deal",
-          "days": 151,
+          "days": 152,
           "amount": 3000
         },
         {
           "name": "ACTED-Jordanie Regional - New Deal",
-          "days": 43,
+          "days": 44,
           "amount": 4900
         },
         {
           "name": "Wuduh - New Deal",
-          "days": 167,
+          "days": 168,
           "amount": 4000
         },
         {
           "name": "Aramex - Jordan - New Deal",
-          "days": 168,
+          "days": 169,
           "amount": 2000
         },
         {
           "name": "Pace - New Deal",
-          "days": 26,
+          "days": 27,
           "amount": 7500
         },
         {
           "name": "Al Babtain Group - Evalufy New Deal",
-          "days": 47,
+          "days": 48,
           "amount": 7500
-        },
-        {
-          "name": "Maven Workforce - New Deal",
-          "days": 167,
-          "amount": 3000
         },
         {
           "name": "EtihadWE - New Deal",
@@ -1626,27 +1577,32 @@
         },
         {
           "name": "Jobservoo",
-          "days": 29,
+          "days": 30,
           "amount": 2160
         },
         {
           "name": "Volkswagen Middle East",
-          "days": 26,
+          "days": 27,
           "amount": 14976
         },
         {
           "name": "Dhow Holding - New Deal",
-          "days": 19,
+          "days": 20,
           "amount": 13500
         },
         {
+          "name": "3S Middle East - On Hold",
+          "days": 15,
+          "amount": 7762.5
+        },
+        {
           "name": "Aljazeera Media Network - New Deal",
-          "days": 175,
+          "days": 176,
           "amount": 14200
         },
         {
           "name": "Al-Meead Kuwaiti General Trading & Contracting Co. W.L.L, - New Deal",
-          "days": 22,
+          "days": 23,
           "amount": 5150
         }
       ],
@@ -1655,70 +1611,35 @@
           "name": "CIS College - Renewal",
           "amount": 8000,
           "reasons": [
-            "No activity for 407 days"
+            "No activity for 408 days"
           ]
         },
         {
           "name": "Al Faisal Holding - New Deal",
           "amount": 41650,
           "reasons": [
-            "No activity for 19 days"
-          ]
-        },
-        {
-          "name": "New Mowasat Hospital - New Deal",
-          "amount": 2000,
-          "reasons": [
-            "No activity for 28 days"
-          ]
-        },
-        {
-          "name": "The OD Company - New Deal",
-          "amount": 15000,
-          "reasons": [
-            "No activity for 43 days"
-          ]
-        },
-        {
-          "name": "FDC - New Deal",
-          "amount": 10500,
-          "reasons": [
-            "No activity for 166 days"
+            "No activity for 20 days"
           ]
         },
         {
           "name": "Health Assurance Hospitals Company - DHAMAN - New Deal",
           "amount": 13000,
           "reasons": [
-            "No activity for 58 days"
-          ]
-        },
-        {
-          "name": "Salam Technology - New Deal",
-          "amount": 15000,
-          "reasons": [
-            "No activity for 170 days"
-          ]
-        },
-        {
-          "name": "Emirates Stallions Group -",
-          "amount": 20000,
-          "reasons": [
-            "No activity for 84 days"
+            "No activity for 59 days"
           ]
         },
         {
           "name": "INDEVCO Consultancy - New Deal",
           "amount": 3500,
           "reasons": [
-            "No activity for 169 days"
+            "No activity for 170 days"
           ]
         },
         {
           "name": "MSI - Renewal",
           "amount": 4666,
           "reasons": [
-            "No activity for 293 days"
+            "No activity for 294 days"
           ]
         },
         {
@@ -1729,94 +1650,52 @@
           ]
         },
         {
-          "name": "Progressive Generation Holding - New Deal",
-          "amount": 3500,
-          "reasons": [
-            "No activity for 43 days"
-          ]
-        },
-        {
-          "name": "Omega Electrical Industries - New Deal",
-          "amount": 5000,
-          "reasons": [
-            "No activity for 170 days"
-          ]
-        },
-        {
-          "name": "Tahboub Group - New Deal",
-          "amount": 10500,
-          "reasons": [
-            "No activity for 153 days"
-          ]
-        },
-        {
-          "name": "Abwaab - New Deal",
-          "amount": 21200,
-          "reasons": [
-            "No activity for 162 days"
-          ]
-        },
-        {
-          "name": "Agrimatco - New Deal",
-          "amount": 7500,
-          "reasons": [
-            "No activity for 26 days"
-          ]
-        },
-        {
           "name": "Fine Hygienic Holding - Jordan - New Deal",
           "amount": 3500,
           "reasons": [
-            "No activity for 153 days"
+            "No activity for 154 days"
           ]
         },
         {
           "name": "Digital Gates - New Deal",
           "amount": 3000,
           "reasons": [
-            "No activity for 151 days"
+            "No activity for 152 days"
           ]
         },
         {
           "name": "ACTED-Jordanie Regional - New Deal",
           "amount": 4900,
           "reasons": [
-            "No activity for 43 days"
+            "No activity for 44 days"
           ]
         },
         {
           "name": "Wuduh - New Deal",
           "amount": 4000,
           "reasons": [
-            "No activity for 167 days"
+            "No activity for 168 days"
           ]
         },
         {
           "name": "Aramex - Jordan - New Deal",
           "amount": 2000,
           "reasons": [
-            "No activity for 168 days"
+            "No activity for 169 days"
           ]
         },
         {
           "name": "Pace - New Deal",
           "amount": 7500,
           "reasons": [
-            "No activity for 26 days"
+            "No activity for 27 days"
           ]
         },
         {
           "name": "Al Babtain Group - Evalufy New Deal",
           "amount": 7500,
           "reasons": [
-            "No activity for 47 days"
-          ]
-        },
-        {
-          "name": "Maven Workforce - New Deal",
-          "amount": 3000,
-          "reasons": [
-            "No activity for 167 days"
+            "No activity for 48 days"
           ]
         },
         {
@@ -1830,47 +1709,54 @@
           "name": "Jobservoo",
           "amount": 2160,
           "reasons": [
-            "No activity for 29 days"
+            "No activity for 30 days"
           ]
         },
         {
           "name": "Volkswagen Middle East",
           "amount": 14976,
           "reasons": [
-            "No activity for 26 days"
+            "No activity for 27 days"
           ]
         },
         {
           "name": "Dhow Holding - New Deal",
           "amount": 13500,
           "reasons": [
-            "No activity for 19 days"
+            "No activity for 20 days"
+          ]
+        },
+        {
+          "name": "3S Middle East - On Hold",
+          "amount": 7762.5,
+          "reasons": [
+            "No activity for 15 days"
           ]
         },
         {
           "name": "Aljazeera Media Network - New Deal",
           "amount": 14200,
           "reasons": [
-            "No activity for 175 days"
+            "No activity for 176 days"
           ]
         },
         {
           "name": "Al-Meead Kuwaiti General Trading & Contracting Co. W.L.L, - New Deal",
           "amount": 5150,
           "reasons": [
-            "No activity for 22 days"
+            "No activity for 23 days"
           ]
         }
       ],
       "leadsYest": 3,
       "leadsYestInbound": 0,
       "leadsYestOutbound": 3,
-      "leadsMTD": 82,
+      "leadsMTD": 83,
       "leadsMTDInbound": 9,
-      "leadsMTDOutbound": 73,
-      "leadsYTD": 217,
-      "leadsYTDInbound": 80,
-      "leadsYTDOutbound": 137,
+      "leadsMTDOutbound": 74,
+      "leadsYTD": 219,
+      "leadsYTDInbound": 81,
+      "leadsYTDOutbound": 138,
       "topDeals": [
         {
           "name": "Khalifa University - New Deal",
@@ -1961,18 +1847,18 @@
       "calls": {
         "yest": 16,
         "yestConn": 10,
-        "mtd": 264,
-        "mtdConn": 146,
-        "ytd": 466,
-        "ytdConn": 252
+        "mtd": 271,
+        "mtdConn": 150,
+        "ytd": 473,
+        "ytdConn": 256
       },
       "connRateYest": 63,
       "connRateMTD": 55,
       "connRateYTD": 54,
       "meetings": {
         "yest": 3,
-        "mtd": 8,
-        "ytd": 17
+        "mtd": 9,
+        "ytd": 18
       },
       "openDeals": 2,
       "pipeAmt": 50000,
@@ -1988,8 +1874,8 @@
       "lostAmtYest": 0,
       "lostYTD": 0,
       "lostAmtYTD": 0,
-      "rankA": 27,
-      "rankAContacted": 27,
+      "rankA": 28,
+      "rankAContacted": 28,
       "rankANotContacted": 0,
       "rankAUntouched": [],
       "rankB": 65,
@@ -2034,18 +1920,18 @@
       "calls": {
         "yest": 21,
         "yestConn": 7,
-        "mtd": 231,
-        "mtdConn": 104,
-        "ytd": 452,
-        "ytdConn": 194
+        "mtd": 241,
+        "mtdConn": 106,
+        "ytd": 462,
+        "ytdConn": 196
       },
       "connRateYest": 33,
-      "connRateMTD": 45,
-      "connRateYTD": 43,
+      "connRateMTD": 44,
+      "connRateYTD": 42,
       "meetings": {
         "yest": 0,
-        "mtd": 5,
-        "ytd": 7
+        "mtd": 6,
+        "ytd": 8
       },
       "openDeals": 3,
       "pipeAmt": 0,
@@ -2078,7 +1964,7 @@
       "cold": [
         {
           "name": "- New Deal",
-          "days": 23,
+          "days": 24,
           "amount": 0
         }
       ],
@@ -2087,7 +1973,7 @@
           "name": "- New Deal",
           "amount": 0,
           "reasons": [
-            "No activity for 23 days"
+            "No activity for 24 days"
           ]
         }
       ],
@@ -2144,8 +2030,8 @@
       "connRateYTD": 89,
       "meetings": {
         "yest": 0,
-        "mtd": 4,
-        "ytd": 108
+        "mtd": 5,
+        "ytd": 109
       },
       "openDeals": 24,
       "pipeAmt": 2148959.607753581,
@@ -2178,12 +2064,12 @@
         },
         {
           "name": "Ministry of Hajj and Umra - New Deal",
-          "days": 20,
+          "days": 21,
           "amount": 20000
         },
         {
           "name": "Red Sea Film Festival Foundation - New Deal",
-          "days": 82,
+          "days": 83,
           "amount": 180000
         },
         {
@@ -2193,7 +2079,7 @@
         },
         {
           "name": "الملاحة الجوية السعودية - New Deal-SANS",
-          "days": 82,
+          "days": 83,
           "amount": 251200
         },
         {
@@ -2203,12 +2089,12 @@
         },
         {
           "name": "DP world ",
-          "days": 176,
+          "days": 177,
           "amount": 212026.5
         },
         {
           "name": "KEY Car Rental  المفتاح لتأجير السيارات - New Deal",
-          "days": 145,
+          "days": 146,
           "amount": 67000
         },
         {
@@ -2218,32 +2104,32 @@
         },
         {
           "name": "King faisal speciality hospital ",
-          "days": 98,
+          "days": 99,
           "amount": 208826.1
         },
         {
           "name": "Batterjee Medical College - New Deal",
-          "days": 169,
+          "days": 170,
           "amount": 0
         },
         {
           "name": "IMC - new deal",
-          "days": 21,
+          "days": 22,
           "amount": 160020
         },
         {
           "name": "smsc",
-          "days": 176,
+          "days": 177,
           "amount": 60007.5
         },
         {
           "name": "Mohamed Yousuf Naghi Group.",
-          "days": 169,
+          "days": 170,
           "amount": 8001
         },
         {
           "name": "enjaz",
-          "days": 76,
+          "days": 77,
           "amount": 50006.25
         },
         {
@@ -2253,12 +2139,12 @@
         },
         {
           "name": "Naqua",
-          "days": 173,
+          "days": 174,
           "amount": 50006.25
         },
         {
           "name": "TALENTERA - ATS",
-          "days": 49,
+          "days": 50,
           "amount": 74676
         },
         {
@@ -2268,12 +2154,12 @@
         },
         {
           "name": "Sukuk Capital ",
-          "days": 82,
+          "days": 83,
           "amount": 24869.775
         },
         {
           "name": "Talentera Enterprise Plan: King Faisal Specialist Hospital & Research Center - Dara Hospital",
-          "days": 82,
+          "days": 83,
           "amount": 104013
         }
       ],
@@ -2289,14 +2175,14 @@
           "name": "Ministry of Hajj and Umra - New Deal",
           "amount": 20000,
           "reasons": [
-            "No activity for 20 days"
+            "No activity for 21 days"
           ]
         },
         {
           "name": "Red Sea Film Festival Foundation - New Deal",
           "amount": 180000,
           "reasons": [
-            "No activity for 82 days"
+            "No activity for 83 days"
           ]
         },
         {
@@ -2310,7 +2196,7 @@
           "name": "الملاحة الجوية السعودية - New Deal-SANS",
           "amount": 251200,
           "reasons": [
-            "No activity for 82 days"
+            "No activity for 83 days"
           ]
         },
         {
@@ -2324,14 +2210,14 @@
           "name": "DP world ",
           "amount": 212026.5,
           "reasons": [
-            "No activity for 176 days"
+            "No activity for 177 days"
           ]
         },
         {
           "name": "KEY Car Rental  المفتاح لتأجير السيارات - New Deal",
           "amount": 67000,
           "reasons": [
-            "No activity for 145 days"
+            "No activity for 146 days"
           ]
         },
         {
@@ -2345,42 +2231,42 @@
           "name": "King faisal speciality hospital ",
           "amount": 208826.1,
           "reasons": [
-            "No activity for 98 days"
+            "No activity for 99 days"
           ]
         },
         {
           "name": "Batterjee Medical College - New Deal",
           "amount": 0,
           "reasons": [
-            "No activity for 169 days"
+            "No activity for 170 days"
           ]
         },
         {
           "name": "IMC - new deal",
           "amount": 160020,
           "reasons": [
-            "No activity for 21 days"
+            "No activity for 22 days"
           ]
         },
         {
           "name": "smsc",
           "amount": 60007.5,
           "reasons": [
-            "No activity for 176 days"
+            "No activity for 177 days"
           ]
         },
         {
           "name": "Mohamed Yousuf Naghi Group.",
           "amount": 8001,
           "reasons": [
-            "No activity for 169 days"
+            "No activity for 170 days"
           ]
         },
         {
           "name": "enjaz",
           "amount": 50006.25,
           "reasons": [
-            "No activity for 76 days"
+            "No activity for 77 days"
           ]
         },
         {
@@ -2394,14 +2280,14 @@
           "name": "Naqua",
           "amount": 50006.25,
           "reasons": [
-            "No activity for 173 days"
+            "No activity for 174 days"
           ]
         },
         {
           "name": "TALENTERA - ATS",
           "amount": 74676,
           "reasons": [
-            "No activity for 49 days"
+            "No activity for 50 days"
           ]
         },
         {
@@ -2415,14 +2301,14 @@
           "name": "Sukuk Capital ",
           "amount": 24869.775,
           "reasons": [
-            "No activity for 82 days"
+            "No activity for 83 days"
           ]
         },
         {
           "name": "Talentera Enterprise Plan: King Faisal Specialist Hospital & Research Center - Dara Hospital",
           "amount": 104013,
           "reasons": [
-            "No activity for 82 days"
+            "No activity for 83 days"
           ]
         }
       ],
@@ -2523,8 +2409,8 @@
     {
       "id": "1521682643",
       "label": "Lead",
-      "count": 23,
-      "amount": 403363.73069999996
+      "count": 21,
+      "amount": 341355.98069999996
     },
     {
       "id": "1474351306",
@@ -2535,7 +2421,7 @@
     {
       "id": "appointmentscheduled",
       "label": "Demo Booked",
-      "count": 26,
+      "count": 25,
       "amount": 0
     },
     {
@@ -2547,8 +2433,8 @@
     {
       "id": "4571370698",
       "label": "Quotation Sent",
-      "count": 104,
-      "amount": 1164059.0742748
+      "count": 103,
+      "amount": 1143049.3351048
     },
     {
       "id": "presentationscheduled",
@@ -2565,8 +2451,8 @@
     {
       "id": "contractsent",
       "label": "Signed Contract/Booking",
-      "count": 6,
-      "amount": 139769.49455
+      "count": 7,
+      "amount": 161772.24455
     },
     {
       "id": "closedwon",
@@ -2577,8 +2463,8 @@
     {
       "id": "closedlost",
       "label": "Closed Lost",
-      "count": 189,
-      "amount": 3426409.2051196606
+      "count": 191,
+      "amount": 3445209.2051196606
     }
   ],
   "autoRecs": [
@@ -2592,11 +2478,11 @@
     },
     {
       "type": "red",
-      "text": "132 cold deals (no activity 14+ days) — re-engage before they go dark."
+      "text": "121 cold deals (no activity 14+ days) — re-engage before they go dark."
     },
     {
       "type": "red",
-      "text": "132 deals have no next activity scheduled — reps must log next steps immediately."
+      "text": "121 deals have no next activity scheduled — reps must log next steps immediately."
     },
     {
       "type": "green",
@@ -2604,11 +2490,11 @@
     },
     {
       "type": "green",
-      "text": "MTD call pace: 73/day avg ✓"
+      "text": "MTD call pace: 72/day avg ✓"
     },
     {
       "type": "green",
-      "text": "1 deal(s) closed won MTD — $50K total ✓"
+      "text": "2 deal(s) closed won MTD — $72K total ✓"
     },
     {
       "type": "warn",
@@ -2616,18 +2502,18 @@
     },
     {
       "type": "red",
-      "text": "29 deals lost MTD — run win/loss analysis."
+      "text": "32 deals lost MTD — run win/loss analysis."
     }
   ],
   "rankTotals": {
-    "A": 154,
-    "AContacted": 150,
-    "ANotContacted": 4,
-    "B": 582,
-    "BContacted": 553,
+    "A": 250,
+    "AContacted": 242,
+    "ANotContacted": 8,
+    "B": 583,
+    "BContacted": 554,
     "BNotContacted": 29,
-    "AB": 736,
-    "total": 2412
+    "AB": 833,
+    "total": 2510
   },
   "topInactiveRankAccounts": [
     {
@@ -2720,9 +2606,36 @@
       "stage": "Signed Contract/Booking",
       "closedate": "2026-04-20",
       "period": "mtd"
+    },
+    {
+      "name": "Floward - Talentera ATS",
+      "amount": 22002.75,
+      "rep": "Zein Fares",
+      "repColor": "#1d4ed8",
+      "stage": "Signed Contract/Booking",
+      "closedate": "2026-04-22",
+      "period": "mtd"
     }
   ],
   "closedLost": [
+    {
+      "name": "Haider Holding - New Deal",
+      "amount": 10500,
+      "rep": "Ursula Waked",
+      "repColor": "#be185d",
+      "reason": "Timing and Project Issues",
+      "closedate": "2026-04-22",
+      "period": "mtd"
+    },
+    {
+      "name": "Credit Agricole Egypt - New Deal",
+      "amount": 5300,
+      "rep": "Ursula Waked",
+      "repColor": "#be185d",
+      "reason": "Timing and Project Issues",
+      "closedate": "2026-04-22",
+      "period": "mtd"
+    },
     {
       "name": "Almuftah Group - New Deal",
       "amount": 14000,
@@ -2748,6 +2661,15 @@
       "repColor": "#be185d",
       "reason": "Timing and Project Issues",
       "closedate": "2026-04-12",
+      "period": "mtd"
+    },
+    {
+      "name": "Maven Workforce - New Deal",
+      "amount": 3000,
+      "rep": "Ursula Waked",
+      "repColor": "#be185d",
+      "reason": "Unresponsive",
+      "closedate": "2026-04-22",
       "period": "mtd"
     },
     {
@@ -2987,9 +2909,19 @@
   ],
   "lostByReason": {
     "Timing and Project Issues": {
-      "count": 10,
-      "amount": 137855.72,
+      "count": 12,
+      "amount": 153655.72,
       "deals": [
+        {
+          "name": "Haider Holding - New Deal",
+          "amount": 10500,
+          "rep": "Ursula Waked"
+        },
+        {
+          "name": "Credit Agricole Egypt - New Deal",
+          "amount": 5300,
+          "rep": "Ursula Waked"
+        },
         {
           "name": "Almuftah Group - New Deal",
           "amount": 14000,
@@ -3042,36 +2974,15 @@
         }
       ]
     },
-    "Lead Profile Issues": {
-      "count": 4,
-      "amount": 21700,
-      "deals": [
-        {
-          "name": "Al Waha for Cars - New Deal",
-          "amount": 13500,
-          "rep": "Ursula Waked"
-        },
-        {
-          "name": "Axceltrees - New Deal",
-          "amount": 2000,
-          "rep": "Marita Chedid"
-        },
-        {
-          "name": "TREX - New Deal",
-          "amount": 2200,
-          "rep": "Marita Chedid"
-        },
-        {
-          "name": "Linguist Education Online- New Deal",
-          "amount": 4000,
-          "rep": "Ursula Waked"
-        }
-      ]
-    },
     "Unresponsive": {
-      "count": 9,
-      "amount": 49950,
+      "count": 10,
+      "amount": 52950,
       "deals": [
+        {
+          "name": "Maven Workforce - New Deal",
+          "amount": 3000,
+          "rep": "Ursula Waked"
+        },
         {
           "name": "International Committee of the Red Cross - New Deal",
           "amount": 3500,
@@ -3119,6 +3030,32 @@
         }
       ]
     },
+    "Lead Profile Issues": {
+      "count": 4,
+      "amount": 21700,
+      "deals": [
+        {
+          "name": "Al Waha for Cars - New Deal",
+          "amount": 13500,
+          "rep": "Ursula Waked"
+        },
+        {
+          "name": "Axceltrees - New Deal",
+          "amount": 2000,
+          "rep": "Marita Chedid"
+        },
+        {
+          "name": "TREX - New Deal",
+          "amount": 2200,
+          "rep": "Marita Chedid"
+        },
+        {
+          "name": "Linguist Education Online- New Deal",
+          "amount": 4000,
+          "rep": "Ursula Waked"
+        }
+      ]
+    },
     "Contact-ability Issues": {
       "count": 3,
       "amount": 958000,
@@ -3161,5 +3098,12 @@
         }
       ]
     }
-  }
+  },
+  "aiInsights": {
+    "summary": "No summary available",
+    "patterns": [],
+    "quick_wins": [],
+    "risks": []
+  },
+  "marketNews": []
 }
