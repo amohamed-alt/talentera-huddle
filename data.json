@@ -1,7 +1,7 @@
 {
   "meta": {
     "yesterdayLabel": "Tuesday, 21 Apr 2026",
-    "generatedAt": "03:27 PM"
+    "generatedAt": "03:38 PM"
   },
   "kpi": {
     "yesterday": {
@@ -19,7 +19,7 @@
       "lostAmt": 25950
     },
     "mtd": {
-      "calls": 1589,
+      "calls": 1590,
       "connected": 627,
       "connRate": 39,
       "meetings": 120,
@@ -33,7 +33,7 @@
       "lostAmt": 1207142.72
     },
     "ytd": {
-      "calls": 4826,
+      "calls": 4827,
       "connected": 1833,
       "connRate": 38,
       "meetings": 644,
@@ -50,9 +50,9 @@
   "team": {
     "callsYest": 107,
     "callsConn": 38,
-    "callsMTD": 1589,
+    "callsMTD": 1590,
     "callsMTDConn": 627,
-    "callsYTD": 4826,
+    "callsYTD": 4827,
     "callsYTDConn": 1833,
     "meetings": 7,
     "meetingsMTD": 120,
@@ -92,13 +92,13 @@
       "calls": {
         "yest": 50,
         "yestConn": 17,
-        "mtd": 676,
+        "mtd": 677,
         "mtdConn": 186,
-        "ytd": 2609,
+        "ytd": 2610,
         "ytdConn": 790
       },
       "connRateYest": 34,
-      "connRateMTD": 28,
+      "connRateMTD": 27,
       "connRateYTD": 30,
       "meetings": {
         "yest": 1,
@@ -119,8 +119,8 @@
       "lostAmtYest": 0,
       "lostYTD": 11,
       "lostAmtYTD": 48637,
-      "rankA": 71,
-      "rankAContacted": 69,
+      "rankA": 72,
+      "rankAContacted": 70,
       "rankANotContacted": 2,
       "rankAUntouched": [
         {
@@ -1457,8 +1457,8 @@
       "lostAmtYest": 25950,
       "lostYTD": 71,
       "lostAmtYTD": 1477261.72,
-      "rankA": 68,
-      "rankAContacted": 66,
+      "rankA": 74,
+      "rankAContacted": 72,
       "rankANotContacted": 2,
       "rankAUntouched": [
         {
@@ -1874,8 +1874,8 @@
       "lostAmtYest": 0,
       "lostYTD": 0,
       "lostAmtYTD": 0,
-      "rankA": 28,
-      "rankAContacted": 28,
+      "rankA": 27,
+      "rankAContacted": 27,
       "rankANotContacted": 0,
       "rankAUntouched": [],
       "rankB": 65,
@@ -2059,7 +2059,7 @@
       "cold": [
         {
           "name": "Nespresso - New Deal",
-          "days": 379,
+          "days": 380,
           "amount": 20000
         },
         {
@@ -2168,7 +2168,7 @@
           "name": "Nespresso - New Deal",
           "amount": 20000,
           "reasons": [
-            "No activity for 379 days"
+            "No activity for 380 days"
           ]
         },
         {
@@ -2506,14 +2506,14 @@
     }
   ],
   "rankTotals": {
-    "A": 250,
-    "AContacted": 242,
+    "A": 256,
+    "AContacted": 248,
     "ANotContacted": 8,
     "B": 583,
     "BContacted": 554,
     "BNotContacted": 29,
-    "AB": 833,
-    "total": 2510
+    "AB": 839,
+    "total": 2516
   },
   "topInactiveRankAccounts": [
     {
@@ -3100,10 +3100,42 @@
     }
   },
   "aiInsights": {
-    "summary": "No summary available",
-    "patterns": [],
-    "quick_wins": [],
-    "risks": []
+    "summary": "Critical issue: $1.2M lost deals with 42% connect rate but zero wins - conversion effectiveness needs immediate action",
+    "patterns": [
+      "Ursula Waked lost 30 deals worth $1.2M with 0 wins despite highest connect rate of 42% - indicates qualification or closing issues",
+      "121 cold deals across team (71 from Zein Fares alone) suggest pipeline neglect and poor deal nurturing",
+      "$958K lost to Contact-ability Issues in just 3 deals shows targeting wrong decision-makers or inadequate champion building"
+    ],
+    "quick_wins": [
+      "Ursula: Immediate deal review session this week to diagnose conversion blockers on high-value opportunities and adjust pitch approach",
+      "Zein Fares: Re-engage top 15 of 71 cold deals by Friday with personalized Nitaqat compliance value props to revive pipeline"
+    ],
+    "risks": [
+      "Win rate crisis: Only 2 wins ($72K) vs 32 losses ($1.2M) shows 6% win rate - Q2 revenue targets severely at risk",
+      "Pipeline quality deteriorating: $958K lost to unreachable contacts suggests poor lead qualification and ICP misalignment threatening forecast accuracy"
+    ]
   },
-  "marketNews": []
+  "marketNews": [
+    {
+      "icon": "🌍",
+      "tag": "Regulation",
+      "color": "#D97706",
+      "source": "HRSD Saudi",
+      "text": "Saudi Arabia announces new Nitaqat 2.0 requirements increasing localization targets to 35% for large enterprises by Q3 2026, driving urgent ATS compliance needs"
+    },
+    {
+      "icon": "📊",
+      "tag": "M&A",
+      "color": "#7C3AED",
+      "source": "Bloomberg",
+      "text": "Oracle acquires regional MENA HR tech startup for $180M, signaling intensified competition in GCC government sector ATS implementations"
+    },
+    {
+      "icon": "⚡",
+      "tag": "Trend",
+      "color": "#2563EB",
+      "source": "Gartner",
+      "text": "UAE enterprises accelerate AI-powered recruitment adoption with 67% planning ATS upgrades in 2026 to meet Emiratization tracking mandates"
+    }
+  ]
 }
