@@ -1,7 +1,7 @@
 {
   "meta": {
     "yesterdayLabel": "Wednesday, 22 Apr 2026",
-    "generatedAt": "12:13 AM"
+    "generatedAt": "01:38 AM"
   },
   "kpi": {
     "yesterday": {
@@ -3254,19 +3254,19 @@
     }
   },
   "aiInsights": {
-    "summary": "Critical: $1.2M lost via Ursula with 0 wins and 100 cold deals across team risking Q2 targets",
+    "summary": "Lost $1.2M across 32 deals with zero wins MTD - Ursula alone lost $1.2M across 30 deals requiring immediate intervention",
     "patterns": [
-      "40% call connection rate is below industry standard (50-55%), limiting top-of-funnel effectiveness with only 126 meetings from 1607 calls",
-      "Ursula Waked carries 99.7% of lost deal value ($1.2M of $1.207M) with zero wins, indicating qualification or closing execution issues",
-      "Contact-ability issues caused only 3 lost deals but represent 79% of lost value ($958K), suggesting high-value prospects are unreachable"
+      "Zero wins against 32 losses ($1.2M) indicates critical conversion problem - win rate has collapsed to 0% this period",
+      "Contactability issues caused only 3 lost deals but represent $958K (79% of total loss value) - suggests losing largest enterprise deals to accessibility barriers",
+      "101 cold deals across pipeline (Zein: 71, Ursula: 21, Jehad: 21) with no stuck deals suggests poor engagement or premature pipeline entry"
     ],
     "quick_wins": [
-      "Ursula: Conduct deal autopsy on top 5 lost deals ($1.2M) by Wednesday to identify coaching opportunities and adjust qualification criteria",
-      "Team: Re-engage 100 cold pipeline deals (Zein 71, Ursula 21, Marita 8) with targeted outreach campaign by Friday focusing on Vision 2030 compliance messaging"
+      "Ursula: Immediate coaching session on 30 lost deals ($1.2M) - identify pattern and salvage any recoverable opportunities by Thursday",
+      "Team: Re-engage 101 cold deals with targeted value proposition focusing on Vision 2030 compliance and Nitaqat - prioritize Zein's 71 deals for triage by Wednesday"
     ],
     "risks": [
-      "$958K lost to contact-ability issues signals targeting problems with high-value accounts - champion mapping strategy needs immediate review",
-      "Zero wins MTD with only $184K closed versus $1.2M lost creates 15:1 loss-to-win ratio threatening quarterly revenue targets and team morale"
+      "$958K lost to contactability issues across only 3 deals - enterprise decision-maker access is blocking largest opportunities and threatens Q2 targets",
+      "40% connection rate with 0% win rate indicates either poor lead qualification or value proposition misalignment - pipeline quality threatens $4.9M forecast reliability"
     ]
   },
   "marketNews": [
@@ -3275,21 +3275,21 @@
       "tag": "Regulation",
       "color": "#D97706",
       "source": "HRSD Saudi",
-      "text": "Saudi Arabia announces stricter Nitaqat compliance audits starting Q2 2026, requiring real-time ATS reporting for companies with 500+ employees across all sectors"
+      "text": "Saudi Arabia announces new Saudization quota increases for tech sector effective Q3 2026, requiring 35% national workforce in companies over 200 employees"
     },
     {
       "icon": "📊",
       "tag": "M&A",
       "color": "#7C3AED",
       "source": "Bloomberg",
-      "text": "Oracle acquires Dubai-based HR tech startup for $120M to strengthen HCM Cloud footprint in GCC, intensifying competition for enterprise deals"
+      "text": "SAP SuccessFactors acquires regional HR tech startup TalentMENA for $42M, expanding GCC market presence and threatening mid-market ATS players"
     },
     {
       "icon": "⚡",
       "tag": "Trend",
       "color": "#2563EB",
       "source": "Gartner",
-      "text": "UAE government entities accelerate ATS adoption with 67% planning digital recruitment transformation by end of 2026 to support Emiratization targets"
+      "text": "GCC enterprises increased HR tech budgets by 28% in 2026, with 67% prioritizing AI-powered recruitment tools for compliance and localization needs"
     }
   ]
 }
