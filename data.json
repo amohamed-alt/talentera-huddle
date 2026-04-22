@@ -1,7 +1,7 @@
 {
   "meta": {
     "yesterdayLabel": "Tuesday, 21 Apr 2026",
-    "generatedAt": "04:45 PM"
+    "generatedAt": "04:59 PM"
   },
   "kpi": {
     "yesterday": {
@@ -10,8 +10,8 @@
       "connRate": 36,
       "meetings": 7,
       "openDeals": 4,
-      "openDealsSnap": 264,
-      "pipeline": 4899071.45183338,
+      "openDealsSnap": 267,
+      "pipeline": 4919071.45183338,
       "leads": 7,
       "wonAmt": 0,
       "wonDeals": 0,
@@ -19,28 +19,28 @@
       "lostAmt": 25950
     },
     "mtd": {
-      "calls": 1603,
+      "calls": 1604,
       "connected": 633,
       "connRate": 39,
       "meetings": 121,
       "openDeals": 54,
-      "openDealsSnap": 264,
-      "pipeline": 4899071.45183338,
-      "leads": 573,
+      "openDealsSnap": 267,
+      "pipeline": 4919071.45183338,
+      "leads": 574,
       "wonAmt": 72009,
       "wonDeals": 2,
       "lost": 32,
       "lostAmt": 1207142.72
     },
     "ytd": {
-      "calls": 4840,
+      "calls": 4841,
       "connected": 1839,
       "connRate": 38,
       "meetings": 645,
       "openDeals": 697,
-      "openDealsSnap": 264,
-      "pipeline": 4899071.45183338,
-      "leads": 1173,
+      "openDealsSnap": 267,
+      "pipeline": 4919071.45183338,
+      "leads": 1174,
       "wonAmt": 114214,
       "wonDeals": 6,
       "lost": 82,
@@ -50,15 +50,15 @@
   "team": {
     "callsYest": 107,
     "callsConn": 38,
-    "callsMTD": 1603,
+    "callsMTD": 1604,
     "callsMTDConn": 633,
-    "callsYTD": 4840,
+    "callsYTD": 4841,
     "callsYTDConn": 1839,
     "meetings": 7,
     "meetingsMTD": 121,
     "meetingsYTD": 645,
-    "openDeals": 264,
-    "pipeline": 4899071.45183338,
+    "openDeals": 267,
+    "pipeline": 4919071.45183338,
     "won": 2,
     "wonAmt": 72009,
     "wonYest": 0,
@@ -74,12 +74,12 @@
     "leadsYest": 7,
     "leadsYestInbound": 0,
     "leadsYestOutbound": 7,
-    "leadsMTD": 573,
+    "leadsMTD": 574,
     "leadsMTDInbound": 35,
-    "leadsMTDOutbound": 538,
-    "leadsYTD": 1173,
+    "leadsMTDOutbound": 539,
+    "leadsYTD": 1174,
     "leadsYTDInbound": 192,
-    "leadsYTDOutbound": 981,
+    "leadsYTDOutbound": 982,
     "connRateYest": 36,
     "connRateMTD": 39,
     "connRateYTD": 38
@@ -92,9 +92,9 @@
       "calls": {
         "yest": 50,
         "yestConn": 17,
-        "mtd": 678,
+        "mtd": 679,
         "mtdConn": 187,
-        "ytd": 2611,
+        "ytd": 2612,
         "ytdConn": 791
       },
       "connRateYest": 34,
@@ -253,12 +253,12 @@
       "leadsYest": 3,
       "leadsYestInbound": 0,
       "leadsYestOutbound": 3,
-      "leadsMTD": 37,
+      "leadsMTD": 38,
       "leadsMTDInbound": 6,
-      "leadsMTDOutbound": 31,
-      "leadsYTD": 367,
+      "leadsMTDOutbound": 32,
+      "leadsYTD": 368,
       "leadsYTDInbound": 17,
-      "leadsYTDOutbound": 350,
+      "leadsYTDOutbound": 351,
       "topDeals": [
         {
           "name": "SHBC Mechanical Engineering - New Deal",
@@ -523,7 +523,7 @@
         },
         {
           "name": "Al Jazeera Paints Limited - New Deal",
-          "days": 86,
+          "days": 87,
           "amount": 15000
         },
         {
@@ -900,7 +900,7 @@
           "name": "Al Jazeera Paints Limited - New Deal",
           "amount": 15000,
           "reasons": [
-            "No activity for 86 days"
+            "No activity for 87 days"
           ]
         },
         {
@@ -2102,7 +2102,7 @@
         },
         {
           "name": "شركة القمة المتقدمة المحدودة - New Deal",
-          "days": 254,
+          "days": 255,
           "amount": 0
         },
         {
@@ -2227,7 +2227,7 @@
           "name": "شركة القمة المتقدمة المحدودة - New Deal",
           "amount": 0,
           "reasons": [
-            "No activity for 254 days"
+            "No activity for 255 days"
           ]
         },
         {
@@ -2404,6 +2404,144 @@
           "nextActivity": null,
           "isStuck": false,
           "isCold": true
+        }
+      ]
+    },
+    {
+      "name": "Fadi Zanona",
+      "color": "#475569",
+      "type": "view",
+      "openDeals": 2,
+      "pipeAmt": 0,
+      "won": 0,
+      "wonAmt": 0,
+      "wonYest": 0,
+      "wonAmtYest": 0,
+      "wonYTD": 0,
+      "wonAmtYTD": 0,
+      "lost": 0,
+      "lostAmt": 0,
+      "lostYest": 0,
+      "lostAmtYest": 0,
+      "lostYTD": 0,
+      "lostAmtYTD": 0,
+      "calls": {
+        "yest": 0,
+        "yestConn": 0,
+        "mtd": 0,
+        "mtdConn": 0,
+        "ytd": 0,
+        "ytdConn": 0
+      },
+      "connRateYest": 0,
+      "connRateMTD": 0,
+      "connRateYTD": 0,
+      "meetings": {
+        "yest": 0,
+        "mtd": 0,
+        "ytd": 0
+      },
+      "rankA": 0,
+      "rankAContacted": 0,
+      "rankANotContacted": 0,
+      "rankAUntouched": [],
+      "rankB": 0,
+      "rankBContacted": 0,
+      "rankBNotContacted": 0,
+      "rankBUntouched": [],
+      "stuck": [],
+      "cold": [],
+      "needsAttention": [],
+      "leadsYest": 0,
+      "leadsYestInbound": 0,
+      "leadsYestOutbound": 0,
+      "leadsMTD": 0,
+      "leadsMTDInbound": 0,
+      "leadsMTDOutbound": 0,
+      "leadsYTD": 0,
+      "leadsYTDInbound": 0,
+      "leadsYTDOutbound": 0,
+      "topDeals": [
+        {
+          "name": "ZainabAlrudayhman - New Deal",
+          "amount": 0,
+          "stage": "Demo Booked",
+          "nextActivity": null,
+          "isStuck": false,
+          "isCold": false
+        },
+        {
+          "name": "RandAlsughair - New Deal",
+          "amount": 0,
+          "stage": "Demo Booked",
+          "nextActivity": null,
+          "isStuck": false,
+          "isCold": false
+        }
+      ]
+    },
+    {
+      "name": "Mohammed Faizan",
+      "color": "#0f766e",
+      "type": "view",
+      "openDeals": 1,
+      "pipeAmt": 20000,
+      "won": 0,
+      "wonAmt": 0,
+      "wonYest": 0,
+      "wonAmtYest": 0,
+      "wonYTD": 0,
+      "wonAmtYTD": 0,
+      "lost": 0,
+      "lostAmt": 0,
+      "lostYest": 0,
+      "lostAmtYest": 0,
+      "lostYTD": 0,
+      "lostAmtYTD": 0,
+      "calls": {
+        "yest": 0,
+        "yestConn": 0,
+        "mtd": 0,
+        "mtdConn": 0,
+        "ytd": 0,
+        "ytdConn": 0
+      },
+      "connRateYest": 0,
+      "connRateMTD": 0,
+      "connRateYTD": 0,
+      "meetings": {
+        "yest": 0,
+        "mtd": 0,
+        "ytd": 0
+      },
+      "rankA": 0,
+      "rankAContacted": 0,
+      "rankANotContacted": 0,
+      "rankAUntouched": [],
+      "rankB": 0,
+      "rankBContacted": 0,
+      "rankBNotContacted": 0,
+      "rankBUntouched": [],
+      "stuck": [],
+      "cold": [],
+      "needsAttention": [],
+      "leadsYest": 0,
+      "leadsYestInbound": 0,
+      "leadsYestOutbound": 0,
+      "leadsMTD": 0,
+      "leadsMTDInbound": 0,
+      "leadsMTDOutbound": 0,
+      "leadsYTD": 0,
+      "leadsYTDInbound": 0,
+      "leadsYTDOutbound": 0,
+      "topDeals": [
+        {
+          "name": "Rabdan Academy - New Deal",
+          "amount": 20000,
+          "stage": "Quotation Sent",
+          "nextActivity": null,
+          "isStuck": false,
+          "isCold": false
         }
       ]
     }
@@ -3103,19 +3241,19 @@
     }
   },
   "aiInsights": {
-    "summary": "Lost $1.2M in deals vs $72K won MTD - urgent intervention needed on Ursula's pipeline and cold deal reactivation",
+    "summary": "Critical pipeline crisis: $1.2M lost with 0 wins MTD and 122 cold deals requiring immediate intervention",
     "patterns": [
-      "Connection rate at 39% indicates top-of-funnel weakness - below industry benchmark of 45% for enterprise sales",
-      "Ursula Waked closed 30 lost deals ($1.2M) with 0 wins despite 42% connection rate - conversion issue post-meeting",
-      "101 cold deals across team (71 with Zein alone) represent $2M+ in stalled pipeline requiring immediate reactivation"
+      "Ursula Waked lost 30 deals worth $1.2M with zero conversions despite 42% connection rate - highest loss concentration",
+      "Contactability issues caused only 3 lost deals but represent $958K (79% of total losses) - high-value prospect access problem",
+      "122 total cold deals across team with Zein Fares holding 71 (58% of cold pipeline) indicating severe follow-up gaps"
     ],
     "quick_wins": [
-      "Ursula: Schedule deal review session this week to diagnose why 30 deals lost with highest connection rate - identify pitch gaps",
-      "Zein: Prioritize top 15 cold deals by value and execute reactivation campaign by Thursday using new compliance messaging"
+      "Ursula: Immediately review top 5 lost deals from $1.2M losses to identify salvage opportunities and pattern analysis by Wednesday",
+      "Team: Blitz campaign on 122 cold deals - assign 25 deals per rep for re-engagement calls with personalized Nitaqat/Emiratization value propositions by Friday"
     ],
     "risks": [
-      "$958K lost to contactability issues (3 deals) suggests targeting wrong decision-makers or outdated contact data in enterprise accounts",
-      "Pipeline health critical: 101 cold deals indicate velocity slowdown that could create Q2 revenue gap if not addressed within 7 days"
+      "$958K lost to contactability issues signals inability to reach C-suite decision makers - enterprise access strategy failing",
+      "Zero wins MTD with only $72K closed YTD against $4.9M pipeline creates massive revenue gap risk for quarterly targets"
     ]
   },
   "marketNews": [
@@ -3124,21 +3262,21 @@
       "tag": "Regulation",
       "color": "#D97706",
       "source": "HRSD Saudi",
-      "text": "Saudi Arabia enforces enhanced Nitaqat compliance reporting for companies with 500+ employees, requiring real-time Saudization tracking starting Q3 2026"
+      "text": "Saudi Arabia raises Nitaqat green zone thresholds by 8% for large enterprises effective Q3 2026, driving urgent ATS adoption for compliance reporting"
     },
     {
       "icon": "📊",
       "tag": "M&A",
       "color": "#7C3AED",
       "source": "Bloomberg",
-      "text": "Oracle HCM acquires regional payroll provider TalentMENA for $180M, expanding footprint in UAE and Egypt enterprise segment"
+      "text": "Oracle acquires regional HR tech provider Tawzef for $340M, consolidating MENA ATS market and intensifying competition for enterprise clients"
     },
     {
       "icon": "⚡",
       "tag": "Trend",
       "color": "#2563EB",
       "source": "Gartner",
-      "text": "GCC enterprises increase ATS budgets by 34% YoY as AI-powered recruitment automation becomes mandatory for Vision 2030 workforce initiatives"
+      "text": "GCC government entities accelerate digital HR transformation with 67% planning ATS implementations in 2026 aligned with national digitization goals"
     }
   ]
 }
