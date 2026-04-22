@@ -1,7 +1,7 @@
 {
   "meta": {
     "yesterdayLabel": "Tuesday, 21 Apr 2026",
-    "generatedAt": "03:38 PM"
+    "generatedAt": "04:45 PM"
   },
   "kpi": {
     "yesterday": {
@@ -19,28 +19,28 @@
       "lostAmt": 25950
     },
     "mtd": {
-      "calls": 1590,
-      "connected": 627,
+      "calls": 1603,
+      "connected": 633,
       "connRate": 39,
-      "meetings": 120,
-      "openDeals": 46,
+      "meetings": 121,
+      "openDeals": 54,
       "openDealsSnap": 264,
       "pipeline": 4899071.45183338,
-      "leads": 572,
+      "leads": 573,
       "wonAmt": 72009,
       "wonDeals": 2,
       "lost": 32,
       "lostAmt": 1207142.72
     },
     "ytd": {
-      "calls": 4827,
-      "connected": 1833,
+      "calls": 4840,
+      "connected": 1839,
       "connRate": 38,
-      "meetings": 644,
-      "openDeals": 569,
+      "meetings": 645,
+      "openDeals": 697,
       "openDealsSnap": 264,
       "pipeline": 4899071.45183338,
-      "leads": 1172,
+      "leads": 1173,
       "wonAmt": 114214,
       "wonDeals": 6,
       "lost": 82,
@@ -50,13 +50,13 @@
   "team": {
     "callsYest": 107,
     "callsConn": 38,
-    "callsMTD": 1590,
-    "callsMTDConn": 627,
-    "callsYTD": 4827,
-    "callsYTDConn": 1833,
+    "callsMTD": 1603,
+    "callsMTDConn": 633,
+    "callsYTD": 4840,
+    "callsYTDConn": 1839,
     "meetings": 7,
-    "meetingsMTD": 120,
-    "meetingsYTD": 644,
+    "meetingsMTD": 121,
+    "meetingsYTD": 645,
     "openDeals": 264,
     "pipeline": 4899071.45183338,
     "won": 2,
@@ -74,12 +74,12 @@
     "leadsYest": 7,
     "leadsYestInbound": 0,
     "leadsYestOutbound": 7,
-    "leadsMTD": 572,
+    "leadsMTD": 573,
     "leadsMTDInbound": 35,
-    "leadsMTDOutbound": 537,
-    "leadsYTD": 1172,
+    "leadsMTDOutbound": 538,
+    "leadsYTD": 1173,
     "leadsYTDInbound": 192,
-    "leadsYTDOutbound": 980,
+    "leadsYTDOutbound": 981,
     "connRateYest": 36,
     "connRateMTD": 39,
     "connRateYTD": 38
@@ -92,13 +92,13 @@
       "calls": {
         "yest": 50,
         "yestConn": 17,
-        "mtd": 677,
-        "mtdConn": 186,
-        "ytd": 2610,
-        "ytdConn": 790
+        "mtd": 678,
+        "mtdConn": 187,
+        "ytd": 2611,
+        "ytdConn": 791
       },
       "connRateYest": 34,
-      "connRateMTD": 27,
+      "connRateMTD": 28,
       "connRateYTD": 30,
       "meetings": {
         "yest": 1,
@@ -119,8 +119,8 @@
       "lostAmtYest": 0,
       "lostYTD": 11,
       "lostAmtYTD": 48637,
-      "rankA": 72,
-      "rankAContacted": 70,
+      "rankA": 82,
+      "rankAContacted": 80,
       "rankANotContacted": 2,
       "rankAUntouched": [
         {
@@ -153,7 +153,7 @@
       "cold": [
         {
           "name": "IssaHolding - New Deal",
-          "days": 56,
+          "days": 57,
           "amount": 24836
         },
         {
@@ -173,7 +173,7 @@
         },
         {
           "name": "District Company- New Deal",
-          "days": 26,
+          "days": 27,
           "amount": 0
         },
         {
@@ -188,7 +188,7 @@
         },
         {
           "name": "Hallab 1881 - New Deal",
-          "days": 16,
+          "days": 17,
           "amount": 5850
         }
       ],
@@ -197,7 +197,7 @@
           "name": "IssaHolding - New Deal",
           "amount": 24836,
           "reasons": [
-            "No activity for 56 days"
+            "No activity for 57 days"
           ]
         },
         {
@@ -225,7 +225,7 @@
           "name": "District Company- New Deal",
           "amount": 0,
           "reasons": [
-            "No activity for 26 days"
+            "No activity for 27 days"
           ]
         },
         {
@@ -246,19 +246,19 @@
           "name": "Hallab 1881 - New Deal",
           "amount": 5850,
           "reasons": [
-            "No activity for 16 days"
+            "No activity for 17 days"
           ]
         }
       ],
       "leadsYest": 3,
       "leadsYestInbound": 0,
       "leadsYestOutbound": 3,
-      "leadsMTD": 36,
+      "leadsMTD": 37,
       "leadsMTDInbound": 6,
-      "leadsMTDOutbound": 30,
-      "leadsYTD": 366,
+      "leadsMTDOutbound": 31,
+      "leadsYTD": 367,
       "leadsYTDInbound": 17,
-      "leadsYTDOutbound": 349,
+      "leadsYTDOutbound": 350,
       "topDeals": [
         {
           "name": "SHBC Mechanical Engineering - New Deal",
@@ -478,7 +478,7 @@
       "cold": [
         {
           "name": "Green building solutions company | Abdullah Alsughaier | ",
-          "days": 16,
+          "days": 17,
           "amount": 0
         },
         {
@@ -593,7 +593,7 @@
         },
         {
           "name": "تالنت سكوير - New Deal",
-          "days": 230,
+          "days": 231,
           "amount": 0
         },
         {
@@ -638,7 +638,7 @@
         },
         {
           "name": "SSC Company",
-          "days": 140,
+          "days": 141,
           "amount": 12000
         },
         {
@@ -837,7 +837,7 @@
           "name": "Green building solutions company | Abdullah Alsughaier | ",
           "amount": 0,
           "reasons": [
-            "No activity for 16 days"
+            "No activity for 17 days"
           ]
         },
         {
@@ -998,7 +998,7 @@
           "name": "تالنت سكوير - New Deal",
           "amount": 0,
           "reasons": [
-            "No activity for 230 days"
+            "No activity for 231 days"
           ]
         },
         {
@@ -1061,7 +1061,7 @@
           "name": "SSC Company",
           "amount": 12000,
           "reasons": [
-            "No activity for 140 days"
+            "No activity for 141 days"
           ]
         },
         {
@@ -1430,10 +1430,10 @@
       "calls": {
         "yest": 20,
         "yestConn": 4,
-        "mtd": 338,
-        "mtdConn": 141,
-        "ytd": 1076,
-        "ytdConn": 446
+        "mtd": 344,
+        "mtdConn": 143,
+        "ytd": 1082,
+        "ytdConn": 448
       },
       "connRateYest": 20,
       "connRateMTD": 42,
@@ -1458,18 +1458,9 @@
       "lostYTD": 71,
       "lostAmtYTD": 1477261.72,
       "rankA": 74,
-      "rankAContacted": 72,
-      "rankANotContacted": 2,
-      "rankAUntouched": [
-        {
-          "id": "136235699425",
-          "name": "NASCO - National Advanced Systems Co. Ltd."
-        },
-        {
-          "id": "140632792281",
-          "name": "Gulf Business Horizon Company | GBH"
-        }
-      ],
+      "rankAContacted": 74,
+      "rankANotContacted": 0,
+      "rankAUntouched": [],
       "rankB": 158,
       "rankBContacted": 151,
       "rankBNotContacted": 7,
@@ -1572,7 +1563,7 @@
         },
         {
           "name": "EtihadWE - New Deal",
-          "days": 26,
+          "days": 27,
           "amount": 5075.92
         },
         {
@@ -1599,6 +1590,11 @@
           "name": "Aljazeera Media Network - New Deal",
           "days": 176,
           "amount": 14200
+        },
+        {
+          "name": "NESR - New Deal",
+          "days": 15,
+          "amount": 18112.5
         },
         {
           "name": "Al-Meead Kuwaiti General Trading & Contracting Co. W.L.L, - New Deal",
@@ -1702,7 +1698,7 @@
           "name": "EtihadWE - New Deal",
           "amount": 5075.92,
           "reasons": [
-            "No activity for 26 days"
+            "No activity for 27 days"
           ]
         },
         {
@@ -1738,6 +1734,13 @@
           "amount": 14200,
           "reasons": [
             "No activity for 176 days"
+          ]
+        },
+        {
+          "name": "NESR - New Deal",
+          "amount": 18112.5,
+          "reasons": [
+            "No activity for 15 days"
           ]
         },
         {
@@ -1847,18 +1850,18 @@
       "calls": {
         "yest": 16,
         "yestConn": 10,
-        "mtd": 271,
-        "mtdConn": 150,
-        "ytd": 473,
-        "ytdConn": 256
+        "mtd": 272,
+        "mtdConn": 151,
+        "ytd": 474,
+        "ytdConn": 257
       },
       "connRateYest": 63,
-      "connRateMTD": 55,
+      "connRateMTD": 56,
       "connRateYTD": 54,
       "meetings": {
         "yest": 3,
-        "mtd": 9,
-        "ytd": 18
+        "mtd": 10,
+        "ytd": 19
       },
       "openDeals": 2,
       "pipeAmt": 50000,
@@ -1920,10 +1923,10 @@
       "calls": {
         "yest": 21,
         "yestConn": 7,
-        "mtd": 241,
-        "mtdConn": 106,
-        "ytd": 462,
-        "ytdConn": 196
+        "mtd": 246,
+        "mtdConn": 108,
+        "ytd": 467,
+        "ytdConn": 198
       },
       "connRateYest": 33,
       "connRateMTD": 44,
@@ -2084,7 +2087,7 @@
         },
         {
           "name": "MBC Media Solutions - New Deal",
-          "days": 232,
+          "days": 233,
           "amount": 105013.1336425809
         },
         {
@@ -2134,7 +2137,7 @@
         },
         {
           "name": "ACWA Power - TALENTERA ENTERPEISE - ATS ",
-          "days": 43,
+          "days": 44,
           "amount": 368000
         },
         {
@@ -2149,7 +2152,7 @@
         },
         {
           "name": "Umm Alqura",
-          "days": 49,
+          "days": 50,
           "amount": 24891.999111
         },
         {
@@ -2203,7 +2206,7 @@
           "name": "MBC Media Solutions - New Deal",
           "amount": 105013.1336425809,
           "reasons": [
-            "No activity for 232 days"
+            "No activity for 233 days"
           ]
         },
         {
@@ -2273,7 +2276,7 @@
           "name": "ACWA Power - TALENTERA ENTERPEISE - ATS ",
           "amount": 368000,
           "reasons": [
-            "No activity for 43 days"
+            "No activity for 44 days"
           ]
         },
         {
@@ -2294,7 +2297,7 @@
           "name": "Umm Alqura",
           "amount": 24891.999111,
           "reasons": [
-            "No activity for 49 days"
+            "No activity for 50 days"
           ]
         },
         {
@@ -2421,7 +2424,7 @@
     {
       "id": "appointmentscheduled",
       "label": "Demo Booked",
-      "count": 25,
+      "count": 27,
       "amount": 0
     },
     {
@@ -2433,8 +2436,8 @@
     {
       "id": "4571370698",
       "label": "Quotation Sent",
-      "count": 103,
-      "amount": 1143049.3351048
+      "count": 104,
+      "amount": 1163049.3351048
     },
     {
       "id": "presentationscheduled",
@@ -2478,11 +2481,11 @@
     },
     {
       "type": "red",
-      "text": "121 cold deals (no activity 14+ days) — re-engage before they go dark."
+      "text": "122 cold deals (no activity 14+ days) — re-engage before they go dark."
     },
     {
       "type": "red",
-      "text": "121 deals have no next activity scheduled — reps must log next steps immediately."
+      "text": "122 deals have no next activity scheduled — reps must log next steps immediately."
     },
     {
       "type": "green",
@@ -2490,7 +2493,7 @@
     },
     {
       "type": "green",
-      "text": "MTD call pace: 72/day avg ✓"
+      "text": "MTD call pace: 73/day avg ✓"
     },
     {
       "type": "green",
@@ -2506,14 +2509,14 @@
     }
   ],
   "rankTotals": {
-    "A": 256,
-    "AContacted": 248,
-    "ANotContacted": 8,
+    "A": 266,
+    "AContacted": 260,
+    "ANotContacted": 6,
     "B": 583,
     "BContacted": 554,
     "BNotContacted": 29,
-    "AB": 839,
-    "total": 2516
+    "AB": 849,
+    "total": 2526
   },
   "topInactiveRankAccounts": [
     {
@@ -3100,19 +3103,19 @@
     }
   },
   "aiInsights": {
-    "summary": "Critical issue: $1.2M lost deals with 42% connect rate but zero wins - conversion effectiveness needs immediate action",
+    "summary": "Lost $1.2M in deals vs $72K won MTD - urgent intervention needed on Ursula's pipeline and cold deal reactivation",
     "patterns": [
-      "Ursula Waked lost 30 deals worth $1.2M with 0 wins despite highest connect rate of 42% - indicates qualification or closing issues",
-      "121 cold deals across team (71 from Zein Fares alone) suggest pipeline neglect and poor deal nurturing",
-      "$958K lost to Contact-ability Issues in just 3 deals shows targeting wrong decision-makers or inadequate champion building"
+      "Connection rate at 39% indicates top-of-funnel weakness - below industry benchmark of 45% for enterprise sales",
+      "Ursula Waked closed 30 lost deals ($1.2M) with 0 wins despite 42% connection rate - conversion issue post-meeting",
+      "101 cold deals across team (71 with Zein alone) represent $2M+ in stalled pipeline requiring immediate reactivation"
     ],
     "quick_wins": [
-      "Ursula: Immediate deal review session this week to diagnose conversion blockers on high-value opportunities and adjust pitch approach",
-      "Zein Fares: Re-engage top 15 of 71 cold deals by Friday with personalized Nitaqat compliance value props to revive pipeline"
+      "Ursula: Schedule deal review session this week to diagnose why 30 deals lost with highest connection rate - identify pitch gaps",
+      "Zein: Prioritize top 15 cold deals by value and execute reactivation campaign by Thursday using new compliance messaging"
     ],
     "risks": [
-      "Win rate crisis: Only 2 wins ($72K) vs 32 losses ($1.2M) shows 6% win rate - Q2 revenue targets severely at risk",
-      "Pipeline quality deteriorating: $958K lost to unreachable contacts suggests poor lead qualification and ICP misalignment threatening forecast accuracy"
+      "$958K lost to contactability issues (3 deals) suggests targeting wrong decision-makers or outdated contact data in enterprise accounts",
+      "Pipeline health critical: 101 cold deals indicate velocity slowdown that could create Q2 revenue gap if not addressed within 7 days"
     ]
   },
   "marketNews": [
@@ -3121,21 +3124,21 @@
       "tag": "Regulation",
       "color": "#D97706",
       "source": "HRSD Saudi",
-      "text": "Saudi Arabia announces new Nitaqat 2.0 requirements increasing localization targets to 35% for large enterprises by Q3 2026, driving urgent ATS compliance needs"
+      "text": "Saudi Arabia enforces enhanced Nitaqat compliance reporting for companies with 500+ employees, requiring real-time Saudization tracking starting Q3 2026"
     },
     {
       "icon": "📊",
       "tag": "M&A",
       "color": "#7C3AED",
       "source": "Bloomberg",
-      "text": "Oracle acquires regional MENA HR tech startup for $180M, signaling intensified competition in GCC government sector ATS implementations"
+      "text": "Oracle HCM acquires regional payroll provider TalentMENA for $180M, expanding footprint in UAE and Egypt enterprise segment"
     },
     {
       "icon": "⚡",
       "tag": "Trend",
       "color": "#2563EB",
       "source": "Gartner",
-      "text": "UAE enterprises accelerate AI-powered recruitment adoption with 67% planning ATS upgrades in 2026 to meet Emiratization tracking mandates"
+      "text": "GCC enterprises increase ATS budgets by 34% YoY as AI-powered recruitment automation becomes mandatory for Vision 2030 workforce initiatives"
     }
   ]
 }
