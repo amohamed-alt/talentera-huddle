@@ -1,7 +1,7 @@
 {
   "meta": {
     "yesterdayLabel": "Tuesday, 21 Apr 2026",
-    "generatedAt": "04:59 PM"
+    "generatedAt": "07:30 PM"
   },
   "kpi": {
     "yesterday": {
@@ -19,30 +19,30 @@
       "lostAmt": 25950
     },
     "mtd": {
-      "calls": 1604,
-      "connected": 633,
-      "connRate": 39,
-      "meetings": 121,
+      "calls": 1607,
+      "connected": 636,
+      "connRate": 40,
+      "meetings": 126,
       "openDeals": 54,
       "openDealsSnap": 267,
       "pipeline": 4919071.45183338,
       "leads": 574,
-      "wonAmt": 72009,
-      "wonDeals": 2,
+      "wonAmt": 184009,
+      "wonDeals": 3,
       "lost": 32,
       "lostAmt": 1207142.72
     },
     "ytd": {
-      "calls": 4841,
-      "connected": 1839,
+      "calls": 4844,
+      "connected": 1842,
       "connRate": 38,
-      "meetings": 645,
+      "meetings": 650,
       "openDeals": 697,
       "openDealsSnap": 267,
       "pipeline": 4919071.45183338,
       "leads": 1174,
-      "wonAmt": 114214,
-      "wonDeals": 6,
+      "wonAmt": 226214,
+      "wonDeals": 7,
       "lost": 82,
       "lostAmt": 1525898.72
     }
@@ -50,21 +50,21 @@
   "team": {
     "callsYest": 107,
     "callsConn": 38,
-    "callsMTD": 1604,
-    "callsMTDConn": 633,
-    "callsYTD": 4841,
-    "callsYTDConn": 1839,
+    "callsMTD": 1607,
+    "callsMTDConn": 636,
+    "callsYTD": 4844,
+    "callsYTDConn": 1842,
     "meetings": 7,
-    "meetingsMTD": 121,
-    "meetingsYTD": 645,
+    "meetingsMTD": 126,
+    "meetingsYTD": 650,
     "openDeals": 267,
     "pipeline": 4919071.45183338,
-    "won": 2,
-    "wonAmt": 72009,
+    "won": 3,
+    "wonAmt": 184009,
     "wonYest": 0,
     "wonAmtYest": 0,
-    "wonYTD": 6,
-    "wonAmtYTD": 114214,
+    "wonYTD": 7,
+    "wonAmtYTD": 226214,
     "lost": 32,
     "lostAmt": 1207142.72,
     "lostYest": 5,
@@ -81,7 +81,7 @@
     "leadsYTDInbound": 192,
     "leadsYTDOutbound": 982,
     "connRateYest": 36,
-    "connRateMTD": 39,
+    "connRateMTD": 40,
     "connRateYTD": 38
   },
   "repData": [
@@ -349,18 +349,18 @@
       "calls": {
         "yest": 0,
         "yestConn": 0,
-        "mtd": 63,
-        "mtdConn": 44,
-        "ytd": 178,
-        "ytdConn": 120
+        "mtd": 65,
+        "mtdConn": 46,
+        "ytd": 180,
+        "ytdConn": 122
       },
       "connRateYest": 0,
-      "connRateMTD": 70,
-      "connRateYTD": 67,
+      "connRateMTD": 71,
+      "connRateYTD": 68,
       "meetings": {
         "yest": 2,
-        "mtd": 39,
-        "ytd": 96
+        "mtd": 44,
+        "ytd": 101
       },
       "openDeals": 111,
       "pipeAmt": 1373343.0310500003,
@@ -818,7 +818,7 @@
         },
         {
           "name": "CLA - New Deal",
-          "days": 78,
+          "days": 79,
           "amount": 3300
         },
         {
@@ -1313,7 +1313,7 @@
           "name": "CLA - New Deal",
           "amount": 3300,
           "reasons": [
-            "No activity for 78 days"
+            "No activity for 79 days"
           ]
         },
         {
@@ -1523,7 +1523,7 @@
         },
         {
           "name": "Commercial Bank of Kuwait - Renewal",
-          "days": 275,
+          "days": 276,
           "amount": 9315
         },
         {
@@ -1642,7 +1642,7 @@
           "name": "Commercial Bank of Kuwait - Renewal",
           "amount": 9315,
           "reasons": [
-            "No activity for 275 days"
+            "No activity for 276 days"
           ]
         },
         {
@@ -1923,14 +1923,14 @@
       "calls": {
         "yest": 21,
         "yestConn": 7,
-        "mtd": 246,
-        "mtdConn": 108,
-        "ytd": 467,
-        "ytdConn": 198
+        "mtd": 247,
+        "mtdConn": 109,
+        "ytd": 468,
+        "ytdConn": 199
       },
       "connRateYest": 33,
       "connRateMTD": 44,
-      "connRateYTD": 42,
+      "connRateYTD": 43,
       "meetings": {
         "yest": 0,
         "mtd": 6,
@@ -2077,7 +2077,7 @@
         },
         {
           "name": "Al Majal Group - New Deal",
-          "days": 250,
+          "days": 251,
           "amount": 66930
         },
         {
@@ -2192,7 +2192,7 @@
           "name": "Al Majal Group - New Deal",
           "amount": 66930,
           "reasons": [
-            "No activity for 250 days"
+            "No activity for 251 days"
           ]
         },
         {
@@ -2413,12 +2413,12 @@
       "type": "view",
       "openDeals": 2,
       "pipeAmt": 0,
-      "won": 0,
-      "wonAmt": 0,
+      "won": 1,
+      "wonAmt": 112000,
       "wonYest": 0,
       "wonAmtYest": 0,
-      "wonYTD": 0,
-      "wonAmtYTD": 0,
+      "wonYTD": 1,
+      "wonAmtYTD": 112000,
       "lost": 0,
       "lostAmt": 0,
       "lostYest": 0,
@@ -2592,8 +2592,8 @@
     {
       "id": "contractsent",
       "label": "Signed Contract/Booking",
-      "count": 7,
-      "amount": 161772.24455
+      "count": 8,
+      "amount": 273772.24455
     },
     {
       "id": "closedwon",
@@ -2635,7 +2635,7 @@
     },
     {
       "type": "green",
-      "text": "2 deal(s) closed won MTD — $72K total ✓"
+      "text": "3 deal(s) closed won MTD — $184K total ✓"
     },
     {
       "type": "warn",
@@ -2739,6 +2739,15 @@
     }
   ],
   "closedWon": [
+    {
+      "name": "Ministry Of Communications & Information Technology - New Deal",
+      "amount": 112000,
+      "rep": "Fadi Zanona",
+      "repColor": "#475569",
+      "stage": "Signed Contract/Booking",
+      "closedate": "2026-04-19",
+      "period": "mtd"
+    },
     {
       "name": "Talentera Contract 2026 - Umm Al-Qura for Development and Construction Co.",
       "amount": 50006.25,
@@ -3241,19 +3250,19 @@
     }
   },
   "aiInsights": {
-    "summary": "Critical pipeline crisis: $1.2M lost with 0 wins MTD and 122 cold deals requiring immediate intervention",
+    "summary": "Critical alert: $1.2M lost via Ursula with 0 wins and 101 cold deals across pipeline requiring immediate intervention",
     "patterns": [
-      "Ursula Waked lost 30 deals worth $1.2M with zero conversions despite 42% connection rate - highest loss concentration",
-      "Contactability issues caused only 3 lost deals but represent $958K (79% of total losses) - high-value prospect access problem",
-      "122 total cold deals across team with Zein Fares holding 71 (58% of cold pipeline) indicating severe follow-up gaps"
+      "40% call connection rate indicates cold outreach effectiveness declining - target should be 55%+ for enterprise segment",
+      "Ursula Waked lost 30 deals worth $1.2M with zero wins - potential skills gap or territory mismatch requiring coaching",
+      "Contact-ability issues caused only 3 lost deals but represented $958K (79% of lost value) - high-value prospects going dark"
     ],
     "quick_wins": [
-      "Ursula: Immediately review top 5 lost deals from $1.2M losses to identify salvage opportunities and pattern analysis by Wednesday",
-      "Team: Blitz campaign on 122 cold deals - assign 25 deals per rep for re-engagement calls with personalized Nitaqat/Emiratization value propositions by Friday"
+      "Ursula: Schedule immediate 1-on-1 with sales manager to review lost deal patterns and implement objection handling framework by Friday",
+      "All reps: Prioritize 122 cold deals (Zein 71, Ursula 21, Jehad 21) - execute re-engagement campaign targeting top 30 by deal value this week"
     ],
     "risks": [
-      "$958K lost to contactability issues signals inability to reach C-suite decision makers - enterprise access strategy failing",
-      "Zero wins MTD with only $72K closed YTD against $4.9M pipeline creates massive revenue gap risk for quarterly targets"
+      "$958K lost to contact-ability issues suggests high-value enterprise deals lacking multi-threading - single point of failure with champions",
+      "Zero wins MTD with only $184K closed vs $1.2M lost creates 15% win rate crisis - Q2 targets at severe risk without pipeline conversion improvement"
     ]
   },
   "marketNews": [
@@ -3262,21 +3271,21 @@
       "tag": "Regulation",
       "color": "#D97706",
       "source": "HRSD Saudi",
-      "text": "Saudi Arabia raises Nitaqat green zone thresholds by 8% for large enterprises effective Q3 2026, driving urgent ATS adoption for compliance reporting"
+      "text": "Saudi Arabia announces stricter Nitaqat compliance tracking effective Q3 2026, requiring real-time workforce reporting for companies with 300+ employees"
     },
     {
       "icon": "📊",
       "tag": "M&A",
       "color": "#7C3AED",
       "source": "Bloomberg",
-      "text": "Oracle acquires regional HR tech provider Tawzef for $340M, consolidating MENA ATS market and intensifying competition for enterprise clients"
+      "text": "Oracle acquires UAE-based HR tech startup TalentMENA for $42M, signaling increased competition in regional ATS market"
     },
     {
       "icon": "⚡",
       "tag": "Trend",
       "color": "#2563EB",
       "source": "Gartner",
-      "text": "GCC government entities accelerate digital HR transformation with 67% planning ATS implementations in 2026 aligned with national digitization goals"
+      "text": "GCC enterprises increase HR tech budgets by 34% YoY driven by Emiratization goals and Vision 2030 workforce nationalization targets"
     }
   ]
 }
