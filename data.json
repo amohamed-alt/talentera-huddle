@@ -1,14 +1,14 @@
 {
   "meta": {
     "yesterdayLabel": "Wednesday, 22 Apr 2026",
-    "generatedAt": "04:40 PM"
+    "generatedAt": "06:54 PM"
   },
   "kpi": {
     "yesterday": {
-      "calls": 76,
-      "connected": 30,
-      "connRate": 39,
-      "meetings": 10,
+      "calls": 74,
+      "connected": 28,
+      "connRate": 38,
+      "meetings": 11,
       "openDeals": 3,
       "openDealsSnap": 256,
       "pipeline": 4854310.451833381,
@@ -19,28 +19,28 @@
       "lostAmt": 18800
     },
     "mtd": {
-      "calls": 1702,
-      "connected": 679,
-      "connRate": 40,
-      "meetings": 130,
+      "calls": 1639,
+      "connected": 633,
+      "connRate": 39,
+      "meetings": 132,
       "openDeals": 56,
       "openDealsSnap": 256,
       "pipeline": 4854310.451833381,
-      "leads": 589,
+      "leads": 590,
       "wonAmt": 184009,
       "wonDeals": 3,
       "lost": 44,
       "lostAmt": 1276153.72
     },
     "ytd": {
-      "calls": 4939,
-      "connected": 1885,
-      "connRate": 38,
-      "meetings": 654,
+      "calls": 4761,
+      "connected": 1763,
+      "connRate": 37,
+      "meetings": 656,
       "openDeals": 699,
       "openDealsSnap": 256,
       "pipeline": 4854310.451833381,
-      "leads": 1189,
+      "leads": 1190,
       "wonAmt": 226214,
       "wonDeals": 7,
       "lost": 94,
@@ -48,15 +48,15 @@
     }
   },
   "team": {
-    "callsYest": 76,
-    "callsConn": 30,
-    "callsMTD": 1702,
-    "callsMTDConn": 679,
-    "callsYTD": 4939,
-    "callsYTDConn": 1885,
-    "meetings": 10,
-    "meetingsMTD": 130,
-    "meetingsYTD": 654,
+    "callsYest": 74,
+    "callsConn": 28,
+    "callsMTD": 1639,
+    "callsMTDConn": 633,
+    "callsYTD": 4761,
+    "callsYTDConn": 1763,
+    "meetings": 11,
+    "meetingsMTD": 132,
+    "meetingsYTD": 656,
     "openDeals": 256,
     "pipeline": 4854310.451833381,
     "won": 3,
@@ -74,15 +74,15 @@
     "leadsYest": 4,
     "leadsYestInbound": 0,
     "leadsYestOutbound": 4,
-    "leadsMTD": 589,
+    "leadsMTD": 590,
     "leadsMTDInbound": 38,
-    "leadsMTDOutbound": 551,
-    "leadsYTD": 1189,
+    "leadsMTDOutbound": 552,
+    "leadsYTD": 1190,
     "leadsYTDInbound": 195,
-    "leadsYTDOutbound": 994,
-    "connRateYest": 39,
-    "connRateMTD": 40,
-    "connRateYTD": 38
+    "leadsYTDOutbound": 995,
+    "connRateYest": 38,
+    "connRateMTD": 39,
+    "connRateYTD": 37
   },
   "repData": [
     {
@@ -351,12 +351,12 @@
       "leadsYest": 3,
       "leadsYestInbound": 0,
       "leadsYestOutbound": 3,
-      "leadsMTD": 44,
+      "leadsMTD": 45,
       "leadsMTDInbound": 6,
-      "leadsMTDOutbound": 38,
-      "leadsYTD": 374,
+      "leadsMTDOutbound": 39,
+      "leadsYTD": 375,
       "leadsYTDInbound": 17,
-      "leadsYTDOutbound": 357,
+      "leadsYTDOutbound": 358,
       "leadActivities": {
         "callsYest": 0,
         "callsMTD": 0,
@@ -369,13 +369,13 @@
         "statusNew": 1,
         "statusQualified": 56,
         "statusUnqualified": 0,
-        "statusOther": 317,
+        "statusOther": 318,
         "sourceInbound": 17,
-        "sourceOutbound": 357,
+        "sourceOutbound": 358,
         "sourceImport": 0
       },
       "leadFunnel": {
-        "created": 374,
+        "created": 375,
         "contacted": 0,
         "converted": 0,
         "conversionRate": 0
@@ -468,20 +468,20 @@
       "color": "#1d4ed8",
       "type": "acq",
       "calls": {
-        "yest": 2,
-        "yestConn": 2,
-        "mtd": 65,
-        "mtdConn": 46,
-        "ytd": 180,
-        "ytdConn": 122
+        "yest": 0,
+        "yestConn": 0,
+        "mtd": 0,
+        "mtdConn": 0,
+        "ytd": 0,
+        "ytdConn": 0
       },
-      "connRateYest": 100,
-      "connRateMTD": 71,
-      "connRateYTD": 68,
+      "connRateYest": 0,
+      "connRateMTD": 0,
+      "connRateYTD": 0,
       "meetings": {
         "yest": 6,
-        "mtd": 45,
-        "ytd": 102
+        "mtd": 46,
+        "ytd": 103
       },
       "openDeals": 112,
       "pipeAmt": 1373343.0310500003,
@@ -718,7 +718,7 @@
         },
         {
           "name": "Al Jazeera Paints Limited - New Deal",
-          "days": 87,
+          "days": 88,
           "amount": 15000
         },
         {
@@ -977,6 +977,11 @@
           "amount": 8001
         },
         {
+          "name": "CLA - New Deal",
+          "days": 15,
+          "amount": 150
+        },
+        {
           "name": "Amal - New Deal",
           "days": 67,
           "amount": 0
@@ -1033,7 +1038,7 @@
         },
         {
           "name": "CLA - New Deal",
-          "days": 79,
+          "days": 80,
           "amount": 3300
         },
         {
@@ -1115,7 +1120,7 @@
           "name": "Al Jazeera Paints Limited - New Deal",
           "amount": 15000,
           "reasons": [
-            "No activity for 87 days"
+            "No activity for 88 days"
           ]
         },
         {
@@ -1476,6 +1481,13 @@
           ]
         },
         {
+          "name": "CLA - New Deal",
+          "amount": 150,
+          "reasons": [
+            "No activity for 15 days"
+          ]
+        },
+        {
           "name": "Amal - New Deal",
           "amount": 0,
           "reasons": [
@@ -1556,7 +1568,7 @@
           "name": "CLA - New Deal",
           "amount": 3300,
           "reasons": [
-            "No activity for 79 days"
+            "No activity for 80 days"
           ]
         },
         {
@@ -1910,7 +1922,7 @@
         },
         {
           "name": "Commercial Bank of Kuwait - Renewal",
-          "days": 276,
+          "days": 277,
           "amount": 9315
         },
         {
@@ -1955,7 +1967,7 @@
           "name": "Commercial Bank of Kuwait - Renewal",
           "amount": 9315,
           "reasons": [
-            "No activity for 276 days"
+            "No activity for 277 days"
           ]
         },
         {
@@ -2111,9 +2123,9 @@
       "connRateMTD": 55,
       "connRateYTD": 54,
       "meetings": {
-        "yest": 1,
-        "mtd": 10,
-        "ytd": 19
+        "yest": 2,
+        "mtd": 11,
+        "ytd": 20
       },
       "openDeals": 2,
       "pipeAmt": 50000,
@@ -2242,14 +2254,14 @@
       "calls": {
         "yest": 16,
         "yestConn": 5,
-        "mtd": 253,
+        "mtd": 255,
         "mtdConn": 112,
-        "ytd": 474,
+        "ytd": 476,
         "ytdConn": 202
       },
       "connRateYest": 31,
       "connRateMTD": 44,
-      "connRateYTD": 43,
+      "connRateYTD": 42,
       "meetings": {
         "yest": 1,
         "mtd": 6,
@@ -2500,7 +2512,7 @@
         },
         {
           "name": "Al Majal Group - New Deal",
-          "days": 251,
+          "days": 252,
           "amount": 66930
         },
         {
@@ -2525,7 +2537,7 @@
         },
         {
           "name": "شركة القمة المتقدمة المحدودة - New Deal",
-          "days": 255,
+          "days": 256,
           "amount": 0
         },
         {
@@ -2615,7 +2627,7 @@
           "name": "Al Majal Group - New Deal",
           "amount": 66930,
           "reasons": [
-            "No activity for 251 days"
+            "No activity for 252 days"
           ]
         },
         {
@@ -2650,7 +2662,7 @@
           "name": "شركة القمة المتقدمة المحدودة - New Deal",
           "amount": 0,
           "reasons": [
-            "No activity for 255 days"
+            "No activity for 256 days"
           ]
         },
         {
@@ -3107,7 +3119,7 @@
   "autoRecs": [
     {
       "type": "warn",
-      "text": "Connected rate 39% — approaching target. Keep the momentum."
+      "text": "Connected rate 38% — approaching target. Keep the momentum."
     },
     {
       "type": "green",
@@ -3115,19 +3127,19 @@
     },
     {
       "type": "red",
-      "text": "111 cold deals (no activity 14+ days) — re-engage before they go dark."
+      "text": "112 cold deals (no activity 14+ days) — re-engage before they go dark."
     },
     {
       "type": "red",
-      "text": "111 deals have no next activity scheduled — reps must log next steps immediately."
+      "text": "112 deals have no next activity scheduled — reps must log next steps immediately."
     },
     {
       "type": "green",
-      "text": "10 meetings logged yesterday ✓"
+      "text": "11 meetings logged yesterday ✓"
     },
     {
       "type": "green",
-      "text": "MTD call pace: 74/day avg ✓"
+      "text": "MTD call pace: 71/day avg ✓"
     },
     {
       "type": "green",
@@ -3946,19 +3958,19 @@
     }
   },
   "aiInsights": {
-    "summary": "Lost $1.27M across 44 deals with $973K in contactability issues - urgent pipeline health intervention needed",
+    "summary": "Critical alert: $1.3M lost across 44 deals with Ursula carrying $1.27M in losses and 112 cold deals blocking pipeline flow",
     "patterns": [
-      "Ursula Waked lost 41 deals worth $1.27M with 0 wins despite 42% connection rate - conversion issue critical",
-      "Contactability issues caused 4 lost deals worth $973K - highest value loss category requiring immediate action",
-      "Zein Fares has 75 cold deals in pipeline - largest stuck opportunity pool with no active engagement"
+      "Contactability crisis: 4 deals worth $973K lost due to contact issues - 76% of total lost revenue from inability to reach decision makers",
+      "Meeting-to-close gap widening: 132 meetings scheduled but only 3 wins ($184K) vs 44 losses ($1.28M) - 6.4% win rate indicates qualification or value proposition breakdown",
+      "Pipeline stagnation: 112 cold deals across team (Zein: 76, Jehad: 21) with no stuck deals flagged suggests lack of proactive pipeline hygiene and follow-up discipline"
     ],
     "quick_wins": [
-      "Ursula: Conduct deal review session this week to identify conversion blockers on high-value opportunities",
-      "Team: Re-engage 4 contactability-lost deals ($973K) with multi-channel outreach by Thursday"
+      "Ursula: Immediately audit and re-engage the 4 high-value contactability deals ($973K) with multi-channel outreach strategy and executive sponsorship by Wednesday",
+      "Zein & Jehad: Convert 20 cold deals into meetings by Friday using Vision 2030 compliance messaging - prioritize deals in Nitaqat-regulated sectors with budget authority confirmed"
     ],
     "risks": [
-      "$973K lost to contactability issues signals weak lead qualification or champion access - 22% of total losses",
-      "Zero wins MTD with only 3 closed deals ($184K) against 44 losses threatens quarterly revenue targets significantly"
+      "Revenue target jeopardy: Only $184K won MTD against $4.85M pipeline with 39% connection rate - need 15+ wins at current ASP to hit quarterly targets",
+      "Rep concentration risk: Ursula owns majority of pipeline activity but $1.27M losses with 0% win rate signals potential burnout, misalignment, or territory/ICP mismatch requiring immediate coaching intervention"
     ]
   },
   "marketNews": [
@@ -3967,21 +3979,21 @@
       "tag": "Regulation",
       "color": "#D97706",
       "source": "HRSD Saudi",
-      "text": "Saudi Arabia mandates 65% Saudization for companies with 50+ employees by Q3 2026, driving demand for compliant ATS solutions"
+      "text": "Saudi Arabia announces stricter Nitaqat compliance reporting requirements effective Q3 2026, requiring real-time workforce analytics and quarterly Saudization audits for enterprises with 500+ employees"
     },
     {
       "icon": "📊",
       "tag": "M&A",
       "color": "#7C3AED",
       "source": "Bloomberg",
-      "text": "Oracle acquires regional HR tech player in $420M deal, consolidating MENA enterprise HCM market share"
+      "text": "LinkedIn Talent Solutions acquires Dubai-based HireVue MENA operations for $240M, consolidating position in UAE government hiring sector amid Emiratization push"
     },
     {
       "icon": "⚡",
       "tag": "Trend",
       "color": "#2563EB",
       "source": "Gartner",
-      "text": "GCC enterprises increase HR tech budgets by 34% in 2026, prioritizing AI-powered recruitment and compliance automation"
+      "text": "GCC enterprises increase ATS budgets by 34% YoY as Vision 2030 initiatives drive digital transformation in talent acquisition, with 67% of Saudi firms prioritizing localization compliance features"
     }
   ]
 }
