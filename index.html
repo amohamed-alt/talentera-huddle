@@ -484,7 +484,6 @@ function render(){
   const meta=D.meta||{},repData=D.repData||[],team=D.team||{},stageData=D.stageData||[];
   const kY=D.kpi?.yesterday||{},kM=D.kpi?.mtd||{},kT=D.kpi?.ytd||{};
   const won=D.closedWon||[],lost=D.closedLost||[];
-  const effectiveLeadAct=D.effectiveLeadActivities||{},effectiveLeadQual=D.effectiveLeadQuality||{},effectiveLeadFun=D.effectiveLeadFunnel||{};
   // Build Lead Activities from repData if empty
 const effectiveLeadAct = (effectiveLeadAct.callsYTD||effectiveLeadAct.callsMTD) ? effectiveLeadAct : (() => {
   const r={callsYest:0,callsMTD:0,callsYTD:0,meetingsYest:0,meetingsMTD:0,meetingsYTD:0};
