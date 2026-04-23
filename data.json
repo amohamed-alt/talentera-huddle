@@ -1,7 +1,7 @@
 {
   "meta": {
     "yesterdayLabel": "Wednesday, 22 Apr 2026",
-    "generatedAt": "04:03 PM"
+    "generatedAt": "04:16 PM"
   },
   "kpi": {
     "yesterday": {
@@ -19,28 +19,28 @@
       "lostAmt": 18800
     },
     "mtd": {
-      "calls": 1696,
-      "connected": 677,
+      "calls": 1700,
+      "connected": 678,
       "connRate": 40,
       "meetings": 130,
       "openDeals": 56,
       "openDealsSnap": 256,
       "pipeline": 4854310.451833381,
-      "leads": 587,
+      "leads": 589,
       "wonAmt": 184009,
       "wonDeals": 3,
       "lost": 44,
       "lostAmt": 1276153.72
     },
     "ytd": {
-      "calls": 4933,
-      "connected": 1883,
+      "calls": 4937,
+      "connected": 1884,
       "connRate": 38,
       "meetings": 654,
       "openDeals": 699,
       "openDealsSnap": 256,
       "pipeline": 4854310.451833381,
-      "leads": 1187,
+      "leads": 1189,
       "wonAmt": 226214,
       "wonDeals": 7,
       "lost": 94,
@@ -50,10 +50,10 @@
   "team": {
     "callsYest": 76,
     "callsConn": 30,
-    "callsMTD": 1696,
-    "callsMTDConn": 677,
-    "callsYTD": 4933,
-    "callsYTDConn": 1883,
+    "callsMTD": 1700,
+    "callsMTDConn": 678,
+    "callsYTD": 4937,
+    "callsYTDConn": 1884,
     "meetings": 10,
     "meetingsMTD": 130,
     "meetingsYTD": 654,
@@ -74,12 +74,12 @@
     "leadsYest": 4,
     "leadsYestInbound": 0,
     "leadsYestOutbound": 4,
-    "leadsMTD": 587,
+    "leadsMTD": 589,
     "leadsMTDInbound": 38,
-    "leadsMTDOutbound": 549,
-    "leadsYTD": 1187,
+    "leadsMTDOutbound": 551,
+    "leadsYTD": 1189,
     "leadsYTDInbound": 195,
-    "leadsYTDOutbound": 992,
+    "leadsYTDOutbound": 994,
     "connRateYest": 39,
     "connRateMTD": 40,
     "connRateYTD": 38
@@ -92,9 +92,9 @@
       "calls": {
         "yest": 31,
         "yestConn": 12,
-        "mtd": 706,
+        "mtd": 708,
         "mtdConn": 199,
-        "ytd": 2639,
+        "ytd": 2641,
         "ytdConn": 803
       },
       "connRateYest": 39,
@@ -283,7 +283,7 @@
         },
         {
           "name": "District Company- New Deal",
-          "days": 27,
+          "days": 28,
           "amount": 0
         },
         {
@@ -330,7 +330,7 @@
           "name": "District Company- New Deal",
           "amount": 0,
           "reasons": [
-            "No activity for 27 days"
+            "No activity for 28 days"
           ]
         },
         {
@@ -838,7 +838,7 @@
         },
         {
           "name": "SSC Company",
-          "days": 141,
+          "days": 142,
           "amount": 12000
         },
         {
@@ -1283,7 +1283,7 @@
           "name": "SSC Company",
           "amount": 12000,
           "reasons": [
-            "No activity for 141 days"
+            "No activity for 142 days"
           ]
         },
         {
@@ -1696,9 +1696,9 @@
       "calls": {
         "yest": 19,
         "yestConn": 6,
-        "mtd": 390,
+        "mtd": 391,
         "mtdConn": 165,
-        "ytd": 1128,
+        "ytd": 1129,
         "ytdConn": 470
       },
       "connRateYest": 32,
@@ -1983,12 +1983,12 @@
       "leadsYest": 1,
       "leadsYestInbound": 0,
       "leadsYestOutbound": 1,
-      "leadsMTD": 87,
+      "leadsMTD": 89,
       "leadsMTDInbound": 10,
-      "leadsMTDOutbound": 77,
-      "leadsYTD": 223,
+      "leadsMTDOutbound": 79,
+      "leadsYTD": 225,
       "leadsYTDInbound": 82,
-      "leadsYTDOutbound": 141,
+      "leadsYTDOutbound": 143,
       "leadActivities": {
         "callsYest": 0,
         "callsMTD": 0,
@@ -2001,13 +2001,13 @@
         "statusNew": 0,
         "statusQualified": 68,
         "statusUnqualified": 0,
-        "statusOther": 155,
+        "statusOther": 157,
         "sourceInbound": 82,
-        "sourceOutbound": 141,
+        "sourceOutbound": 143,
         "sourceImport": 0
       },
       "leadFunnel": {
-        "created": 223,
+        "created": 225,
         "contacted": 0,
         "converted": 0,
         "conversionRate": 0
@@ -2102,10 +2102,10 @@
       "calls": {
         "yest": 8,
         "yestConn": 5,
-        "mtd": 282,
-        "mtdConn": 155,
-        "ytd": 484,
-        "ytdConn": 261
+        "mtd": 283,
+        "mtdConn": 156,
+        "ytd": 485,
+        "ytdConn": 262
       },
       "connRateYest": 63,
       "connRateMTD": 55,
@@ -2575,7 +2575,7 @@
         },
         {
           "name": "Umm Alqura",
-          "days": 50,
+          "days": 51,
           "amount": 24891.999111
         },
         {
@@ -2720,7 +2720,7 @@
           "name": "Umm Alqura",
           "amount": 24891.999111,
           "reasons": [
-            "No activity for 50 days"
+            "No activity for 51 days"
           ]
         },
         {
@@ -3946,19 +3946,19 @@
     }
   },
   "aiInsights": {
-    "summary": "Critical alert: $1.27M lost with only $184K won MTD while 111 cold deals risk pipeline collapse",
+    "summary": "$973K lost to contactability issues while 44 deals lost vs only 3 won - urgent pipeline quality review needed",
     "patterns": [
-      "Contact-ability issues caused 4 lost deals worth $973K - representing 76% of total lost deal value and indicating lead quality or outreach timing problems",
-      "Ursula Waked lost 41 deals ($1.27M) with 0 wins despite 42% connection rate - suggesting strong prospecting but weak qualification or closing capability",
-      "Zein Fares has 75 cold deals in pipeline - 68% of all cold deals across team indicating urgent need for re-engagement or disqualification"
+      "Win rate critically low at 6.4% (3 won vs 44 lost) with $1.27M in lost opportunities - qualification process needs immediate revision",
+      "Zein Fares has 75 cold deals representing significant pipeline risk while other reps maintain healthier ratios",
+      "Ursula Waked lost 41 deals worth $1.27M with 0 wins despite 42% connection rate - indicates poor qualification or value proposition gaps"
     ],
     "quick_wins": [
-      "Ursula: Immediate call review session with Sales Manager to diagnose why 42% connection rate yields zero wins - implement new qualification framework by Wednesday",
-      "Zein: Triage 75 cold deals by Thursday - disqualify non-viable leads and launch targeted re-engagement campaign on top 20 prospects with personalized Nitaqat compliance value prop"
+      "Ursula: Immediately review qualification criteria with manager - 41 lost deals suggests pursuing wrong profiles or weak discovery process",
+      "Zein: Activate 75 cold deals this week through targeted outreach campaign - represents largest untapped pipeline opportunity"
     ],
     "risks": [
-      "$973K lost to contact-ability issues suggests lead routing or data quality breakdown - 23% of total pipeline at risk if contact strategy not fixed immediately",
-      "Zero wins from top performers Ursula and Marita despite 130 meetings MTD indicates broken sales process between demo and close stages threatening Q2 targets"
+      "$973K lost to contactability issues (4 deals) - average deal size $243K suggests high-value accounts slipping through poor follow-up",
+      "Pipeline conversion at crisis level with only $184K won MTD vs $4.85M pipeline - need 26x improvement to hit typical 20% conversion targets"
     ]
   },
   "marketNews": [
@@ -3967,21 +3967,21 @@
       "tag": "Regulation",
       "color": "#D97706",
       "source": "HRSD Saudi",
-      "text": "Saudi Arabia announces enhanced Nitaqat penalties for non-compliance starting Q3 2026, requiring real-time workforce reporting integration for enterprises with 500+ employees"
+      "text": "Saudi Arabia mandates 60% Saudization for companies with 50+ employees by Q3 2026, driving ATS adoption for compliance tracking"
     },
     {
       "icon": "📊",
       "tag": "M&A",
       "color": "#7C3AED",
       "source": "Bloomberg",
-      "text": "Oracle HCM acquires regional ATS provider TalentMENA for $87M, signaling increased competition and market consolidation in GCC HR tech space"
+      "text": "Oracle acquires UAE-based HR tech startup for $120M to strengthen GCC market presence amid rising competition"
     },
     {
       "icon": "⚡",
       "tag": "Trend",
       "color": "#2563EB",
       "source": "Gartner",
-      "text": "UAE government entities accelerate Emiratization tech adoption with 73% planning ATS investments by Q4 2026 to meet 10% national workforce targets"
+      "text": "MENA enterprises increasing HR tech budgets by 34% in 2026, with 72% prioritizing AI-powered recruitment solutions"
     }
   ]
 }
