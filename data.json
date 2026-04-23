@@ -1,7 +1,7 @@
 {
   "meta": {
     "yesterdayLabel": "Wednesday, 22 Apr 2026",
-    "generatedAt": "04:16 PM"
+    "generatedAt": "04:40 PM"
   },
   "kpi": {
     "yesterday": {
@@ -19,8 +19,8 @@
       "lostAmt": 18800
     },
     "mtd": {
-      "calls": 1700,
-      "connected": 678,
+      "calls": 1702,
+      "connected": 679,
       "connRate": 40,
       "meetings": 130,
       "openDeals": 56,
@@ -33,8 +33,8 @@
       "lostAmt": 1276153.72
     },
     "ytd": {
-      "calls": 4937,
-      "connected": 1884,
+      "calls": 4939,
+      "connected": 1885,
       "connRate": 38,
       "meetings": 654,
       "openDeals": 699,
@@ -50,10 +50,10 @@
   "team": {
     "callsYest": 76,
     "callsConn": 30,
-    "callsMTD": 1700,
-    "callsMTDConn": 678,
-    "callsYTD": 4937,
-    "callsYTDConn": 1884,
+    "callsMTD": 1702,
+    "callsMTDConn": 679,
+    "callsYTD": 4939,
+    "callsYTDConn": 1885,
     "meetings": 10,
     "meetingsMTD": 130,
     "meetingsYTD": 654,
@@ -92,10 +92,10 @@
       "calls": {
         "yest": 31,
         "yestConn": 12,
-        "mtd": 708,
-        "mtdConn": 199,
-        "ytd": 2641,
-        "ytdConn": 803
+        "mtd": 710,
+        "mtdConn": 200,
+        "ytd": 2643,
+        "ytdConn": 804
       },
       "connRateYest": 39,
       "connRateMTD": 28,
@@ -263,7 +263,7 @@
       "cold": [
         {
           "name": "IssaHolding - New Deal",
-          "days": 57,
+          "days": 58,
           "amount": 24836
         },
         {
@@ -302,7 +302,7 @@
           "name": "IssaHolding - New Deal",
           "amount": 24836,
           "reasons": [
-            "No activity for 57 days"
+            "No activity for 58 days"
           ]
         },
         {
@@ -1925,7 +1925,7 @@
         },
         {
           "name": "NESR - New Deal",
-          "days": 15,
+          "days": 16,
           "amount": 18112.5
         }
       ],
@@ -1976,7 +1976,7 @@
           "name": "NESR - New Deal",
           "amount": 18112.5,
           "reasons": [
-            "No activity for 15 days"
+            "No activity for 16 days"
           ]
         }
       ],
@@ -2510,7 +2510,7 @@
         },
         {
           "name": "MBC Media Solutions - New Deal",
-          "days": 233,
+          "days": 234,
           "amount": 105013.1336425809
         },
         {
@@ -2629,7 +2629,7 @@
           "name": "MBC Media Solutions - New Deal",
           "amount": 105013.1336425809,
           "reasons": [
-            "No activity for 233 days"
+            "No activity for 234 days"
           ]
         },
         {
@@ -3946,19 +3946,19 @@
     }
   },
   "aiInsights": {
-    "summary": "$973K lost to contactability issues while 44 deals lost vs only 3 won - urgent pipeline quality review needed",
+    "summary": "Lost $1.27M across 44 deals with $973K in contactability issues - urgent pipeline health intervention needed",
     "patterns": [
-      "Win rate critically low at 6.4% (3 won vs 44 lost) with $1.27M in lost opportunities - qualification process needs immediate revision",
-      "Zein Fares has 75 cold deals representing significant pipeline risk while other reps maintain healthier ratios",
-      "Ursula Waked lost 41 deals worth $1.27M with 0 wins despite 42% connection rate - indicates poor qualification or value proposition gaps"
+      "Ursula Waked lost 41 deals worth $1.27M with 0 wins despite 42% connection rate - conversion issue critical",
+      "Contactability issues caused 4 lost deals worth $973K - highest value loss category requiring immediate action",
+      "Zein Fares has 75 cold deals in pipeline - largest stuck opportunity pool with no active engagement"
     ],
     "quick_wins": [
-      "Ursula: Immediately review qualification criteria with manager - 41 lost deals suggests pursuing wrong profiles or weak discovery process",
-      "Zein: Activate 75 cold deals this week through targeted outreach campaign - represents largest untapped pipeline opportunity"
+      "Ursula: Conduct deal review session this week to identify conversion blockers on high-value opportunities",
+      "Team: Re-engage 4 contactability-lost deals ($973K) with multi-channel outreach by Thursday"
     ],
     "risks": [
-      "$973K lost to contactability issues (4 deals) - average deal size $243K suggests high-value accounts slipping through poor follow-up",
-      "Pipeline conversion at crisis level with only $184K won MTD vs $4.85M pipeline - need 26x improvement to hit typical 20% conversion targets"
+      "$973K lost to contactability issues signals weak lead qualification or champion access - 22% of total losses",
+      "Zero wins MTD with only 3 closed deals ($184K) against 44 losses threatens quarterly revenue targets significantly"
     ]
   },
   "marketNews": [
@@ -3967,21 +3967,21 @@
       "tag": "Regulation",
       "color": "#D97706",
       "source": "HRSD Saudi",
-      "text": "Saudi Arabia mandates 60% Saudization for companies with 50+ employees by Q3 2026, driving ATS adoption for compliance tracking"
+      "text": "Saudi Arabia mandates 65% Saudization for companies with 50+ employees by Q3 2026, driving demand for compliant ATS solutions"
     },
     {
       "icon": "📊",
       "tag": "M&A",
       "color": "#7C3AED",
       "source": "Bloomberg",
-      "text": "Oracle acquires UAE-based HR tech startup for $120M to strengthen GCC market presence amid rising competition"
+      "text": "Oracle acquires regional HR tech player in $420M deal, consolidating MENA enterprise HCM market share"
     },
     {
       "icon": "⚡",
       "tag": "Trend",
       "color": "#2563EB",
       "source": "Gartner",
-      "text": "MENA enterprises increasing HR tech budgets by 34% in 2026, with 72% prioritizing AI-powered recruitment solutions"
+      "text": "GCC enterprises increase HR tech budgets by 34% in 2026, prioritizing AI-powered recruitment and compliance automation"
     }
   ]
 }
