@@ -617,44 +617,24 @@ function render(){
   $("leadsPeriods").innerHTML=[{p:"Yesterday",t:team.leadsYest||0,i:team.leadsYestInbound||0,o:team.leadsYestOutbound||0,c:"var(--blue)"},{p:"Month to Date",t:team.leadsMTD||0,i:team.leadsMTDInbound||0,o:team.leadsMTDOutbound||0,c:"var(--green)"},{p:"Year to Date",t:team.leadsYTD||0,i:team.leadsYTDInbound||0,o:team.leadsYTDOutbound||0,c:"var(--purple)"}].map(x=>`<div class="lperiod"><div class="lperiod-label">${x.p}</div><div class="lperiod-val" style="color:${x.c}">${x.t}</div><div class="lperiod-row"><span class="lperiod-in" style="color:var(--blue)">&darr; ${x.i} Inbound</span><span class="lperiod-out" style="color:var(--amber)">&uarr; ${x.o} Outbound</span></div></div>`).join("");
   $("leadsRepBody").innerHTML=activeReps.map(r=>`<tr><td><div style="display:flex;align-items:center;gap:8px"><div class="av" style="background:${r.color}20;color:${r.color};border:1px solid ${r.color}30">${r.name[0]}</div><span style="font-weight:600">${r.name}</span></div></td><td class="c"><div style="font-family:var(--mono);font-weight:600">${r.leadsYest||0}</div><div style="font-size:9px;color:var(--muted)">&darr;${r.leadsYestInbound||0} &uarr;${r.leadsYestOutbound||0}</div></td><td class="c"><div style="font-family:var(--mono);font-weight:600;color:var(--green)">${r.leadsMTD||0}</div><div style="font-size:9px;color:var(--muted)">&darr;${r.leadsMTDInbound||0} &uarr;${r.leadsMTDOutbound||0}</div></td><td class="c"><div style="font-family:var(--mono);font-weight:600;color:var(--purple)">${r.leadsYTD||0}</div><div style="font-size:9px;color:var(--muted)">&darr;${r.leadsYTDInbound||0} &uarr;${r.leadsYTDOutbound||0}</div></td></tr>`).join("");
 
-  const countries=Object.entries(teamCountry).sort((a,b)=>(b[1].rankA+b[1].rankB)-(a[1].rankA+a[1].rankB));
+  const countries=Object.entries(teamCountry).sort((a,b)=>(b[1].total||b[1].rankA+b[1].rankB)-(a[1].total||a[1].rankA+a[1].rankB));
   $("countryTotalBadge").textContent=`${countries.length} countries`;
   
   if(countries.length>0){
     $("teamCountryBreakdown").innerHTML=`
-      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px">
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px">
         ${countries.map(([country,data])=>{
-          const totalA=data.rankA||0,contA=data.rankAContacted||0,missA=data.rankANotContacted||0;
-          const totalB=data.rankB||0,contB=data.rankBContacted||0,missB=data.rankBNotContacted||0;
-          const rateA=totalA>0?Math.round((contA/totalA)*100):0;
-          const rateB=totalB>0?Math.round((contB/totalB)*100):0;
-          return`<div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-sm);padding:14px;border-left:3px solid var(--cyan)">
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+          const totalA=data.rankA||0;
+          const totalB=data.rankB||0;
+          const total=data.total||(totalA+totalB);
+          return`<div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-sm);padding:12px;border-left:3px solid var(--cyan)">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
               <span class="country-tag">${country}</span>
-              <div style="display:flex;gap:5px">
-                <span class="rank-a">${totalA}A</span>
-                <span class="rank-b">${totalB}B</span>
-              </div>
+              <span style="font-family:var(--mono);font-size:12px;font-weight:700;color:var(--text)">${total}</span>
             </div>
-            <div style="margin-bottom:8px">
-              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
-                <span style="font-size:9px;font-weight:700;color:var(--red);text-transform:uppercase">Rank A</span>
-                <span style="font-size:10px;font-weight:600;color:${rateA>=70?"var(--green)":rateA>=50?"var(--amber)":"var(--red)"}">${rateA}% contacted</span>
-              </div>
-              <div style="display:flex;gap:12px;font-size:11px">
-                <span style="color:var(--green)">&#10003; ${contA}</span>
-                <span style="color:var(--red)">&#10007; ${missA}</span>
-              </div>
-            </div>
-            <div>
-              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
-                <span style="font-size:9px;font-weight:700;color:var(--amber);text-transform:uppercase">Rank B</span>
-                <span style="font-size:10px;font-weight:600;color:${rateB>=70?"var(--green)":rateB>=50?"var(--amber)":"var(--red)"}">${rateB}% contacted</span>
-              </div>
-              <div style="display:flex;gap:12px;font-size:11px">
-                <span style="color:var(--green)">&#10003; ${contB}</span>
-                <span style="color:var(--amber)">&#10007; ${missB}</span>
-              </div>
+            <div style="display:flex;gap:6px">
+              ${totalA>0?`<span class="rank-a">${totalA} A</span>`:""}
+              ${totalB>0?`<span class="rank-b">${totalB} B</span>`:""}
             </div>
           </div>`;
         }).join("")}
