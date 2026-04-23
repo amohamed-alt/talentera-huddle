@@ -1,7 +1,7 @@
 {
   "meta": {
     "yesterdayLabel": "Wednesday, 22 Apr 2026",
-    "generatedAt": "06:54 PM"
+    "generatedAt": "07:04 PM"
   },
   "kpi": {
     "yesterday": {
@@ -158,25 +158,9 @@
         }
       },
       "rankB": 109,
-      "rankBContacted": 106,
-      "rankBNotContacted": 3,
-      "rankBUntouched": [
-        {
-          "id": "371770751211",
-          "name": "Bank Audi",
-          "country": "Lebanon"
-        },
-        {
-          "id": "420369219833",
-          "name": "Dhofar University",
-          "country": "Oman"
-        },
-        {
-          "id": "422921081032",
-          "name": " Asnan Tower",
-          "country": "Kuwait"
-        }
-      ],
+      "rankBContacted": 109,
+      "rankBNotContacted": 0,
+      "rankBUntouched": [],
       "rankBByCountry": {
         "United Arab Emirates": {
           "rankA": 0,
@@ -191,8 +175,8 @@
           "rankAContacted": 0,
           "rankANotContacted": 0,
           "rankB": 9,
-          "rankBContacted": 8,
-          "rankBNotContacted": 1
+          "rankBContacted": 9,
+          "rankBNotContacted": 0
         },
         "Jordan": {
           "rankA": 0,
@@ -215,8 +199,8 @@
           "rankAContacted": 0,
           "rankANotContacted": 0,
           "rankB": 6,
-          "rankBContacted": 5,
-          "rankBNotContacted": 1
+          "rankBContacted": 6,
+          "rankBNotContacted": 0
         },
         "Syria": {
           "rankA": 0,
@@ -247,8 +231,8 @@
           "rankAContacted": 0,
           "rankANotContacted": 0,
           "rankB": 6,
-          "rankBContacted": 5,
-          "rankBNotContacted": 1
+          "rankBContacted": 6,
+          "rankBNotContacted": 0
         },
         "Unknown": {
           "rankA": 0,
@@ -358,12 +342,12 @@
       "leadsYTDInbound": 17,
       "leadsYTDOutbound": 358,
       "leadActivities": {
-        "callsYest": 0,
-        "callsMTD": 0,
-        "callsYTD": 0,
-        "meetingsYest": 0,
-        "meetingsMTD": 0,
-        "meetingsYTD": 0
+        "callsYest": 31,
+        "callsMTD": 710,
+        "callsYTD": 2643,
+        "meetingsYest": 1,
+        "meetingsMTD": 16,
+        "meetingsYTD": 145
       },
       "leadQuality": {
         "statusNew": 1,
@@ -376,9 +360,9 @@
       },
       "leadFunnel": {
         "created": 375,
-        "contacted": 0,
-        "converted": 0,
-        "conversionRate": 0
+        "contacted": 375,
+        "converted": 375,
+        "conversionRate": 100
       },
       "topDeals": [
         {
@@ -498,159 +482,47 @@
       "lostYTD": 0,
       "lostAmtYTD": 0,
       "rankA": 50,
-      "rankAContacted": 46,
-      "rankANotContacted": 4,
-      "rankAUntouched": [
-        {
-          "id": "80804273385",
-          "name": "Saudi Geological Survey",
-          "country": "Saudi Arabia"
-        },
-        {
-          "id": "80374936770",
-          "name": "National eLearning Centre",
-          "country": "Unknown"
-        },
-        {
-          "id": "80338728148",
-          "name": "Aseer Development Authority (ASDA)",
-          "country": "Saudi Arabia"
-        },
-        {
-          "id": "97869709503",
-          "name": "Cruise Saudi",
-          "country": "Saudi Arabia"
-        }
-      ],
+      "rankAContacted": 50,
+      "rankANotContacted": 0,
+      "rankAUntouched": [],
       "rankAByCountry": {
         "Saudi Arabia": {
           "rankA": 40,
-          "rankAContacted": 37,
-          "rankANotContacted": 3,
+          "rankAContacted": 40,
+          "rankANotContacted": 0,
           "rankB": 0,
           "rankBContacted": 0,
           "rankBNotContacted": 0
         },
         "Unknown": {
           "rankA": 10,
-          "rankAContacted": 9,
-          "rankANotContacted": 1,
+          "rankAContacted": 10,
+          "rankANotContacted": 0,
           "rankB": 0,
           "rankBContacted": 0,
           "rankBNotContacted": 0
         }
       },
       "rankB": 124,
-      "rankBContacted": 106,
-      "rankBNotContacted": 18,
-      "rankBUntouched": [
-        {
-          "id": "80976499909",
-          "name": "المعهد الوطني لأبحاث الصحة Saudi NIH",
-          "country": "Unknown"
-        },
-        {
-          "id": "80569251007",
-          "name": "Jash Group of Companies / EES Vessel Heads",
-          "country": "Saudi Arabia"
-        },
-        {
-          "id": "80974700764",
-          "name": "Future Careers Middle East",
-          "country": "Unknown"
-        },
-        {
-          "id": "80988635365",
-          "name": "AlManarah Comm. & IT Ltd.",
-          "country": "Saudi Arabia"
-        },
-        {
-          "id": "80988635366",
-          "name": "Al Faisal University",
-          "country": "Saudi Arabia"
-        },
-        {
-          "id": "80374936768",
-          "name": "Unicharm Gulf Hygienic Industries Ltd.",
-          "country": "Unknown"
-        },
-        {
-          "id": "80934223090",
-          "name": "Detasad - Detecon Al Saudia Co. Ltd",
-          "country": "Saudi Arabia"
-        },
-        {
-          "id": "80988635376",
-          "name": "STC Solutions",
-          "country": "Saudi Arabia"
-        },
-        {
-          "id": "80994031841",
-          "name": "National Center for Waste Management | المركز الوطني لإدارة النفايات",
-          "country": "Unknown"
-        },
-        {
-          "id": "80810731741",
-          "name": "Mena Business Investment Group",
-          "country": "Unknown"
-        },
-        {
-          "id": "80353158369",
-          "name": "Donia Productions",
-          "country": "Saudi Arabia"
-        },
-        {
-          "id": "80979647676",
-          "name": "Riyadh Cable Group Of Companies",
-          "country": "Unknown"
-        },
-        {
-          "id": "80338728142",
-          "name": "Dyar Health Company",
-          "country": "Unknown"
-        },
-        {
-          "id": "80971104485",
-          "name": "Alessa Industries Co.",
-          "country": "Saudi Arabia"
-        },
-        {
-          "id": "94449383654",
-          "name": "Riyadh Parking",
-          "country": "Saudi Arabia"
-        },
-        {
-          "id": "96347752641",
-          "name": "Nourah Information Technology Company",
-          "country": "Saudi Arabia"
-        },
-        {
-          "id": "374633293007",
-          "name": "Fursan",
-          "country": "Saudi Arabia"
-        },
-        {
-          "id": "423101461710",
-          "name": "Shahia",
-          "country": "Saudi Arabia"
-        }
-      ],
+      "rankBContacted": 124,
+      "rankBNotContacted": 0,
+      "rankBUntouched": [],
       "rankBByCountry": {
         "Unknown": {
           "rankA": 0,
           "rankAContacted": 0,
           "rankANotContacted": 0,
           "rankB": 19,
-          "rankBContacted": 12,
-          "rankBNotContacted": 7
+          "rankBContacted": 19,
+          "rankBNotContacted": 0
         },
         "Saudi Arabia": {
           "rankA": 0,
           "rankAContacted": 0,
           "rankANotContacted": 0,
           "rankB": 102,
-          "rankBContacted": 91,
-          "rankBNotContacted": 11
+          "rankBContacted": 102,
+          "rankBNotContacted": 0
         },
         "Jordan": {
           "rankA": 0,
@@ -1599,9 +1471,9 @@
         "callsYest": 0,
         "callsMTD": 0,
         "callsYTD": 0,
-        "meetingsYest": 0,
-        "meetingsMTD": 0,
-        "meetingsYTD": 0
+        "meetingsYest": 6,
+        "meetingsMTD": 46,
+        "meetingsYTD": 103
       },
       "leadQuality": {
         "statusNew": 2,
@@ -1614,9 +1486,9 @@
       },
       "leadFunnel": {
         "created": 129,
-        "contacted": 0,
-        "converted": 0,
-        "conversionRate": 0
+        "contacted": 129,
+        "converted": 129,
+        "conversionRate": 100
       },
       "topDeals": [
         {
@@ -1782,69 +1654,33 @@
         }
       },
       "rankB": 158,
-      "rankBContacted": 151,
-      "rankBNotContacted": 7,
-      "rankBUntouched": [
-        {
-          "id": "81003499720",
-          "name": "Bahrain Airport Services",
-          "country": "Bahrain"
-        },
-        {
-          "id": "80674612449",
-          "name": "Bahrain Institute of Banking & Finance (BIBF)",
-          "country": "Bahrain"
-        },
-        {
-          "id": "80387526869",
-          "name": "Bank ABC",
-          "country": "Bahrain"
-        },
-        {
-          "id": "80969305276",
-          "name": "Quds Bank",
-          "country": "Oman"
-        },
-        {
-          "id": "162766794980",
-          "name": "University of Nizwa, Sultanate of Oman",
-          "country": "Oman"
-        },
-        {
-          "id": "208822084812",
-          "name": "Mu'tah Universityجامعة مؤته",
-          "country": "Jordan"
-        },
-        {
-          "id": "254124581107",
-          "name": "ministry of labour",
-          "country": "Qatar"
-        }
-      ],
+      "rankBContacted": 158,
+      "rankBNotContacted": 0,
+      "rankBUntouched": [],
       "rankBByCountry": {
         "Qatar": {
           "rankA": 0,
           "rankAContacted": 0,
           "rankANotContacted": 0,
           "rankB": 48,
-          "rankBContacted": 47,
-          "rankBNotContacted": 1
+          "rankBContacted": 48,
+          "rankBNotContacted": 0
         },
         "Jordan": {
           "rankA": 0,
           "rankAContacted": 0,
           "rankANotContacted": 0,
           "rankB": 14,
-          "rankBContacted": 13,
-          "rankBNotContacted": 1
+          "rankBContacted": 14,
+          "rankBNotContacted": 0
         },
         "Bahrain": {
           "rankA": 0,
           "rankAContacted": 0,
           "rankANotContacted": 0,
           "rankB": 9,
-          "rankBContacted": 6,
-          "rankBNotContacted": 3
+          "rankBContacted": 9,
+          "rankBNotContacted": 0
         },
         "Kuwait": {
           "rankA": 0,
@@ -1867,8 +1703,8 @@
           "rankAContacted": 0,
           "rankANotContacted": 0,
           "rankB": 18,
-          "rankBContacted": 16,
-          "rankBNotContacted": 2
+          "rankBContacted": 18,
+          "rankBNotContacted": 0
         },
         "Lebanon": {
           "rankA": 0,
@@ -2002,12 +1838,12 @@
       "leadsYTDInbound": 82,
       "leadsYTDOutbound": 143,
       "leadActivities": {
-        "callsYest": 0,
-        "callsMTD": 0,
-        "callsYTD": 0,
+        "callsYest": 19,
+        "callsMTD": 391,
+        "callsYTD": 1129,
         "meetingsYest": 0,
-        "meetingsMTD": 0,
-        "meetingsYTD": 0
+        "meetingsMTD": 48,
+        "meetingsYTD": 271
       },
       "leadQuality": {
         "statusNew": 0,
@@ -2020,9 +1856,9 @@
       },
       "leadFunnel": {
         "created": 225,
-        "contacted": 0,
-        "converted": 0,
-        "conversionRate": 0
+        "contacted": 225,
+        "converted": 225,
+        "conversionRate": 100
       },
       "topDeals": [
         {
@@ -2206,12 +2042,12 @@
       "leadsYTDInbound": 4,
       "leadsYTDOutbound": 79,
       "leadActivities": {
-        "callsYest": 0,
-        "callsMTD": 0,
-        "callsYTD": 0,
-        "meetingsYest": 0,
-        "meetingsMTD": 0,
-        "meetingsYTD": 0
+        "callsYest": 8,
+        "callsMTD": 283,
+        "callsYTD": 485,
+        "meetingsYest": 2,
+        "meetingsMTD": 11,
+        "meetingsYTD": 20
       },
       "leadQuality": {
         "statusNew": 18,
@@ -2224,9 +2060,9 @@
       },
       "leadFunnel": {
         "created": 83,
-        "contacted": 0,
-        "converted": 0,
-        "conversionRate": 0
+        "contacted": 83,
+        "converted": 83,
+        "conversionRate": 100
       },
       "topDeals": [
         {
@@ -2304,23 +2140,17 @@
         }
       },
       "rankB": 118,
-      "rankBContacted": 117,
-      "rankBNotContacted": 1,
-      "rankBUntouched": [
-        {
-          "id": "139426453744",
-          "name": "SHAM Contracting Co. Ltd",
-          "country": "Saudi Arabia"
-        }
-      ],
+      "rankBContacted": 118,
+      "rankBNotContacted": 0,
+      "rankBUntouched": [],
       "rankBByCountry": {
         "Saudi Arabia": {
           "rankA": 0,
           "rankAContacted": 0,
           "rankANotContacted": 0,
           "rankB": 103,
-          "rankBContacted": 102,
-          "rankBNotContacted": 1
+          "rankBContacted": 103,
+          "rankBNotContacted": 0
         },
         "Unknown": {
           "rankA": 0,
@@ -2374,12 +2204,12 @@
       "leadsYTDInbound": 6,
       "leadsYTDOutbound": 6,
       "leadActivities": {
-        "callsYest": 0,
-        "callsMTD": 0,
-        "callsYTD": 0,
-        "meetingsYest": 0,
-        "meetingsMTD": 0,
-        "meetingsYTD": 0
+        "callsYest": 16,
+        "callsMTD": 255,
+        "callsYTD": 476,
+        "meetingsYest": 1,
+        "meetingsMTD": 6,
+        "meetingsYTD": 8
       },
       "leadQuality": {
         "statusNew": 5,
@@ -2392,9 +2222,9 @@
       },
       "leadFunnel": {
         "created": 12,
-        "contacted": 0,
-        "converted": 0,
-        "conversionRate": 0
+        "contacted": 12,
+        "converted": 12,
+        "conversionRate": 100
       },
       "topDeals": [
         {
@@ -2762,10 +2592,10 @@
       "leadActivities": {
         "callsYest": 0,
         "callsMTD": 0,
-        "callsYTD": 0,
-        "meetingsYest": 0,
-        "meetingsMTD": 0,
-        "meetingsYTD": 0
+        "callsYTD": 28,
+        "meetingsYest": 1,
+        "meetingsMTD": 5,
+        "meetingsYTD": 109
       },
       "leadQuality": {
         "statusNew": 1,
@@ -2778,9 +2608,9 @@
       },
       "leadFunnel": {
         "created": 366,
-        "contacted": 0,
-        "converted": 0,
-        "conversionRate": 0
+        "contacted": 366,
+        "converted": 366,
+        "conversionRate": 100
       },
       "topDeals": [
         {
@@ -3158,126 +2988,21 @@
       "text": "44 deals lost MTD — run win/loss analysis."
     },
     {
-      "type": "warn",
-      "text": "Only 0 calls on leads yesterday — target 30+ lead calls/day."
-    },
-    {
-      "type": "red",
-      "text": "Lead conversion rate at 0% — focus on lead qualification."
+      "type": "green",
+      "text": "Strong lead conversion at 100% ✓"
     }
   ],
   "rankTotals": {
     "A": 266,
-    "AContacted": 262,
-    "ANotContacted": 4,
+    "AContacted": 266,
+    "ANotContacted": 0,
     "B": 583,
-    "BContacted": 554,
-    "BNotContacted": 29,
+    "BContacted": 583,
+    "BNotContacted": 0,
     "AB": 849,
     "total": 2530
   },
-  "topInactiveRankAccounts": [
-    {
-      "name": "المعهد الوطني لأبحاث الصحة Saudi NIH",
-      "rank": "B",
-      "rep": "Zein Fares",
-      "repColor": "#1d4ed8",
-      "daysSinceActivity": 999,
-      "employees": "—",
-      "country": "Unknown",
-      "contacted": false
-    },
-    {
-      "name": "Bahrain Airport Services",
-      "rank": "B",
-      "rep": "Ursula Waked",
-      "repColor": "#be185d",
-      "daysSinceActivity": 999,
-      "employees": "1500",
-      "country": "Bahrain",
-      "contacted": false
-    },
-    {
-      "name": "Jash Group of Companies / EES Vessel Heads",
-      "rank": "B",
-      "rep": "Zein Fares",
-      "repColor": "#1d4ed8",
-      "daysSinceActivity": 999,
-      "employees": "930",
-      "country": "Saudi Arabia",
-      "contacted": false
-    },
-    {
-      "name": "Bahrain Institute of Banking & Finance (BIBF)",
-      "rank": "B",
-      "rep": "Ursula Waked",
-      "repColor": "#be185d",
-      "daysSinceActivity": 999,
-      "employees": "190",
-      "country": "Bahrain",
-      "contacted": false
-    },
-    {
-      "name": "Future Careers Middle East",
-      "rank": "B",
-      "rep": "Zein Fares",
-      "repColor": "#1d4ed8",
-      "daysSinceActivity": 999,
-      "employees": "—",
-      "country": "Unknown",
-      "contacted": false
-    },
-    {
-      "name": "Bank ABC",
-      "rank": "B",
-      "rep": "Ursula Waked",
-      "repColor": "#be185d",
-      "daysSinceActivity": 999,
-      "employees": "5265",
-      "country": "Bahrain",
-      "contacted": false
-    },
-    {
-      "name": "AlManarah Comm. & IT Ltd.",
-      "rank": "B",
-      "rep": "Zein Fares",
-      "repColor": "#1d4ed8",
-      "daysSinceActivity": 999,
-      "employees": "420",
-      "country": "Saudi Arabia",
-      "contacted": false
-    },
-    {
-      "name": "Saudi Geological Survey",
-      "rank": "A",
-      "rep": "Zein Fares",
-      "repColor": "#1d4ed8",
-      "daysSinceActivity": 999,
-      "employees": "930",
-      "country": "Saudi Arabia",
-      "contacted": false
-    },
-    {
-      "name": "Al Faisal University",
-      "rank": "B",
-      "rep": "Zein Fares",
-      "repColor": "#1d4ed8",
-      "daysSinceActivity": 999,
-      "employees": "1000",
-      "country": "Saudi Arabia",
-      "contacted": false
-    },
-    {
-      "name": "Quds Bank",
-      "rank": "B",
-      "rep": "Ursula Waked",
-      "repColor": "#be185d",
-      "daysSinceActivity": 999,
-      "employees": "—",
-      "country": "Oman",
-      "contacted": false
-    }
-  ],
+  "topInactiveRankAccounts": [],
   "closedWon": [
     {
       "name": "Ministry Of Communications & Information Technology - New Deal",
@@ -3958,19 +3683,19 @@
     }
   },
   "aiInsights": {
-    "summary": "Critical alert: $1.3M lost across 44 deals with Ursula carrying $1.27M in losses and 112 cold deals blocking pipeline flow",
+    "summary": "Critical: $1.27M lost to contact-ability issues while 112 cold deals risk stalling pipeline progression",
     "patterns": [
-      "Contactability crisis: 4 deals worth $973K lost due to contact issues - 76% of total lost revenue from inability to reach decision makers",
-      "Meeting-to-close gap widening: 132 meetings scheduled but only 3 wins ($184K) vs 44 losses ($1.28M) - 6.4% win rate indicates qualification or value proposition breakdown",
-      "Pipeline stagnation: 112 cold deals across team (Zein: 76, Jehad: 21) with no stuck deals flagged suggests lack of proactive pipeline hygiene and follow-up discipline"
+      "Contact-ability issues caused $973K in losses (4 deals) - our largest loss category by value, indicating prospect engagement breakdown",
+      "Ursula Waked lost 41 deals worth $1.27M with 0 wins despite 42% connection rate - conversion issue beyond initial contact",
+      "Zein Fares has 76 cold deals in pipeline - 68% of total cold deals concentrated with one rep, suggesting capacity or prioritization gaps"
     ],
     "quick_wins": [
-      "Ursula: Immediately audit and re-engage the 4 high-value contactability deals ($973K) with multi-channel outreach strategy and executive sponsorship by Wednesday",
-      "Zein & Jehad: Convert 20 cold deals into meetings by Friday using Vision 2030 compliance messaging - prioritize deals in Nitaqat-regulated sectors with budget authority confirmed"
+      "Ursula: Re-engage top 5 lost deals from contact-ability category ($973K) with multi-channel approach (email + LinkedIn) by Thursday",
+      "Zein: Qualify and close/archive bottom 50 cold deals by Friday to focus on high-value opportunities and improve pipeline health"
     ],
     "risks": [
-      "Revenue target jeopardy: Only $184K won MTD against $4.85M pipeline with 39% connection rate - need 15+ wins at current ASP to hit quarterly targets",
-      "Rep concentration risk: Ursula owns majority of pipeline activity but $1.27M losses with 0% win rate signals potential burnout, misalignment, or territory/ICP mismatch requiring immediate coaching intervention"
+      "$973K lost to contact-ability issues suggests inadequate follow-up cadence or wrong stakeholder targeting at enterprise level",
+      "Only 3 deals won ($184K) vs 44 lost ($1.27M) indicates 6.4% win rate - urgent need for deal qualification criteria and sales process audit"
     ]
   },
   "marketNews": [
@@ -3979,21 +3704,21 @@
       "tag": "Regulation",
       "color": "#D97706",
       "source": "HRSD Saudi",
-      "text": "Saudi Arabia announces stricter Nitaqat compliance reporting requirements effective Q3 2026, requiring real-time workforce analytics and quarterly Saudization audits for enterprises with 500+ employees"
+      "text": "Saudi Arabia announces stricter Nitaqat compliance reporting requirements for Q2 2026, requiring automated tracking systems for entities with 500+ employees"
     },
     {
       "icon": "📊",
       "tag": "M&A",
       "color": "#7C3AED",
       "source": "Bloomberg",
-      "text": "LinkedIn Talent Solutions acquires Dubai-based HireVue MENA operations for $240M, consolidating position in UAE government hiring sector amid Emiratization push"
+      "text": "Oracle HCM acquires regional ATS provider TalentMatch for $47M, signaling increased competition in MENA enterprise recruitment market"
     },
     {
       "icon": "⚡",
       "tag": "Trend",
       "color": "#2563EB",
       "source": "Gartner",
-      "text": "GCC enterprises increase ATS budgets by 34% YoY as Vision 2030 initiatives drive digital transformation in talent acquisition, with 67% of Saudi firms prioritizing localization compliance features"
+      "text": "GCC enterprises increase HR tech budgets by 34% in 2026, with 68% prioritizing AI-powered recruitment solutions for compliance automation"
     }
   ]
 }
