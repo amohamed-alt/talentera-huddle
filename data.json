@@ -1,7 +1,7 @@
 {
   "meta": {
     "yesterdayLabel": "Wednesday, 22 Apr 2026",
-    "generatedAt": "07:04 PM"
+    "generatedAt": "08:31 PM"
   },
   "kpi": {
     "yesterday": {
@@ -123,6 +123,100 @@
       "rankAContacted": 82,
       "rankANotContacted": 0,
       "rankAUntouched": [],
+      "rankB": 109,
+      "rankBContacted": 109,
+      "rankBNotContacted": 0,
+      "rankBUntouched": [],
+      "countryBreakdown": {
+        "United Arab Emirates": {
+          "rankA": 11,
+          "rankAContacted": 11,
+          "rankANotContacted": 0,
+          "rankB": 72,
+          "rankBContacted": 72,
+          "rankBNotContacted": 0
+        },
+        "Kuwait": {
+          "rankA": 2,
+          "rankAContacted": 2,
+          "rankANotContacted": 0,
+          "rankB": 9,
+          "rankBContacted": 9,
+          "rankBNotContacted": 0
+        },
+        "Saudi Arabia": {
+          "rankA": 68,
+          "rankAContacted": 68,
+          "rankANotContacted": 0,
+          "rankB": 0,
+          "rankBContacted": 0,
+          "rankBNotContacted": 0
+        },
+        "Jordan": {
+          "rankA": 0,
+          "rankAContacted": 0,
+          "rankANotContacted": 0,
+          "rankB": 6,
+          "rankBContacted": 6,
+          "rankBNotContacted": 0
+        },
+        "Egypt": {
+          "rankA": 0,
+          "rankAContacted": 0,
+          "rankANotContacted": 0,
+          "rankB": 3,
+          "rankBContacted": 3,
+          "rankBNotContacted": 0
+        },
+        "Oman": {
+          "rankA": 1,
+          "rankAContacted": 1,
+          "rankANotContacted": 0,
+          "rankB": 6,
+          "rankBContacted": 6,
+          "rankBNotContacted": 0
+        },
+        "Syria": {
+          "rankA": 0,
+          "rankAContacted": 0,
+          "rankANotContacted": 0,
+          "rankB": 3,
+          "rankBContacted": 3,
+          "rankBNotContacted": 0
+        },
+        "India": {
+          "rankA": 0,
+          "rankAContacted": 0,
+          "rankANotContacted": 0,
+          "rankB": 1,
+          "rankBContacted": 1,
+          "rankBNotContacted": 0
+        },
+        "Other": {
+          "rankA": 0,
+          "rankAContacted": 0,
+          "rankANotContacted": 0,
+          "rankB": 2,
+          "rankBContacted": 2,
+          "rankBNotContacted": 0
+        },
+        "Lebanon": {
+          "rankA": 0,
+          "rankAContacted": 0,
+          "rankANotContacted": 0,
+          "rankB": 6,
+          "rankBContacted": 6,
+          "rankBNotContacted": 0
+        },
+        "Unknown": {
+          "rankA": 0,
+          "rankAContacted": 0,
+          "rankANotContacted": 0,
+          "rankB": 1,
+          "rankBContacted": 1,
+          "rankBNotContacted": 0
+        }
+      },
       "rankAByCountry": {
         "Saudi Arabia": {
           "rankA": 68,
@@ -157,10 +251,6 @@
           "rankBNotContacted": 0
         }
       },
-      "rankB": 109,
-      "rankBContacted": 109,
-      "rankBNotContacted": 0,
-      "rankBUntouched": [],
       "rankBByCountry": {
         "United Arab Emirates": {
           "rankA": 0,
@@ -485,6 +575,44 @@
       "rankAContacted": 50,
       "rankANotContacted": 0,
       "rankAUntouched": [],
+      "rankB": 124,
+      "rankBContacted": 124,
+      "rankBNotContacted": 0,
+      "rankBUntouched": [],
+      "countryBreakdown": {
+        "Unknown": {
+          "rankA": 10,
+          "rankAContacted": 10,
+          "rankANotContacted": 0,
+          "rankB": 19,
+          "rankBContacted": 19,
+          "rankBNotContacted": 0
+        },
+        "Saudi Arabia": {
+          "rankA": 40,
+          "rankAContacted": 40,
+          "rankANotContacted": 0,
+          "rankB": 102,
+          "rankBContacted": 102,
+          "rankBNotContacted": 0
+        },
+        "Jordan": {
+          "rankA": 0,
+          "rankAContacted": 0,
+          "rankANotContacted": 0,
+          "rankB": 1,
+          "rankBContacted": 1,
+          "rankBNotContacted": 0
+        },
+        "Bahrain": {
+          "rankA": 0,
+          "rankAContacted": 0,
+          "rankANotContacted": 0,
+          "rankB": 2,
+          "rankBContacted": 2,
+          "rankBNotContacted": 0
+        }
+      },
       "rankAByCountry": {
         "Saudi Arabia": {
           "rankA": 40,
@@ -503,10 +631,6 @@
           "rankBNotContacted": 0
         }
       },
-      "rankB": 124,
-      "rankBContacted": 124,
-      "rankBNotContacted": 0,
-      "rankBUntouched": [],
       "rankBByCountry": {
         "Unknown": {
           "rankA": 0,
@@ -1611,6 +1735,100 @@
       "rankAContacted": 74,
       "rankANotContacted": 0,
       "rankAUntouched": [],
+      "rankB": 158,
+      "rankBContacted": 158,
+      "rankBNotContacted": 0,
+      "rankBUntouched": [],
+      "countryBreakdown": {
+        "Qatar": {
+          "rankA": 13,
+          "rankAContacted": 13,
+          "rankANotContacted": 0,
+          "rankB": 48,
+          "rankBContacted": 48,
+          "rankBNotContacted": 0
+        },
+        "Jordan": {
+          "rankA": 0,
+          "rankAContacted": 0,
+          "rankANotContacted": 0,
+          "rankB": 14,
+          "rankBContacted": 14,
+          "rankBNotContacted": 0
+        },
+        "Bahrain": {
+          "rankA": 0,
+          "rankAContacted": 0,
+          "rankANotContacted": 0,
+          "rankB": 9,
+          "rankBContacted": 9,
+          "rankBNotContacted": 0
+        },
+        "Kuwait": {
+          "rankA": 2,
+          "rankAContacted": 2,
+          "rankANotContacted": 0,
+          "rankB": 5,
+          "rankBContacted": 5,
+          "rankBNotContacted": 0
+        },
+        "United Arab Emirates": {
+          "rankA": 15,
+          "rankAContacted": 15,
+          "rankANotContacted": 0,
+          "rankB": 44,
+          "rankBContacted": 44,
+          "rankBNotContacted": 0
+        },
+        "Oman": {
+          "rankA": 0,
+          "rankAContacted": 0,
+          "rankANotContacted": 0,
+          "rankB": 18,
+          "rankBContacted": 18,
+          "rankBNotContacted": 0
+        },
+        "Lebanon": {
+          "rankA": 0,
+          "rankAContacted": 0,
+          "rankANotContacted": 0,
+          "rankB": 1,
+          "rankBContacted": 1,
+          "rankBNotContacted": 0
+        },
+        "Saudi Arabia": {
+          "rankA": 43,
+          "rankAContacted": 43,
+          "rankANotContacted": 0,
+          "rankB": 0,
+          "rankBContacted": 0,
+          "rankBNotContacted": 0
+        },
+        "Egypt": {
+          "rankA": 1,
+          "rankAContacted": 1,
+          "rankANotContacted": 0,
+          "rankB": 17,
+          "rankBContacted": 17,
+          "rankBNotContacted": 0
+        },
+        "Syria": {
+          "rankA": 0,
+          "rankAContacted": 0,
+          "rankANotContacted": 0,
+          "rankB": 1,
+          "rankBContacted": 1,
+          "rankBNotContacted": 0
+        },
+        "Other": {
+          "rankA": 0,
+          "rankAContacted": 0,
+          "rankANotContacted": 0,
+          "rankB": 1,
+          "rankBContacted": 1,
+          "rankBNotContacted": 0
+        }
+      },
       "rankAByCountry": {
         "United Arab Emirates": {
           "rankA": 15,
@@ -1653,10 +1871,6 @@
           "rankBNotContacted": 0
         }
       },
-      "rankB": 158,
-      "rankBContacted": 158,
-      "rankBNotContacted": 0,
-      "rankBUntouched": [],
       "rankBByCountry": {
         "Qatar": {
           "rankA": 0,
@@ -1981,6 +2195,36 @@
       "rankAContacted": 27,
       "rankANotContacted": 0,
       "rankAUntouched": [],
+      "rankB": 65,
+      "rankBContacted": 65,
+      "rankBNotContacted": 0,
+      "rankBUntouched": [],
+      "countryBreakdown": {
+        "Saudi Arabia": {
+          "rankA": 24,
+          "rankAContacted": 24,
+          "rankANotContacted": 0,
+          "rankB": 51,
+          "rankBContacted": 51,
+          "rankBNotContacted": 0
+        },
+        "Unknown": {
+          "rankA": 3,
+          "rankAContacted": 3,
+          "rankANotContacted": 0,
+          "rankB": 13,
+          "rankBContacted": 13,
+          "rankBNotContacted": 0
+        },
+        "Bahrain": {
+          "rankA": 0,
+          "rankAContacted": 0,
+          "rankANotContacted": 0,
+          "rankB": 1,
+          "rankBContacted": 1,
+          "rankBNotContacted": 0
+        }
+      },
       "rankAByCountry": {
         "Saudi Arabia": {
           "rankA": 24,
@@ -1999,10 +2243,6 @@
           "rankBNotContacted": 0
         }
       },
-      "rankB": 65,
-      "rankBContacted": 65,
-      "rankBNotContacted": 0,
-      "rankBUntouched": [],
       "rankBByCountry": {
         "Saudi Arabia": {
           "rankA": 0,
@@ -2121,6 +2361,44 @@
       "rankAContacted": 31,
       "rankANotContacted": 0,
       "rankAUntouched": [],
+      "rankB": 118,
+      "rankBContacted": 118,
+      "rankBNotContacted": 0,
+      "rankBUntouched": [],
+      "countryBreakdown": {
+        "Saudi Arabia": {
+          "rankA": 29,
+          "rankAContacted": 29,
+          "rankANotContacted": 0,
+          "rankB": 103,
+          "rankBContacted": 103,
+          "rankBNotContacted": 0
+        },
+        "Unknown": {
+          "rankA": 2,
+          "rankAContacted": 2,
+          "rankANotContacted": 0,
+          "rankB": 13,
+          "rankBContacted": 13,
+          "rankBNotContacted": 0
+        },
+        "United Arab Emirates": {
+          "rankA": 0,
+          "rankAContacted": 0,
+          "rankANotContacted": 0,
+          "rankB": 1,
+          "rankBContacted": 1,
+          "rankBNotContacted": 0
+        },
+        "Qatar": {
+          "rankA": 0,
+          "rankAContacted": 0,
+          "rankANotContacted": 0,
+          "rankB": 1,
+          "rankBContacted": 1,
+          "rankBNotContacted": 0
+        }
+      },
       "rankAByCountry": {
         "Saudi Arabia": {
           "rankA": 29,
@@ -2139,10 +2417,6 @@
           "rankBNotContacted": 0
         }
       },
-      "rankB": 118,
-      "rankBContacted": 118,
-      "rankBNotContacted": 0,
-      "rankBUntouched": [],
       "rankBByCountry": {
         "Saudi Arabia": {
           "rankA": 0,
@@ -2291,6 +2565,28 @@
       "rankAContacted": 2,
       "rankANotContacted": 0,
       "rankAUntouched": [],
+      "rankB": 9,
+      "rankBContacted": 9,
+      "rankBNotContacted": 0,
+      "rankBUntouched": [],
+      "countryBreakdown": {
+        "Saudi Arabia": {
+          "rankA": 2,
+          "rankAContacted": 2,
+          "rankANotContacted": 0,
+          "rankB": 8,
+          "rankBContacted": 8,
+          "rankBNotContacted": 0
+        },
+        "Qatar": {
+          "rankA": 0,
+          "rankAContacted": 0,
+          "rankANotContacted": 0,
+          "rankB": 1,
+          "rankBContacted": 1,
+          "rankBNotContacted": 0
+        }
+      },
       "rankAByCountry": {
         "Saudi Arabia": {
           "rankA": 2,
@@ -2301,10 +2597,6 @@
           "rankBNotContacted": 0
         }
       },
-      "rankB": 9,
-      "rankBContacted": 9,
-      "rankBNotContacted": 0,
-      "rankBUntouched": [],
       "rankBByCountry": {
         "Saudi Arabia": {
           "rankA": 0,
@@ -3683,19 +3975,19 @@
     }
   },
   "aiInsights": {
-    "summary": "Critical: $1.27M lost to contact-ability issues while 112 cold deals risk stalling pipeline progression",
+    "summary": "Lost $1.27M across 44 deals with $973K from contactability issues - urgent process fix needed.",
     "patterns": [
-      "Contact-ability issues caused $973K in losses (4 deals) - our largest loss category by value, indicating prospect engagement breakdown",
-      "Ursula Waked lost 41 deals worth $1.27M with 0 wins despite 42% connection rate - conversion issue beyond initial contact",
-      "Zein Fares has 76 cold deals in pipeline - 68% of total cold deals concentrated with one rep, suggesting capacity or prioritization gaps"
+      "Ursula Waked lost 41 deals worth $1.27M with 0 wins despite 42% connection rate - conversion issue critical",
+      "Contactability issues caused only 4 lost deals but represent $973K (76% of total lost value) - high-value prospect access problem",
+      "Zein Fares has 76 cold deals in pipeline - largest nurture opportunity but no visible activity or closure"
     ],
     "quick_wins": [
-      "Ursula: Re-engage top 5 lost deals from contact-ability category ($973K) with multi-channel approach (email + LinkedIn) by Thursday",
-      "Zein: Qualify and close/archive bottom 50 cold deals by Friday to focus on high-value opportunities and improve pipeline health"
+      "Ursula: Convert 2 of 7 cold deals to meetings this week using personalized Nitaqat compliance messaging - target high-value accounts",
+      "Zein: Prioritize top 10 of 76 cold deals by value and schedule reactivation calls by Wednesday using Vision 2030 hiring trend hook"
     ],
     "risks": [
-      "$973K lost to contact-ability issues suggests inadequate follow-up cadence or wrong stakeholder targeting at enterprise level",
-      "Only 3 deals won ($184K) vs 44 lost ($1.27M) indicates 6.4% win rate - urgent need for deal qualification criteria and sales process audit"
+      "$973K lost to contactability issues (4 deals) suggests gatekeeping at large enterprises - need executive sponsorship or referral strategy",
+      "Zero wins MTD despite 132 meetings and 39% connection rate indicates qualification or closing gaps threatening Q2 targets"
     ]
   },
   "marketNews": [
@@ -3704,21 +3996,21 @@
       "tag": "Regulation",
       "color": "#D97706",
       "source": "HRSD Saudi",
-      "text": "Saudi Arabia announces stricter Nitaqat compliance reporting requirements for Q2 2026, requiring automated tracking systems for entities with 500+ employees"
+      "text": "Saudi Arabia announces new Nitaqat 2.0 requirements effective Q3 2026, mandating real-time workforce reporting for enterprises with 500+ employees"
     },
     {
       "icon": "📊",
       "tag": "M&A",
       "color": "#7C3AED",
       "source": "Bloomberg",
-      "text": "Oracle HCM acquires regional ATS provider TalentMatch for $47M, signaling increased competition in MENA enterprise recruitment market"
+      "text": "Oracle HCM acquires regional HR tech startup for $45M, strengthening foothold in UAE government sector amid Emiratization push"
     },
     {
       "icon": "⚡",
       "tag": "Trend",
       "color": "#2563EB",
       "source": "Gartner",
-      "text": "GCC enterprises increase HR tech budgets by 34% in 2026, with 68% prioritizing AI-powered recruitment solutions for compliance automation"
+      "text": "GCC enterprises increase ATS budgets by 34% YoY as Vision 2030 initiatives drive digital transformation in talent acquisition"
     }
   ]
 }
