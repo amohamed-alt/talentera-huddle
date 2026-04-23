@@ -486,7 +486,19 @@ function render(){
   const won=D.closedWon||[],lost=D.closedLost||[];
   const teamLeadAct=D.teamLeadActivities||{},teamLeadQual=D.teamLeadQuality||{},teamLeadFun=D.teamLeadFunnel||{};
   const teamCountry=D.teamCountryBreakdown||{};
-
+// Build from repData if teamCountryBreakdown is empty
+const effectiveCountry = Object.keys(teamCountry).length > 0 ? teamCountry : (() => {
+  const merged = {};
+  (D.repData||[]).forEach(r => {
+    Object.entries(r.countryBreakdown||{}).forEach(([country, data]) => {
+      if (!merged[country]) merged[country] = { rankA: 0, rankB: 0, total: 0 };
+      merged[country].rankA += data.rankA || 0;
+      merged[country].rankB += data.rankB || 0;
+      merged[country].total += data.total || 0;
+    });
+  });
+  return merged;
+})();
   const activeReps=repData.filter(r=>r.type!=="view");
 
   $("topbarSub").textContent=`Updated ${meta.generatedAt||""} · Auto-refresh 5min`;
