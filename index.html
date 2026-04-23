@@ -288,22 +288,22 @@ body{font-family:var(--font);background:var(--page-bg);color:var(--text);-webkit
             </div>
             <div style="padding:16px 18px;border-bottom:1px solid var(--border)">
               <div style="font-size:10px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.12em;margin-bottom:12px">&#127919; Lead Conversion Funnel (YTD)</div>
-              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px" id="teamLeadFunnel"></div>
+              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px" id="effectiveLeadFunnel"></div>
             </div>
             <div style="padding:16px 18px;border-bottom:1px solid var(--border);background:var(--surface2)">
               <div style="font-size:10px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:.12em;margin-bottom:12px">&#128222; Activities on Leads</div>
-              <div class="g3" id="teamLeadActivities"></div>
+              <div class="g3" id="effectiveLeadActivities"></div>
             </div>
             <div style="padding:16px 18px">
               <div style="font-size:10px;font-weight:700;color:var(--purple);text-transform:uppercase;letter-spacing:.12em;margin-bottom:12px">&#128202; Lead Quality Analysis (YTD)</div>
               <div class="g2">
                 <div>
                   <div style="font-size:9px;font-weight:700;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:.08em">By Status</div>
-                  <div id="teamLeadQualityStatus"></div>
+                  <div id="effectiveLeadQualityStatus"></div>
                 </div>
                 <div>
                   <div style="font-size:9px;font-weight:700;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:.08em">By Source</div>
-                  <div id="teamLeadQualitySource"></div>
+                  <div id="effectiveLeadQualitySource"></div>
                 </div>
               </div>
             </div>
@@ -471,7 +471,7 @@ async function loadData(){
     if(!res.ok)throw new Error();
     D=await res.json();
   }catch(e){
-    D={meta:{yesterdayLabel:"No data",generatedAt:"--"},kpi:{yesterday:{},mtd:{},ytd:{}},team:{},teamLeadActivities:{},teamLeadQuality:{},teamLeadFunnel:{},teamCountryBreakdown:{},repData:[],stageData:[],topInactiveRankAccounts:[],rankTotals:{},autoRecs:[],closedWon:[],closedLost:[],lostByReason:{},marketNews:[]};
+    D={meta:{yesterdayLabel:"No data",generatedAt:"--"},kpi:{yesterday:{},mtd:{},ytd:{}},team:{},effectiveLeadActivities:{},effectiveLeadQuality:{},effectiveLeadFunnel:{},teamCountryBreakdown:{},repData:[],stageData:[],topInactiveRankAccounts:[],rankTotals:{},autoRecs:[],closedWon:[],closedLost:[],lostByReason:{},marketNews:[]};
   }
   render();
   ri.classList.remove("spin");
@@ -484,7 +484,37 @@ function render(){
   const meta=D.meta||{},repData=D.repData||[],team=D.team||{},stageData=D.stageData||[];
   const kY=D.kpi?.yesterday||{},kM=D.kpi?.mtd||{},kT=D.kpi?.ytd||{};
   const won=D.closedWon||[],lost=D.closedLost||[];
-  const teamLeadAct=D.teamLeadActivities||{},teamLeadQual=D.teamLeadQuality||{},teamLeadFun=D.teamLeadFunnel||{};
+  const effectiveLeadAct=D.effectiveLeadActivities||{},effectiveLeadQual=D.effectiveLeadQuality||{},effectiveLeadFun=D.effectiveLeadFunnel||{};
+  // Build Lead Activities from repData if empty
+const effectiveLeadAct = (effectiveLeadAct.callsYTD||effectiveLeadAct.callsMTD) ? effectiveLeadAct : (() => {
+  const r={callsYest:0,callsMTD:0,callsYTD:0,meetingsYest:0,meetingsMTD:0,meetingsYTD:0};
+  (D.repData||[]).filter(x=>x.type!=='view').forEach(rep=>{
+    const a=rep.leadActivities||{};
+    r.callsYest+=a.callsYest||0; r.callsMTD+=a.callsMTD||0; r.callsYTD+=a.callsYTD||0;
+    r.meetingsYest+=a.meetingsYest||0; r.meetingsMTD+=a.meetingsMTD||0; r.meetingsYTD+=a.meetingsYTD||0;
+  });
+  return r;
+})();
+
+// Build Lead Funnel from repData if empty
+const effectiveLeadFun = effectiveLeadFun.created ? effectiveLeadFun : (() => {
+  const created=(D.repData||[]).filter(x=>x.type!=='view').reduce((s,r)=>s+(r.leadFunnel?.created||0),0);
+  const contacted=(D.repData||[]).filter(x=>x.type!=='view').reduce((s,r)=>s+(r.leadFunnel?.contacted||0),0);
+  const converted=(D.repData||[]).filter(x=>x.type!=='view').reduce((s,r)=>s+(r.leadFunnel?.converted||0),0);
+  return {created,contacted,converted,conversionRate:created>0?Math.round(converted/created*100):0};
+})();
+
+// Build Lead Quality from repData if empty
+const effectiveLeadQual = effectiveLeadQual.statusQualified ? effectiveLeadQual : (() => {
+  const q={statusNew:0,statusQualified:0,statusUnqualified:0,statusOther:0,sourceInbound:0,sourceOutbound:0,sourceImport:0};
+  (D.repData||[]).filter(x=>x.type!=='view').forEach(rep=>{
+    const lq=rep.leadQuality||{};
+    q.statusNew+=lq.statusNew||0; q.statusQualified+=lq.statusQualified||0;
+    q.statusUnqualified+=lq.statusUnqualified||0; q.statusOther+=lq.statusOther||0;
+    q.sourceInbound+=lq.sourceInbound||0; q.sourceOutbound+=lq.sourceOutbound||0; q.sourceImport+=lq.sourceImport||0;
+  });
+  return q;
+})();
   const teamCountry=D.teamCountryBreakdown||{};
 // Build from repData if teamCountryBreakdown is empty
 const effectiveCountry = Object.keys(teamCountry).length > 0 ? teamCountry : (() => {
@@ -587,43 +617,43 @@ const effectiveCountry = Object.keys(teamCountry).length > 0 ? teamCountry : (()
     return`<div class="ccard" style="--cc:${c}"><div class="ccard-rep"><div class="av" style="width:20px;height:20px;border-radius:5px;background:${c}20;color:${c};font-size:9px">${r.name[0]}</div>${r.name.split(" ")[0]}${isRet?`<span class="ret" style="margin-left:2px">RET</span>`:""}<span style="margin-left:auto;font-size:9px;color:var(--muted)">${items.length}</span></div>${items.length===0?`<div style="font-size:11px;color:var(--green);font-weight:600">&#9989; All deals have next activity</div>`:`${show.map(item=>`<div class="citem"><div class="citem-name">${item.name}<span class="citem-amt">${fmt(item.amount||0)}</span></div>${(item.reasons||[]).map(rs=>`<div class="citem-warn">&#9888;&#65039; ${rs}</div>`).join("")}</div>`).join("")}<div id="${cid}-more" style="display:none">${rest.map(item=>`<div class="citem"><div class="citem-name">${item.name}<span class="citem-amt">${fmt(item.amount||0)}</span></div>${(item.reasons||[]).map(rs=>`<div class="citem-warn">&#9888;&#65039; ${rs}</div>`).join("")}</div>`).join("")}</div>${rest.length?`<button class="see-more" onclick="toggleMore('${cid}-more',this,'\u25bc ${rest.length} more','\u25b2 Less')">\u25bc ${rest.length} more</button>`:""}`}</div>`;
   }).join("");
 
-  $("teamLeadsYTD").textContent=teamLeadFun.created||0;
+  $("teamLeadsYTD").textContent=effectiveLeadFun.created||0;
   $("teamLeadsMTD").textContent=team.leadsMTD||0;
   
-  const convRate=teamLeadFun.conversionRate||0;
-  const contactRate=teamLeadFun.created>0?Math.round((teamLeadFun.contacted/teamLeadFun.created)*100):0;
-  $("teamLeadFunnel").innerHTML=`
-    <div class="funnel-step"><div class="funnel-num" style="color:var(--blue)">${teamLeadFun.created||0}</div><div class="funnel-lbl">Leads Created</div></div>
-    <div class="funnel-step"><div class="funnel-num" style="color:var(--purple)">${teamLeadFun.contacted||0}</div><div class="funnel-lbl">Contacted</div><div class="funnel-pct">${contactRate}% contacted</div></div>
-    <div class="funnel-step"><div class="funnel-num" style="color:var(--green)">${teamLeadFun.converted||0}</div><div class="funnel-lbl">Converted</div><div class="funnel-pct">${convRate}% conversion</div></div>`;
+  const convRate=effectiveLeadFun.conversionRate||0;
+  const contactRate=effectiveLeadFun.created>0?Math.round((effectiveLeadFun.contacted/effectiveLeadFun.created)*100):0;
+  $("effectiveLeadFunnel").innerHTML=`
+    <div class="funnel-step"><div class="funnel-num" style="color:var(--blue)">${effectiveLeadFun.created||0}</div><div class="funnel-lbl">Leads Created</div></div>
+    <div class="funnel-step"><div class="funnel-num" style="color:var(--purple)">${effectiveLeadFun.contacted||0}</div><div class="funnel-lbl">Contacted</div><div class="funnel-pct">${contactRate}% contacted</div></div>
+    <div class="funnel-step"><div class="funnel-num" style="color:var(--green)">${effectiveLeadFun.converted||0}</div><div class="funnel-lbl">Converted</div><div class="funnel-pct">${convRate}% conversion</div></div>`;
   
-  $("teamLeadActivities").innerHTML=`
+  $("effectiveLeadActivities").innerHTML=`
     <div class="card" style="margin:0"><div class="card-hd" style="background:var(--surface);border:none;padding:12px"><span style="font-size:10px;font-weight:700;color:var(--blue)">&#128222; Calls on Leads</span></div>
-      <div class="metric-row"><span class="metric-label">Yesterday</span><span class="metric-val" style="color:var(--blue)">${teamLeadAct.callsYest||0}</span></div>
-      <div class="metric-row"><span class="metric-label">MTD</span><span class="metric-val" style="color:var(--green)">${teamLeadAct.callsMTD||0}</span></div>
-      <div class="metric-row"><span class="metric-label">YTD</span><span class="metric-val" style="color:var(--purple)">${teamLeadAct.callsYTD||0}</span></div>
+      <div class="metric-row"><span class="metric-label">Yesterday</span><span class="metric-val" style="color:var(--blue)">${effectiveLeadAct.callsYest||0}</span></div>
+      <div class="metric-row"><span class="metric-label">MTD</span><span class="metric-val" style="color:var(--green)">${effectiveLeadAct.callsMTD||0}</span></div>
+      <div class="metric-row"><span class="metric-label">YTD</span><span class="metric-val" style="color:var(--purple)">${effectiveLeadAct.callsYTD||0}</span></div>
     </div>
     <div class="card" style="margin:0"><div class="card-hd" style="background:var(--surface);border:none;padding:12px"><span style="font-size:10px;font-weight:700;color:var(--purple)">&#128197; Meetings on Leads</span></div>
-      <div class="metric-row"><span class="metric-label">Yesterday</span><span class="metric-val" style="color:var(--blue)">${teamLeadAct.meetingsYest||0}</span></div>
-      <div class="metric-row"><span class="metric-label">MTD</span><span class="metric-val" style="color:var(--green)">${teamLeadAct.meetingsMTD||0}</span></div>
-      <div class="metric-row"><span class="metric-label">YTD</span><span class="metric-val" style="color:var(--purple)">${teamLeadAct.meetingsYTD||0}</span></div>
+      <div class="metric-row"><span class="metric-label">Yesterday</span><span class="metric-val" style="color:var(--blue)">${effectiveLeadAct.meetingsYest||0}</span></div>
+      <div class="metric-row"><span class="metric-label">MTD</span><span class="metric-val" style="color:var(--green)">${effectiveLeadAct.meetingsMTD||0}</span></div>
+      <div class="metric-row"><span class="metric-label">YTD</span><span class="metric-val" style="color:var(--purple)">${effectiveLeadAct.meetingsYTD||0}</span></div>
     </div>
     <div class="card" style="margin:0"><div class="card-hd" style="background:var(--surface);border:none;padding:12px"><span style="font-size:10px;font-weight:700;color:var(--cyan)">&#128640; Total Activities</span></div>
-      <div class="metric-row"><span class="metric-label">Yesterday</span><span class="metric-val" style="color:var(--blue)">${(teamLeadAct.callsYest||0)+(teamLeadAct.meetingsYest||0)}</span></div>
-      <div class="metric-row"><span class="metric-label">MTD</span><span class="metric-val" style="color:var(--green)">${(teamLeadAct.callsMTD||0)+(teamLeadAct.meetingsMTD||0)}</span></div>
-      <div class="metric-row"><span class="metric-label">YTD</span><span class="metric-val" style="color:var(--purple)">${(teamLeadAct.callsYTD||0)+(teamLeadAct.meetingsYTD||0)}</span></div>
+      <div class="metric-row"><span class="metric-label">Yesterday</span><span class="metric-val" style="color:var(--blue)">${(effectiveLeadAct.callsYest||0)+(effectiveLeadAct.meetingsYest||0)}</span></div>
+      <div class="metric-row"><span class="metric-label">MTD</span><span class="metric-val" style="color:var(--green)">${(effectiveLeadAct.callsMTD||0)+(effectiveLeadAct.meetingsMTD||0)}</span></div>
+      <div class="metric-row"><span class="metric-label">YTD</span><span class="metric-val" style="color:var(--purple)">${(effectiveLeadAct.callsYTD||0)+(effectiveLeadAct.meetingsYTD||0)}</span></div>
     </div>`;
   
-  $("teamLeadQualityStatus").innerHTML=`
-    <div class="metric-row"><span class="metric-label">&#128994; New</span><span class="metric-val" style="color:var(--blue)">${teamLeadQual.statusNew||0}</span></div>
-    <div class="metric-row"><span class="metric-label">&#9989; Qualified</span><span class="metric-val" style="color:var(--green)">${teamLeadQual.statusQualified||0}</span></div>
-    <div class="metric-row"><span class="metric-label">&#10060; Unqualified</span><span class="metric-val" style="color:var(--red)">${teamLeadQual.statusUnqualified||0}</span></div>
-    <div class="metric-row"><span class="metric-label">&#9679; Other</span><span class="metric-val">${teamLeadQual.statusOther||0}</span></div>`;
+  $("effectiveLeadQualityStatus").innerHTML=`
+    <div class="metric-row"><span class="metric-label">&#128994; New</span><span class="metric-val" style="color:var(--blue)">${effectiveLeadQual.statusNew||0}</span></div>
+    <div class="metric-row"><span class="metric-label">&#9989; Qualified</span><span class="metric-val" style="color:var(--green)">${effectiveLeadQual.statusQualified||0}</span></div>
+    <div class="metric-row"><span class="metric-label">&#10060; Unqualified</span><span class="metric-val" style="color:var(--red)">${effectiveLeadQual.statusUnqualified||0}</span></div>
+    <div class="metric-row"><span class="metric-label">&#9679; Other</span><span class="metric-val">${effectiveLeadQual.statusOther||0}</span></div>`;
   
-  $("teamLeadQualitySource").innerHTML=`
-    <div class="metric-row"><span class="metric-label">&#8595; Inbound</span><span class="metric-val" style="color:var(--green)">${teamLeadQual.sourceInbound||0}</span></div>
-    <div class="metric-row"><span class="metric-label">&#8593; Outbound</span><span class="metric-val" style="color:var(--amber)">${teamLeadQual.sourceOutbound||0}</span></div>
-    <div class="metric-row"><span class="metric-label">&#128230; Import</span><span class="metric-val" style="color:var(--blue)">${teamLeadQual.sourceImport||0}</span></div>`;
+  $("effectiveLeadQualitySource").innerHTML=`
+    <div class="metric-row"><span class="metric-label">&#8595; Inbound</span><span class="metric-val" style="color:var(--green)">${effectiveLeadQual.sourceInbound||0}</span></div>
+    <div class="metric-row"><span class="metric-label">&#8593; Outbound</span><span class="metric-val" style="color:var(--amber)">${effectiveLeadQual.sourceOutbound||0}</span></div>
+    <div class="metric-row"><span class="metric-label">&#128230; Import</span><span class="metric-val" style="color:var(--blue)">${effectiveLeadQual.sourceImport||0}</span></div>`;
 
   $("leadsBadgeRow").innerHTML=`<span class="badge bb">Yest: ${team.leadsYest||0}</span><span class="badge bg">MTD: ${team.leadsMTD||0}</span><span class="badge bp">YTD: ${team.leadsYTD||0}</span>`;
   $("leadsPeriods").innerHTML=[{p:"Yesterday",t:team.leadsYest||0,i:team.leadsYestInbound||0,o:team.leadsYestOutbound||0,c:"var(--blue)"},{p:"Month to Date",t:team.leadsMTD||0,i:team.leadsMTDInbound||0,o:team.leadsMTDOutbound||0,c:"var(--green)"},{p:"Year to Date",t:team.leadsYTD||0,i:team.leadsYTDInbound||0,o:team.leadsYTDOutbound||0,c:"var(--purple)"}].map(x=>`<div class="lperiod"><div class="lperiod-label">${x.p}</div><div class="lperiod-val" style="color:${x.c}">${x.t}</div><div class="lperiod-row"><span class="lperiod-in" style="color:var(--blue)">&darr; ${x.i} Inbound</span><span class="lperiod-out" style="color:var(--amber)">&uarr; ${x.o} Outbound</span></div></div>`).join("");
