@@ -1,7 +1,7 @@
 {
   "meta": {
     "yesterdayLabel": "Wednesday, 22 Apr 2026",
-    "generatedAt": "08:31 PM"
+    "generatedAt": "09:03 PM"
   },
   "kpi": {
     "yesterday": {
@@ -124,9 +124,25 @@
       "rankANotContacted": 0,
       "rankAUntouched": [],
       "rankB": 109,
-      "rankBContacted": 109,
-      "rankBNotContacted": 0,
-      "rankBUntouched": [],
+      "rankBContacted": 106,
+      "rankBNotContacted": 3,
+      "rankBUntouched": [
+        {
+          "id": "371770751211",
+          "name": "Bank Audi",
+          "country": "Lebanon"
+        },
+        {
+          "id": "420369219833",
+          "name": "Dhofar University",
+          "country": "Oman"
+        },
+        {
+          "id": "422921081032",
+          "name": " Asnan Tower",
+          "country": "Kuwait"
+        }
+      ],
       "countryBreakdown": {
         "United Arab Emirates": {
           "rankA": 11,
@@ -141,8 +157,8 @@
           "rankAContacted": 2,
           "rankANotContacted": 0,
           "rankB": 9,
-          "rankBContacted": 9,
-          "rankBNotContacted": 0
+          "rankBContacted": 8,
+          "rankBNotContacted": 1
         },
         "Saudi Arabia": {
           "rankA": 68,
@@ -173,8 +189,8 @@
           "rankAContacted": 1,
           "rankANotContacted": 0,
           "rankB": 6,
-          "rankBContacted": 6,
-          "rankBNotContacted": 0
+          "rankBContacted": 5,
+          "rankBNotContacted": 1
         },
         "Syria": {
           "rankA": 0,
@@ -205,8 +221,8 @@
           "rankAContacted": 0,
           "rankANotContacted": 0,
           "rankB": 6,
-          "rankBContacted": 6,
-          "rankBNotContacted": 0
+          "rankBContacted": 5,
+          "rankBNotContacted": 1
         },
         "Unknown": {
           "rankA": 0,
@@ -265,8 +281,8 @@
           "rankAContacted": 0,
           "rankANotContacted": 0,
           "rankB": 9,
-          "rankBContacted": 9,
-          "rankBNotContacted": 0
+          "rankBContacted": 8,
+          "rankBNotContacted": 1
         },
         "Jordan": {
           "rankA": 0,
@@ -289,8 +305,8 @@
           "rankAContacted": 0,
           "rankANotContacted": 0,
           "rankB": 6,
-          "rankBContacted": 6,
-          "rankBNotContacted": 0
+          "rankBContacted": 5,
+          "rankBNotContacted": 1
         },
         "Syria": {
           "rankA": 0,
@@ -321,8 +337,8 @@
           "rankAContacted": 0,
           "rankANotContacted": 0,
           "rankB": 6,
-          "rankBContacted": 6,
-          "rankBNotContacted": 0
+          "rankBContacted": 5,
+          "rankBNotContacted": 1
         },
         "Unknown": {
           "rankA": 0,
@@ -572,29 +588,141 @@
       "lostYTD": 0,
       "lostAmtYTD": 0,
       "rankA": 50,
-      "rankAContacted": 50,
-      "rankANotContacted": 0,
-      "rankAUntouched": [],
+      "rankAContacted": 46,
+      "rankANotContacted": 4,
+      "rankAUntouched": [
+        {
+          "id": "80804273385",
+          "name": "Saudi Geological Survey",
+          "country": "Saudi Arabia"
+        },
+        {
+          "id": "80374936770",
+          "name": "National eLearning Centre",
+          "country": "Unknown"
+        },
+        {
+          "id": "80338728148",
+          "name": "Aseer Development Authority (ASDA)",
+          "country": "Saudi Arabia"
+        },
+        {
+          "id": "97869709503",
+          "name": "Cruise Saudi",
+          "country": "Saudi Arabia"
+        }
+      ],
       "rankB": 124,
-      "rankBContacted": 124,
-      "rankBNotContacted": 0,
-      "rankBUntouched": [],
+      "rankBContacted": 106,
+      "rankBNotContacted": 18,
+      "rankBUntouched": [
+        {
+          "id": "80976499909",
+          "name": "المعهد الوطني لأبحاث الصحة Saudi NIH",
+          "country": "Unknown"
+        },
+        {
+          "id": "80569251007",
+          "name": "Jash Group of Companies / EES Vessel Heads",
+          "country": "Saudi Arabia"
+        },
+        {
+          "id": "80974700764",
+          "name": "Future Careers Middle East",
+          "country": "Unknown"
+        },
+        {
+          "id": "80988635365",
+          "name": "AlManarah Comm. & IT Ltd.",
+          "country": "Saudi Arabia"
+        },
+        {
+          "id": "80988635366",
+          "name": "Al Faisal University",
+          "country": "Saudi Arabia"
+        },
+        {
+          "id": "80374936768",
+          "name": "Unicharm Gulf Hygienic Industries Ltd.",
+          "country": "Unknown"
+        },
+        {
+          "id": "80934223090",
+          "name": "Detasad - Detecon Al Saudia Co. Ltd",
+          "country": "Saudi Arabia"
+        },
+        {
+          "id": "80988635376",
+          "name": "STC Solutions",
+          "country": "Saudi Arabia"
+        },
+        {
+          "id": "80994031841",
+          "name": "National Center for Waste Management | المركز الوطني لإدارة النفايات",
+          "country": "Unknown"
+        },
+        {
+          "id": "80810731741",
+          "name": "Mena Business Investment Group",
+          "country": "Unknown"
+        },
+        {
+          "id": "80353158369",
+          "name": "Donia Productions",
+          "country": "Saudi Arabia"
+        },
+        {
+          "id": "80979647676",
+          "name": "Riyadh Cable Group Of Companies",
+          "country": "Unknown"
+        },
+        {
+          "id": "80338728142",
+          "name": "Dyar Health Company",
+          "country": "Unknown"
+        },
+        {
+          "id": "80971104485",
+          "name": "Alessa Industries Co.",
+          "country": "Saudi Arabia"
+        },
+        {
+          "id": "94449383654",
+          "name": "Riyadh Parking",
+          "country": "Saudi Arabia"
+        },
+        {
+          "id": "96347752641",
+          "name": "Nourah Information Technology Company",
+          "country": "Saudi Arabia"
+        },
+        {
+          "id": "374633293007",
+          "name": "Fursan",
+          "country": "Saudi Arabia"
+        },
+        {
+          "id": "423101461710",
+          "name": "Shahia",
+          "country": "Saudi Arabia"
+        }
+      ],
       "countryBreakdown": {
         "Unknown": {
           "rankA": 10,
-          "rankAContacted": 10,
-          "rankANotContacted": 0,
+          "rankAContacted": 9,
+          "rankANotContacted": 1,
           "rankB": 19,
-          "rankBContacted": 19,
-          "rankBNotContacted": 0
+          "rankBContacted": 12,
+          "rankBNotContacted": 7
         },
         "Saudi Arabia": {
           "rankA": 40,
-          "rankAContacted": 40,
-          "rankANotContacted": 0,
+          "rankAContacted": 37,
+          "rankANotContacted": 3,
           "rankB": 102,
-          "rankBContacted": 102,
-          "rankBNotContacted": 0
+          "rankBContacted": 91,
+          "rankBNotContacted": 11
         },
         "Jordan": {
           "rankA": 0,
@@ -616,16 +744,16 @@
       "rankAByCountry": {
         "Saudi Arabia": {
           "rankA": 40,
-          "rankAContacted": 40,
-          "rankANotContacted": 0,
+          "rankAContacted": 37,
+          "rankANotContacted": 3,
           "rankB": 0,
           "rankBContacted": 0,
           "rankBNotContacted": 0
         },
         "Unknown": {
           "rankA": 10,
-          "rankAContacted": 10,
-          "rankANotContacted": 0,
+          "rankAContacted": 9,
+          "rankANotContacted": 1,
           "rankB": 0,
           "rankBContacted": 0,
           "rankBNotContacted": 0
@@ -637,16 +765,16 @@
           "rankAContacted": 0,
           "rankANotContacted": 0,
           "rankB": 19,
-          "rankBContacted": 19,
-          "rankBNotContacted": 0
+          "rankBContacted": 12,
+          "rankBNotContacted": 7
         },
         "Saudi Arabia": {
           "rankA": 0,
           "rankAContacted": 0,
           "rankANotContacted": 0,
           "rankB": 102,
-          "rankBContacted": 102,
-          "rankBNotContacted": 0
+          "rankBContacted": 91,
+          "rankBNotContacted": 11
         },
         "Jordan": {
           "rankA": 0,
@@ -1736,33 +1864,69 @@
       "rankANotContacted": 0,
       "rankAUntouched": [],
       "rankB": 158,
-      "rankBContacted": 158,
-      "rankBNotContacted": 0,
-      "rankBUntouched": [],
+      "rankBContacted": 151,
+      "rankBNotContacted": 7,
+      "rankBUntouched": [
+        {
+          "id": "81003499720",
+          "name": "Bahrain Airport Services",
+          "country": "Bahrain"
+        },
+        {
+          "id": "80674612449",
+          "name": "Bahrain Institute of Banking & Finance (BIBF)",
+          "country": "Bahrain"
+        },
+        {
+          "id": "80387526869",
+          "name": "Bank ABC",
+          "country": "Bahrain"
+        },
+        {
+          "id": "80969305276",
+          "name": "Quds Bank",
+          "country": "Oman"
+        },
+        {
+          "id": "162766794980",
+          "name": "University of Nizwa, Sultanate of Oman",
+          "country": "Oman"
+        },
+        {
+          "id": "208822084812",
+          "name": "Mu'tah Universityجامعة مؤته",
+          "country": "Jordan"
+        },
+        {
+          "id": "254124581107",
+          "name": "ministry of labour",
+          "country": "Qatar"
+        }
+      ],
       "countryBreakdown": {
         "Qatar": {
           "rankA": 13,
           "rankAContacted": 13,
           "rankANotContacted": 0,
           "rankB": 48,
-          "rankBContacted": 48,
-          "rankBNotContacted": 0
+          "rankBContacted": 47,
+          "rankBNotContacted": 1
         },
         "Jordan": {
           "rankA": 0,
           "rankAContacted": 0,
           "rankANotContacted": 0,
           "rankB": 14,
-          "rankBContacted": 14,
-          "rankBNotContacted": 0
+          "rankBContacted": 13,
+          "rankBNotContacted": 1
         },
         "Bahrain": {
           "rankA": 0,
           "rankAContacted": 0,
           "rankANotContacted": 0,
           "rankB": 9,
-          "rankBContacted": 9,
-          "rankBNotContacted": 0
+          "rankBContacted": 6,
+          "rankBNotContacted": 3
         },
         "Kuwait": {
           "rankA": 2,
@@ -1785,8 +1949,8 @@
           "rankAContacted": 0,
           "rankANotContacted": 0,
           "rankB": 18,
-          "rankBContacted": 18,
-          "rankBNotContacted": 0
+          "rankBContacted": 16,
+          "rankBNotContacted": 2
         },
         "Lebanon": {
           "rankA": 0,
@@ -1877,24 +2041,24 @@
           "rankAContacted": 0,
           "rankANotContacted": 0,
           "rankB": 48,
-          "rankBContacted": 48,
-          "rankBNotContacted": 0
+          "rankBContacted": 47,
+          "rankBNotContacted": 1
         },
         "Jordan": {
           "rankA": 0,
           "rankAContacted": 0,
           "rankANotContacted": 0,
           "rankB": 14,
-          "rankBContacted": 14,
-          "rankBNotContacted": 0
+          "rankBContacted": 13,
+          "rankBNotContacted": 1
         },
         "Bahrain": {
           "rankA": 0,
           "rankAContacted": 0,
           "rankANotContacted": 0,
           "rankB": 9,
-          "rankBContacted": 9,
-          "rankBNotContacted": 0
+          "rankBContacted": 6,
+          "rankBNotContacted": 3
         },
         "Kuwait": {
           "rankA": 0,
@@ -1917,8 +2081,8 @@
           "rankAContacted": 0,
           "rankANotContacted": 0,
           "rankB": 18,
-          "rankBContacted": 18,
-          "rankBNotContacted": 0
+          "rankBContacted": 16,
+          "rankBNotContacted": 2
         },
         "Lebanon": {
           "rankA": 0,
@@ -2362,17 +2526,23 @@
       "rankANotContacted": 0,
       "rankAUntouched": [],
       "rankB": 118,
-      "rankBContacted": 118,
-      "rankBNotContacted": 0,
-      "rankBUntouched": [],
+      "rankBContacted": 117,
+      "rankBNotContacted": 1,
+      "rankBUntouched": [
+        {
+          "id": "139426453744",
+          "name": "SHAM Contracting Co. Ltd",
+          "country": "Saudi Arabia"
+        }
+      ],
       "countryBreakdown": {
         "Saudi Arabia": {
           "rankA": 29,
           "rankAContacted": 29,
           "rankANotContacted": 0,
           "rankB": 103,
-          "rankBContacted": 103,
-          "rankBNotContacted": 0
+          "rankBContacted": 102,
+          "rankBNotContacted": 1
         },
         "Unknown": {
           "rankA": 2,
@@ -2423,8 +2593,8 @@
           "rankAContacted": 0,
           "rankANotContacted": 0,
           "rankB": 103,
-          "rankBContacted": 103,
-          "rankBNotContacted": 0
+          "rankBContacted": 102,
+          "rankBNotContacted": 1
         },
         "Unknown": {
           "rankA": 0,
@@ -3031,6 +3201,7 @@
       "rankBNotContacted": 0,
       "rankBUntouched": [],
       "rankBByCountry": {},
+      "countryBreakdown": {},
       "stuck": [],
       "cold": [],
       "needsAttention": [],
@@ -3129,6 +3300,7 @@
       "rankBNotContacted": 0,
       "rankBUntouched": [],
       "rankBByCountry": {},
+      "countryBreakdown": {},
       "stuck": [],
       "cold": [],
       "needsAttention": [],
@@ -3286,15 +3458,116 @@
   ],
   "rankTotals": {
     "A": 266,
-    "AContacted": 266,
-    "ANotContacted": 0,
+    "AContacted": 262,
+    "ANotContacted": 4,
     "B": 583,
-    "BContacted": 583,
-    "BNotContacted": 0,
+    "BContacted": 554,
+    "BNotContacted": 29,
     "AB": 849,
     "total": 2530
   },
-  "topInactiveRankAccounts": [],
+  "topInactiveRankAccounts": [
+    {
+      "name": "المعهد الوطني لأبحاث الصحة Saudi NIH",
+      "rank": "B",
+      "rep": "Zein Fares",
+      "repColor": "#1d4ed8",
+      "daysSinceActivity": 999,
+      "employees": "—",
+      "country": "Unknown",
+      "contacted": false
+    },
+    {
+      "name": "Bahrain Airport Services",
+      "rank": "B",
+      "rep": "Ursula Waked",
+      "repColor": "#be185d",
+      "daysSinceActivity": 999,
+      "employees": "1500",
+      "country": "Bahrain",
+      "contacted": false
+    },
+    {
+      "name": "Jash Group of Companies / EES Vessel Heads",
+      "rank": "B",
+      "rep": "Zein Fares",
+      "repColor": "#1d4ed8",
+      "daysSinceActivity": 999,
+      "employees": "930",
+      "country": "Saudi Arabia",
+      "contacted": false
+    },
+    {
+      "name": "Bahrain Institute of Banking & Finance (BIBF)",
+      "rank": "B",
+      "rep": "Ursula Waked",
+      "repColor": "#be185d",
+      "daysSinceActivity": 999,
+      "employees": "190",
+      "country": "Bahrain",
+      "contacted": false
+    },
+    {
+      "name": "Future Careers Middle East",
+      "rank": "B",
+      "rep": "Zein Fares",
+      "repColor": "#1d4ed8",
+      "daysSinceActivity": 999,
+      "employees": "—",
+      "country": "Unknown",
+      "contacted": false
+    },
+    {
+      "name": "Bank ABC",
+      "rank": "B",
+      "rep": "Ursula Waked",
+      "repColor": "#be185d",
+      "daysSinceActivity": 999,
+      "employees": "5265",
+      "country": "Bahrain",
+      "contacted": false
+    },
+    {
+      "name": "AlManarah Comm. & IT Ltd.",
+      "rank": "B",
+      "rep": "Zein Fares",
+      "repColor": "#1d4ed8",
+      "daysSinceActivity": 999,
+      "employees": "420",
+      "country": "Saudi Arabia",
+      "contacted": false
+    },
+    {
+      "name": "Saudi Geological Survey",
+      "rank": "A",
+      "rep": "Zein Fares",
+      "repColor": "#1d4ed8",
+      "daysSinceActivity": 999,
+      "employees": "930",
+      "country": "Saudi Arabia",
+      "contacted": false
+    },
+    {
+      "name": "Al Faisal University",
+      "rank": "B",
+      "rep": "Zein Fares",
+      "repColor": "#1d4ed8",
+      "daysSinceActivity": 999,
+      "employees": "1000",
+      "country": "Saudi Arabia",
+      "contacted": false
+    },
+    {
+      "name": "Quds Bank",
+      "rank": "B",
+      "rep": "Ursula Waked",
+      "repColor": "#be185d",
+      "daysSinceActivity": 999,
+      "employees": "—",
+      "country": "Oman",
+      "contacted": false
+    }
+  ],
   "closedWon": [
     {
       "name": "Ministry Of Communications & Information Technology - New Deal",
@@ -3975,19 +4248,19 @@
     }
   },
   "aiInsights": {
-    "summary": "Lost $1.27M across 44 deals with $973K from contactability issues - urgent process fix needed.",
+    "summary": "Critical: $1.27M lost to contactability issues while only 39% call connection rate - immediate outreach strategy overhaul needed",
     "patterns": [
-      "Ursula Waked lost 41 deals worth $1.27M with 0 wins despite 42% connection rate - conversion issue critical",
-      "Contactability issues caused only 4 lost deals but represent $973K (76% of total lost value) - high-value prospect access problem",
-      "Zein Fares has 76 cold deals in pipeline - largest nurture opportunity but no visible activity or closure"
+      "Ursula Waked lost 41 deals worth $1.27M with 0 wins despite 42% connection rate - indicates qualification or closing skill gaps requiring immediate coaching",
+      "91 total cold deals across team (76 with Zein Fares alone) suggest severe pipeline neglect - deals aging without engagement activity",
+      "Contactability Issues caused only 4 lost deals but represent $973K (76% of lost value) - high-value prospects going dark without escalation protocols"
     ],
     "quick_wins": [
-      "Ursula: Convert 2 of 7 cold deals to meetings this week using personalized Nitaqat compliance messaging - target high-value accounts",
-      "Zein: Prioritize top 10 of 76 cold deals by value and schedule reactivation calls by Wednesday using Vision 2030 hiring trend hook"
+      "Ursula Waked: Conduct win-loss analysis on top 5 lost deals this week with VP Sales to identify objection handling gaps and refine demo approach",
+      "Zein Fares: Re-engage 20 highest-value cold deals from his 76-deal backlog by Friday using multi-channel outreach (email, LinkedIn, phone) with urgency messaging around Nitaqat deadlines"
     ],
     "risks": [
-      "$973K lost to contactability issues (4 deals) suggests gatekeeping at large enterprises - need executive sponsorship or referral strategy",
-      "Zero wins MTD despite 132 meetings and 39% connection rate indicates qualification or closing gaps threatening Q2 targets"
+      "$4.85M pipeline at risk with 39% connection rate and 112 cold deals across team - current activity levels insufficient to hit quarterly targets",
+      "Only 3 wins ($184K) vs 44 losses ($1.27M) MTD indicates 6.4% win rate - pipeline must be 15x larger to compensate or conversion tactics need immediate intervention"
     ]
   },
   "marketNews": [
@@ -3996,21 +4269,21 @@
       "tag": "Regulation",
       "color": "#D97706",
       "source": "HRSD Saudi",
-      "text": "Saudi Arabia announces new Nitaqat 2.0 requirements effective Q3 2026, mandating real-time workforce reporting for enterprises with 500+ employees"
+      "text": "Saudi HRSD announces stricter Nitaqat enforcement from Q3 2026 - enterprises must demonstrate 40% Saudization in white-collar roles, driving urgent ATS adoption for compliance tracking"
     },
     {
       "icon": "📊",
       "tag": "M&A",
       "color": "#7C3AED",
       "source": "Bloomberg",
-      "text": "Oracle HCM acquires regional HR tech startup for $45M, strengthening foothold in UAE government sector amid Emiratization push"
+      "text": "Oracle HCM acquires regional payroll provider Mudad for $420M, signaling aggressive expansion in GCC public sector - intensifying competition for government tenders"
     },
     {
       "icon": "⚡",
       "tag": "Trend",
       "color": "#2563EB",
       "source": "Gartner",
-      "text": "GCC enterprises increase ATS budgets by 34% YoY as Vision 2030 initiatives drive digital transformation in talent acquisition"
+      "text": "Gartner reports 67% of UAE enterprises now prioritize AI-powered candidate matching for Emiratization goals, with ATS procurement cycles shortened to 45 days average"
     }
   ]
 }
