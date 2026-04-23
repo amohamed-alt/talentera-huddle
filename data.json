@@ -1,7 +1,7 @@
 {
   "meta": {
     "yesterdayLabel": "Thursday, 23 Apr 2026",
-    "generatedAt": "12:08 AM"
+    "generatedAt": "12:22 AM"
   },
   "kpi": {
     "yesterday": {
@@ -4139,19 +4139,19 @@
     }
   },
   "aiInsights": {
-    "summary": "Lost $1.27M across 44 deals with contactability issues representing $973K - urgent pipeline recovery needed.",
+    "summary": "Critical revenue leak: $1.3M lost across 44 deals with zero wins MTD while 112 cold deals risk pipeline decay",
     "patterns": [
-      "Ursula Waked lost 41 deals worth $1.27M with 0 wins despite 42% connection rate - conversion issue not activity issue",
-      "Contactability issues caused only 4 lost deals but represent $973K (76% of total lost value) - high-value prospects going dark",
-      "Zein Fares has 76 cold deals in pipeline - highest deal stagnation indicating qualification or follow-up gaps"
+      "Contactability crisis: $973K lost across 4 deals due to contact issues - highest value loss category representing 76% of total lost revenue",
+      "Zero conversion problem: Ursula lost 41 deals worth $1.27M with 0 wins despite 42% connection rate, indicating qualification or closing gaps",
+      "Pipeline stagnation: 112 total cold deals across all reps with Zein carrying 76 cold opportunities - velocity has collapsed"
     ],
     "quick_wins": [
-      "Ursula: Immediate manager review on lost deal patterns - 41 losses with strong connection rate suggests pitch/demo refinement needed by Wednesday",
-      "Zein: Re-engage top 10 cold deals (by value) with personalized Nitaqat compliance value proposition - complete outreach by Friday"
+      "Ursula: Immediate coaching session on qualification criteria - analyze why 41 deals progressed but none converted, focus on 3 highest-value cold deals this week",
+      "All reps: Launch contact strategy blitz on remaining high-value prospects by Wednesday - $973K lost to contactability cannot repeat"
     ],
     "risks": [
-      "$973K lost to contactability issues (4 deals) indicates enterprise decision-makers avoiding engagement - may signal competitive displacement or budget freezes",
-      "Only 3 deals won MTD vs 44 lost creates unsustainable 6% win rate - current pipeline of $4.85M unlikely to hit quarterly targets without conversion improvement"
+      "Revenue target jeopardy: Only $184K won vs $1.27M lost MTD with 112 cold deals threatening $4.85M pipeline - Q2 forecast in danger",
+      "Rep burnout and churn risk: Marita at 28% connection rate and Ursula carrying massive loss volume with no wins - morale and retention concerns imminent"
     ]
   },
   "marketNews": [
@@ -4160,21 +4160,21 @@
       "tag": "Regulation",
       "color": "#D97706",
       "source": "HRSD Saudi",
-      "text": "Saudi Arabia enforces stricter Nitaqat penalties starting Q2 2026 - companies below quota face $50K+ fines, driving urgent ATS adoption for compliance tracking"
+      "text": "Saudi Arabia mandates AI-driven recruitment tools for Nitaqat compliance audits starting Q3 2026, requiring ATS platforms to integrate real-time Saudization tracking dashboards"
     },
     {
       "icon": "📊",
       "tag": "M&A",
       "color": "#7C3AED",
       "source": "Bloomberg",
-      "text": "Oracle acquires Dubai-based HR tech startup for $120M to strengthen MENA presence, intensifying competition in government and enterprise segments"
+      "text": "Oracle acquires Dubai-based HR tech startup for $340M to strengthen HCM Cloud presence in GCC, intensifying competition for enterprise clients in UAE and KSA"
     },
     {
       "icon": "⚡",
       "tag": "Trend",
       "color": "#2563EB",
       "source": "Gartner",
-      "text": "GCC enterprises increase HR tech budgets by 34% YoY as Vision 2030 projects demand automated recruitment for mega-developments and infrastructure hiring"
+      "text": "MENA enterprises accelerate ATS adoption with 67% of large organizations planning recruitment platform upgrades by end of 2026, driven by talent shortages and digital transformation"
     }
   ]
 }
