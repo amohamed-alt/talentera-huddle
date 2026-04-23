@@ -1,7 +1,7 @@
 {
   "meta": {
     "yesterdayLabel": "Thursday, 23 Apr 2026",
-    "generatedAt": "12:32 AM"
+    "generatedAt": "01:35 AM"
   },
   "kpi": {
     "yesterday": {
@@ -12,7 +12,7 @@
       "openDeals": 2,
       "openDealsSnap": 256,
       "pipeline": 4854310.451833381,
-      "leads": 16,
+      "leads": 15,
       "wonAmt": 0,
       "wonDeals": 0,
       "lost": 12,
@@ -26,7 +26,7 @@
       "openDeals": 56,
       "openDealsSnap": 256,
       "pipeline": 4854310.451833381,
-      "leads": 590,
+      "leads": 279,
       "wonAmt": 184009,
       "wonDeals": 3,
       "lost": 44,
@@ -40,7 +40,7 @@
       "openDeals": 699,
       "openDealsSnap": 256,
       "pipeline": 4854310.451833381,
-      "leads": 1190,
+      "leads": 722,
       "wonAmt": 226214,
       "wonDeals": 7,
       "lost": 94,
@@ -71,15 +71,15 @@
     "lostAmtYest": 69011,
     "lostYTD": 94,
     "lostAmtYTD": 1594909.72,
-    "leadsYest": 16,
+    "leadsYest": 15,
     "leadsYestInbound": 3,
-    "leadsYestOutbound": 13,
-    "leadsMTD": 590,
-    "leadsMTDInbound": 38,
-    "leadsMTDOutbound": 552,
-    "leadsYTD": 1190,
-    "leadsYTDInbound": 195,
-    "leadsYTDOutbound": 995,
+    "leadsYestOutbound": 12,
+    "leadsMTD": 279,
+    "leadsMTDInbound": 34,
+    "leadsMTDOutbound": 245,
+    "leadsYTD": 722,
+    "leadsYTDInbound": 108,
+    "leadsYTDOutbound": 614,
     "connRateYest": 44,
     "connRateMTD": 39,
     "connRateYTD": 37
@@ -405,15 +405,15 @@
           ]
         }
       ],
-      "leadsYest": 7,
+      "leadsYest": 6,
       "leadsYestInbound": 0,
-      "leadsYestOutbound": 7,
-      "leadsMTD": 45,
+      "leadsYestOutbound": 6,
+      "leadsMTD": 40,
       "leadsMTDInbound": 6,
-      "leadsMTDOutbound": 39,
-      "leadsYTD": 375,
-      "leadsYTDInbound": 17,
-      "leadsYTDOutbound": 358,
+      "leadsMTDOutbound": 34,
+      "leadsYTD": 318,
+      "leadsYTDInbound": 13,
+      "leadsYTDOutbound": 305,
       "leadActivities": {
         "callsYest": 31,
         "callsMTD": 710,
@@ -424,18 +424,24 @@
       },
       "leadQuality": {
         "statusNew": 1,
-        "statusQualified": 56,
+        "statusQualified": 0,
         "statusUnqualified": 0,
-        "statusOther": 318,
-        "sourceInbound": 17,
-        "sourceOutbound": 358,
+        "statusExistingClient": 1,
+        "statusOther": 317,
+        "sourceInbound": 13,
+        "sourceOutbound": 305,
         "sourceImport": 0
       },
       "leadFunnel": {
-        "created": 375,
-        "contacted": 375,
-        "converted": 375,
-        "conversionRate": 100
+        "created": 13,
+        "contacted": 0,
+        "converted": 13,
+        "conversionRate": 100,
+        "contactRate": 0
+      },
+      "unqualifiedBreakdown": {
+        "total": 0,
+        "byReason": {}
       },
       "topDeals": [
         {
@@ -1668,12 +1674,12 @@
       "leadsYest": 2,
       "leadsYestInbound": 2,
       "leadsYestOutbound": 0,
-      "leadsMTD": 30,
-      "leadsMTDInbound": 13,
+      "leadsMTD": 28,
+      "leadsMTDInbound": 11,
       "leadsMTDOutbound": 17,
-      "leadsYTD": 129,
-      "leadsYTDInbound": 81,
-      "leadsYTDOutbound": 48,
+      "leadsYTD": 98,
+      "leadsYTDInbound": 51,
+      "leadsYTDOutbound": 47,
       "leadActivities": {
         "callsYest": 0,
         "callsMTD": 0,
@@ -1684,18 +1690,24 @@
       },
       "leadQuality": {
         "statusNew": 2,
-        "statusQualified": 28,
+        "statusQualified": 0,
         "statusUnqualified": 0,
-        "statusOther": 99,
-        "sourceInbound": 81,
-        "sourceOutbound": 48,
+        "statusExistingClient": 3,
+        "statusOther": 96,
+        "sourceInbound": 51,
+        "sourceOutbound": 47,
         "sourceImport": 0
       },
       "leadFunnel": {
-        "created": 129,
-        "contacted": 129,
-        "converted": 129,
-        "conversionRate": 100
+        "created": 51,
+        "contacted": 0,
+        "converted": 51,
+        "conversionRate": 100,
+        "contactRate": 0
+      },
+      "unqualifiedBreakdown": {
+        "total": 0,
+        "byReason": {}
       },
       "topDeals": [
         {
@@ -2131,12 +2143,12 @@
       "leadsYest": 6,
       "leadsYestInbound": 1,
       "leadsYestOutbound": 5,
-      "leadsMTD": 89,
-      "leadsMTDInbound": 10,
-      "leadsMTDOutbound": 79,
-      "leadsYTD": 225,
-      "leadsYTDInbound": 82,
-      "leadsYTDOutbound": 143,
+      "leadsMTD": 84,
+      "leadsMTDInbound": 8,
+      "leadsMTDOutbound": 76,
+      "leadsYTD": 152,
+      "leadsYTDInbound": 32,
+      "leadsYTDOutbound": 120,
       "leadActivities": {
         "callsYest": 47,
         "callsMTD": 391,
@@ -2147,18 +2159,24 @@
       },
       "leadQuality": {
         "statusNew": 0,
-        "statusQualified": 68,
+        "statusQualified": 0,
         "statusUnqualified": 0,
-        "statusOther": 157,
-        "sourceInbound": 82,
-        "sourceOutbound": 143,
+        "statusExistingClient": 5,
+        "statusOther": 152,
+        "sourceInbound": 32,
+        "sourceOutbound": 120,
         "sourceImport": 0
       },
       "leadFunnel": {
-        "created": 225,
-        "contacted": 225,
-        "converted": 225,
-        "conversionRate": 100
+        "created": 32,
+        "contacted": 0,
+        "converted": 32,
+        "conversionRate": 100,
+        "contactRate": 0
+      },
+      "unqualifiedBreakdown": {
+        "total": 0,
+        "byReason": {}
       },
       "topDeals": [
         {
@@ -2352,12 +2370,12 @@
       "leadsYest": 1,
       "leadsYestInbound": 0,
       "leadsYestOutbound": 1,
-      "leadsMTD": 58,
+      "leadsMTD": 57,
       "leadsMTDInbound": 3,
-      "leadsMTDOutbound": 55,
-      "leadsYTD": 83,
+      "leadsMTDOutbound": 54,
+      "leadsYTD": 81,
       "leadsYTDInbound": 4,
-      "leadsYTDOutbound": 79,
+      "leadsYTDOutbound": 77,
       "leadActivities": {
         "callsYest": 11,
         "callsMTD": 283,
@@ -2368,18 +2386,24 @@
       },
       "leadQuality": {
         "statusNew": 18,
-        "statusQualified": 2,
+        "statusQualified": 0,
         "statusUnqualified": 0,
+        "statusExistingClient": 0,
         "statusOther": 63,
         "sourceInbound": 4,
-        "sourceOutbound": 79,
+        "sourceOutbound": 77,
         "sourceImport": 0
       },
       "leadFunnel": {
-        "created": 83,
-        "contacted": 83,
-        "converted": 83,
-        "conversionRate": 100
+        "created": 4,
+        "contacted": 0,
+        "converted": 4,
+        "conversionRate": 100,
+        "contactRate": 0
+      },
+      "unqualifiedBreakdown": {
+        "total": 0,
+        "byReason": {}
       },
       "topDeals": [
         {
@@ -2560,16 +2584,22 @@
         "statusNew": 5,
         "statusQualified": 0,
         "statusUnqualified": 0,
+        "statusExistingClient": 0,
         "statusOther": 7,
         "sourceInbound": 6,
         "sourceOutbound": 6,
         "sourceImport": 0
       },
       "leadFunnel": {
-        "created": 12,
-        "contacted": 12,
-        "converted": 12,
-        "conversionRate": 100
+        "created": 6,
+        "contacted": 0,
+        "converted": 6,
+        "conversionRate": 100,
+        "contactRate": 0
+      },
+      "unqualifiedBreakdown": {
+        "total": 0,
+        "byReason": {}
       },
       "topDeals": [
         {
@@ -2940,12 +2970,12 @@
       "leadsYest": 0,
       "leadsYestInbound": 0,
       "leadsYestOutbound": 0,
-      "leadsMTD": 357,
+      "leadsMTD": 59,
       "leadsMTDInbound": 1,
-      "leadsMTDOutbound": 356,
-      "leadsYTD": 366,
-      "leadsYTDInbound": 5,
-      "leadsYTDOutbound": 361,
+      "leadsMTDOutbound": 58,
+      "leadsYTD": 61,
+      "leadsYTDInbound": 2,
+      "leadsYTDOutbound": 59,
       "leadActivities": {
         "callsYest": 0,
         "callsMTD": 0,
@@ -2958,16 +2988,22 @@
         "statusNew": 1,
         "statusQualified": 0,
         "statusUnqualified": 0,
-        "statusOther": 365,
-        "sourceInbound": 5,
-        "sourceOutbound": 361,
+        "statusExistingClient": 305,
+        "statusOther": 60,
+        "sourceInbound": 2,
+        "sourceOutbound": 59,
         "sourceImport": 0
       },
       "leadFunnel": {
-        "created": 366,
-        "contacted": 366,
-        "converted": 366,
-        "conversionRate": 100
+        "created": 2,
+        "contacted": 0,
+        "converted": 2,
+        "conversionRate": 100,
+        "contactRate": 0
+      },
+      "unqualifiedBreakdown": {
+        "total": 0,
+        "byReason": {}
       },
       "topDeals": [
         {
@@ -3121,6 +3157,7 @@
         "statusNew": 0,
         "statusQualified": 0,
         "statusUnqualified": 0,
+        "statusExistingClient": 0,
         "statusOther": 0,
         "sourceInbound": 0,
         "sourceOutbound": 0,
@@ -3130,7 +3167,12 @@
         "created": 0,
         "contacted": 0,
         "converted": 0,
-        "conversionRate": 0
+        "conversionRate": 0,
+        "contactRate": 0
+      },
+      "unqualifiedBreakdown": {
+        "total": 0,
+        "byReason": {}
       },
       "topDeals": [
         {
@@ -3220,6 +3262,7 @@
         "statusNew": 0,
         "statusQualified": 0,
         "statusUnqualified": 0,
+        "statusExistingClient": 0,
         "statusOther": 0,
         "sourceInbound": 0,
         "sourceOutbound": 0,
@@ -3229,7 +3272,12 @@
         "created": 0,
         "contacted": 0,
         "converted": 0,
-        "conversionRate": 0
+        "conversionRate": 0,
+        "contactRate": 0
+      },
+      "unqualifiedBreakdown": {
+        "total": 0,
+        "byReason": {}
       },
       "topDeals": [
         {
@@ -3343,8 +3391,8 @@
       "text": "44 deals lost MTD — run win/loss analysis."
     },
     {
-      "type": "green",
-      "text": "Strong lead conversion at 100% ✓"
+      "type": "warn",
+      "text": "Marketing lead contact rate at 0% — 108 leads not yet reached out to."
     }
   ],
   "rankTotals": {
@@ -4139,19 +4187,19 @@
     }
   },
   "aiInsights": {
-    "summary": "Critical alert: $1.27M lost to contactability issues while 91 cold deals risk pipeline decay",
+    "summary": "Lost $1.3M across 44 deals with $973K from contactability issues - urgent outreach strategy needed",
     "patterns": [
-      "Connection rate at 39% indicates outreach inefficiency - 61% of calls not reaching decision makers",
-      "Ursula Waked lost 41 deals worth $1.27M with zero wins despite 42% connection rate - conversion issue identified",
-      "112 cold deals across team (76 with Zein Fares alone) signal neglected pipeline requiring immediate re-engagement"
+      "Ursula Waked lost $1.27M across 41 deals with zero wins despite 42% connection rate - conversion issue critical",
+      "Contactability issues caused 4 lost deals worth $973K - highest value loss category indicating contact quality problems",
+      "112 cold deals across team (76 with Zein alone) represent significant pipeline risk requiring immediate re-engagement"
     ],
     "quick_wins": [
-      "Ursula Waked: Conduct deal review session by Wednesday to diagnose $1.27M loss pattern and adjust qualification criteria",
-      "Zein Fares: Re-activate top 15 cold deals from 76-deal backlog with personalized Vision 2030 compliance messaging by Friday"
+      "Ursula: Schedule coaching session by Wednesday to diagnose conversion blockers on high-value deals ($1.27M lost)",
+      "Zein: Re-activate top 15 cold deals from 76-deal backlog by Friday using personalized Nitaqat compliance messaging"
     ],
     "risks": [
-      "$973K lost to contactability issues (4 deals) - multi-threading strategy needed to avoid dependency on single stakeholders",
-      "Only 3 wins vs 44 losses (6.4% win rate) with $4.85M pipeline at risk if conversion patterns don't improve immediately"
+      "$973K lost to contactability issues suggests lead quality deterioration or incomplete contact data - CRM hygiene review urgent",
+      "Zero wins from top performers (Ursula 41 lost, Marita 3 lost) indicates systematic closing gaps threatening Q2 targets"
     ]
   },
   "marketNews": [
@@ -4160,21 +4208,21 @@
       "tag": "Regulation",
       "color": "#D97706",
       "source": "HRSD Saudi",
-      "text": "Saudi Arabia enforces new Nitaqat quota requirements for Q2 2026 - enterprises with 500+ employees must achieve 45% nationalization by June or face penalties"
+      "text": "Saudi Arabia enforces new Nitaqat penalties starting May 2026 - companies below quota face $50K fines and hiring freezes"
     },
     {
       "icon": "📊",
       "tag": "M&A",
       "color": "#7C3AED",
       "source": "Bloomberg",
-      "text": "Oracle HCM acquires regional HR tech startup TalentME for $180M, expanding footprint in UAE and Egypt markets"
+      "text": "Oracle acquires regional ATS provider Tawzef for $120M to strengthen HCM footprint in UAE and KSA markets"
     },
     {
       "icon": "⚡",
       "tag": "Trend",
       "color": "#2563EB",
       "source": "Gartner",
-      "text": "GCC enterprises increase HR tech budgets by 34% in 2026, with 67% prioritizing AI-powered recruitment platforms for compliance automation"
+      "text": "GCC enterprises increase HR tech budgets by 34% in Q1 2026 driven by compliance automation and AI-powered recruitment"
     }
   ]
 }
