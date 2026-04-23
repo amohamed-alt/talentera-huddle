@@ -1,22 +1,22 @@
 {
   "meta": {
-    "yesterdayLabel": "Wednesday, 22 Apr 2026",
-    "generatedAt": "11:54 PM"
+    "yesterdayLabel": "Thursday, 23 Apr 2026",
+    "generatedAt": "12:08 AM"
   },
   "kpi": {
     "yesterday": {
-      "calls": 74,
-      "connected": 28,
-      "connRate": 38,
-      "meetings": 11,
-      "openDeals": 3,
+      "calls": 97,
+      "connected": 43,
+      "connRate": 44,
+      "meetings": 5,
+      "openDeals": 2,
       "openDealsSnap": 256,
       "pipeline": 4854310.451833381,
-      "leads": 4,
-      "wonAmt": 22002.75,
-      "wonDeals": 1,
-      "lost": 3,
-      "lostAmt": 18800
+      "leads": 16,
+      "wonAmt": 0,
+      "wonDeals": 0,
+      "lost": 12,
+      "lostAmt": 69011
     },
     "mtd": {
       "calls": 1639,
@@ -48,39 +48,39 @@
     }
   },
   "team": {
-    "callsYest": 74,
-    "callsConn": 28,
+    "callsYest": 97,
+    "callsConn": 43,
     "callsMTD": 1639,
     "callsMTDConn": 633,
     "callsYTD": 4761,
     "callsYTDConn": 1763,
-    "meetings": 11,
+    "meetings": 5,
     "meetingsMTD": 132,
     "meetingsYTD": 656,
     "openDeals": 256,
     "pipeline": 4854310.451833381,
     "won": 3,
     "wonAmt": 184009,
-    "wonYest": 1,
-    "wonAmtYest": 22002.75,
+    "wonYest": 0,
+    "wonAmtYest": 0,
     "wonYTD": 7,
     "wonAmtYTD": 226214,
     "lost": 44,
     "lostAmt": 1276153.72,
-    "lostYest": 3,
-    "lostAmtYest": 18800,
+    "lostYest": 12,
+    "lostAmtYest": 69011,
     "lostYTD": 94,
     "lostAmtYTD": 1594909.72,
-    "leadsYest": 4,
-    "leadsYestInbound": 0,
-    "leadsYestOutbound": 4,
+    "leadsYest": 16,
+    "leadsYestInbound": 3,
+    "leadsYestOutbound": 13,
     "leadsMTD": 590,
     "leadsMTDInbound": 38,
     "leadsMTDOutbound": 552,
     "leadsYTD": 1190,
     "leadsYTDInbound": 195,
     "leadsYTDOutbound": 995,
-    "connRateYest": 38,
+    "connRateYest": 44,
     "connRateMTD": 39,
     "connRateYTD": 37
   },
@@ -91,13 +91,13 @@
       "type": "acq",
       "calls": {
         "yest": 31,
-        "yestConn": 12,
+        "yestConn": 13,
         "mtd": 710,
         "mtdConn": 200,
         "ytd": 2643,
         "ytdConn": 804
       },
-      "connRateYest": 39,
+      "connRateYest": 42,
       "connRateMTD": 28,
       "connRateYTD": 30,
       "meetings": {
@@ -115,7 +115,7 @@
       "wonAmtYTD": 2000,
       "lost": 3,
       "lostAmt": 4200,
-      "lostYest": 0,
+      "lostYest": 1,
       "lostAmtYest": 0,
       "lostYTD": 12,
       "lostAmtYTD": 48637,
@@ -405,9 +405,9 @@
           ]
         }
       ],
-      "leadsYest": 3,
+      "leadsYest": 7,
       "leadsYestInbound": 0,
-      "leadsYestOutbound": 3,
+      "leadsYestOutbound": 7,
       "leadsMTD": 45,
       "leadsMTDInbound": 6,
       "leadsMTDOutbound": 39,
@@ -536,7 +536,7 @@
       "connRateMTD": 0,
       "connRateYTD": 0,
       "meetings": {
-        "yest": 6,
+        "yest": 2,
         "mtd": 46,
         "ytd": 103
       },
@@ -544,8 +544,8 @@
       "pipeAmt": 1373343.0310500003,
       "won": 1,
       "wonAmt": 22002.75,
-      "wonYest": 1,
-      "wonAmtYest": 22002.75,
+      "wonYest": 0,
+      "wonAmtYest": 0,
       "wonYTD": 1,
       "wonAmtYTD": 22002.75,
       "lost": 0,
@@ -1665,8 +1665,8 @@
           ]
         }
       ],
-      "leadsYest": 0,
-      "leadsYestInbound": 0,
+      "leadsYest": 2,
+      "leadsYestInbound": 2,
       "leadsYestOutbound": 0,
       "leadsMTD": 30,
       "leadsMTDInbound": 13,
@@ -1678,7 +1678,7 @@
         "callsYest": 0,
         "callsMTD": 0,
         "callsYTD": 0,
-        "meetingsYest": 6,
+        "meetingsYest": 2,
         "meetingsMTD": 46,
         "meetingsYTD": 103
       },
@@ -1785,18 +1785,18 @@
       "color": "#be185d",
       "type": "acq",
       "calls": {
-        "yest": 19,
-        "yestConn": 6,
+        "yest": 47,
+        "yestConn": 22,
         "mtd": 391,
         "mtdConn": 165,
         "ytd": 1129,
         "ytdConn": 470
       },
-      "connRateYest": 32,
+      "connRateYest": 47,
       "connRateMTD": 42,
       "connRateYTD": 42,
       "meetings": {
-        "yest": 0,
+        "yest": 2,
         "mtd": 48,
         "ytd": 271
       },
@@ -1810,8 +1810,8 @@
       "wonAmtYTD": 40205,
       "lost": 41,
       "lostAmt": 1271953.72,
-      "lostYest": 3,
-      "lostAmtYest": 18800,
+      "lostYest": 11,
+      "lostAmtYest": 69011,
       "lostYTD": 82,
       "lostAmtYTD": 1546272.72,
       "rankA": 74,
@@ -2128,9 +2128,9 @@
           ]
         }
       ],
-      "leadsYest": 1,
-      "leadsYestInbound": 0,
-      "leadsYestOutbound": 1,
+      "leadsYest": 6,
+      "leadsYestInbound": 1,
+      "leadsYestOutbound": 5,
       "leadsMTD": 89,
       "leadsMTDInbound": 10,
       "leadsMTDOutbound": 79,
@@ -2138,10 +2138,10 @@
       "leadsYTDInbound": 82,
       "leadsYTDOutbound": 143,
       "leadActivities": {
-        "callsYest": 19,
+        "callsYest": 47,
         "callsMTD": 391,
         "callsYTD": 1129,
-        "meetingsYest": 0,
+        "meetingsYest": 2,
         "meetingsMTD": 48,
         "meetingsYTD": 271
       },
@@ -2248,18 +2248,18 @@
       "color": "#b45309",
       "type": "acq",
       "calls": {
-        "yest": 8,
+        "yest": 11,
         "yestConn": 5,
         "mtd": 283,
         "mtdConn": 156,
         "ytd": 485,
         "ytdConn": 262
       },
-      "connRateYest": 63,
+      "connRateYest": 45,
       "connRateMTD": 55,
       "connRateYTD": 54,
       "meetings": {
-        "yest": 2,
+        "yest": 0,
         "mtd": 11,
         "ytd": 20
       },
@@ -2349,9 +2349,9 @@
       "stuck": [],
       "cold": [],
       "needsAttention": [],
-      "leadsYest": 0,
+      "leadsYest": 1,
       "leadsYestInbound": 0,
-      "leadsYestOutbound": 0,
+      "leadsYestOutbound": 1,
       "leadsMTD": 58,
       "leadsMTDInbound": 3,
       "leadsMTDOutbound": 55,
@@ -2359,10 +2359,10 @@
       "leadsYTDInbound": 4,
       "leadsYTDOutbound": 79,
       "leadActivities": {
-        "callsYest": 8,
+        "callsYest": 11,
         "callsMTD": 283,
         "callsYTD": 485,
-        "meetingsYest": 2,
+        "meetingsYest": 0,
         "meetingsMTD": 11,
         "meetingsYTD": 20
       },
@@ -2405,18 +2405,18 @@
       "color": "#065f46",
       "type": "acq",
       "calls": {
-        "yest": 16,
-        "yestConn": 5,
+        "yest": 8,
+        "yestConn": 3,
         "mtd": 255,
         "mtdConn": 112,
         "ytd": 476,
         "ytdConn": 202
       },
-      "connRateYest": 31,
+      "connRateYest": 38,
       "connRateMTD": 44,
       "connRateYTD": 42,
       "meetings": {
-        "yest": 1,
+        "yest": 0,
         "mtd": 6,
         "ytd": 8
       },
@@ -2549,10 +2549,10 @@
       "leadsYTDInbound": 6,
       "leadsYTDOutbound": 6,
       "leadActivities": {
-        "callsYest": 16,
+        "callsYest": 8,
         "callsMTD": 255,
         "callsYTD": 476,
-        "meetingsYest": 1,
+        "meetingsYest": 0,
         "meetingsMTD": 6,
         "meetingsYTD": 8
       },
@@ -2614,7 +2614,7 @@
       "connRateMTD": 0,
       "connRateYTD": 89,
       "meetings": {
-        "yest": 1,
+        "yest": 0,
         "mtd": 5,
         "ytd": 109
       },
@@ -2950,7 +2950,7 @@
         "callsYest": 0,
         "callsMTD": 0,
         "callsYTD": 28,
-        "meetingsYest": 1,
+        "meetingsYest": 0,
         "meetingsMTD": 5,
         "meetingsYTD": 109
       },
@@ -3308,7 +3308,7 @@
   "autoRecs": [
     {
       "type": "warn",
-      "text": "Connected rate 38% — approaching target. Keep the momentum."
+      "text": "Connected rate 44% — approaching target. Keep the momentum."
     },
     {
       "type": "green",
@@ -3324,7 +3324,7 @@
     },
     {
       "type": "green",
-      "text": "11 meetings logged yesterday ✓"
+      "text": "5 meetings logged yesterday ✓"
     },
     {
       "type": "green",
@@ -3332,15 +3332,11 @@
     },
     {
       "type": "green",
-      "text": "1 deal(s) closed yesterday — $22K added ✓"
-    },
-    {
-      "type": "green",
       "text": "3 deal(s) closed won MTD — $184K total ✓"
     },
     {
       "type": "warn",
-      "text": "3 deal(s) lost yesterday — review reasons with reps."
+      "text": "12 deal(s) lost yesterday — review reasons with reps."
     },
     {
       "type": "red",
@@ -3489,7 +3485,7 @@
       "repColor": "#1d4ed8",
       "stage": "Signed Contract/Booking",
       "closedate": "2026-04-22",
-      "period": "yesterday"
+      "period": "mtd"
     }
   ],
   "closedLost": [
@@ -3500,7 +3496,7 @@
       "repColor": "#be185d",
       "reason": "Timing and Project Issues",
       "closedate": "2026-04-22",
-      "period": "yesterday"
+      "period": "mtd"
     },
     {
       "name": "Credit Agricole Egypt - New Deal",
@@ -3509,7 +3505,7 @@
       "repColor": "#be185d",
       "reason": "Timing and Project Issues",
       "closedate": "2026-04-22",
-      "period": "yesterday"
+      "period": "mtd"
     },
     {
       "name": "Salam Technology - New Deal",
@@ -3518,7 +3514,7 @@
       "repColor": "#be185d",
       "reason": "Contact-ability Issues",
       "closedate": "2026-04-23",
-      "period": "mtd"
+      "period": "yesterday"
     },
     {
       "name": "Almuftah Group - New Deal",
@@ -3554,7 +3550,7 @@
       "repColor": "#be185d",
       "reason": "Unresponsive",
       "closedate": "2026-04-23",
-      "period": "mtd"
+      "period": "yesterday"
     },
     {
       "name": "Fine Hygienic Holding - Jordan - New Deal",
@@ -3563,7 +3559,7 @@
       "repColor": "#be185d",
       "reason": "Timing and Project Issues",
       "closedate": "2026-04-23",
-      "period": "mtd"
+      "period": "yesterday"
     },
     {
       "name": "Digital Gates - New Deal",
@@ -3572,7 +3568,7 @@
       "repColor": "#be185d",
       "reason": "Other",
       "closedate": "2026-04-23",
-      "period": "mtd"
+      "period": "yesterday"
     },
     {
       "name": "Aramex - Jordan - New Deal",
@@ -3581,7 +3577,7 @@
       "repColor": "#be185d",
       "reason": "Timing and Project Issues",
       "closedate": "2026-04-23",
-      "period": "mtd"
+      "period": "yesterday"
     },
     {
       "name": "Maven Workforce - New Deal",
@@ -3590,7 +3586,7 @@
       "repColor": "#be185d",
       "reason": "Unresponsive",
       "closedate": "2026-04-22",
-      "period": "yesterday"
+      "period": "mtd"
     },
     {
       "name": "Al Waha for Cars - New Deal",
@@ -3608,7 +3604,7 @@
       "repColor": "#be185d",
       "reason": "Other",
       "closedate": "2026-04-23",
-      "period": "mtd"
+      "period": "yesterday"
     },
     {
       "name": "Moseco Group - New Deal",
@@ -3626,7 +3622,7 @@
       "repColor": "#be185d",
       "reason": "Timing and Project Issues",
       "closedate": "2026-04-23",
-      "period": "mtd"
+      "period": "yesterday"
     },
     {
       "name": "International Committee of the Red Cross - New Deal",
@@ -3743,7 +3739,7 @@
       "repColor": "#be185d",
       "reason": "Unresponsive",
       "closedate": "2026-04-23",
-      "period": "mtd"
+      "period": "yesterday"
     },
     {
       "name": "INDEVCO - New Deal",
@@ -3752,7 +3748,7 @@
       "repColor": "#be185d",
       "reason": "Other",
       "closedate": "2026-04-23",
-      "period": "mtd"
+      "period": "yesterday"
     },
     {
       "name": "HRInvest - New Deal",
@@ -3779,7 +3775,7 @@
       "repColor": "#be185d",
       "reason": "Unresponsive",
       "closedate": "2026-04-23",
-      "period": "mtd"
+      "period": "yesterday"
     },
     {
       "name": "TREX - New Deal",
@@ -3860,7 +3856,7 @@
       "repColor": "#7c3aed",
       "reason": "Other",
       "closedate": "2026-04-23",
-      "period": "mtd"
+      "period": "yesterday"
     },
     {
       "name": "Itqan Pharma - New Deal",
@@ -3887,7 +3883,7 @@
       "repColor": "#be185d",
       "reason": "Lead Profile Issues",
       "closedate": "2026-04-23",
-      "period": "mtd"
+      "period": "yesterday"
     }
   ],
   "lostByReason": {
@@ -4143,19 +4139,19 @@
     }
   },
   "aiInsights": {
-    "summary": "Lost $1.28M across 44 deals with 61% due to contactability and unresponsiveness - major engagement crisis",
+    "summary": "Lost $1.27M across 44 deals with contactability issues representing $973K - urgent pipeline recovery needed.",
     "patterns": [
-      "Contactability crisis: $973K lost across 4 deals plus $68K from 13 unresponsive leads shows severe lead engagement breakdown",
-      "Ursula Waked lost $1.27M across 41 deals with 0 wins despite highest 42% connection rate - conversion problem not reach problem",
-      "112 cold deals across team (76 with Zein Fares alone) represents massive stalled pipeline requiring immediate intervention"
+      "Ursula Waked lost 41 deals worth $1.27M with 0 wins despite 42% connection rate - conversion issue not activity issue",
+      "Contactability issues caused only 4 lost deals but represent $973K (76% of total lost value) - high-value prospects going dark",
+      "Zein Fares has 76 cold deals in pipeline - highest deal stagnation indicating qualification or follow-up gaps"
     ],
     "quick_wins": [
-      "Ursula: Convert high connection rate (42%) into meetings by implementing new qualification framework on top 10 cold deals by Thursday",
-      "Zein: Triage 76 cold deals by Wednesday - disqualify dead leads, re-engage warm prospects with compliance angle (Nitaqat/Vision 2030)"
+      "Ursula: Immediate manager review on lost deal patterns - 41 losses with strong connection rate suggests pitch/demo refinement needed by Wednesday",
+      "Zein: Re-engage top 10 cold deals (by value) with personalized Nitaqat compliance value proposition - complete outreach by Friday"
     ],
     "risks": [
-      "$973K lost to contactability issues signals broken lead routing or targeting wrong stakeholders - pipeline quality at risk",
-      "Only 3 deals won vs 44 lost (6% win rate) with $4.85M pipeline suggests Q2 revenue target miss without immediate conversion acceleration"
+      "$973K lost to contactability issues (4 deals) indicates enterprise decision-makers avoiding engagement - may signal competitive displacement or budget freezes",
+      "Only 3 deals won MTD vs 44 lost creates unsustainable 6% win rate - current pipeline of $4.85M unlikely to hit quarterly targets without conversion improvement"
     ]
   },
   "marketNews": [
@@ -4164,21 +4160,21 @@
       "tag": "Regulation",
       "color": "#D97706",
       "source": "HRSD Saudi",
-      "text": "Saudi Arabia enforces stricter Nitaqat penalties starting May 2026, requiring real-time workforce reporting for entities with 500+ employees"
+      "text": "Saudi Arabia enforces stricter Nitaqat penalties starting Q2 2026 - companies below quota face $50K+ fines, driving urgent ATS adoption for compliance tracking"
     },
     {
       "icon": "📊",
       "tag": "M&A",
       "color": "#7C3AED",
       "source": "Bloomberg",
-      "text": "Oracle HCM acquires UAE-based recruitment platform Nabbesh for $47M, expanding MENA footprint and competing directly with regional ATS providers"
+      "text": "Oracle acquires Dubai-based HR tech startup for $120M to strengthen MENA presence, intensifying competition in government and enterprise segments"
     },
     {
       "icon": "⚡",
       "tag": "Trend",
       "color": "#2563EB",
       "source": "Gartner",
-      "text": "GCC HR tech spending surges 34% YoY as government entities prioritize AI-powered compliance tools for Emiratization and nationalization mandates"
+      "text": "GCC enterprises increase HR tech budgets by 34% YoY as Vision 2030 projects demand automated recruitment for mega-developments and infrastructure hiring"
     }
   ]
 }
