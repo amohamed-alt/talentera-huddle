@@ -1,7 +1,7 @@
 {
   "meta": {
     "yesterdayLabel": "Friday, 24 Apr 2026",
-    "generatedAt": "02:32 AM"
+    "generatedAt": "02:46 AM"
   },
   "kpi": {
     "yesterday": {
@@ -3104,20 +3104,6 @@
       "name": "Fadi Zanona",
       "color": "#475569",
       "type": "view",
-      "openDeals": 2,
-      "pipeAmt": 0,
-      "won": 1,
-      "wonAmt": 112000,
-      "wonYest": 0,
-      "wonAmtYest": 0,
-      "wonYTD": 1,
-      "wonAmtYTD": 112000,
-      "lost": 0,
-      "lostAmt": 0,
-      "lostYest": 0,
-      "lostAmtYest": 0,
-      "lostYTD": 0,
-      "lostAmtYTD": 0,
       "calls": {
         "yest": 0,
         "yestConn": 0,
@@ -3134,17 +3120,31 @@
         "mtd": 0,
         "ytd": 0
       },
+      "openDeals": 2,
+      "pipeAmt": 0,
+      "won": 1,
+      "wonAmt": 112000,
+      "wonYest": 0,
+      "wonAmtYest": 0,
+      "wonYTD": 1,
+      "wonAmtYTD": 112000,
+      "lost": 0,
+      "lostAmt": 0,
+      "lostYest": 0,
+      "lostAmtYest": 0,
+      "lostYTD": 0,
+      "lostAmtYTD": 0,
       "rankA": 0,
       "rankAContacted": 0,
       "rankANotContacted": 0,
       "rankAUntouched": [],
-      "rankAByCountry": {},
       "rankB": 0,
       "rankBContacted": 0,
       "rankBNotContacted": 0,
       "rankBUntouched": [],
-      "rankBByCountry": {},
       "countryBreakdown": {},
+      "rankAByCountry": {},
+      "rankBByCountry": {},
       "stuck": [],
       "cold": [],
       "needsAttention": [],
@@ -3209,20 +3209,6 @@
       "name": "Mohammed Faizan",
       "color": "#0f766e",
       "type": "view",
-      "openDeals": 1,
-      "pipeAmt": 20000,
-      "won": 0,
-      "wonAmt": 0,
-      "wonYest": 0,
-      "wonAmtYest": 0,
-      "wonYTD": 0,
-      "wonAmtYTD": 0,
-      "lost": 0,
-      "lostAmt": 0,
-      "lostYest": 0,
-      "lostAmtYest": 0,
-      "lostYTD": 0,
-      "lostAmtYTD": 0,
       "calls": {
         "yest": 0,
         "yestConn": 0,
@@ -3239,17 +3225,31 @@
         "mtd": 0,
         "ytd": 0
       },
+      "openDeals": 1,
+      "pipeAmt": 20000,
+      "won": 0,
+      "wonAmt": 0,
+      "wonYest": 0,
+      "wonAmtYest": 0,
+      "wonYTD": 0,
+      "wonAmtYTD": 0,
+      "lost": 0,
+      "lostAmt": 0,
+      "lostYest": 0,
+      "lostAmtYest": 0,
+      "lostYTD": 0,
+      "lostAmtYTD": 0,
       "rankA": 0,
       "rankAContacted": 0,
       "rankANotContacted": 0,
       "rankAUntouched": [],
-      "rankAByCountry": {},
       "rankB": 0,
       "rankBContacted": 0,
       "rankBNotContacted": 0,
       "rankBUntouched": [],
-      "rankBByCountry": {},
       "countryBreakdown": {},
+      "rankAByCountry": {},
+      "rankBByCountry": {},
       "stuck": [],
       "cold": [],
       "needsAttention": [],
@@ -4195,19 +4195,19 @@
     }
   },
   "aiInsights": {
-    "summary": "Critical alert: $1.27M lost to contactability issues while win rate remains at 6% with only 3 deals closed MTD",
+    "summary": "Ursula lost $1.27M across 41 deals while pipeline shows 113 cold deals requiring immediate intervention.",
     "patterns": [
-      "Contact-ability crisis: 4 lost deals worth $973K (76% of total lost value) indicate prospect engagement breakdown",
-      "Ursula Waked: 41 lost deals ($1.27M) with 0 wins despite 42% connection rate shows conversion or qualification gap",
-      "Pipeline temperature warning: 113 cold deals across team (Zein: 76, Jehad: 22) risk stalling Q2 revenue targets"
+      "Contactability is the highest-value loss driver at $973K across just 4 deals - average deal size $243K suggests enterprise targets going dark",
+      "Ursula has 42% connection rate but 41 losses with $0 won - converting meetings to pipeline stages failing despite volume",
+      "Zein holds 76 cold deals (67% of total 113 cold pipeline) indicating territory coverage issues or inadequate follow-up cadence"
     ],
     "quick_wins": [
-      "Ursula: Emergency pipeline audit - review qualification criteria for top 10 opportunities to improve conversion from 0% win rate",
-      "Zein: Re-engage 76 cold deals by Thursday using new value proposition focused on Nitaqat 2.0 compliance urgency"
+      "Ursula: Conduct win-loss analysis call with top 3 lost deals from $973K contactability bucket by Wednesday to identify stakeholder mapping gaps",
+      "Zein: Prioritize top 15 cold deals by revenue potential and execute re-engagement campaign with personalized Saudi Vision 2030 ROI messaging by Friday"
     ],
     "risks": [
-      "$973K lost to contactability (4 deals) suggests CRM data quality issues or wrong decision-maker targeting requiring immediate process fix",
-      "113 cold deals (23% of $4.85M pipeline) threaten Q2 revenue - velocity drop could result in $1.1M pipeline decay within 30 days"
+      "$973K lost to contactability across 4 deals signals weak stakeholder engagement or buying committee access - 20% of total losses from relationship gaps",
+      "113 cold deals (Zein 76, Jehad 22) represent stalled pipeline momentum with no stuck deal classification suggesting inadequate stage management and forecasting accuracy risk"
     ]
   },
   "marketNews": [
@@ -4216,21 +4216,21 @@
       "tag": "Regulation",
       "color": "#D97706",
       "source": "HRSD Saudi",
-      "text": "Saudi Arabia announces new Nitaqat 2.0 framework requiring real-time workforce reporting by Q3 2026, driving ATS integration demand across private sector"
+      "text": "Saudi Arabia mandates AI-powered recruitment audits for Nitaqat compliance starting Q3 2026, requiring ATS platforms to integrate Ministry systems"
     },
     {
       "icon": "📊",
       "tag": "M&A",
       "color": "#7C3AED",
       "source": "Bloomberg",
-      "text": "Oracle acquires UAE-based HR tech startup HRify for $120M, signaling intensified competition in MENA enterprise talent management solutions"
+      "text": "Oracle HCM acquires regional ATS competitor TalentBay for $87M, consolidating 18% market share in UAE government sector"
     },
     {
       "icon": "⚡",
       "tag": "Trend",
       "color": "#2563EB",
       "source": "Gartner",
-      "text": "GCC enterprises increase HR tech budgets by 34% YoY, with 68% prioritizing AI-powered recruitment automation and compliance management tools"
+      "text": "GCC enterprises increase HR tech budgets by 34% YoY, with 67% prioritizing localized ATS solutions over global platforms"
     }
   ]
 }
