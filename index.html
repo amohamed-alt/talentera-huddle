@@ -232,108 +232,6 @@ body{font-family:var(--font);background:var(--page-bg);color:var(--text);-webkit
         <div class="panel active" id="panel-team">
           <div id="kpiSection"></div>
 
-          <!-- ═══════════════════════════════════════════════ -->
-          <!-- OUTREACH COVERAGE — new section                -->
-          <!-- reads D.outreachCoverage from data.json        -->
-          <!-- ═══════════════════════════════════════════════ -->
-          <div class="card" id="outreachCard">
-            <div class="card-hd">
-              <div class="card-title">
-                <div class="card-title-icon" style="background:var(--cyan-bg)">&#128225;</div>
-                Lead Outreach Coverage
-              </div>
-              <div style="display:flex;gap:5px">
-                <span class="badge bb" id="outreachLeadBadge"></span>
-                <span class="badge bg" id="outreachCoBadge"></span>
-              </div>
-            </div>
-
-            <!-- 6 KPI boxes: total / contacted / not-contacted for leads + companies -->
-            <div class="outreach-kpi-grid" id="outreachKpiGrid"></div>
-
-            <!-- Progress bars -->
-            <div class="outreach-bar-wrap">
-              <div class="outreach-bar-row">
-                <div class="outreach-bar-header">
-                  <span class="outreach-bar-label" style="color:var(--cyan)">Leads Contacted Rate</span>
-                  <span class="outreach-bar-rate" id="outreachLeadRateVal" style="color:var(--cyan)"></span>
-                </div>
-                <div class="outreach-bar-track">
-                  <div class="outreach-bar-fill" id="outreachLeadRateBar" style="background:var(--cyan)"></div>
-                </div>
-              </div>
-              <div class="outreach-bar-row">
-                <div class="outreach-bar-header">
-                  <span class="outreach-bar-label" style="color:var(--green)">Companies Contacted Rate</span>
-                  <span class="outreach-bar-rate" id="outreachCoRateVal" style="color:var(--green)"></span>
-                </div>
-                <div class="outreach-bar-track">
-                  <div class="outreach-bar-fill" id="outreachCoRateBar" style="background:var(--green)"></div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Activities summary row -->
-            <div style="padding:10px 18px;border-bottom:1px solid var(--border);background:var(--surface2);display:flex;gap:24px;flex-wrap:wrap">
-              <span style="font-size:10px;color:var(--muted)">Activities linked to contacts:</span>
-              <span id="outreachActCalls" style="font-size:10px;font-weight:700;color:var(--blue)"></span>
-              <span id="outreachActMeetings" style="font-size:10px;font-weight:700;color:var(--purple)"></span>
-            </div>
-
-            <!-- Leads Not Contacted -->
-            <div>
-              <div style="padding:10px 18px 6px;display:flex;align-items:center;justify-content:space-between">
-                <span style="font-size:10px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.1em">
-                  &#128203; Leads Not Contacted Yet
-                </span>
-                <span class="badge br" id="outreachLeadNotBadge"></span>
-              </div>
-              <div style="overflow-x:auto">
-                <table class="tbl">
-                  <thead><tr>
-                    <th>Lead</th>
-                    <th>Owner</th>
-                    <th>Lead Status</th>
-                    <th>Source</th>
-                    <th class="c">Created</th>
-                    <th>Company IDs</th>
-                  </tr></thead>
-                  <tbody id="outreachLeadNotBody"></tbody>
-                </table>
-              </div>
-              <div id="outreachLeadNotMore" style="display:none">
-                <table class="tbl"><tbody id="outreachLeadNotBodyMore"></tbody></table>
-              </div>
-              <button class="see-more" id="outreachLeadNotToggle" style="display:none" onclick="toggleOutreach('LeadNot')">&#9660; Show more</button>
-            </div>
-
-            <!-- Companies Not Contacted -->
-            <div style="border-top:1px solid var(--border)">
-              <div style="padding:10px 18px 6px;display:flex;align-items:center;justify-content:space-between">
-                <span style="font-size:10px;font-weight:700;color:var(--amber);text-transform:uppercase;letter-spacing:.1em">
-                  &#128203; Companies Not Contacted Yet
-                </span>
-                <span class="badge ba" id="outreachCoNotBadge"></span>
-              </div>
-              <div style="overflow-x:auto">
-                <table class="tbl">
-                  <thead><tr>
-                    <th>Company</th>
-                    <th>Owner</th>
-                    <th class="c">Domain</th>
-                    <th class="c">Created</th>
-                  </tr></thead>
-                  <tbody id="outreachCoNotBody"></tbody>
-                </table>
-              </div>
-              <div id="outreachCoNotMore" style="display:none">
-                <table class="tbl"><tbody id="outreachCoNotBodyMore"></tbody></table>
-              </div>
-              <button class="see-more" id="outreachCoNotToggle" style="display:none" onclick="toggleOutreach('CoNot')">&#9660; Show more</button>
-            </div>
-          </div>
-          <!-- ═══════════════════════════════════════════════ -->
-
           <div class="card">
             <div class="card-hd">
               <div class="card-title"><div class="card-title-icon" style="background:var(--blue-bg)">&#128202;</div>Yesterday's Performance</div>
@@ -397,6 +295,77 @@ body{font-family:var(--font);background:var(--page-bg);color:var(--text);-webkit
               <tbody id="leadsRepBody"></tbody>
             </table></div>
           </div>
+          <!-- ═══════════════════════════════════════════════ -->
+          <!-- OUTREACH COVERAGE — under Leads Overview       -->
+          <!-- reads D.outreachCoverage from data.json        -->
+          <!-- ═══════════════════════════════════════════════ -->
+          <div class="card" id="outreachCard">
+            <div class="card-hd">
+              <div class="card-title">
+                <div class="card-title-icon" style="background:var(--cyan-bg)">&#128225;</div>
+                Lead Outreach Coverage
+              </div>
+              <div style="display:flex;gap:5px">
+                <span class="badge bb" id="outreachLeadBadge"></span>
+                <span class="badge bg" id="outreachCoBadge"></span>
+              </div>
+            </div>
+            <div class="outreach-kpi-grid" id="outreachKpiGrid"></div>
+            <div class="outreach-bar-wrap">
+              <div class="outreach-bar-row">
+                <div class="outreach-bar-header">
+                  <span class="outreach-bar-label" style="color:var(--cyan)">Leads Contacted Rate</span>
+                  <span class="outreach-bar-rate" id="outreachLeadRateVal" style="color:var(--cyan)"></span>
+                </div>
+                <div class="outreach-bar-track"><div class="outreach-bar-fill" id="outreachLeadRateBar" style="background:var(--cyan)"></div></div>
+              </div>
+              <div class="outreach-bar-row">
+                <div class="outreach-bar-header">
+                  <span class="outreach-bar-label" style="color:var(--green)">Companies Contacted Rate</span>
+                  <span class="outreach-bar-rate" id="outreachCoRateVal" style="color:var(--green)"></span>
+                </div>
+                <div class="outreach-bar-track"><div class="outreach-bar-fill" id="outreachCoRateBar" style="background:var(--green)"></div></div>
+              </div>
+            </div>
+            <div style="padding:10px 18px;border-bottom:1px solid var(--border);background:var(--surface2);display:flex;gap:24px;flex-wrap:wrap">
+              <span style="font-size:10px;color:var(--muted)">Qualified outreach activities:</span>
+              <span id="outreachActCalls" style="font-size:10px;font-weight:700;color:var(--blue)"></span>
+              <span id="outreachActMeetings" style="font-size:10px;font-weight:700;color:var(--purple)"></span>
+            </div>
+            <div style="border-bottom:1px solid var(--border);padding:10px 18px;background:var(--surface2)">
+              <div style="font-size:10px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px">Source Split</div>
+              <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px">
+                <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r-sm);padding:10px">
+                  <div style="font-size:9px;color:var(--muted);font-weight:700;text-transform:uppercase">Online / Inbound</div>
+                  <div id="outreachOnlineSplit" style="font-family:var(--mono);font-size:14px;font-weight:600;margin-top:4px;color:var(--blue)">—</div>
+                </div>
+                <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r-sm);padding:10px">
+                  <div style="font-size:9px;color:var(--muted);font-weight:700;text-transform:uppercase">Offline / Outbound</div>
+                  <div id="outreachOfflineSplit" style="font-family:var(--mono);font-size:14px;font-weight:600;margin-top:4px;color:var(--amber)">—</div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div style="padding:10px 18px 6px;display:flex;align-items:center;justify-content:space-between">
+                <span style="font-size:10px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.1em">&#128203; Leads Not Contacted Yet</span>
+                <span class="badge br" id="outreachLeadNotBadge"></span>
+              </div>
+              <div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Lead</th><th>Owner</th><th>Lead Status</th><th>Source</th><th class="c">Created</th></tr></thead><tbody id="outreachLeadNotBody"></tbody></table></div>
+              <div id="outreachLeadNotMore" style="display:none"><table class="tbl"><tbody id="outreachLeadNotBodyMore"></tbody></table></div>
+              <button class="see-more" id="outreachLeadNotToggle" style="display:none" onclick="toggleOutreach('LeadNot')">&#9660; Show more</button>
+            </div>
+            <div style="border-top:1px solid var(--border)">
+              <div style="padding:10px 18px 6px;display:flex;align-items:center;justify-content:space-between">
+                <span style="font-size:10px;font-weight:700;color:var(--amber);text-transform:uppercase;letter-spacing:.1em">&#128203; Companies Not Contacted Yet</span>
+                <span class="badge ba" id="outreachCoNotBadge"></span>
+              </div>
+              <div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Company</th><th>Owner</th><th class="c">Domain</th><th class="c">Created</th></tr></thead><tbody id="outreachCoNotBody"></tbody></table></div>
+              <div id="outreachCoNotMore" style="display:none"><table class="tbl"><tbody id="outreachCoNotBodyMore"></tbody></table></div>
+              <button class="see-more" id="outreachCoNotToggle" style="display:none" onclick="toggleOutreach('CoNot')">&#9660; Show more</button>
+            </div>
+          </div>
+          <!-- ═══════════════════════════════════════════════ -->
+
           <div class="card">
             <div class="card-hd">
               <div class="card-title"><div class="card-title-icon" style="background:var(--red-bg)">&#127919;</div>Rank A/B Coverage</div>
@@ -552,36 +521,13 @@ function openDealsTable(show,rest,did){
    ════════════════════════════════════════ */
 function renderOutreach(){
   const card = $("outreachCard");
-
-  if(!card){
-    console.warn("outreachCard element not found");
-    return;
-  }
+  if(!card) return;
 
   const oc = D && D.outreachCoverage;
-
-  console.log("OUTREACH DEBUG", {
-    hasD: !!D,
-    hasCard: !!card,
-    hasOutreach: !!oc,
-    contactsTotal: oc?.contacts?.total,
-    companiesTotal: oc?.companies?.total
-  });
-
   card.style.display = "block";
 
   if(!oc){
-    card.innerHTML = `
-      <div class="card-hd">
-        <div class="card-title">
-          <div class="card-title-icon" style="background:var(--red-bg)">⚠️</div>
-          Lead Outreach Coverage
-        </div>
-      </div>
-      <div style="padding:16px 18px;color:var(--red);font-size:12px;font-weight:700">
-        outreachCoverage is missing from loaded data.json
-      </div>
-    `;
+    card.innerHTML = `<div class="card-hd"><div class="card-title"><div class="card-title-icon" style="background:var(--red-bg)">⚠️</div>Lead Outreach Coverage</div></div><div style="padding:16px 18px;color:var(--red);font-size:12px;font-weight:700">outreachCoverage is missing from loaded data.json</div>`;
     return;
   }
 
@@ -589,25 +535,14 @@ function renderOutreach(){
   const ct = oc.contacts || {};
   const co = oc.companies || {};
   const ac = oc.activities || {};
+  const bySource = oc.bySource || oc.sourceSplit || {};
 
-  const setText = (id, val) => {
-    const el = $(id);
-    if(el) el.textContent = val;
-  };
-
-  const setHTML = (id, val) => {
-    const el = $(id);
-    if(el) el.innerHTML = val;
-  };
-
-  const setStyle = (id, prop, val) => {
-    const el = $(id);
-    if(el) el.style[prop] = val;
-  };
+  const setText = (id, val) => { const el=$(id); if(el) el.textContent = val; };
+  const setHTML = (id, val) => { const el=$(id); if(el) el.innerHTML = val; };
+  const setStyle = (id, prop, val) => { const el=$(id); if(el) el.style[prop] = val; };
 
   window._ocLeadNot = false;
   window._ocCoNot = false;
-
   setStyle("outreachLeadNotMore", "display", "none");
   setStyle("outreachCoNotMore", "display", "none");
 
@@ -623,109 +558,43 @@ function renderOutreach(){
     { v: co.notContacted || 0, l: "Not Contacted Companies", c: "var(--amber)" },
   ];
 
-  setHTML("outreachKpiGrid", kpis.map(k => `
-    <div class="outreach-kpi-box">
-      <div class="outreach-kpi-val" style="color:${k.c}">${Number(k.v || 0).toLocaleString()}</div>
-      <div class="outreach-kpi-lbl">${k.l}</div>
-    </div>
-  `).join(""));
+  setHTML("outreachKpiGrid", kpis.map(k => `<div class="outreach-kpi-box"><div class="outreach-kpi-val" style="color:${k.c}">${Number(k.v || 0).toLocaleString()}</div><div class="outreach-kpi-lbl">${k.l}</div></div>`).join(""));
 
   const lr = Number(ct.contactedRate || 0);
   const cr = Number(co.contactedRate || 0);
-
   setText("outreachLeadRateVal", `${lr}%`);
   setStyle("outreachLeadRateVal", "color", rateColor(lr));
   setStyle("outreachLeadRateBar", "width", `${Math.max(0, Math.min(100, lr))}%`);
   setStyle("outreachLeadRateBar", "background", rateColor(lr));
-
   setText("outreachCoRateVal", `${cr}%`);
   setStyle("outreachCoRateVal", "color", rateColor(cr));
   setStyle("outreachCoRateBar", "width", `${Math.max(0, Math.min(100, cr))}%`);
   setStyle("outreachCoRateBar", "background", rateColor(cr));
 
-  setText(
-    "outreachActCalls",
-    `📞 ${ac.callsLinkedToContacts || 0} / ${ac.totalCalls || 0} calls linked`
-  );
+  setText("outreachActCalls", `📞 ${ac.callsLinkedToContacts || 0} / ${ac.totalCalls || 0} connected calls`);
+  setText("outreachActMeetings", `📅 ${ac.meetingsLinkedToContacts || 0} / ${ac.totalMeetings || 0} completed meetings`);
 
-  setText(
-    "outreachActMeetings",
-    `📅 ${ac.meetingsLinkedToContacts || 0} / ${ac.totalMeetings || 0} meetings linked`
-  );
+  const online = bySource.online || bySource.inbound || {};
+  const offline = bySource.offline || bySource.outbound || {};
+  setText("outreachOnlineSplit", `${online.contacted || 0}/${online.total || 0} contacted · ${online.notContacted || 0} not yet`);
+  setText("outreachOfflineSplit", `${offline.contacted || 0}/${offline.total || 0} contacted · ${offline.notContacted || 0} not yet`);
 
-  const ncLeads = ct.notContactedList || [];
-  const ncCos = co.notContactedList || [];
-
+  const ncLeads = [...(ct.notContactedList || [])].sort((a,b)=>new Date(b.createdAt || 0)-new Date(a.createdAt || 0));
+  const ncCos = [...(co.notContactedList || [])].sort((a,b)=>new Date(b.createdAt || 0)-new Date(a.createdAt || 0));
   setText("outreachLeadNotBadge", `${ncLeads.length} leads`);
   setText("outreachCoNotBadge", `${ncCos.length} companies`);
 
-  const leadRow = c => `<tr>
-    <td>
-      <div style="font-weight:600">${c.name || c.id || "Unknown"}</div>
-      <div style="font-family:var(--mono);font-size:9px;color:var(--muted)">${c.email || c.id || ""}</div>
-    </td>
-    <td style="font-size:11px;font-weight:600;color:${c.ownerColor || 'var(--text2)'}">
-      ${c.ownerName || c.ownerId || "—"}
-    </td>
-    <td>${c.leadStatus ? `<span class="badge bb" style="font-size:8px">${c.leadStatus}</span>` : "<span style='color:var(--muted)'>—</span>"}</td>
-    <td style="font-size:10px;color:var(--muted)">${c.source || "—"}</td>
-    <td class="c" style="font-family:var(--mono);font-size:10px">${c.createdAt ? (c.createdAt + "").split("T")[0] : "—"}</td>
-    <td style="font-size:9px;color:var(--muted);font-family:var(--mono)">
-      ${(c.companyIds || []).slice(0,2).join(", ") + (((c.companyIds || []).length > 2) ? " …" : "")}
-    </td>
-  </tr>`;
-
-  const slL = ncLeads.slice(0, 10);
-  const rlL = ncLeads.slice(10);
-
-  setHTML(
-    "outreachLeadNotBody",
-    slL.length
-      ? slL.map(leadRow).join("")
-      : `<tr><td colspan="6" style="text-align:center;color:var(--green);padding:14px;font-style:italic">✓ All leads have been contacted</td></tr>`
-  );
-
+  const leadRow = c => `<tr><td><div style="font-weight:600">${c.name || c.fullName || c.email || c.id || "Unknown"}</div><div style="font-family:var(--mono);font-size:9px;color:var(--muted)">${c.email || ""}</div></td><td style="font-size:11px;font-weight:600;color:${c.ownerColor || 'var(--text2)'}">${c.ownerName || c.ownerId || "—"}</td><td>${c.leadStatus ? `<span class="badge bb" style="font-size:8px">${c.leadStatus}</span>` : "<span style='color:var(--muted)'>—</span>"}</td><td style="font-size:10px;color:var(--muted)">${c.source || "—"}</td><td class="c" style="font-family:var(--mono);font-size:10px">${c.createdAt ? (c.createdAt+"").split("T")[0] : "—"}</td></tr>`;
+  const slL = ncLeads.slice(0, 10), rlL = ncLeads.slice(10);
+  setHTML("outreachLeadNotBody", slL.length ? slL.map(leadRow).join("") : `<tr><td colspan="5" style="text-align:center;color:var(--green);padding:14px;font-style:italic">✓ All leads have been contacted</td></tr>`);
   setHTML("outreachLeadNotBodyMore", rlL.map(leadRow).join(""));
+  if($("outreachLeadNotToggle")){ $("outreachLeadNotToggle").style.display = rlL.length ? "block" : "none"; $("outreachLeadNotToggle").textContent = `▼ Show ${rlL.length} more`; }
 
-  if($("outreachLeadNotToggle")){
-    $("outreachLeadNotToggle").style.display = rlL.length ? "block" : "none";
-    $("outreachLeadNotToggle").textContent = `▼ Show ${rlL.length} more`;
-  }
-
-  const coRow = c => `<tr>
-    <td>
-      <div style="font-weight:600">${c.name || c.id || "Unknown"}</div>
-      <div style="font-size:9px;color:var(--muted)">
-        ${c.country || "Unknown"}${c.rank ? ` · Rank ${c.rank}` : ""}
-      </div>
-    </td>
-    <td style="font-size:11px;font-weight:600;color:${c.ownerColor || 'var(--text2)'}">
-      ${c.ownerName || c.ownerId || "—"}
-    </td>
-    <td class="c" style="font-size:10px;color:var(--muted);font-family:var(--mono)">
-      ${c.domain || "—"}
-    </td>
-    <td class="c" style="font-family:var(--mono);font-size:10px">
-      ${c.createdAt ? (c.createdAt + "").split("T")[0] : "—"}
-    </td>
-  </tr>`;
-
-  const slC = ncCos.slice(0, 10);
-  const rlC = ncCos.slice(10);
-
-  setHTML(
-    "outreachCoNotBody",
-    slC.length
-      ? slC.map(coRow).join("")
-      : `<tr><td colspan="4" style="text-align:center;color:var(--green);padding:14px;font-style:italic">✓ All companies have been contacted</td></tr>`
-  );
-
+  const coRow = c => `<tr><td><div style="font-weight:600">${c.name || c.id || "Unknown"}</div><div style="font-size:9px;color:var(--muted)">${c.country || "Unknown"}${c.rank ? ` · Rank ${c.rank}` : ""}</div></td><td style="font-size:11px;font-weight:600;color:${c.ownerColor || 'var(--text2)'}">${c.ownerName || c.ownerId || "—"}</td><td class="c" style="font-size:10px;color:var(--muted);font-family:var(--mono)">${c.domain || "—"}</td><td class="c" style="font-family:var(--mono);font-size:10px">${c.createdAt ? (c.createdAt+"").split("T")[0] : "—"}</td></tr>`;
+  const slC = ncCos.slice(0, 10), rlC = ncCos.slice(10);
+  setHTML("outreachCoNotBody", slC.length ? slC.map(coRow).join("") : `<tr><td colspan="4" style="text-align:center;color:var(--green);padding:14px;font-style:italic">✓ All companies have been contacted</td></tr>`);
   setHTML("outreachCoNotBodyMore", rlC.map(coRow).join(""));
-
-  if($("outreachCoNotToggle")){
-    $("outreachCoNotToggle").style.display = rlC.length ? "block" : "none";
-    $("outreachCoNotToggle").textContent = `▼ Show ${rlC.length} more`;
-  }
+  if($("outreachCoNotToggle")){ $("outreachCoNotToggle").style.display = rlC.length ? "block" : "none"; $("outreachCoNotToggle").textContent = `▼ Show ${rlC.length} more`; }
 }
 
 async function loadData(){
@@ -788,9 +657,6 @@ function render(){
       ${sc(kT.lost||0,"Lost YTD",kT.lostAmt?fmt(kT.lostAmt):null,"var(--red)",7)}
     </div>`;
 
-  /* ── Render Outreach Coverage ── */
-  renderOutreach();
-
   $("perfBody").innerHTML=activeReps.map(r=>{
     const calls=r.calls?.yest||0,conn=r.calls?.yestConn||0,rate=r.connRateYest||0,mtgs=r.meetings?.yest||0;
     const rc=rcColor(rate),c=r.color,isRet=r.type==="ret";
@@ -844,6 +710,9 @@ function render(){
   $("leadsRepBody").innerHTML=activeReps.map(r=>`<tr><td><div style="display:flex;align-items:center;gap:8px"><div class="av" style="background:${r.color}20;color:${r.color};border:1px solid ${r.color}30">${r.name[0]}</div><span style="font-weight:600">${r.name}</span></div></td><td class="c"><div style="font-family:var(--mono);font-weight:600">${r.leadsYest||0}</div><div style="font-size:9px;color:var(--muted)">&darr;${r.leadsYestInbound||0} &uarr;${r.leadsYestOutbound||0}</div></td><td class="c"><div style="font-family:var(--mono);font-weight:600;color:var(--green)">${r.leadsMTD||0}</div><div style="font-size:9px;color:var(--muted)">&darr;${r.leadsMTDInbound||0} &uarr;${r.leadsMTDOutbound||0}</div></td><td class="c"><div style="font-family:var(--mono);font-weight:600;color:var(--purple)">${r.leadsYTD||0}</div><div style="font-size:9px;color:var(--muted)">&darr;${r.leadsYTDInbound||0} &uarr;${r.leadsYTDOutbound||0}</div></td></tr>`).join("");
 
   const rd=D.topInactiveRankAccounts||[],rt=D.rankTotals||{};
+  /* ── Render Outreach Coverage under Leads Overview ── */
+  renderOutreach();
+
   $("rankBadgeRow").innerHTML=`<span class="rank-a">${rt.A||0} A</span><span class="rank-b">${rt.B||0} B</span><span class="badge bg">&#10003; ${rt.AContacted||0}A / ${rt.BContacted||0}B</span><span class="badge br">&#10007; ${rt.ANotContacted||0}A / ${rt.BNotContacted||0}B</span>`;
   $("rankRepBody").innerHTML=activeReps.map(r=>{
     const idle=rd.filter(c=>c.rep===r.name&&c.daysSinceActivity>14);
