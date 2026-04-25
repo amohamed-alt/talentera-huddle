@@ -197,6 +197,30 @@ body{font-family:var(--font);background:var(--page-bg);color:var(--text);-webkit
 @media(max-width:1100px){.focus-grid{grid-template-columns:repeat(2,1fr)}.command-health-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:700px){.focus-grid{grid-template-columns:1fr}.command-health-grid{grid-template-columns:1fr}.focus-top{flex-direction:column;gap:8px}.focus-date{text-align:left}}
 
+
+
+/* ═══════════════════════════════════════════
+   ACTIONABLE MANAGER ADDONS
+   ═══════════════════════════════════════════ */
+.action-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:12px 0 14px}
+.action-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px;box-shadow:var(--sh-xs);border-left:3px solid var(--ac,var(--green))}
+.action-card-v{font-family:var(--mono);font-size:22px;font-weight:700;color:var(--ac,var(--green));line-height:1}
+.action-card-l{font-size:9px;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.1em;margin-top:7px}
+.action-card-s{font-size:10px;color:var(--text2);margin-top:5px;line-height:1.4}
+.compact-section{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--sh);margin-bottom:14px;overflow:hidden}
+.compact-hd{padding:12px 18px;background:var(--surface2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:10px}
+.compact-title{font-size:11px;font-weight:800;color:var(--text2);display:flex;align-items:center;gap:8px;text-transform:uppercase;letter-spacing:.06em}
+.compact-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:14px}
+.mini-list{display:grid;gap:7px;padding:14px}
+.mini-row{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-sm);padding:9px 10px}
+.mini-main{min-width:0}.mini-name{font-size:11px;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.mini-meta{font-size:9px;color:var(--muted);margin-top:2px}.mini-score{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--red);flex-shrink:0}
+.collapse-toggle{border:none;background:transparent;color:var(--green);font-size:10px;font-weight:800;cursor:pointer;font-family:var(--font)}
+.collapsible-body{display:none}.collapsible.open .collapsible-body{display:block}.collapsible.open .collapse-state::after{content:'Hide details'}.collapse-state::after{content:'Show details'}
+.quick-link{cursor:pointer;color:var(--green);font-size:10px;font-weight:800;text-decoration:none}
+.funnel{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;padding:14px}.funnel-step{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-sm);padding:12px;text-align:center;position:relative}.funnel-v{font-family:var(--mono);font-size:20px;font-weight:700;color:var(--blue)}.funnel-l{font-size:8px;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.08em;margin-top:6px}
+@media(max-width:1100px){.action-strip,.compact-grid,.funnel{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:700px){.action-strip,.compact-grid,.funnel{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body>
@@ -280,7 +304,44 @@ body{font-family:var(--font);background:var(--page-bg);color:var(--text);-webkit
           </div>
           <!-- /COMMAND CENTER PREVIEW -->
 
-          <div id="kpiSection"></div>
+          
+
+          <div class="action-strip" id="managerActionStrip"></div>
+
+          <div class="compact-section" id="priorityLeadsSection">
+            <div class="compact-hd">
+              <div class="compact-title">🎯 Priority Leads & SLA Breaches</div>
+              <a class="quick-link" href="#outreachCard">View Outreach Details ↓</a>
+            </div>
+            <div class="compact-grid" id="managerMiniCards"></div>
+            <div class="mini-list" id="priorityLeadList"></div>
+          </div>
+
+          <div class="compact-section" id="leadFunnelSection">
+            <div class="compact-hd">
+              <div class="compact-title">🔻 Lead Funnel & Source Performance</div>
+              <span class="badge bb">Fallback from outreachCoverage</span>
+            </div>
+            <div class="funnel" id="leadFunnelGrid"></div>
+          </div>
+
+          <div class="compact-section" id="dataQualitySection">
+            <div class="compact-hd">
+              <div class="compact-title">🧹 Data Quality Warnings</div>
+              <span class="badge ba" id="dataQualityBadge">Auto check</span>
+            </div>
+            <div class="mini-list" id="dataQualityList"></div>
+          </div>
+
+          <div class="compact-section collapsible" id="legacyKpiWrap">
+            <div class="compact-hd">
+              <div class="compact-title">📊 Detailed KPI Cards</div>
+              <button class="collapse-toggle collapse-state" onclick="toggleCollapse('legacyKpiWrap')"></button>
+            </div>
+            <div class="collapsible-body">
+              <div id="kpiSection"></div>
+            </div>
+          </div>
 
           <div class="card">
             <div class="card-hd">
@@ -424,8 +485,8 @@ body{font-family:var(--font);background:var(--page-bg);color:var(--text);-webkit
             <div style="overflow-x:auto"><table class="tbl">
               <thead><tr>
                 <th>Rep</th><th class="c">Rank A</th><th class="c" style="color:var(--green);font-size:8px">&#10003; A Contacted</th>
-                <th class="c" style="color:var(--red);font-size:8px">&#10007; A Not Yet</th><th class="c">Rank B</th>
-                <th class="c" style="color:var(--green);font-size:8px">&#10003; B Contacted</th><th class="c" style="color:var(--amber);font-size:8px">&#10007; B Not Yet</th>
+                <th class="c" style="color:var(--red);font-size:8px">&#10007; A Untouched</th><th class="c">Rank B</th>
+                <th class="c" style="color:var(--green);font-size:8px">&#10003; B Contacted</th><th class="c" style="color:var(--amber);font-size:8px">&#10007; B Untouched</th>
                 <th class="c" style="color:var(--red)">Idle &gt;14d</th><th>Top Idle Accounts</th>
               </tr></thead>
               <tbody id="rankRepBody"></tbody>
@@ -519,6 +580,11 @@ function toggleMore(id,btn,show,hide){
   btn.textContent=hidden?hide:show;
 }
 
+function toggleCollapse(id){
+  const el=$(id);
+  if(el) el.classList.toggle('open');
+}
+
 function toggleUntouched(rank){
   const mId="untouched"+rank+"More",bId="untouched"+rank+"Toggle",key="_u"+rank;
   const open=window[key];
@@ -565,6 +631,44 @@ function openDealsTable(show,rest,did){
   return`<div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Deal</th><th>Stage</th><th class="c">Value</th><th class="c">Next Activity</th></tr></thead><tbody>${show.map(row).join("")}</tbody><tbody id="${did}-more" style="display:none">${rest.map(row).join("")}</tbody></table></div>${rest.length?`<button class="see-more" onclick="toggleMore('${did}-more',this,'\u25bc ${rest.length} more deals','\u25b2 Show less')">\u25bc ${rest.length} more deals</button>`:""}`;
 }
 
+
+
+
+function renderManagerAddons(){
+  if(!D) return;
+  const oc=D.outreachCoverage||{}, ct=oc.contacts||{}, co=oc.companies||{}, ss=oc.sourceSplit||oc.bySource||{};
+  const rt=D.rankTotals||{}, reps=D.repData||[], team=D.team||{}, kM=D.kpi?.mtd||{};
+  const notLeads=Number(ct.notContacted||0), contacted=Number(ct.contacted||0), total=Number(ct.total||0), rate=Number(ct.contactedRate||0);
+  const untouched=Number(rt.ANotContacted||0)+Number(rt.BNotContacted||0);
+  const cold=reps.reduce((s,r)=>s+(r.cold||[]).length,0), stuck=reps.reduce((s,r)=>s+(r.stuck||[]).length,0), noNext=reps.reduce((s,r)=>s+(r.needsAttention||[]).length,0);
+  const risk=cold+stuck+noNext;
+  const setHTML=(id,v)=>{const el=$(id); if(el) el.innerHTML=v;};
+  setHTML('managerActionStrip',[
+    {v:notLeads,l:'To Call Today',s:'Eligible leads with no connected call or completed meeting',c:'var(--red)'},
+    {v:untouched,l:'Rank A/B Untouched',s:'High-priority accounts not contacted by new logic',c:'var(--amber)'},
+    {v:risk,l:'Pipeline Risk Signals',s:`${cold} cold · ${stuck} stuck · ${noNext} no next`,c:'var(--blue)'},
+    {v:rate+'%',l:'Contact Rate Target',s:'Daily target should move toward 70%+',c:rate>=70?'var(--green)':rate>=40?'var(--amber)':'var(--red)'}
+  ].map(x=>`<div class="action-card" style="--ac:${x.c}"><div class="action-card-v">${x.v}</div><div class="action-card-l">${x.l}</div><div class="action-card-s">${x.s}</div></div>`).join(''));
+  const online=ss.online||ss.inbound||{}, offline=ss.offline||ss.outbound||{};
+  setHTML('managerMiniCards',[
+    {t:'Hot Uncontacted Online',v:Number(online.notContacted||0),d:`${online.contacted||0}/${online.total||0} contacted`,c:'var(--red)'},
+    {t:'Offline Follow-up Pool',v:Number(offline.notContacted||0),d:`${offline.contacted||0}/${offline.total||0} contacted`,c:'var(--amber)'},
+    {t:'Rep Gap',v:Math.max(...reps.map(r=>((r.cold||[]).length+(r.stuck||[]).length+(r.needsAttention||[]).length)),0),d:'Highest risk signals for one rep',c:'var(--blue)'}
+  ].map(x=>`<div class="action-card" style="--ac:${x.c}"><div class="action-card-v">${x.v.toLocaleString()}</div><div class="action-card-l">${x.t}</div><div class="action-card-s">${x.d}</div></div>`).join(''));
+  const priority=(ct.notContactedList||[]).slice().sort((a,b)=>new Date(b.createdAt||0)-new Date(a.createdAt||0)).slice(0,8);
+  setHTML('priorityLeadList', priority.length?priority.map((l,i)=>`<div class="mini-row"><div class="mini-main"><div class="mini-name">${l.name||l.email||l.id||'Unknown lead'}</div><div class="mini-meta">${l.ownerName||'No owner'} · ${l.source||'No source'} · ${l.createdAt||'No date'}</div></div><div class="mini-score">#${i+1}</div></div>`).join(''):`<div class="mini-row"><div class="mini-main"><div class="mini-name">No priority leads available</div><div class="mini-meta">Waiting for outreachCoverage.notContactedList</div></div></div>`);
+  const openDeals=Number(kM.openDealsSnap||team.openDeals||0), won=Number(kM.wonDeals||team.won||0);
+  setHTML('leadFunnelGrid',[
+    ['Eligible Leads',total,'var(--blue)'],['Contacted',contacted,'var(--green)'],['Not Contacted',notLeads,'var(--red)'],['Open Deals',openDeals,'var(--amber)'],['Won MTD',won,'var(--green)']
+  ].map(x=>`<div class="funnel-step"><div class="funnel-v" style="color:${x[2]}">${Number(x[1]||0).toLocaleString()}</div><div class="funnel-l">${x[0]}</div></div>`).join(''));
+  const dq=[];
+  if(!total) dq.push(['Missing outreachCoverage.contacts','Lead outreach data is empty or not generated.']);
+  if((ct.notContactedList||[]).some(x=>!x.ownerName&&!x.ownerId)) dq.push(['Leads without owner','Some not-contacted leads do not have a clear owner.']);
+  if((co.notContactedList||[]).some(x=>!x.rank)) dq.push(['Companies without rank','Some company rows do not include Rank A/B info.']);
+  if(!ss.online&&!ss.offline&&!ss.inbound&&!ss.outbound) dq.push(['Missing source split','Online/offline split is not available in data.json.']);
+  setHTML('dataQualityBadge', `${dq.length} warnings`);
+  setHTML('dataQualityList', dq.length?dq.map((x,i)=>`<div class="mini-row"><div class="mini-main"><div class="mini-name">${x[0]}</div><div class="mini-meta">${x[1]}</div></div><div class="mini-score" style="color:var(--amber)">!</div></div>`).join(''):`<div class="mini-row"><div class="mini-main"><div class="mini-name">Data quality looks good</div><div class="mini-meta">No major warnings detected from current data.json.</div></div><div class="mini-score" style="color:var(--green)">✓</div></div>`);
+}
 
 function renderCommandPreview(){
   if(!D || !$("commandPreview")) return;
@@ -722,6 +826,7 @@ function render(){
   const activeReps=repData.filter(r=>r.type!=="view");
 
   renderCommandPreview();
+  renderManagerAddons();
 
   $("topbarSub").textContent=`Updated ${meta.generatedAt||""} · Auto-refresh 5min`;
   $("perfDate").textContent=meta.yesterdayLabel||"";
