@@ -221,6 +221,16 @@ body{font-family:var(--font);background:var(--page-bg);color:var(--text);-webkit
 @media(max-width:1100px){.action-strip,.compact-grid,.funnel{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:700px){.action-strip,.compact-grid,.funnel{grid-template-columns:1fr}}
 
+.record-link{
+  color:inherit;
+  text-decoration:none;
+  font-weight:700;
+}
+.record-link:hover{
+  color:var(--green);
+  text-decoration:underline;
+}
+
 </style>
 </head>
 <body>
@@ -561,6 +571,18 @@ let D=null;
 const $=id=>document.getElementById(id);
 const fmt=n=>{const v=parseFloat(n);if(!v||isNaN(v))return"$0";if(v>=1e6)return`$${(v/1e6).toFixed(1)}M`;if(v>=1e3)return`$${Math.round(v/1e3)}K`;return`$${Math.round(v)}`;};
 const rcColor=r=>r>=50?"var(--green)":r>=30?"var(--amber)":"var(--red)";
+const esc = v => String(v ?? "")
+  .replace(/&/g,"&amp;")
+  .replace(/</g,"&lt;")
+  .replace(/>/g,"&gt;")
+  .replace(/"/g,"&quot;")
+  .replace(/'/g,"&#039;");
+function recordLink(label,url,className="record-link"){
+  const safeLabel=esc(label||"Open record");
+  if(!url)return safeLabel;
+  return `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer" class="${className}">${safeLabel}</a>`;
+}
+
 const SC=["#4F46E5","#7C3AED","#2563EB","#0891B2","#059669","#D97706","#DC2626","#be185d","#16A34A","#6B7280"];
 
 function switchTab(id){
@@ -617,7 +639,7 @@ function sc(v,l,s,c,i){
 }
 
 function dealRow(d,color,showReason){
-  return`<div class="deal-item"><div class="deal-dot" style="background:${color}"></div><div style="flex:1"><div class="deal-name">${d.name}</div><div class="deal-meta"><span style="font-size:10px;color:var(--muted)">${d.closedate||""}</span><span class="badge" style="background:${d.repColor||"#ccc"}20;color:${d.repColor||"#999"}">${d.rep||""}</span>${showReason&&d.reason?`<span class="deal-reason-badge">&#9888; ${d.reason}</span>`:""}</div></div><div class="deal-amt" style="color:${color}">$${(d.amount||0).toLocaleString()}</div></div>`;
+  return`<div class="deal-item"><div class="deal-dot" style="background:${color}"></div><div style="flex:1"><div class="deal-name">${recordLink(d.name,d.hubspotUrl)}</div><div class="deal-meta"><span style="font-size:10px;color:var(--muted)">${esc(d.closedate||"")}</span><span class="badge" style="background:${d.repColor||"#ccc"}20;color:${d.repColor||"#999"}">${esc(d.rep||"")}</span>${showReason&&d.reason?`<span class="deal-reason-badge">&#9888; ${esc(d.reason)}</span>`:""}</div></div><div class="deal-amt" style="color:${color}">$${(d.amount||0).toLocaleString()}</div></div>`;
 }
 
 function dealList(arr,color,prefix,showReason){
@@ -627,7 +649,7 @@ function dealList(arr,color,prefix,showReason){
 }
 
 function openDealsTable(show,rest,did){
-  const row=dl=>`<tr><td style="font-weight:600;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${dl.name}</td><td><span class="badge bb">${dl.stage||""}</span></td><td class="c"><span style="font-family:var(--mono);font-weight:500">$${(dl.amount||0).toLocaleString()}</span></td><td class="c">${dl.nextActivity?`<span style="color:var(--green);font-size:11px;font-weight:600">${dl.nextActivity}</span>`:"<span style='color:var(--red);font-size:11px;font-weight:600'>&#128681; None</span>"}</td></tr>`;
+  const row=dl=>`<tr><td style="font-weight:600;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${recordLink(dl.name,dl.hubspotUrl)}</td><td><span class="badge bb">${esc(dl.stage||"")}</span></td><td class="c"><span style="font-family:var(--mono);font-weight:500">$${(dl.amount||0).toLocaleString()}</span></td><td class="c">${dl.nextActivity?`<span style="color:var(--green);font-size:11px;font-weight:600">${dl.nextActivity}</span>`:"<span style='color:var(--red);font-size:11px;font-weight:600'>&#128681; None</span>"}</td></tr>`;
   return`<div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Deal</th><th>Stage</th><th class="c">Value</th><th class="c">Next Activity</th></tr></thead><tbody>${show.map(row).join("")}</tbody><tbody id="${did}-more" style="display:none">${rest.map(row).join("")}</tbody></table></div>${rest.length?`<button class="see-more" onclick="toggleMore('${did}-more',this,'\u25bc ${rest.length} more deals','\u25b2 Show less')">\u25bc ${rest.length} more deals</button>`:""}`;
 }
 
@@ -904,14 +926,14 @@ function render(){
     const cold=(r.cold||[]).length,stuck=(r.stuck||[]).length,pa=r.pipeAmt||0;
     tp+=pa;
     const s3=deals.slice(0,3),rest=deals.slice(3),cid="pipe-"+r.name.replace(/\s/g,"-");
-    return`<div class="pcard" style="border-top:3px solid ${c}"><div class="pcard-top"><div style="display:flex;align-items:center;gap:6px"><div class="av" style="width:22px;height:22px;border-radius:6px;background:${c}20;color:${c};font-size:9px">${r.name[0]}</div><span style="font-weight:700;color:${c};font-size:11px">${r.name.split(" ")[0]}${isRet?`<span class="ret" style="margin-left:3px">RET</span>`:""}</span></div><div style="text-align:right"><div style="font-family:var(--mono);font-size:11px;font-weight:600">${fmt(pa)}</div><div style="font-size:8px;color:var(--muted)">${r.openDeals||0} deals</div></div></div><div class="pcard-body">${s3.map(d=>`<div class="pdeal"><div><div class="pdeal-name">${d.name}</div><div class="pdeal-stage">${d.stage||""}</div></div><div class="pdeal-amt">$${(d.amount||0).toLocaleString()}</div></div>`).join("")}<div id="${cid}-more" style="display:none">${rest.map(d=>`<div class="pdeal"><div><div class="pdeal-name">${d.name}</div><div class="pdeal-stage">${d.stage||""}</div></div><div class="pdeal-amt">$${(d.amount||0).toLocaleString()}</div></div>`).join("")}</div>${rest.length?`<button class="see-more" onclick="toggleMore('${cid}-more',this,'\u25bc ${rest.length} more','\u25b2 Less')">\u25bc ${rest.length} more</button>`:""}<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:8px">${stuck?`<span class="badge br">&#128308; ${stuck} stuck</span>`:""}${cold?`<span class="badge ba">&#128993; ${cold} cold</span>`:""}${!stuck&&!cold?`<span class="badge bg">&#10003; healthy</span>`:""}</div></div></div>`;
+    return`<div class="pcard" style="border-top:3px solid ${c}"><div class="pcard-top"><div style="display:flex;align-items:center;gap:6px"><div class="av" style="width:22px;height:22px;border-radius:6px;background:${c}20;color:${c};font-size:9px">${r.name[0]}</div><span style="font-weight:700;color:${c};font-size:11px">${r.name.split(" ")[0]}${isRet?`<span class="ret" style="margin-left:3px">RET</span>`:""}</span></div><div style="text-align:right"><div style="font-family:var(--mono);font-size:11px;font-weight:600">${fmt(pa)}</div><div style="font-size:8px;color:var(--muted)">${r.openDeals||0} deals</div></div></div><div class="pcard-body">${s3.map(d=>`<div class="pdeal"><div><div class="pdeal-name">${recordLink(d.name,d.hubspotUrl)}</div><div class="pdeal-stage">${d.stage||""}</div></div><div class="pdeal-amt">$${(d.amount||0).toLocaleString()}</div></div>`).join("")}<div id="${cid}-more" style="display:none">${rest.map(d=>`<div class="pdeal"><div><div class="pdeal-name">${recordLink(d.name,d.hubspotUrl)}</div><div class="pdeal-stage">${d.stage||""}</div></div><div class="pdeal-amt">$${(d.amount||0).toLocaleString()}</div></div>`).join("")}</div>${rest.length?`<button class="see-more" onclick="toggleMore('${cid}-more',this,'\u25bc ${rest.length} more','\u25b2 Less')">\u25bc ${rest.length} more</button>`:""}<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:8px">${stuck?`<span class="badge br">&#128308; ${stuck} stuck</span>`:""}${cold?`<span class="badge ba">&#128993; ${cold} cold</span>`:""}${!stuck&&!cold?`<span class="badge bg">&#10003; healthy</span>`:""}</div></div></div>`;
   }).join("");
   $("pipeTotalAmt").textContent=fmt(tp);
 
   $("aiGrid").innerHTML=activeReps.map(r=>{
     const c=r.color,isRet=r.type==="ret",items=r.needsAttention||[];
     const show=items.slice(0,3),rest=items.slice(3),cid="coach-"+r.name.replace(/\s/g,"-");
-    return`<div class="ccard" style="--cc:${c}"><div class="ccard-rep"><div class="av" style="width:20px;height:20px;border-radius:5px;background:${c}20;color:${c};font-size:9px">${r.name[0]}</div>${r.name.split(" ")[0]}${isRet?`<span class="ret" style="margin-left:2px">RET</span>`:""}<span style="margin-left:auto;font-size:9px;color:var(--muted)">${items.length}</span></div>${items.length===0?`<div style="font-size:11px;color:var(--green);font-weight:600">&#9989; All deals have next activity</div>`:`${show.map(item=>`<div class="citem"><div class="citem-name">${item.name}<span class="citem-amt">${fmt(item.amount||0)}</span></div>${(item.reasons||[]).map(rs=>`<div class="citem-warn">&#9888;&#65039; ${rs}</div>`).join("")}</div>`).join("")}<div id="${cid}-more" style="display:none">${rest.map(item=>`<div class="citem"><div class="citem-name">${item.name}<span class="citem-amt">${fmt(item.amount||0)}</span></div>${(item.reasons||[]).map(rs=>`<div class="citem-warn">&#9888;&#65039; ${rs}</div>`).join("")}</div>`).join("")}</div>${rest.length?`<button class="see-more" onclick="toggleMore('${cid}-more',this,'\u25bc ${rest.length} more','\u25b2 Less')">\u25bc ${rest.length} more</button>`:""}`}</div>`;
+    return`<div class="ccard" style="--cc:${c}"><div class="ccard-rep"><div class="av" style="width:20px;height:20px;border-radius:5px;background:${c}20;color:${c};font-size:9px">${r.name[0]}</div>${r.name.split(" ")[0]}${isRet?`<span class="ret" style="margin-left:2px">RET</span>`:""}<span style="margin-left:auto;font-size:9px;color:var(--muted)">${items.length}</span></div>${items.length===0?`<div style="font-size:11px;color:var(--green);font-weight:600">&#9989; All deals have next activity</div>`:`${show.map(item=>`<div class="citem"><div class="citem-name">${recordLink(item.name,item.hubspotUrl)}<span class="citem-amt">${fmt(item.amount||0)}</span></div>${(item.reasons||[]).map(rs=>`<div class="citem-warn">&#9888;&#65039; ${rs}</div>`).join("")}</div>`).join("")}<div id="${cid}-more" style="display:none">${rest.map(item=>`<div class="citem"><div class="citem-name">${recordLink(item.name,item.hubspotUrl)}<span class="citem-amt">${fmt(item.amount||0)}</span></div>${(item.reasons||[]).map(rs=>`<div class="citem-warn">&#9888;&#65039; ${rs}</div>`).join("")}</div>`).join("")}</div>${rest.length?`<button class="see-more" onclick="toggleMore('${cid}-more',this,'\u25bc ${rest.length} more','\u25b2 Less')">\u25bc ${rest.length} more</button>`:""}`}</div>`;
   }).join("");
 
   $("leadsBadgeRow").innerHTML=`<span class="badge bb">Yest: ${team.leadsYest||0}</span><span class="badge bg">MTD: ${team.leadsMTD||0}</span><span class="badge bp">YTD: ${team.leadsYTD||0}</span>`;
@@ -925,7 +947,7 @@ function render(){
   $("rankBadgeRow").innerHTML=`<span class="rank-a">${rt.A||0} A</span><span class="rank-b">${rt.B||0} B</span><span class="badge bg">&#10003; ${rt.AContacted||0}A / ${rt.BContacted||0}B</span><span class="badge br">&#10007; ${rt.ANotContacted||0}A / ${rt.BNotContacted||0}B</span>`;
   $("rankRepBody").innerHTML=activeReps.map(r=>{
     const idle=rd.filter(c=>c.rep===r.name&&c.daysSinceActivity>14);
-    const iN=idle.slice(0,2).map(c=>`<span style="font-size:10px;color:var(--red);font-weight:500">&#8226; ${c.name}</span>`).join("<br>");
+    const iN=idle.slice(0,2).map(c=>`<span style="font-size:10px;color:var(--red);font-weight:500">&#8226; ${recordLink(c.name,c.hubspotUrl)}</span>`).join("<br>");
     const aOk=r.rankAContacted||0,aM=r.rankANotContacted||0,bOk=r.rankBContacted||0,bM=r.rankBNotContacted||0;
     return`<tr><td><div style="display:flex;align-items:center;gap:8px"><div class="av" style="background:${r.color}20;color:${r.color}">${r.name[0]}</div><span style="font-weight:600">${r.name}</span></div></td><td class="c"><span class="rank-a">${r.rankA||0}</span></td><td class="c"><span style="font-family:var(--mono);font-weight:600;color:var(--green)">${aOk}</span></td><td class="c"><span style="font-family:var(--mono);font-weight:700;color:${aM>0?"var(--red)":"var(--green)"}">${aM>0?aM:"&#10003;"}</span></td><td class="c"><span class="rank-b">${r.rankB||0}</span></td><td class="c"><span style="font-family:var(--mono);font-weight:600;color:var(--green)">${bOk}</span></td><td class="c"><span style="font-family:var(--mono);font-weight:700;color:${bM>0?"var(--amber)":"var(--green)"}">${bM>0?bM:"&#10003;"}</span></td><td class="c"><span style="font-weight:700;color:${idle.length>0?"var(--red)":"var(--green)"}">${idle.length}</span></td><td style="font-size:10px;line-height:1.8">${iN||"<span style='color:var(--green);font-size:10px'>&#10003; All active</span>"}</td></tr>`;
   }).join("");
@@ -937,7 +959,7 @@ function render(){
 
   function bUR(arr){
     if(!arr.length)return`<tr><td colspan="2" style="text-align:center;color:var(--green);font-style:italic;padding:12px">&#10003; All accounts contacted</td></tr>`;
-    return arr.map(c=>`<tr><td><span class="badge" style="background:${c.repColor}20;color:${c.repColor}">${c.rep.split(" ")[0]}</span></td><td style="font-weight:600">${c.name}</td></tr>`).join("");
+    return arr.map(c=>`<tr><td><span class="badge" style="background:${c.repColor}20;color:${c.repColor}">${c.rep.split(" ")[0]}</span></td><td style="font-weight:600">${recordLink(c.name,c.hubspotUrl)}</td></tr>`).join("");
   }
   const sA=uA.slice(0,5),rA=uA.slice(5),sB=uB.slice(0,5),rB=uB.slice(5);
   $("untouchedABody").innerHTML=bUR(sA);$("untouchedABodyMore").innerHTML=bUR(rA);
@@ -947,7 +969,7 @@ function render(){
 
   $("rankBody").innerHTML=rd.map(c=>{
     const dc=c.daysSinceActivity>14?"var(--red)":c.daysSinceActivity>7?"var(--amber)":"var(--green)";
-    return`<tr><td>${c.rank==="A"?`<span class="rank-a">A</span>`:`<span class="rank-b">B</span>`}</td><td style="font-weight:600">${c.name}</td><td class="c"><span class="badge" style="background:${c.repColor}20;color:${c.repColor}">${c.rep}</span></td><td class="c"><span style="font-weight:700;color:${dc};font-family:var(--mono);font-size:11px">${c.daysSinceActivity>900?"Never":c.daysSinceActivity+"d ago"}</span></td></tr>`;
+    return`<tr><td>${c.rank==="A"?`<span class="rank-a">A</span>`:`<span class="rank-b">B</span>`}</td><td style="font-weight:600">${recordLink(c.name,c.hubspotUrl)}</td><td class="c"><span class="badge" style="background:${c.repColor}20;color:${c.repColor}">${c.rep}</span></td><td class="c"><span style="font-weight:700;color:${dc};font-family:var(--mono);font-size:11px">${c.daysSinceActivity>900?"Never":c.daysSinceActivity+"d ago"}</span></td></tr>`;
   }).join("");
   $("rankFooter").textContent=`Top 10 by days since last activity · ${rt.total||0} total Rank A/B accounts`;
 
@@ -1039,7 +1061,7 @@ function render(){
       </div>
       <div class="card" style="margin-bottom:14px">
         <div class="card-hd"><div class="card-title"><div class="card-title-icon" style="background:var(--purple-bg)">&#9889;</div>AI Coaching</div><span class="badge bp">${needsAtt.length} deals</span></div>
-        <div style="padding:12px 14px">${needsAtt.length===0?`<div style="padding:10px 12px;background:var(--green-bg);border-radius:var(--r-sm);border-left:3px solid var(--green);font-size:11px;font-weight:600;color:var(--green)">&#9989; All deals have next activity scheduled</div>`:needsAtt.map(item=>`<div style="padding:10px 12px;margin-bottom:8px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-sm);border-left:3px solid var(--amber)"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px"><span style="font-weight:600;font-size:11px">&#128203; ${item.name}</span><span style="font-family:var(--mono);font-size:10px;color:var(--muted)">${fmt(item.amount||0)}</span></div>${(item.reasons||[]).map(rs=>`<div style="font-size:10px;color:var(--amber);font-weight:600">&#9888;&#65039; ${rs}</div>`).join("")}</div>`).join("")}</div>
+        <div style="padding:12px 14px">${needsAtt.length===0?`<div style="padding:10px 12px;background:var(--green-bg);border-radius:var(--r-sm);border-left:3px solid var(--green);font-size:11px;font-weight:600;color:var(--green)">&#9989; All deals have next activity scheduled</div>`:needsAtt.map(item=>`<div style="padding:10px 12px;margin-bottom:8px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-sm);border-left:3px solid var(--amber)"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px"><span style="font-weight:600;font-size:11px">&#128203; ${recordLink(item.name,item.hubspotUrl)}</span><span style="font-family:var(--mono);font-size:10px;color:var(--muted)">${fmt(item.amount||0)}</span></div>${(item.reasons||[]).map(rs=>`<div style="font-size:10px;color:var(--amber);font-weight:600">&#9888;&#65039; ${rs}</div>`).join("")}</div>`).join("")}</div>
       </div>
       ${repLost.length?`<div class="card" style="margin-bottom:14px"><div class="card-hd" style="border-left:3px solid var(--red)"><div class="card-title" style="color:var(--red)"><div class="card-title-icon" style="background:var(--red-bg)">&#10060;</div>Lost Deals &mdash; ${r.name.split(" ")[0]}</div><span class="badge br">${repLost.length} &middot; ${fmt(repLost.reduce((s,d)=>s+(d.amount||0),0))}</span></div><div>${repLost.slice(0,5).map(d=>dealRow(d,"var(--red)",true)).join("")}</div>${repLRL.length?`<div class="loss-reasons-section" style="border-top:1px solid var(--border)"><div class="loss-reasons-title">&#128202; Why ${r.name.split(" ")[0]} Lost These Deals</div><div class="loss-reason-grid">${repLRL.map(lr=>{const tR=repLRL.reduce((s,x)=>s+x.amount,0);const p=tR>0?(lr.amount/tR)*100:0;return`<div class="loss-reason-card"><div class="loss-reason-name">${lr.reason}</div><div class="loss-reason-stats"><span class="loss-reason-count"><span style="width:6px;height:6px;border-radius:50%;background:var(--red);display:inline-block"></span>${lr.count} ${lr.count===1?"deal":"deals"}</span><span class="loss-reason-amt">${fmt(lr.amount)}</span></div><div class="loss-reason-bar"><div class="loss-reason-bar-fill" style="width:${p}%"></div></div></div>`;}).join("")}</div></div>`:""}</div>`:""}
       <div class="g2">
@@ -1051,9 +1073,9 @@ function render(){
           <div class="card-hd"><div class="card-title"><div class="card-title-icon" style="background:var(--red-bg)">&#127919;</div>Rank A/B Coverage</div><div style="display:flex;gap:5px"><span class="rank-a">${r.rankA||0}A</span><span class="rank-b">${r.rankB||0}B</span></div></div>
           <div style="padding:12px 18px">
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px"><span style="font-size:10px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.08em">Rank A &mdash; ${r.rankA||0}</span><div style="display:flex;gap:8px;font-size:10px;font-weight:600"><span style="color:var(--green)">&#10003; ${r.rankAContacted||0}</span><span style="color:var(--red)">&#10007; ${r.rankANotContacted||0}</span></div></div>
-            ${repUntA.length?`<div style="background:var(--red-bg);border:1px solid var(--red-bd);border-radius:var(--r-sm);padding:8px 10px;margin-bottom:12px"><div style="font-size:9px;font-weight:700;color:var(--red);margin-bottom:5px">Not contacted yet:</div>${repUntA.map(c=>`<div style="font-size:10px;color:var(--text2);padding:2px 0;border-bottom:1px solid var(--red-bd)">&#8226; ${c.name}</div>`).join("")}</div>`:`<div style="font-size:10px;color:var(--green);font-weight:600;margin-bottom:12px">&#10003; All Rank A accounts contacted</div>`}
+            ${repUntA.length?`<div style="background:var(--red-bg);border:1px solid var(--red-bd);border-radius:var(--r-sm);padding:8px 10px;margin-bottom:12px"><div style="font-size:9px;font-weight:700;color:var(--red);margin-bottom:5px">Not contacted yet:</div>${repUntA.map(c=>`<div style="font-size:10px;color:var(--text2);padding:2px 0;border-bottom:1px solid var(--red-bd)">&#8226; ${recordLink(c.name,c.hubspotUrl)}</div>`).join("")}</div>`:`<div style="font-size:10px;color:var(--green);font-weight:600;margin-bottom:12px">&#10003; All Rank A accounts contacted</div>`}
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px"><span style="font-size:10px;font-weight:700;color:var(--amber);text-transform:uppercase;letter-spacing:.08em">Rank B &mdash; ${r.rankB||0}</span><div style="display:flex;gap:8px;font-size:10px;font-weight:600"><span style="color:var(--green)">&#10003; ${r.rankBContacted||0}</span><span style="color:var(--amber)">&#10007; ${r.rankBNotContacted||0}</span></div></div>
-            ${repUntB.length?`<div style="background:var(--amber-bg);border:1px solid var(--amber-bd);border-radius:var(--r-sm);padding:8px 10px"><div style="font-size:9px;font-weight:700;color:var(--amber);margin-bottom:5px">Not contacted yet:</div>${repUntB.map(c=>`<div style="font-size:10px;color:var(--text2);padding:2px 0;border-bottom:1px solid var(--amber-bd)">&#8226; ${c.name}</div>`).join("")}</div>`:`<div style="font-size:10px;color:var(--green);font-weight:600">&#10003; All Rank B accounts contacted</div>`}
+            ${repUntB.length?`<div style="background:var(--amber-bg);border:1px solid var(--amber-bd);border-radius:var(--r-sm);padding:8px 10px"><div style="font-size:9px;font-weight:700;color:var(--amber);margin-bottom:5px">Not contacted yet:</div>${repUntB.map(c=>`<div style="font-size:10px;color:var(--text2);padding:2px 0;border-bottom:1px solid var(--amber-bd)">&#8226; ${recordLink(c.name,c.hubspotUrl)}</div>`).join("")}</div>`:`<div style="font-size:10px;color:var(--green);font-weight:600">&#10003; All Rank B accounts contacted</div>`}
           </div>
         </div>
       </div>
