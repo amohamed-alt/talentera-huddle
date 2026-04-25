@@ -1,8 +1,8 @@
 {
-  "yesterdayLabel": "Friday, 24 Apr 2026",
+  "yesterdayLabel": "Saturday, 25 Apr 2026",
   "meta": {
-    "yesterdayLabel": "Friday, 24 Apr 2026",
-    "generatedAt": "11:59 PM"
+    "yesterdayLabel": "Saturday, 25 Apr 2026",
+    "generatedAt": "02:05 AM"
   },
   "debug": {
     "total_ranked": 849,
@@ -87,10 +87,10 @@
       "connected": 0,
       "connRate": 0,
       "meetings": 0,
-      "openDeals": 1,
+      "openDeals": 0,
       "openDealsSnap": 256,
       "pipeline": 4854310.451833381,
-      "leads": 2,
+      "leads": 1,
       "wonAmt": 0,
       "wonDeals": 0,
       "lost": 0,
@@ -149,8 +149,8 @@
     "lostAmtYest": 0,
     "lostYTD": 94,
     "lostAmtYTD": 1594909.72,
-    "leadsYest": 2,
-    "leadsYestInbound": 2,
+    "leadsYest": 1,
+    "leadsYestInbound": 1,
     "leadsYestOutbound": 0,
     "leadsMTD": 283,
     "leadsMTDInbound": 38,
@@ -3764,8 +3764,8 @@
           "hubspotUrl": null
         }
       ],
-      "leadsYest": 1,
-      "leadsYestInbound": 1,
+      "leadsYest": 0,
+      "leadsYestInbound": 0,
       "leadsYestOutbound": 0,
       "leadsMTD": 29,
       "leadsMTDInbound": 12,
@@ -35449,19 +35449,19 @@
     "kpiLine": "MTD: 1705 calls (40% connected), 132 meetings, 3 won ($184K), 44 lost ($1.3M), pipeline $4.9M"
   },
   "aiInsights": {
-    "summary": "Ursula lost $1.27M across 41 deals while team lost $973K to contactability issues - immediate intervention needed",
+    "summary": "Ursula lost $1.27M across 41 deals while team lost $1.3M total - urgent intervention needed on rep effectiveness",
     "patterns": [
-      "Contactability issues caused $973K in losses across 4 deals - largest single loss category by deal value indicating targeting or timing problems",
-      "Ursula Waked has 42% connection rate but 41 lost deals with $0 won, suggesting qualification or closing gaps despite activity volume",
-      "112 cold deals across team (Zein: 75, Jehad: 22) represent significant at-risk pipeline requiring immediate reactivation efforts"
+      "Contact-ability issues caused only 4 lost deals but represent $973K (75% of total lost value) - highest value loss reason",
+      "Team has 112 cold deals in pipeline with Zein holding 67% (75 deals) - severe pipeline hygiene issue risking forecast accuracy",
+      "Zero wins MTD despite 132 meetings held and $4.9M pipeline suggests major conversion problem in demo-to-close stages"
     ],
     "quick_wins": [
-      "Ursula: Immediate coaching session on deal qualification criteria - focus on reducing loss rate before pursuing new volume",
-      "Zein: Re-engage 75 cold deals this week using Nitaqat/Vision 2030 value messaging - prioritize top 15 by deal size"
+      "Ursula: Immediate coaching session on deal qualification - 41 losses indicate poor lead scoring or premature pipeline entry",
+      "Zein: Clean 75 cold deals by Wednesday and re-engage top 10 by deal value with personalized Nitaqat/Emiratization compliance messaging"
     ],
     "risks": [
-      "$973K lost to contactability issues suggests poor lead quality or inadequate executive engagement strategy - may indicate CRM data quality problem",
-      "40% connection rate with only 3 wins ($184K) vs 44 losses ($1.3M) shows 7:1 loss-to-win ratio threatening quarterly targets and team morale"
+      "$973K lost to contact-ability in just 4 deals suggests targeting senior stakeholders without multi-threading - could lose more high-value enterprise deals",
+      "40% connect rate with zero wins MTD and $1.3M in losses creates Q2 revenue gap risk - current pipeline may not cover target"
     ]
   },
   "marketNews": [
@@ -35470,21 +35470,21 @@
       "tag": "Regulation",
       "color": "#D97706",
       "source": "HRSD Saudi",
-      "text": "Saudi Arabia mandates AI-powered recruitment transparency reporting for companies with 200+ employees by Q3 2026 under Vision 2030 employment goals"
+      "text": "Saudi Arabia raises Nitaqat green zone thresholds to 35% Saudi nationals for medium entities effective Q3 2026, driving urgent ATS adoption for compliance tracking"
     },
     {
       "icon": "📊",
       "tag": "M&A",
       "color": "#7C3AED",
       "source": "Bloomberg",
-      "text": "Oracle acquires regional HR platform Naseej for $320M, strengthening HCM footprint in GCC government sector"
+      "text": "Oracle acquires UAE-based HCM startup Nafis Technologies for $240M to strengthen Emiratization compliance capabilities across GCC government sector"
     },
     {
       "icon": "⚡",
       "tag": "Trend",
       "color": "#2563EB",
       "source": "Gartner",
-      "text": "UAE enterprises increase ATS budgets by 34% YoY as Emiratization compliance requirements expand to mid-market companies"
+      "text": "GCC enterprises accelerate AI-powered recruitment adoption with 67% planning ATS upgrades in 2026, up from 41% in 2025 per Q1 MENA HR Tech Survey"
     }
   ]
 }
