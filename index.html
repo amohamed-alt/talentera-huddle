@@ -231,6 +231,47 @@ body{font-family:var(--font);background:var(--page-bg);color:var(--text);-webkit
   text-decoration:underline;
 }
 
+/* ═══════════════════════════════════════════
+   EXECUTIVE MANAGER VIEW UPGRADE
+   ═══════════════════════════════════════════ */
+.manager-summary-bar{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  background:linear-gradient(135deg,#ffffff 0%,#f7faf8 100%);
+  border:1px solid var(--border);border-left:4px solid var(--green);
+  border-radius:var(--r-lg);box-shadow:var(--sh);padding:14px 18px;margin:0 0 14px;
+}
+.manager-summary-main{font-size:13px;font-weight:800;color:var(--text);line-height:1.45}
+.manager-summary-sub{font-size:10px;color:var(--muted);font-weight:600;margin-top:3px}
+.manager-summary-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.manager-chip{font-size:10px;font-weight:800;border-radius:999px;padding:6px 10px;border:1px solid var(--border);background:var(--surface2);white-space:nowrap}
+.manager-chip.red{color:var(--red);background:var(--red-bg);border-color:var(--red-bd)}
+.manager-chip.amber{color:var(--amber);background:var(--amber-bg);border-color:var(--amber-bd)}
+.manager-chip.green{color:var(--green);background:var(--green-bg);border-color:var(--green-bd)}
+.manager-chip.blue{color:var(--blue);background:var(--blue-bg);border-color:var(--blue-bd)}
+.manager-section-label{display:flex;align-items:center;gap:8px;margin:18px 0 10px;font-size:10px;font-weight:900;color:var(--text2);text-transform:uppercase;letter-spacing:.12em}
+.manager-section-label::after{content:"";height:1px;background:var(--border);flex:1}
+.manager-primary-card{border-top:3px solid var(--green)}
+.manager-critical-card{border-top:3px solid var(--red)}
+.manager-secondary{opacity:.96}
+.manager-secondary .card-hd,.manager-secondary.compact-section .compact-hd{background:#fbfdfc}
+.manager-secondary.collapsible:not(.open) .collapsible-body{display:none}
+.manager-secondary-note{font-size:10px;color:var(--muted);font-weight:700}
+.priority-card{border-top:3px solid var(--amber)}
+.priority-action{font-size:13px}
+.priority-desc{max-width:720px}
+.action-strip{grid-template-columns:repeat(4,minmax(0,1fr));position:relative}
+.action-card{min-height:92px}
+.action-card-v{font-size:26px}
+.compact-section#priorityLeadsSection{border-top:3px solid var(--red)}
+.compact-section#leadFunnelSection{border-top:3px solid var(--blue)}
+.compact-section#dataQualitySection{border-top:3px solid var(--amber)}
+#outreachCard{border-top:3px solid var(--cyan)}
+#rankCoverageCard{border-top:3px solid var(--amber)}
+.tbl th{position:sticky;top:0;z-index:1}
+.record-link::after{content:" ↗";font-size:9px;opacity:.45}
+@media(max-width:900px){.manager-summary-bar{align-items:flex-start;flex-direction:column}.manager-summary-actions{justify-content:flex-start}.action-strip{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.action-strip{grid-template-columns:1fr}.manager-chip{width:100%;text-align:center}}
+
 </style>
 </head>
 <body>
@@ -314,9 +355,19 @@ body{font-family:var(--font);background:var(--page-bg);color:var(--text);-webkit
           </div>
           <!-- /COMMAND CENTER PREVIEW -->
 
-          
+          <div class="manager-summary-bar" id="managerSummaryBar">
+            <div>
+              <div class="manager-summary-main" id="managerSummaryMain">Loading executive summary…</div>
+              <div class="manager-summary-sub" id="managerSummarySub">Prioritized for manager action.</div>
+            </div>
+            <div class="manager-summary-actions" id="managerSummaryActions"></div>
+          </div>
+
+          <div class="manager-section-label">Manager Action Plan</div>
 
           <div class="action-strip" id="managerActionStrip"></div>
+
+          <div class="manager-section-label">Critical Follow-ups</div>
 
           <div class="compact-section" id="priorityLeadsSection">
             <div class="compact-hd">
@@ -343,7 +394,9 @@ body{font-family:var(--font);background:var(--page-bg);color:var(--text);-webkit
             <div class="mini-list" id="dataQualityList"></div>
           </div>
 
-          <div class="compact-section collapsible" id="legacyKpiWrap">
+          <div class="manager-section-label">Detailed Performance</div>
+
+          <div class="compact-section collapsible manager-secondary" id="legacyKpiWrap">
             <div class="compact-hd">
               <div class="compact-title">📊 Detailed KPI Cards</div>
               <button class="collapse-toggle collapse-state" onclick="toggleCollapse('legacyKpiWrap')"></button>
@@ -353,7 +406,7 @@ body{font-family:var(--font);background:var(--page-bg);color:var(--text);-webkit
             </div>
           </div>
 
-          <div class="card">
+          <div class="card manager-secondary">
             <div class="card-hd">
               <div class="card-title"><div class="card-title-icon" style="background:var(--blue-bg)">&#128202;</div>Yesterday's Performance</div>
               <span class="badge bb" id="perfDate"></span>
@@ -367,14 +420,14 @@ body{font-family:var(--font);background:var(--page-bg);color:var(--text);-webkit
               <tbody id="perfBody"></tbody>
             </table></div>
           </div>
-          <div class="card">
+          <div class="card manager-secondary">
             <div class="card-hd">
               <div class="card-title"><div class="card-title-icon" style="background:var(--amber-bg)">&#128161;</div>Insights &amp; Recommendations</div>
               <span class="badge br" id="recBadge"></span>
             </div>
             <div id="recContainer"></div>
           </div>
-          <div class="card">
+          <div class="card manager-secondary">
             <div class="card-hd">
               <div class="card-title"><div class="card-title-icon" style="background:var(--blue-bg)">&#128317;</div>Acquisition Pipeline</div>
               <span class="badge bb" id="pipeTotal"></span>
@@ -389,7 +442,7 @@ body{font-family:var(--font);background:var(--page-bg);color:var(--text);-webkit
               <span id="pipeTotalAmt" style="font-family:var(--mono);font-size:16px;font-weight:600;color:var(--primary)"></span>
             </div>
           </div>
-          <div class="card">
+          <div class="card manager-secondary">
             <div class="card-hd">
               <div class="card-title"><div class="card-title-icon" style="background:var(--purple-bg)">&#9889;</div>AI Coaching Insights</div>
               <span class="badge bp">No Next Activity</span>
@@ -420,7 +473,9 @@ body{font-family:var(--font);background:var(--page-bg);color:var(--text);-webkit
           <!-- OUTREACH COVERAGE — under Leads Overview       -->
           <!-- reads D.outreachCoverage from data.json        -->
           <!-- ═══════════════════════════════════════════════ -->
-          <div class="card" id="outreachCard">
+          <div class="manager-section-label">Coverage Control</div>
+
+          <div class="card manager-primary-card" id="outreachCard">
             <div class="card-hd">
               <div class="card-title">
                 <div class="card-title-icon" style="background:var(--cyan-bg)">&#128225;</div>
@@ -487,7 +542,7 @@ body{font-family:var(--font);background:var(--page-bg);color:var(--text);-webkit
           </div>
           <!-- ═══════════════════════════════════════════════ -->
 
-          <div class="card">
+          <div class="card manager-critical-card" id="rankCoverageCard">
             <div class="card-hd">
               <div class="card-title"><div class="card-title-icon" style="background:var(--red-bg)">&#127919;</div>Rank A/B Coverage</div>
               <div style="display:flex;gap:5px" id="rankBadgeRow"></div>
@@ -665,6 +720,24 @@ function renderManagerAddons(){
   const cold=reps.reduce((s,r)=>s+(r.cold||[]).length,0), stuck=reps.reduce((s,r)=>s+(r.stuck||[]).length,0), noNext=reps.reduce((s,r)=>s+(r.needsAttention||[]).length,0);
   const risk=cold+stuck+noNext;
   const setHTML=(id,v)=>{const el=$(id); if(el) el.innerHTML=v;};
+  const summaryMain=$('managerSummaryMain'), summarySub=$('managerSummarySub'), summaryActions=$('managerSummaryActions');
+  if(summaryMain){
+    const topGap = notLeads>0 ? `Contact ${notLeads.toLocaleString()} eligible leads today` : 'Lead outreach is currently healthy';
+    const rankGap = untouched>0 ? `review ${untouched.toLocaleString()} Rank A/B accounts` : 'Rank A/B coverage is healthy';
+    const riskGap = risk>0 ? `check ${risk.toLocaleString()} pipeline risk signals` : 'pipeline risk is low';
+    summaryMain.innerHTML = `${topGap} · ${rankGap} · ${riskGap}`;
+  }
+  if(summarySub){
+    summarySub.textContent = `Current contact rate ${rate}% · ${contacted.toLocaleString()}/${total.toLocaleString()} eligible leads contacted`;
+  }
+  if(summaryActions){
+    summaryActions.innerHTML = [
+      `<span class="manager-chip ${notLeads?'red':'green'}">${notLeads.toLocaleString()} leads to contact</span>`,
+      `<span class="manager-chip ${untouched?'amber':'green'}">${untouched.toLocaleString()} Rank A/B untouched</span>`,
+      `<span class="manager-chip ${risk?'blue':'green'}">${risk.toLocaleString()} deal risks</span>`,
+      `<span class="manager-chip ${rate>=70?'green':rate>=40?'amber':'red'}">${rate}% contact rate</span>`
+    ].join('');
+  }
   setHTML('managerActionStrip',[
     {v:notLeads,l:'To Call Today',s:'Eligible leads with no connected call or completed meeting',c:'var(--red)'},
     {v:untouched,l:'Rank A/B Untouched',s:'High-priority accounts not contacted by new logic',c:'var(--amber)'},
@@ -678,7 +751,7 @@ function renderManagerAddons(){
     {t:'Rep Gap',v:Math.max(...reps.map(r=>((r.cold||[]).length+(r.stuck||[]).length+(r.needsAttention||[]).length)),0),d:'Highest risk signals for one rep',c:'var(--blue)'}
   ].map(x=>`<div class="action-card" style="--ac:${x.c}"><div class="action-card-v">${x.v.toLocaleString()}</div><div class="action-card-l">${x.t}</div><div class="action-card-s">${x.d}</div></div>`).join(''));
   const priority=(ct.notContactedList||[]).slice().sort((a,b)=>new Date(b.createdAt||0)-new Date(a.createdAt||0)).slice(0,8);
-  setHTML('priorityLeadList', priority.length?priority.map((l,i)=>`<div class="mini-row"><div class="mini-main"><div class="mini-name">${l.name||l.email||l.id||'Unknown lead'}</div><div class="mini-meta">${l.ownerName||'No owner'} · ${l.source||'No source'} · ${l.createdAt||'No date'}</div></div><div class="mini-score">#${i+1}</div></div>`).join(''):`<div class="mini-row"><div class="mini-main"><div class="mini-name">No priority leads available</div><div class="mini-meta">Waiting for outreachCoverage.notContactedList</div></div></div>`);
+  setHTML('priorityLeadList', priority.length?priority.map((l,i)=>`<div class="mini-row"><div class="mini-main"><div class="mini-name">${recordLink(l.name||l.email||l.id||'Unknown lead',l.hubspotUrl)}</div><div class="mini-meta">${esc(l.ownerName||'No owner')} · ${esc(l.source||'No source')} · ${esc(l.createdAt||'No date')}</div></div><div class="mini-score">#${i+1}</div></div>`).join(''):`<div class="mini-row"><div class="mini-main"><div class="mini-name">No priority leads available</div><div class="mini-meta">Waiting for outreachCoverage.notContactedList</div></div></div>`);
   const openDeals=Number(kM.openDealsSnap||team.openDeals||0), won=Number(kM.wonDeals||team.won||0);
   setHTML('leadFunnelGrid',[
     ['Eligible Leads',total,'var(--blue)'],['Contacted',contacted,'var(--green)'],['Not Contacted',notLeads,'var(--red)'],['Open Deals',openDeals,'var(--amber)'],['Won MTD',won,'var(--green)']
@@ -812,13 +885,13 @@ function renderOutreach(){
   setText("outreachLeadNotBadge", `${ncLeads.length} leads`);
   setText("outreachCoNotBadge", `${ncCos.length} companies`);
 
-  const leadRow = c => `<tr><td><div style="font-weight:600">${c.name || c.fullName || c.email || c.id || "Unknown"}</div><div style="font-family:var(--mono);font-size:9px;color:var(--muted)">${c.email || ""}</div></td><td style="font-size:11px;font-weight:600;color:${c.ownerColor || 'var(--text2)'}">${c.ownerName || c.ownerId || "—"}</td><td>${c.leadStatus ? `<span class="badge bb" style="font-size:8px">${c.leadStatus}</span>` : "<span style='color:var(--muted)'>—</span>"}</td><td style="font-size:10px;color:var(--muted)">${c.source || "—"}</td><td class="c" style="font-family:var(--mono);font-size:10px">${c.createdAt ? (c.createdAt+"").split("T")[0] : "—"}</td></tr>`;
+  const leadRow = c => `<tr><td><div style="font-weight:600">${recordLink(c.name || c.fullName || c.email || c.id || "Unknown", c.hubspotUrl)}</div><div style="font-family:var(--mono);font-size:9px;color:var(--muted)">${c.email || ""}</div></td><td style="font-size:11px;font-weight:600;color:${c.ownerColor || 'var(--text2)'}">${c.ownerName || c.ownerId || "—"}</td><td>${c.leadStatus ? `<span class="badge bb" style="font-size:8px">${c.leadStatus}</span>` : "<span style='color:var(--muted)'>—</span>"}</td><td style="font-size:10px;color:var(--muted)">${c.source || "—"}</td><td class="c" style="font-family:var(--mono);font-size:10px">${c.createdAt ? (c.createdAt+"").split("T")[0] : "—"}</td></tr>`;
   const slL = ncLeads.slice(0, 10), rlL = ncLeads.slice(10);
   setHTML("outreachLeadNotBody", slL.length ? slL.map(leadRow).join("") : `<tr><td colspan="5" style="text-align:center;color:var(--green);padding:14px;font-style:italic">✓ All leads have been contacted</td></tr>`);
   setHTML("outreachLeadNotBodyMore", rlL.map(leadRow).join(""));
   if($("outreachLeadNotToggle")){ $("outreachLeadNotToggle").style.display = rlL.length ? "block" : "none"; $("outreachLeadNotToggle").textContent = `▼ Show ${rlL.length} more`; }
 
-  const coRow = c => `<tr><td><div style="font-weight:600">${c.name || c.id || "Unknown"}</div><div style="font-size:9px;color:var(--muted)">${c.country || "Unknown"}${c.rank ? ` · Rank ${c.rank}` : ""}</div></td><td style="font-size:11px;font-weight:600;color:${c.ownerColor || 'var(--text2)'}">${c.ownerName || c.ownerId || "—"}</td><td class="c" style="font-size:10px;color:var(--muted);font-family:var(--mono)">${c.domain || "—"}</td><td class="c" style="font-family:var(--mono);font-size:10px">${c.createdAt ? (c.createdAt+"").split("T")[0] : "—"}</td></tr>`;
+  const coRow = c => `<tr><td><div style="font-weight:600">${recordLink(c.name || c.id || "Unknown", c.hubspotUrl)}</div><div style="font-size:9px;color:var(--muted)">${c.country || "Unknown"}${c.rank ? ` · Rank ${c.rank}` : ""}</div></td><td style="font-size:11px;font-weight:600;color:${c.ownerColor || 'var(--text2)'}">${c.ownerName || c.ownerId || "—"}</td><td class="c" style="font-size:10px;color:var(--muted);font-family:var(--mono)">${c.domain || "—"}</td><td class="c" style="font-family:var(--mono);font-size:10px">${c.createdAt ? (c.createdAt+"").split("T")[0] : "—"}</td></tr>`;
   const slC = ncCos.slice(0, 10), rlC = ncCos.slice(10);
   setHTML("outreachCoNotBody", slC.length ? slC.map(coRow).join("") : `<tr><td colspan="4" style="text-align:center;color:var(--green);padding:14px;font-style:italic">✓ All companies have been contacted</td></tr>`);
   setHTML("outreachCoNotBodyMore", rlC.map(coRow).join(""));
