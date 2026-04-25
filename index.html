@@ -510,11 +510,21 @@ function toggleUntouched(rank){
 
 /* ── Outreach show-more toggle ── */
 function toggleOutreach(key){
-  const mId="outreach"+key+"More",bId="outreach"+key+"Toggle",wKey="_oc"+key;
-  const open=window[wKey];
-  document.getElementById(mId).style.display=open?"none":"block";
-  document.getElementById(bId).textContent=open?"\u25bc Show more":"\u25b2 Show less";
-  window[wKey]=!open;
+  const mId = "outreach" + key + "More";
+  const bId = "outreach" + key + "Toggle";
+  const wKey = "_oc" + key;
+
+  const more = document.getElementById(mId);
+  const btn = document.getElementById(bId);
+
+  if(!more || !btn) return;
+
+  const open = !!window[wKey];
+
+  more.style.display = open ? "none" : "block";
+  btn.textContent = open ? "▼ Show more" : "▲ Show less";
+
+  window[wKey] = !open;
 }
 
 function sc(v,l,s,c,i){
@@ -541,66 +551,113 @@ function openDealsTable(show,rest,did){
    reads D.outreachCoverage from data.json
    ════════════════════════════════════════ */
 function renderOutreach(){
-  const oc = D && D.outreachCoverage;
-
   const card = $("outreachCard");
-  if(!oc){
-    if(card) card.style.display="none";
+
+  if(!card){
+    console.warn("outreachCard element not found");
     return;
   }
-  if(card) card.style.display="block";
 
-  // Reset expanded sections on each refresh/render
-  window._ocLeadNot = false;
-  window._ocCoNot = false;
-  if($("outreachLeadNotMore")) $("outreachLeadNotMore").style.display = "none";
-  if($("outreachCoNotMore")) $("outreachCoNotMore").style.display = "none";
+  const oc = D && D.outreachCoverage;
 
-  const rateColor = r => r>=70?"var(--green)":r>=40?"var(--amber)":"var(--red)";
-  const ct = oc.contacts  || {};
+  console.log("OUTREACH DEBUG", {
+    hasD: !!D,
+    hasCard: !!card,
+    hasOutreach: !!oc,
+    contactsTotal: oc?.contacts?.total,
+    companiesTotal: oc?.companies?.total
+  });
+
+  card.style.display = "block";
+
+  if(!oc){
+    card.innerHTML = `
+      <div class="card-hd">
+        <div class="card-title">
+          <div class="card-title-icon" style="background:var(--red-bg)">⚠️</div>
+          Lead Outreach Coverage
+        </div>
+      </div>
+      <div style="padding:16px 18px;color:var(--red);font-size:12px;font-weight:700">
+        outreachCoverage is missing from loaded data.json
+      </div>
+    `;
+    return;
+  }
+
+  const rateColor = r => r >= 70 ? "var(--green)" : r >= 40 ? "var(--amber)" : "var(--red)";
+  const ct = oc.contacts || {};
   const co = oc.companies || {};
   const ac = oc.activities || {};
 
-  // Header badges
-  $("outreachLeadBadge").textContent = `${ct.contacted||0}/${ct.total||0} leads`;
-  $("outreachCoBadge").textContent   = `${co.contacted||0}/${co.total||0} companies`;
+  const setText = (id, val) => {
+    const el = $(id);
+    if(el) el.textContent = val;
+  };
 
-  // 6 KPI boxes
+  const setHTML = (id, val) => {
+    const el = $(id);
+    if(el) el.innerHTML = val;
+  };
+
+  const setStyle = (id, prop, val) => {
+    const el = $(id);
+    if(el) el.style[prop] = val;
+  };
+
+  window._ocLeadNot = false;
+  window._ocCoNot = false;
+
+  setStyle("outreachLeadNotMore", "display", "none");
+  setStyle("outreachCoNotMore", "display", "none");
+
+  setText("outreachLeadBadge", `${ct.contacted || 0}/${ct.total || 0} leads`);
+  setText("outreachCoBadge", `${co.contacted || 0}/${co.total || 0} companies`);
+
   const kpis = [
-    { v: ct.total||0,        l:"Total Leads",             c:"var(--cyan)"  },
-    { v: ct.contacted||0,    l:"Contacted Leads",         c:"var(--green)" },
-    { v: ct.notContacted||0, l:"Not Contacted Leads",     c:"var(--red)"   },
-    { v: co.total||0,        l:"Total Companies",         c:"var(--cyan)"  },
-    { v: co.contacted||0,    l:"Contacted Companies",     c:"var(--green)" },
-    { v: co.notContacted||0, l:"Not Contacted Companies", c:"var(--amber)" },
+    { v: ct.total || 0,        l: "Total Leads",             c: "var(--cyan)"  },
+    { v: ct.contacted || 0,    l: "Contacted Leads",         c: "var(--green)" },
+    { v: ct.notContacted || 0, l: "Not Contacted Leads",     c: "var(--red)"   },
+    { v: co.total || 0,        l: "Total Companies",         c: "var(--cyan)"  },
+    { v: co.contacted || 0,    l: "Contacted Companies",     c: "var(--green)" },
+    { v: co.notContacted || 0, l: "Not Contacted Companies", c: "var(--amber)" },
   ];
-  $("outreachKpiGrid").innerHTML = kpis.map(k=>`
+
+  setHTML("outreachKpiGrid", kpis.map(k => `
     <div class="outreach-kpi-box">
-      <div class="outreach-kpi-val" style="color:${k.c}">${Number(k.v||0).toLocaleString()}</div>
+      <div class="outreach-kpi-val" style="color:${k.c}">${Number(k.v || 0).toLocaleString()}</div>
       <div class="outreach-kpi-lbl">${k.l}</div>
-    </div>`).join("");
+    </div>
+  `).join(""));
 
-  // Progress bars
-  const lr = ct.contactedRate||0;
-  const cr = co.contactedRate||0;
-  $("outreachLeadRateVal").textContent    = lr+"%";
-  $("outreachLeadRateVal").style.color    = rateColor(lr);
-  $("outreachLeadRateBar").style.width    = Math.min(lr,100)+"%";
-  $("outreachLeadRateBar").style.background = rateColor(lr);
-  $("outreachCoRateVal").textContent      = cr+"%";
-  $("outreachCoRateVal").style.color      = rateColor(cr);
-  $("outreachCoRateBar").style.width      = Math.min(cr,100)+"%";
-  $("outreachCoRateBar").style.background = rateColor(cr);
+  const lr = Number(ct.contactedRate || 0);
+  const cr = Number(co.contactedRate || 0);
 
-  // Activities row
-  $("outreachActCalls").textContent =
-    `📞 ${ac.callsLinkedToContacts || 0} / ${ac.totalCalls || 0} calls linked`;
-  $("outreachActMeetings").textContent =
-    `📅 ${ac.meetingsLinkedToContacts || 0} / ${ac.totalMeetings || 0} meetings linked`;
+  setText("outreachLeadRateVal", `${lr}%`);
+  setStyle("outreachLeadRateVal", "color", rateColor(lr));
+  setStyle("outreachLeadRateBar", "width", `${Math.max(0, Math.min(100, lr))}%`);
+  setStyle("outreachLeadRateBar", "background", rateColor(lr));
 
-  // ── Leads Not Contacted table ──────────────────────
+  setText("outreachCoRateVal", `${cr}%`);
+  setStyle("outreachCoRateVal", "color", rateColor(cr));
+  setStyle("outreachCoRateBar", "width", `${Math.max(0, Math.min(100, cr))}%`);
+  setStyle("outreachCoRateBar", "background", rateColor(cr));
+
+  setText(
+    "outreachActCalls",
+    `📞 ${ac.callsLinkedToContacts || 0} / ${ac.totalCalls || 0} calls linked`
+  );
+
+  setText(
+    "outreachActMeetings",
+    `📅 ${ac.meetingsLinkedToContacts || 0} / ${ac.totalMeetings || 0} meetings linked`
+  );
+
   const ncLeads = ct.notContactedList || [];
-  $("outreachLeadNotBadge").textContent = `${ncLeads.length} leads`;
+  const ncCos = co.notContactedList || [];
+
+  setText("outreachLeadNotBadge", `${ncLeads.length} leads`);
+  setText("outreachCoNotBadge", `${ncCos.length} companies`);
 
   const leadRow = c => `<tr>
     <td>
@@ -610,46 +667,64 @@ function renderOutreach(){
     <td style="font-size:11px;font-weight:600;color:${c.ownerColor || 'var(--text2)'}">
       ${c.ownerName || c.ownerId || "—"}
     </td>
-    <td>${c.leadStatus?`<span class="badge bb" style="font-size:8px">${c.leadStatus}</span>`:"<span style='color:var(--muted)'>—</span>"}</td>
-    <td style="font-size:10px;color:var(--muted)">${c.source||"—"}</td>
-    <td class="c" style="font-family:var(--mono);font-size:10px">${c.createdAt?(c.createdAt+"").split("T")[0]:"—"}</td>
-    <td style="font-size:9px;color:var(--muted);font-family:var(--mono)">${(c.companyIds||[]).slice(0,2).join(", ")+(((c.companyIds||[]).length>2)?" …":"")}</td>
+    <td>${c.leadStatus ? `<span class="badge bb" style="font-size:8px">${c.leadStatus}</span>` : "<span style='color:var(--muted)'>—</span>"}</td>
+    <td style="font-size:10px;color:var(--muted)">${c.source || "—"}</td>
+    <td class="c" style="font-family:var(--mono);font-size:10px">${c.createdAt ? (c.createdAt + "").split("T")[0] : "—"}</td>
+    <td style="font-size:9px;color:var(--muted);font-family:var(--mono)">
+      ${(c.companyIds || []).slice(0,2).join(", ") + (((c.companyIds || []).length > 2) ? " …" : "")}
+    </td>
   </tr>`;
 
-  const slL = ncLeads.slice(0,10), rlL = ncLeads.slice(10);
-  $("outreachLeadNotBody").innerHTML     = slL.length ? slL.map(leadRow).join("") : `<tr><td colspan="6" style="text-align:center;color:var(--green);padding:14px;font-style:italic">&#10003; All leads have been contacted</td></tr>`;
-  $("outreachLeadNotBodyMore").innerHTML = rlL.map(leadRow).join("");
-  if(rlL.length){
-    $("outreachLeadNotToggle").style.display="block";
-    $("outreachLeadNotToggle").textContent=`\u25bc Show ${rlL.length} more`;
-  } else {
-    $("outreachLeadNotToggle").style.display="none";
-  }
+  const slL = ncLeads.slice(0, 10);
+  const rlL = ncLeads.slice(10);
 
-  // ── Companies Not Contacted table ──────────────────
-  const ncCos = co.notContactedList || [];
-  $("outreachCoNotBadge").textContent = `${ncCos.length} companies`;
+  setHTML(
+    "outreachLeadNotBody",
+    slL.length
+      ? slL.map(leadRow).join("")
+      : `<tr><td colspan="6" style="text-align:center;color:var(--green);padding:14px;font-style:italic">✓ All leads have been contacted</td></tr>`
+  );
+
+  setHTML("outreachLeadNotBodyMore", rlL.map(leadRow).join(""));
+
+  if($("outreachLeadNotToggle")){
+    $("outreachLeadNotToggle").style.display = rlL.length ? "block" : "none";
+    $("outreachLeadNotToggle").textContent = `▼ Show ${rlL.length} more`;
+  }
 
   const coRow = c => `<tr>
     <td>
-      <div style="font-weight:600">${c.name||c.id||"Unknown"}</div>
-      <div style="font-size:9px;color:var(--muted)">${c.country || "Unknown"}${c.rank ? ` · Rank ${c.rank}` : ""}</div>
+      <div style="font-weight:600">${c.name || c.id || "Unknown"}</div>
+      <div style="font-size:9px;color:var(--muted)">
+        ${c.country || "Unknown"}${c.rank ? ` · Rank ${c.rank}` : ""}
+      </div>
     </td>
     <td style="font-size:11px;font-weight:600;color:${c.ownerColor || 'var(--text2)'}">
       ${c.ownerName || c.ownerId || "—"}
     </td>
-    <td class="c" style="font-size:10px;color:var(--muted);font-family:var(--mono)">${c.domain||"—"}</td>
-    <td class="c" style="font-family:var(--mono);font-size:10px">${c.createdAt?(c.createdAt+"").split("T")[0]:"—"}</td>
+    <td class="c" style="font-size:10px;color:var(--muted);font-family:var(--mono)">
+      ${c.domain || "—"}
+    </td>
+    <td class="c" style="font-family:var(--mono);font-size:10px">
+      ${c.createdAt ? (c.createdAt + "").split("T")[0] : "—"}
+    </td>
   </tr>`;
 
-  const slC = ncCos.slice(0,10), rlC = ncCos.slice(10);
-  $("outreachCoNotBody").innerHTML     = slC.length ? slC.map(coRow).join("") : `<tr><td colspan="4" style="text-align:center;color:var(--green);padding:14px;font-style:italic">&#10003; All companies have been contacted</td></tr>`;
-  $("outreachCoNotBodyMore").innerHTML = rlC.map(coRow).join("");
-  if(rlC.length){
-    $("outreachCoNotToggle").style.display="block";
-    $("outreachCoNotToggle").textContent=`\u25bc Show ${rlC.length} more`;
-  } else {
-    $("outreachCoNotToggle").style.display="none";
+  const slC = ncCos.slice(0, 10);
+  const rlC = ncCos.slice(10);
+
+  setHTML(
+    "outreachCoNotBody",
+    slC.length
+      ? slC.map(coRow).join("")
+      : `<tr><td colspan="4" style="text-align:center;color:var(--green);padding:14px;font-style:italic">✓ All companies have been contacted</td></tr>`
+  );
+
+  setHTML("outreachCoNotBodyMore", rlC.map(coRow).join(""));
+
+  if($("outreachCoNotToggle")){
+    $("outreachCoNotToggle").style.display = rlC.length ? "block" : "none";
+    $("outreachCoNotToggle").textContent = `▼ Show ${rlC.length} more`;
   }
 }
 
