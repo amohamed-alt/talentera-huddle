@@ -288,6 +288,18 @@ body{font-family:var(--font);background:var(--page-bg);color:var(--text);-webkit
 .fin-status.risk{background:var(--red-bg);color:var(--red);border:1px solid var(--red-bd)}
 .fin-empty{padding:20px;text-align:center;color:var(--muted);font-size:12px;font-style:italic}
 @media(max-width:1100px){.financial-summary-grid,.financial-split{grid-template-columns:1fr}}
+
+.financial-hero{display:flex;align-items:center;gap:18px;padding:20px 24px;margin-bottom:14px;background:linear-gradient(135deg,#ffffff 0%,#f7faf8 100%);border:1px solid var(--border);border-left:4px solid var(--green);border-radius:var(--r-lg);box-shadow:var(--sh)}
+.financial-hero-icon{width:58px;height:58px;border-radius:18px;background:var(--green-bg);border:1px solid var(--green-bd);display:flex;align-items:center;justify-content:center;font-size:28px;color:var(--green);flex-shrink:0}
+.financial-hero-title{font-size:20px;font-weight:900;color:var(--text);letter-spacing:-.03em}
+.financial-hero-sub{font-size:12px;color:var(--muted);line-height:1.6;margin-top:5px;max-width:760px}
+.financial-guide-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:14px}
+.financial-guide-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:14px;box-shadow:var(--sh-xs);border-top:3px solid var(--fc,var(--green))}
+.financial-guide-title{font-size:11px;font-weight:900;color:var(--text);margin-bottom:6px}
+.financial-guide-desc{font-size:10px;color:var(--muted);line-height:1.55}
+@media(max-width:1100px){.financial-guide-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:700px){.financial-hero{align-items:flex-start;flex-direction:column}.financial-guide-grid{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body>
@@ -299,7 +311,8 @@ body{font-family:var(--font);background:var(--page-bg);color:var(--text);-webkit
       <div class="logo-sub">Sales Command Center</div>
     </div>
     <div class="sidebar-section">Main</div>
-    <button class="nav-item active" onclick="switchTab('team')"><span class="nav-icon">&#127970;</span> Team Overview</button>
+    <button class="nav-item active" id="side-team" onclick="switchTab('team')"><span class="nav-icon">&#127970;</span> Team Overview</button>
+    <button class="nav-item" id="side-financial" onclick="switchTab('financial')"><span class="nav-icon">&#128176;</span> Financial Details</button>
     <div class="sidebar-section">Reps</div>
     <div id="sideRepLinks"></div>
     <div class="sidebar-bottom">
@@ -322,6 +335,7 @@ body{font-family:var(--font);background:var(--page-bg);color:var(--text);-webkit
     </div>
     <div class="tabs-bar" id="tabsBar">
       <button class="tab-btn active" id="tab-team" onclick="switchTab('team')">&#127962; Team</button>
+      <button class="tab-btn" id="tab-financial" onclick="switchTab('financial')">&#128176; Financial Details</button>
     </div>
     <div class="content">
       <div class="loading" id="loadingState">
@@ -631,6 +645,31 @@ body{font-family:var(--font);background:var(--page-bg);color:var(--text);-webkit
             <div id="newsContainer"></div>
           </div>
         </div>
+
+        <div class="panel" id="panel-financial">
+          <div class="financial-hero">
+            <div class="financial-hero-icon">&#128176;</div>
+            <div>
+              <div class="financial-hero-title">Financial Details</div>
+              <div class="financial-hero-sub">A dedicated view for answering the manager's money questions: what has already cashed, what is signed but not cashed yet, and which signed deals need follow-up before they become real revenue.</div>
+            </div>
+          </div>
+          <div class="financial-guide-grid">
+            <div class="financial-guide-card" style="--fc:var(--green)"><div class="financial-guide-title">Cashing Revenue</div><div class="financial-guide-desc">Deals already moved to Cashing / Closed Won. This is the clearest money signal.</div></div>
+            <div class="financial-guide-card" style="--fc:var(--amber)"><div class="financial-guide-title">Signed Contract</div><div class="financial-guide-desc">Signed / Booking deals that are waiting to move into Cashing.</div></div>
+            <div class="financial-guide-card" style="--fc:var(--blue)"><div class="financial-guide-title">Pending to Cash</div><div class="financial-guide-desc">Expected value still before Cashing. Use it to prioritize collection and activation follow-up.</div></div>
+            <div class="financial-guide-card" style="--fc:var(--purple)"><div class="financial-guide-title">Signed Date</div><div class="financial-guide-desc">Shows when the agreement was signed so the manager can track aging.</div></div>
+            <div class="financial-guide-card" style="--fc:var(--red)"><div class="financial-guide-title">Follow-up Status</div><div class="financial-guide-desc">Highlights delayed signed deals and keeps financial risk separate from the main dashboard.</div></div>
+          </div>
+          <div class="card financial-card" id="financialDetailsCard">
+            <div class="card-hd"><div class="card-title"><div class="card-title-icon" style="background:var(--green-bg)">&#128176;</div>Financial Details — Cashing / Signed</div><div style="display:flex;gap:5px;flex-wrap:wrap"><span class="badge bg" id="finCashingBadge"></span><span class="badge ba" id="finSignedBadge"></span></div></div>
+            <div class="financial-summary-grid" id="financialSummaryGrid"></div>
+            <div class="financial-split">
+              <div class="financial-subcard"><div class="financial-subhd"><div class="financial-subtitle" style="color:var(--green)">&#9989; Cashing</div><span class="fin-status ok" id="finCashingMini"></span></div><div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Deal / Company</th><th>Rep</th><th class="c">Amount</th><th class="c">Signed Date</th><th class="c">Cashing Date</th><th class="c">Days</th></tr></thead><tbody id="financialCashingBody"></tbody></table></div></div>
+              <div class="financial-subcard"><div class="financial-subhd"><div class="financial-subtitle" style="color:var(--amber)">&#128221; Signed / Booking</div><span class="fin-status warn" id="finSignedMini"></span></div><div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Waiting Deal</th><th>Rep</th><th class="c">Amount</th><th class="c">Signed Date</th><th class="c">Waiting</th><th class="c">Status</th></tr></thead><tbody id="financialSignedBody"></tbody></table></div></div>
+            </div>
+          </div>
+        </div>
         <div id="repPanels"></div>
       </div>
     </div>
@@ -662,7 +701,15 @@ function switchTab(id){
   $("tab-"+id)?.classList.add("active");
   $("panel-"+id)?.classList.add("active");
   if($("side-"+id))$("side-"+id).classList.add("active");
-  $("topbarTitle").textContent=D?(id==="team"?"Team Overview":(D.repData||[]).find(r=>r.name.toLowerCase().replace(/\s/g,"-")===id)?.name||id):"Team Overview";
+
+  const repName = D ? (D.repData||[]).find(r=>r.name.toLowerCase().replace(/\s/g,"-")===id)?.name : null;
+  const title = id === "team" ? "Team Overview" : id === "financial" ? "Financial Details" : (repName || id);
+  $("topbarTitle").textContent = title;
+  if($("topbarSub")){
+    $("topbarSub").textContent = id === "financial"
+      ? "Cashing revenue · Signed contracts · Pending to cash"
+      : D ? `Updated ${D.meta?.generatedAt||""} · Auto-refresh 5min` : "Loading...";
+  }
 }
 
 function toggleMore(id,btn,show,hide){
