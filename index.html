@@ -303,6 +303,48 @@ body{font-family:var(--font);background:var(--page-bg);color:var(--text);-webkit
 .qcq-logo{width:22px;height:22px;border-radius:7px;background:linear-gradient(135deg,var(--cyan),#16A34A);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;letter-spacing:0;box-shadow:0 0 0 1px rgba(255,255,255,.12) inset;flex-shrink:0}
 .qcq-logo-lg{width:58px;height:58px;border-radius:18px;background:linear-gradient(135deg,var(--cyan),#16A34A);color:#fff;display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:900;letter-spacing:0;box-shadow:0 8px 20px rgba(8,145,178,.22)}
 
+
+/* RETENTION RENEWAL DASHBOARD ADDON */
+.ret-period-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;padding:14px}
+.ret-period-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--sh);overflow:hidden;margin-bottom:14px}
+.ret-period-hd{padding:12px 18px;background:var(--surface2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:10px}
+.ret-period-title{font-size:11px;font-weight:900;color:var(--text2);text-transform:uppercase;letter-spacing:.08em}
+.ret-kpi{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:14px 12px;box-shadow:var(--sh-xs);position:relative;overflow:hidden}
+.ret-kpi::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:var(--rk,var(--green))}
+.ret-kpi-v{font-family:var(--mono);font-size:22px;font-weight:800;color:var(--rk,var(--text));line-height:1}
+.ret-kpi-l{font-size:8px;font-weight:900;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-top:8px}
+.ret-kpi-s{font-size:9px;color:var(--muted);font-weight:600;margin-top:3px}
+.ret-financial-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border-bottom:1px solid var(--border)}
+.ret-fin-box{background:var(--surface2);padding:16px 18px}
+.ret-fin-v{font-family:var(--mono);font-size:26px;font-weight:900;line-height:1}
+.ret-fin-l{font-size:8px;font-weight:900;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-top:8px}
+.ret-fin-s{font-size:10px;color:var(--text2);font-weight:700;margin-top:4px}
+.ret-coverage{padding:14px 18px}
+.ret-coverage-line{display:grid;grid-template-columns:160px 1fr 70px;gap:10px;align-items:center;margin-bottom:12px}
+.ret-coverage-label{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.08em}
+.ret-bar{height:8px;background:var(--page-bg);border-radius:999px;overflow:hidden}
+.ret-fill{height:100%;border-radius:999px;background:var(--rc,var(--green))}
+.ret-redline{border-left:3px solid var(--red)}
+.ret-amberline{border-left:3px solid var(--amber)}
+.ret-greenline{border-left:3px solid var(--green)}
+.ret-status-red{color:var(--red);font-weight:900}
+.ret-status-amber{color:var(--amber);font-weight:900}
+.ret-status-green{color:var(--green);font-weight:900}
+.ret-alert-row{display:flex;align-items:flex-start;gap:12px;padding:11px 14px;border-bottom:1px solid var(--border)}
+.ret-alert-row:last-child{border-bottom:0}
+.ret-alert-dot{width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;flex-shrink:0}
+.ret-alert-text{flex:1}
+.ret-alert-title{font-size:12px;font-weight:900;color:var(--text)}
+.ret-alert-desc{font-size:11px;color:var(--muted);line-height:1.55;margin-top:2px}
+.ret-owner-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.ret-owner-card{border:1px solid var(--border);background:var(--surface);border-radius:var(--r-lg);box-shadow:var(--sh);padding:14px;border-top:3px solid var(--oc,var(--green))}
+.ret-mini-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}
+.ret-mini{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px;text-align:center}
+.ret-mini-v{font-family:var(--mono);font-size:16px;font-weight:900}
+.ret-mini-l{font-size:7px;font-weight:900;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-top:4px}
+@media(max-width:1200px){.ret-period-grid{grid-template-columns:repeat(3,1fr)}.ret-financial-summary{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:900px){.ret-period-grid,.ret-owner-grid{grid-template-columns:1fr}.ret-financial-summary{grid-template-columns:1fr}.ret-coverage-line{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body>
@@ -677,30 +719,131 @@ body{font-family:var(--font);background:var(--page-bg);color:var(--text);-webkit
           <div class="financial-hero" style="border-left-color:var(--cyan)">
             <div class="qcq-logo-lg">🛡️</div>
             <div>
-              <div class="financial-hero-title">Retention Dashboard</div>
-              <div class="financial-hero-sub">Customer Success view for account health, churn risk, renewals, inactive accounts, no-activity accounts, and upsell opportunities.</div>
+              <div class="financial-hero-title">Retention Renewal Command Center</div>
+              <div class="financial-hero-sub">Focused on retention pipeline only: contract start date, contract renewal date, renewed / booked / cashed / churn / delayed renewals, associated company per deal, and activity coverage from both RM and CSM on the deal or the company.</div>
             </div>
           </div>
-          <div class="summary-grid" style="grid-template-columns:repeat(6,1fr);margin-bottom:14px">
-            <div class="sum-card"><div class="sum-card-accent" style="background:var(--green)"></div><div class="sum-val" id="retTotalAccounts">—</div><div class="sum-lbl">Total Accounts</div><div class="sum-sub">CS managed</div></div>
-            <div class="sum-card"><div class="sum-card-accent" style="background:var(--green)"></div><div class="sum-val" id="retHealthy">—</div><div class="sum-lbl">Healthy</div><div class="sum-sub">On track</div></div>
-            <div class="sum-card"><div class="sum-card-accent" style="background:var(--amber)"></div><div class="sum-val" id="retAtRisk">—</div><div class="sum-lbl">At Risk</div><div class="sum-sub">Needs action</div></div>
-            <div class="sum-card"><div class="sum-card-accent" style="background:var(--red)"></div><div class="sum-val" id="retInactive">—</div><div class="sum-lbl">Inactive</div><div class="sum-sub">No recent activity</div></div>
-            <div class="sum-card"><div class="sum-card-accent" style="background:var(--blue)"></div><div class="sum-val" id="retRenewals">—</div><div class="sum-lbl">Renewals</div><div class="sum-sub">Next 90 days</div></div>
-            <div class="sum-card"><div class="sum-card-accent" style="background:var(--purple)"></div><div class="sum-val" id="retUpsell">—</div><div class="sum-lbl">Upsell</div><div class="sum-sub">Opportunities</div></div>
+
+          <div class="manager-section-label">Retention KPIs — Yesterday</div>
+          <div class="ret-period-card">
+            <div class="ret-period-hd"><div class="ret-period-title">Yesterday Snapshot</div><span class="badge bb">Daily execution</span></div>
+            <div class="ret-period-grid">
+              <div class="ret-kpi" style="--rk:var(--blue)"><div class="ret-kpi-v" id="retYActivities">—</div><div class="ret-kpi-l">Activities</div><div class="ret-kpi-s">Calls + meetings + tasks</div></div>
+              <div class="ret-kpi" style="--rk:var(--green)"><div class="ret-kpi-v" id="retYRenewed">—</div><div class="ret-kpi-l">Renewed</div><div class="ret-kpi-s">New renewal deal won</div></div>
+              <div class="ret-kpi" style="--rk:var(--purple)"><div class="ret-kpi-v" id="retYBooked">—</div><div class="ret-kpi-l">Booked</div><div class="ret-kpi-s">Retention pipeline</div></div>
+              <div class="ret-kpi" style="--rk:var(--green)"><div class="ret-kpi-v" id="retYCashed">—</div><div class="ret-kpi-l">Cashed</div><div class="ret-kpi-s">Collected revenue</div></div>
+              <div class="ret-kpi" style="--rk:var(--red)"><div class="ret-kpi-v" id="retYChurn">—</div><div class="ret-kpi-l">Churn</div><div class="ret-kpi-s">Entered churn</div></div>
+              <div class="ret-kpi" style="--rk:var(--amber)"><div class="ret-kpi-v" id="retYDelayed">—</div><div class="ret-kpi-l">Delayed</div><div class="ret-kpi-s">New overdue renewals</div></div>
+            </div>
           </div>
-          <div class="command-health-grid">
-            <div class="command-card"><div class="command-card-top"><div class="command-card-title">Accounts Health</div><span class="command-card-accent" style="background:var(--green)"></span></div><div class="command-card-body"><div class="command-main-value" style="color:var(--green)" id="retHealthRate">—</div><div class="command-main-label">Healthy Rate</div><div class="command-bar"><div class="command-bar-fill" id="retHealthBar" style="background:var(--green);width:0%"></div></div></div></div>
-            <div class="command-card"><div class="command-card-top"><div class="command-card-title">Churn Risk</div><span class="command-card-accent" style="background:var(--red)"></span></div><div class="command-card-body"><div class="command-main-value" style="color:var(--red)" id="retChurnRisk">—</div><div class="command-main-label">Risk Accounts</div><div class="command-sub-row"><div class="command-mini"><div class="command-mini-v" style="color:var(--amber)" id="retWatch">—</div><div class="command-mini-l">Watch</div></div><div class="command-mini"><div class="command-mini-v" style="color:var(--red)" id="retCritical">—</div><div class="command-mini-l">Critical</div></div></div></div></div>
-            <div class="command-card"><div class="command-card-top"><div class="command-card-title">Renewal Pipeline</div><span class="command-card-accent" style="background:var(--blue)"></span></div><div class="command-card-body"><div class="command-main-value" style="color:var(--blue)" id="retRenewalValue">—</div><div class="command-main-label">Upcoming Value</div><div class="command-sub-row"><div class="command-mini"><div class="command-mini-v" style="color:var(--purple)" id="retMeetings30">—</div><div class="command-mini-l">Meetings 30d</div></div><div class="command-mini"><div class="command-mini-v" style="color:var(--blue)" id="retCalls30">—</div><div class="command-mini-l">Calls 30d</div></div></div></div></div>
+
+          <div class="manager-section-label">Retention KPIs — Month To Date</div>
+          <div class="ret-period-card">
+            <div class="ret-period-hd"><div class="ret-period-title">MTD Snapshot</div><span class="badge ba">Current month</span></div>
+            <div class="ret-period-grid">
+              <div class="ret-kpi" style="--rk:var(--blue)"><div class="ret-kpi-v" id="retMActivities">—</div><div class="ret-kpi-l">Activities</div><div class="ret-kpi-s">Calls + meetings + tasks</div></div>
+              <div class="ret-kpi" style="--rk:var(--green)"><div class="ret-kpi-v" id="retMRenewed">—</div><div class="ret-kpi-l">Renewed</div><div class="ret-kpi-s">Renewed this month</div></div>
+              <div class="ret-kpi" style="--rk:var(--purple)"><div class="ret-kpi-v" id="retMBooked">—</div><div class="ret-kpi-l">Booked</div><div class="ret-kpi-s" id="retMBookedValue">Retention value</div></div>
+              <div class="ret-kpi" style="--rk:var(--green)"><div class="ret-kpi-v" id="retMCashed">—</div><div class="ret-kpi-l">Cashed</div><div class="ret-kpi-s" id="retMCashedValue">Collected value</div></div>
+              <div class="ret-kpi" style="--rk:var(--red)"><div class="ret-kpi-v" id="retMChurn">—</div><div class="ret-kpi-l">Churn</div><div class="ret-kpi-s">Deals marked churn</div></div>
+              <div class="ret-kpi" style="--rk:var(--amber)"><div class="ret-kpi-v" id="retMDelayed">—</div><div class="ret-kpi-l">Delayed</div><div class="ret-kpi-s">Past renewal date</div></div>
+            </div>
           </div>
+
+          <div class="manager-section-label">Retention KPIs — Year To Date</div>
+          <div class="ret-period-card">
+            <div class="ret-period-hd"><div class="ret-period-title">YTD Snapshot</div><span class="badge bg">Current year</span></div>
+            <div class="ret-period-grid">
+              <div class="ret-kpi" style="--rk:var(--blue)"><div class="ret-kpi-v" id="retYtdActivities">—</div><div class="ret-kpi-l">Activities</div><div class="ret-kpi-s">All retention activities</div></div>
+              <div class="ret-kpi" style="--rk:var(--green)"><div class="ret-kpi-v" id="retYtdRenewed">—</div><div class="ret-kpi-l">Renewed</div><div class="ret-kpi-s">Renewals won YTD</div></div>
+              <div class="ret-kpi" style="--rk:var(--purple)"><div class="ret-kpi-v" id="retYtdBooked">—</div><div class="ret-kpi-l">Booked</div><div class="ret-kpi-s">Retention bookings</div></div>
+              <div class="ret-kpi" style="--rk:var(--green)"><div class="ret-kpi-v" id="retYtdCashed">—</div><div class="ret-kpi-l">Cashed</div><div class="ret-kpi-s">Collected YTD</div></div>
+              <div class="ret-kpi" style="--rk:var(--red)"><div class="ret-kpi-v" id="retYtdChurn">—</div><div class="ret-kpi-l">Churn</div><div class="ret-kpi-s">Churned this year</div></div>
+              <div class="ret-kpi" style="--rk:var(--amber)"><div class="ret-kpi-v" id="retYtdDelayed">—</div><div class="ret-kpi-l">Delayed</div><div class="ret-kpi-s">Renewal delays YTD</div></div>
+            </div>
+          </div>
+
+          <div class="manager-section-label">Retention Control KPIs</div>
+          <div class="summary-grid" style="grid-template-columns:repeat(8,1fr);margin-bottom:14px">
+            <div class="sum-card"><div class="sum-card-accent" style="background:var(--amber)"></div><div class="sum-val" id="retRenewalsThisYear">—</div><div class="sum-lbl">Renewals This Year</div><div class="sum-sub">From renewal date</div></div>
+            <div class="sum-card"><div class="sum-card-accent" style="background:var(--blue)"></div><div class="sum-val" id="retRenewalsNext90">—</div><div class="sum-lbl">Renewals 90D</div><div class="sum-sub" id="retRenewalsNext90Value">Pipeline value</div></div>
+            <div class="sum-card"><div class="sum-card-accent" style="background:var(--red)"></div><div class="sum-val" id="retNoActivity30">—</div><div class="sum-lbl">No Activity 30D</div><div class="sum-sub">Deal or company</div></div>
+            <div class="sum-card"><div class="sum-card-accent" style="background:var(--purple)"></div><div class="sum-val" id="retNoMeetingQuarter">—</div><div class="sum-lbl">No Meeting Quarter</div><div class="sum-sub">90+ days</div></div>
+            <div class="sum-card"><div class="sum-card-accent" style="background:var(--green)"></div><div class="sum-val" id="retRenewedWon">—</div><div class="sum-lbl">Renewed / Won</div><div class="sum-sub" id="retRenewedWonValue">Won value</div></div>
+            <div class="sum-card"><div class="sum-card-accent" style="background:var(--cyan)"></div><div class="sum-val" id="retCashing">—</div><div class="sum-lbl">Cashing</div><div class="sum-sub" id="retCashingValue">Collected value</div></div>
+            <div class="sum-card"><div class="sum-card-accent" style="background:var(--red)"></div><div class="sum-val" id="retChurnRisk">—</div><div class="sum-lbl">Churn Risk</div><div class="sum-sub">Critical accounts</div></div>
+            <div class="sum-card"><div class="sum-card-accent" style="background:var(--blue)"></div><div class="sum-val" id="retUpsell">—</div><div class="sum-lbl">Upsell / Cross-sell</div><div class="sum-sub">Coverage required</div></div>
+          </div>
+
+          <div class="manager-section-label">Renewal Phase — Contract Dates</div>
+          <div class="card">
+            <div class="card-hd"><div class="card-title"><div class="card-title-icon" style="background:var(--amber-bg)">📅</div>Monthly Renewal Pipeline</div><span class="badge ba">contract_renewal_date</span></div>
+            <div style="overflow-x:auto"><table class="tbl">
+              <thead><tr><th>Renewal Month</th><th class="c">Deals Count</th><th class="c">Renewal Value</th><th class="c">No Activity 30D</th><th class="c">No Meeting 90D</th><th>Manager Focus</th></tr></thead>
+              <tbody id="retRenewalMonthBody"></tbody>
+            </table></div>
+          </div>
+
           <div class="g2">
-            <div class="card manager-critical-card"><div class="card-hd"><div class="card-title"><div class="card-title-icon" style="background:var(--red-bg)">&#9888;</div>Accounts at Risk</div><span class="badge br" id="retRiskBadge">—</span></div><div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Account</th><th>CSM</th><th class="c">Health</th><th class="c">Last Activity</th><th class="c">Renewal</th><th>Reason</th></tr></thead><tbody id="retRiskBody"></tbody></table></div></div>
-            <div class="card manager-primary-card"><div class="card-hd"><div class="card-title"><div class="card-title-icon" style="background:var(--blue-bg)">&#128197;</div>Upcoming Renewals</div><span class="badge bb" id="retRenewalBadge">—</span></div><div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Account</th><th>CSM</th><th class="c">Renewal Date</th><th class="c">Days Left</th><th class="c">Value</th></tr></thead><tbody id="retRenewalBody"></tbody></table></div></div>
+            <div class="card">
+              <div class="card-hd"><div class="card-title"><div class="card-title-icon" style="background:var(--red-bg)">🚨</div>Smart Contact Alerts</div><span class="badge br">Action needed</span></div>
+              <div id="retAlertList"></div>
+            </div>
+            <div class="card">
+              <div class="card-hd"><div class="card-title"><div class="card-title-icon" style="background:var(--cyan-bg)">📊</div>Coverage Quality</div><span class="badge bc">Calls + Meetings</span></div>
+              <div class="ret-coverage" id="retCoverageBody"></div>
+            </div>
           </div>
+
+          <div class="manager-section-label">Deal + Company Activity Logic</div>
+          <div class="card">
+            <div class="card-hd"><div class="card-title"><div class="card-title-icon" style="background:var(--red-bg)">🔎</div>Renewal Deals Needing Attention</div><span class="badge br">Deal activity OR company activity</span></div>
+            <div style="overflow-x:auto"><table class="tbl">
+              <thead><tr><th>Deal</th><th>Associated Company</th><th>RM</th><th>CSM</th><th class="c">Contract Start</th><th class="c">Renewal Date</th><th class="c">Deal Activity</th><th class="c">Company Activity</th><th>Alert</th></tr></thead>
+              <tbody id="retRenewalDealBody"></tbody>
+            </table></div>
+          </div>
+
+          <div class="manager-section-label">Retention Financial Details</div>
+          <div class="card">
+            <div class="card-hd"><div class="card-title"><div class="card-title-icon" style="background:var(--green-bg)">💰</div>Booking / Cashing / Renewal Value</div><span class="badge bg">Retention financials</span></div>
+            <div class="ret-financial-summary">
+              <div class="ret-fin-box"><div class="ret-fin-v" style="color:var(--purple)" id="retBookingsValue">—</div><div class="ret-fin-l">Bookings MTD</div><div class="ret-fin-s" id="retBookingsCount">— accounts</div></div>
+              <div class="ret-fin-box"><div class="ret-fin-v" style="color:var(--green)" id="retCashingValueBox">—</div><div class="ret-fin-l">Cashing MTD</div><div class="ret-fin-s" id="retCashingCount">— accounts</div></div>
+              <div class="ret-fin-box"><div class="ret-fin-v" style="color:var(--amber)" id="retRenewalPipelineValueBox">—</div><div class="ret-fin-l">Renewal Pipeline</div><div class="ret-fin-s" id="retRenewalPipelineCount">— accounts · 90 days</div></div>
+              <div class="ret-fin-box"><div class="ret-fin-v" style="color:var(--blue)" id="retUpsellPipelineValue">—</div><div class="ret-fin-l">Upsell Pipeline</div><div class="ret-fin-s" id="retUpsellPipelineCount">— opportunities</div></div>
+            </div>
+          </div>
+
           <div class="g2">
-            <div class="card"><div class="card-hd"><div class="card-title"><div class="card-title-icon" style="background:var(--amber-bg)">&#128164;</div>No Activity Accounts</div><span class="badge ba" id="retNoActivityBadge">—</span></div><div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Account</th><th>CSM</th><th class="c">Days Since Activity</th><th>Next Action</th></tr></thead><tbody id="retNoActivityBody"></tbody></table></div></div>
-            <div class="card"><div class="card-hd"><div class="card-title"><div class="card-title-icon" style="background:var(--purple-bg)">&#128640;</div>Upsell Opportunities</div><span class="badge bp" id="retUpsellBadge">—</span></div><div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Account</th><th>CSM</th><th class="c">Potential</th><th>Reason</th></tr></thead><tbody id="retUpsellBody"></tbody></table></div></div>
+            <div class="card">
+              <div class="card-hd"><div class="card-title"><div class="card-title-icon" style="background:var(--amber-bg)">🔁</div>Accounts To Renew</div><span class="badge ba">Name · Value · Month</span></div>
+              <div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Account Name</th><th class="c">Value</th><th class="c">Month</th><th class="c">Days Left</th><th>Owner</th></tr></thead><tbody id="retAccountsToRenewBody"></tbody></table></div>
+            </div>
+            <div class="card">
+              <div class="card-hd"><div class="card-title"><div class="card-title-icon" style="background:var(--blue-bg)">🚀</div>Upsell / Cross-sell Coverage</div><span class="badge bb">Plus calls + meetings</span></div>
+              <div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Account</th><th class="c">Potential</th><th class="c">Calls 30D</th><th class="c">Meetings 90D</th><th class="c">Status</th></tr></thead><tbody id="retUpsellCoverageBody"></tbody></table></div>
+            </div>
+          </div>
+
+          <div class="manager-section-label">RM and CSM Ownership on Same Accounts</div>
+          <div class="card">
+            <div class="card-hd"><div class="card-title"><div class="card-title-icon" style="background:var(--purple-bg)">👥</div>RM / CSM Follow-up Matrix</div><span class="badge bp">Shared accountability</span></div>
+            <div style="overflow-x:auto"><table class="tbl">
+              <thead><tr><th>Account</th><th>RM Owner</th><th>CSM Owner</th><th class="c">RM Last Touch</th><th class="c">CSM Last Touch</th><th class="c">Last Meeting</th><th>Alert</th></tr></thead>
+              <tbody id="retOwnerMatrixBody"></tbody>
+            </table></div>
+          </div>
+
+          <div class="ret-owner-grid">
+            <div class="ret-owner-card" style="--oc:var(--blue)">
+              <div style="display:flex;align-items:center;justify-content:space-between"><div style="font-size:12px;font-weight:900;color:var(--blue)">RM View</div><span class="badge bb">Fadi · Jehad · Faizan</span></div>
+              <div class="ret-mini-stats" id="retRmStats"></div>
+            </div>
+            <div class="ret-owner-card" style="--oc:var(--cyan)">
+              <div style="display:flex;align-items:center;justify-content:space-between"><div style="font-size:12px;font-weight:900;color:var(--cyan)">CSM View</div><span class="badge bc">Customer Success</span></div>
+              <div class="ret-mini-stats" id="retCsmStats"></div>
+            </div>
           </div>
         </div>
         <div id="repPanels"></div>
@@ -1423,54 +1566,132 @@ function renderRetention(){
   if(!$('panel-retention')) return;
   const data = R || {};
   const summary = data.summary || {};
+  const kpi = data.kpi || {};
+  const control = data.control || summary || {};
+  const financial = data.financial || data.retentionFinancials || {};
   const accounts = data.accounts || [];
-  const tables = data.tables || {};
+  const deals = data.renewalDeals || data.deals || [];
+  const monthly = data.monthlyRenewals || data.renewalMonths || [];
+  const alerts = data.alerts || data.priorityActions || [];
+  const ownerActivity = data.ownerActivity || data.owners || data.csmPerformance || [];
+  const matrix = data.ownerMatrix || data.rmCsmMatrix || data.followupMatrix || [];
+  const upsellCoverage = data.upsellCoverage || data.upsellOpportunities || (data.tables?.upsellOpportunities || []);
+  const accountsToRenew = data.accountsToRenew || data.upcomingRenewals || (data.tables?.upcomingRenewals || []);
   const num = v => Number(v || 0);
-  const pct = (a,b) => b ? Math.round((a/b)*100) : 0;
   const money = v => fmt(v || 0);
-  const text = v => esc(v ?? '—');
-
-  const total = num(summary.totalAccounts || accounts.length);
-  const healthy = num(summary.healthyAccounts || accounts.filter(a => (a.healthStatus||'').toLowerCase()==='healthy').length);
-  const watch = num(summary.watchAccounts || accounts.filter(a => (a.healthStatus||'').toLowerCase()==='watch').length);
-  const atRisk = num(summary.atRiskAccounts || accounts.filter(a => /risk/i.test(a.healthStatus||'')).length);
-  const critical = num(summary.criticalAccounts || accounts.filter(a => /critical/i.test(a.healthStatus||'')).length);
-  const inactive = num(summary.inactiveAccounts || accounts.filter(a => num(a.daysSinceLastActivity)>30).length);
-  const renewals = num(summary.upcomingRenewals || (tables.upcomingRenewals||[]).length);
-  const upsell = num(summary.upsellOpportunities || (tables.upsellOpportunities||[]).length);
-  const healthRate = pct(healthy,total);
-
+  const textSafe = v => esc(v ?? '—');
   const setText=(id,val)=>{ if($(id)) $(id).textContent=val; };
-  setText('retTotalAccounts', total);
-  setText('retHealthy', healthy);
-  setText('retAtRisk', atRisk + critical);
-  setText('retInactive', inactive);
-  setText('retRenewals', renewals);
+  const val=(obj,...keys)=>{ for(const k of keys){ if(obj && obj[k] !== undefined && obj[k] !== null && obj[k] !== '') return obj[k]; } return 0; };
+  const p=(name)=> kpi[name] || summary[name] || {};
+  const y=p('yesterday'), m=p('mtd'), t=p('ytd');
+
+  setText('retYActivities', val(y,'activities','totalActivities','activityCount'));
+  setText('retYRenewed', val(y,'renewed','renewedCount'));
+  setText('retYBooked', val(y,'booked','booking','bookings'));
+  setText('retYCashed', val(y,'cashed','cashing','cashings'));
+  setText('retYChurn', val(y,'churn','churned'));
+  setText('retYDelayed', val(y,'delayed','delayedRenewals'));
+
+  setText('retMActivities', val(m,'activities','totalActivities','activityCount'));
+  setText('retMRenewed', val(m,'renewed','renewedCount'));
+  setText('retMBooked', val(m,'booked','booking','bookings'));
+  setText('retMCashed', val(m,'cashed','cashing','cashings'));
+  setText('retMChurn', val(m,'churn','churned'));
+  setText('retMDelayed', val(m,'delayed','delayedRenewals'));
+  setText('retMBookedValue', money(val(m,'bookedValue','bookingValue','bookingsValue')));
+  setText('retMCashedValue', money(val(m,'cashedValue','cashingValue','cashingsValue')));
+
+  setText('retYtdActivities', val(t,'activities','totalActivities','activityCount'));
+  setText('retYtdRenewed', val(t,'renewed','renewedCount'));
+  setText('retYtdBooked', val(t,'booked','booking','bookings'));
+  setText('retYtdCashed', val(t,'cashed','cashing','cashings'));
+  setText('retYtdChurn', val(t,'churn','churned'));
+  setText('retYtdDelayed', val(t,'delayed','delayedRenewals'));
+
+  const renewalsThisYear = val(control,'renewalsThisYear','totalRenewalsThisYear') || accounts.filter(a=>String(a.renewalDate||'').includes(String(new Date().getFullYear()))).length;
+  const renewals90 = val(control,'renewalsNext90','upcomingRenewals') || accountsToRenew.length;
+  const noAct30 = val(control,'noActivity30','noActivityAccounts') || accounts.filter(a=>num(a.daysSinceLastActivity)>30).length;
+  const noMeetingQuarter = val(control,'noMeetingQuarter','noMeeting90') || accounts.filter(a=>num(a.daysSinceLastMeeting)>90).length;
+  const renewedWon = val(control,'renewedWon','renewed') || val(m,'renewed','renewedCount');
+  const cashing = val(control,'cashing','cashings') || val(m,'cashed','cashing','cashings');
+  const churnRisk = val(control,'churnRisk','churnRiskAccounts') || accounts.filter(a=>/risk|critical/i.test(a.healthStatus||'')).length;
+  const upsell = val(control,'upsell','upsellOpportunities') || upsellCoverage.length;
+
+  setText('retRenewalsThisYear', renewalsThisYear);
+  setText('retRenewalsNext90', renewals90);
+  setText('retNoActivity30', noAct30);
+  setText('retNoMeetingQuarter', noMeetingQuarter);
+  setText('retRenewedWon', renewedWon);
+  setText('retCashing', cashing);
+  setText('retChurnRisk', churnRisk);
   setText('retUpsell', upsell);
-  setText('retHealthRate', healthRate + '%');
-  if($('retHealthBar')) $('retHealthBar').style.width = healthRate + '%';
-  setText('retChurnRisk', num(summary.churnRiskAccounts || atRisk + critical));
-  setText('retWatch', watch);
-  setText('retCritical', critical);
-  setText('retRenewalValue', money(summary.renewalPipelineValue || accounts.reduce((sum,a)=>sum+num(a.renewalValue),0)));
-  setText('retMeetings30', num(summary.meetingsCount30d || accounts.reduce((sum,a)=>sum+num(a.meetingsCount30d),0)));
-  setText('retCalls30', num(summary.callsCount30d || accounts.reduce((sum,a)=>sum+num(a.callsCount30d),0)));
+  setText('retRenewalsNext90Value', money(val(control,'renewalsNext90Value','renewalPipelineValue')));
+  setText('retRenewedWonValue', money(val(control,'renewedWonValue','renewedValue')));
+  setText('retCashingValue', money(val(control,'cashingValue','cashedValue')));
 
-  const riskRows = tables.accountsAtRisk || accounts.filter(a => /risk|critical/i.test(a.healthStatus||'')).slice(0,10);
-  const renewalRows = tables.upcomingRenewals || accounts.filter(a => a.renewalDate).sort((a,b)=>num(a.renewalDaysLeft)-num(b.renewalDaysLeft)).slice(0,10);
-  const noActRows = tables.noActivityAccounts || accounts.filter(a => num(a.daysSinceLastActivity)>30).sort((a,b)=>num(b.daysSinceLastActivity)-num(a.daysSinceLastActivity)).slice(0,10);
-  const upsellRows = tables.upsellOpportunities || accounts.filter(a => a.upsellPotential).slice(0,10);
+  const empty=(cols,msg)=>`<tr><td colspan="${cols}" style="text-align:center;color:var(--muted);padding:18px;font-style:italic">${msg}</td></tr>`;
+  const monthRows = monthly.length ? monthly : [
+    {month:'This Month',count:renewals90,value:val(control,'renewalsNext90Value','renewalPipelineValue'),noActivity30:noAct30,noMeeting90:noMeetingQuarter,focus:'Book renewal meetings'}
+  ];
+  if($('retRenewalMonthBody')) $('retRenewalMonthBody').innerHTML = monthRows.length ? monthRows.map(r=>`<tr><td><div style="font-weight:800">${textSafe(r.month||r.renewalMonth)}</div><div style="font-size:10px;color:var(--muted)">${textSafe(r.note||'Renewal window')}</div></td><td class="c" style="font-family:var(--mono);font-weight:700">${num(r.count||r.dealsCount)}</td><td class="c" style="font-family:var(--mono);font-weight:700">${money(r.value||r.renewalValue)}</td><td class="c ${num(r.noActivity30)>0?'ret-status-red':''}">${num(r.noActivity30)}</td><td class="c ${num(r.noMeeting90)>0?'ret-status-amber':''}">${num(r.noMeeting90)}</td><td><span class="badge ${num(r.noActivity30)>0?'br':'bb'}">${textSafe(r.focus||r.managerFocus||'Prepare pipeline')}</span></td></tr>`).join('') : empty(6,'No renewal months found');
 
-  setText('retRiskBadge', riskRows.length + ' accounts');
-  setText('retRenewalBadge', renewalRows.length + ' renewals');
-  setText('retNoActivityBadge', noActRows.length + ' accounts');
-  setText('retUpsellBadge', upsellRows.length + ' opportunities');
+  const alertRows = alerts.length ? alerts : [
+    {code:'30',title:'No contact in last 30 days',description:'No call, meeting, task, or note on deal or associated company.',severity:'critical'},
+    {code:'90',title:'No customer meeting this quarter',description:'Every customer should have at least one meeting per quarter.',severity:'warning'},
+    {code:'R',title:'Renewal due soon, no next activity',description:'Renewal within 60 days and no next meeting / task scheduled.',severity:'critical'}
+  ];
+  if($('retAlertList')) $('retAlertList').innerHTML = alertRows.map(a=>`<div class="ret-alert-row"><div class="ret-alert-dot" style="background:${/critical|red/i.test(a.severity||a.type||'')?'var(--red-bg);color:var(--red)':'var(--amber-bg);color:var(--amber)'}">${textSafe(a.code||a.icon||'!')}</div><div class="ret-alert-text"><div class="ret-alert-title">${textSafe(a.title||a.action||a.type)}</div><div class="ret-alert-desc">${textSafe(a.description||a.reason)}</div></div><span class="badge ${/critical|red/i.test(a.severity||a.type||'')?'br':'ba'}">${textSafe(a.label||a.severity||'Alert')}</span></div>`).join('');
 
-  const empty = (cols,msg) => `<tr><td colspan="${cols}" style="text-align:center;color:var(--muted);padding:18px;font-style:italic">${msg}</td></tr>`;
-  if($('retRiskBody')) $('retRiskBody').innerHTML = riskRows.length ? riskRows.map(a=>`<tr><td style="font-weight:700">${recordLink(a.companyName||a.accountName||a.name||a.companyId,a.hubspotUrl)}</td><td>${text(a.csmOwnerName||a.ownerName)}</td><td class="c"><span class="badge ${/critical/i.test(a.healthStatus||'')?'br':'ba'}">${text(a.healthStatus||'At Risk')}</span></td><td class="c">${text(a.lastActivityDate||a.daysSinceLastActivity+'d ago')}</td><td class="c">${text(a.renewalDate||'—')}</td><td>${text((a.riskReasons||[]).join(' · ') || a.recommendedAction || 'Needs CSM follow-up')}</td></tr>`).join('') : empty(6,'No at-risk accounts found');
-  if($('retRenewalBody')) $('retRenewalBody').innerHTML = renewalRows.length ? renewalRows.map(a=>`<tr><td style="font-weight:700">${recordLink(a.companyName||a.accountName||a.name||a.companyId,a.hubspotUrl)}</td><td>${text(a.csmOwnerName||a.ownerName)}</td><td class="c">${text(a.renewalDate)}</td><td class="c"><span style="font-family:var(--mono);font-weight:700;color:${num(a.renewalDaysLeft)<=30?'var(--red)':num(a.renewalDaysLeft)<=60?'var(--amber)':'var(--blue)'}">${text(a.renewalDaysLeft ?? '—')}</span></td><td class="c" style="font-family:var(--mono)">${money(a.renewalValue||a.revenue)}</td></tr>`).join('') : empty(5,'No upcoming renewals found');
-  if($('retNoActivityBody')) $('retNoActivityBody').innerHTML = noActRows.length ? noActRows.map(a=>`<tr><td style="font-weight:700">${recordLink(a.companyName||a.accountName||a.name||a.companyId,a.hubspotUrl)}</td><td>${text(a.csmOwnerName||a.ownerName)}</td><td class="c"><span style="font-family:var(--mono);font-weight:700;color:var(--red)">${num(a.daysSinceLastActivity)}</span></td><td>${text(a.recommendedAction||'Schedule check-in')}</td></tr>`).join('') : empty(4,'No inactive accounts found');
-  if($('retUpsellBody')) $('retUpsellBody').innerHTML = upsellRows.length ? upsellRows.map(a=>`<tr><td style="font-weight:700">${recordLink(a.companyName||a.accountName||a.name||a.companyId,a.hubspotUrl)}</td><td>${text(a.csmOwnerName||a.ownerName)}</td><td class="c" style="font-family:var(--mono)">${money(a.upsellValue||a.revenue||a.renewalValue)}</td><td>${text(a.upsellReason||'Healthy account with expansion potential')}</td></tr>`).join('') : empty(4,'No upsell opportunities found');
+  const coverage = data.coverage || {};
+  const covRows = [
+    ['Call Coverage', val(coverage,'callCoverage','callsCoverage') || 0, 'var(--blue)'],
+    ['Meeting Coverage', val(coverage,'meetingCoverage','meetingsCoverage') || 0, 'var(--purple)'],
+    ['Quarterly SLA', val(coverage,'quarterlyMeetingSla','quarterlySLA') || val(control,'meetingSLA') || 0, 'var(--amber)'],
+    ['Upsell Coverage', val(coverage,'upsellCoverage') || 0, 'var(--green)']
+  ];
+  if($('retCoverageBody')) $('retCoverageBody').innerHTML = covRows.map(([label,rate,color])=>`<div class="ret-coverage-line"><div class="ret-coverage-label">${label}</div><div class="ret-bar"><div class="ret-fill" style="--rc:${color};width:${Math.max(0,Math.min(100,num(rate)))}%"></div></div><div style="font-family:var(--mono);font-weight:800">${num(rate)}%</div></div>`).join('');
+
+  const dealRows = deals.length ? deals : accounts.filter(a=>a.renewalDate || a.contractRenewalDate).slice(0,10);
+  if($('retRenewalDealBody')) $('retRenewalDealBody').innerHTML = dealRows.length ? dealRows.map(d=>{
+    const alert=d.alert||d.recommendedAction||((num(d.daysSinceLastActivity)>30||num(d.daysSinceLastMeeting)>90)?'Needs follow-up':'Covered');
+    const line=/covered|healthy/i.test(alert)?'ret-greenline':/overdue|no activity|risk|critical/i.test(alert)?'ret-redline':'ret-amberline';
+    return `<tr class="${line}"><td><div style="font-weight:800">${recordLink(d.dealName||d.name||d.companyName||'Renewal deal',d.dealUrl||d.hubspotUrl)}</div><div style="font-size:10px;color:var(--muted)">Retention deal</div></td><td>${recordLink(d.companyName||d.associatedCompany||d.accountName||'—',d.companyUrl)}</td><td>${textSafe(d.rmOwnerName||d.rmOwner)}</td><td>${textSafe(d.csmOwnerName||d.csmOwner)}</td><td class="c">${textSafe(d.contractStartDate||d.startDate)}</td><td class="c ${num(d.renewalDaysLeft)<=30?'ret-status-red':num(d.renewalDaysLeft)<=60?'ret-status-amber':'ret-status-green'}">${textSafe(d.contractRenewalDate||d.renewalDate)}</td><td class="c">${textSafe(d.lastDealActivity||d.dealActivity||((d.daysSinceLastDealActivity||d.daysSinceLastActivity)?(d.daysSinceLastDealActivity||d.daysSinceLastActivity)+'d':'—'))}</td><td class="c">${textSafe(d.lastCompanyActivity||d.companyActivity||((d.daysSinceLastCompanyActivity)?d.daysSinceLastCompanyActivity+'d':'—'))}</td><td><span class="badge ${/covered|healthy/i.test(alert)?'bg':/overdue|no activity|risk|critical/i.test(alert)?'br':'ba'}">${textSafe(alert)}</span></td></tr>`;
+  }).join('') : empty(9,'No renewal deals found');
+
+  setText('retBookingsValue', money(val(financial,'bookingsMtdValue','bookedValue') || val(m,'bookedValue','bookingValue','bookingsValue')));
+  setText('retBookingsCount', `${val(financial,'bookingsMtdCount','bookingsCount') || val(m,'booked','booking','bookings')} accounts`);
+  setText('retCashingValueBox', money(val(financial,'cashingMtdValue','cashedValue') || val(m,'cashedValue','cashingValue','cashingsValue')));
+  setText('retCashingCount', `${val(financial,'cashingMtdCount','cashingCount') || val(m,'cashed','cashing','cashings')} accounts`);
+  setText('retRenewalPipelineValueBox', money(val(financial,'renewalPipelineValue') || val(control,'renewalsNext90Value','renewalPipelineValue')));
+  setText('retRenewalPipelineCount', `${renewals90} accounts · 90 days`);
+  setText('retUpsellPipelineValue', money(val(financial,'upsellPipelineValue','upsellValue')));
+  setText('retUpsellPipelineCount', `${upsell} opportunities`);
+
+  const renewRows = accountsToRenew.length ? accountsToRenew : dealRows.slice(0,8);
+  if($('retAccountsToRenewBody')) $('retAccountsToRenewBody').innerHTML = renewRows.length ? renewRows.map(a=>`<tr><td><div style="font-weight:800">${recordLink(a.companyName||a.accountName||a.name||a.dealName,a.hubspotUrl||a.companyUrl)}</div><div style="font-size:10px;color:var(--muted)">${textSafe(a.segment||'Renewal')}</div></td><td class="c" style="font-family:var(--mono);font-weight:700">${money(a.renewalValue||a.value||a.revenue)}</td><td class="c">${textSafe(a.month||a.renewalMonth||String(a.renewalDate||'').slice(0,7))}</td><td class="c ${num(a.renewalDaysLeft||a.daysLeft)<=30?'ret-status-red':num(a.renewalDaysLeft||a.daysLeft)<=60?'ret-status-amber':'ret-status-green'}">${textSafe(a.renewalDaysLeft??a.daysLeft??'—')}</td><td>${textSafe((a.rmOwnerName||a.rmOwner||'') + (a.csmOwnerName||a.csmOwner? ' / '+(a.csmOwnerName||a.csmOwner):''))}</td></tr>`).join('') : empty(5,'No accounts to renew found');
+
+  if($('retUpsellCoverageBody')) $('retUpsellCoverageBody').innerHTML = upsellCoverage.length ? upsellCoverage.map(a=>{
+    const calls=num(a.callsCount30d||a.calls30d), meetings=num(a.meetingsCount90d||a.meetings90d);
+    const status=a.status || (calls===0 && meetings===0?'Not contacted':meetings===0?'Needs meeting':'Covered');
+    const line=/covered/i.test(status)?'ret-greenline':/not contacted/i.test(status)?'ret-redline':'ret-amberline';
+    return `<tr class="${line}"><td><div style="font-weight:800">${recordLink(a.companyName||a.accountName||a.name,a.hubspotUrl||a.companyUrl)}</div><div style="font-size:10px;color:var(--muted)">${textSafe(a.reason||a.upsellReason||'Upsell potential')}</div></td><td class="c" style="font-family:var(--mono);font-weight:700">${money(a.potential||a.upsellValue||a.value)}</td><td class="c">${calls}</td><td class="c">${meetings}</td><td class="c"><span class="badge ${/covered/i.test(status)?'bg':/not contacted/i.test(status)?'br':'ba'}">${textSafe(status)}</span></td></tr>`;
+  }).join('') : empty(5,'No upsell coverage rows found');
+
+  const matrixRows = matrix.length ? matrix : dealRows.slice(0,8);
+  if($('retOwnerMatrixBody')) $('retOwnerMatrixBody').innerHTML = matrixRows.length ? matrixRows.map(a=>{
+    const alert=a.alert||a.recommendedAction||((num(a.rmDaysSinceLastTouch)>30)?'RM overdue':(num(a.csmDaysSinceLastTouch)>30)?'CSM overdue':'Healthy');
+    const line=/healthy|covered/i.test(alert)?'ret-greenline':/overdue|risk|critical/i.test(alert)?'ret-redline':'ret-amberline';
+    return `<tr class="${line}"><td><div style="font-weight:800">${recordLink(a.companyName||a.accountName||a.name||a.dealName,a.hubspotUrl||a.companyUrl)}</div><div style="font-size:10px;color:var(--muted)">${textSafe(a.note||a.renewalDate||'')}</div></td><td>${textSafe(a.rmOwnerName||a.rmOwner)}</td><td>${textSafe(a.csmOwnerName||a.csmOwner)}</td><td class="c">${textSafe(a.rmLastTouch||a.rmDaysSinceLastTouch&&(a.rmDaysSinceLastTouch+'d'))}</td><td class="c">${textSafe(a.csmLastTouch||a.csmDaysSinceLastTouch&&(a.csmDaysSinceLastTouch+'d'))}</td><td class="c">${textSafe(a.lastMeeting||a.daysSinceLastMeeting&&(a.daysSinceLastMeeting+'d'))}</td><td><span class="badge ${/healthy|covered/i.test(alert)?'bg':/overdue|risk|critical/i.test(alert)?'br':'ba'}">${textSafe(alert)}</span></td></tr>`;
+  }).join('') : empty(7,'No RM / CSM matrix found');
+
+  const rmStats = data.rmStats || {accounts: val(control,'rmAccounts')||accounts.length, noContact:noAct30, churnRisk, upsell};
+  const csmStats = data.csmStats || {accounts: val(control,'csmAccounts')||accounts.length, overdue: val(control,'csmOverdue')||0, quarterSla: val(control,'meetingSLA')||0, renewals: renewals90};
+  if($('retRmStats')) $('retRmStats').innerHTML = [
+    [rmStats.accounts,'Accounts'],[rmStats.noContact,'No Contact'],[rmStats.churnRisk,'Churn Risk'],[rmStats.upsell,'Upsell']
+  ].map(x=>`<div class="ret-mini"><div class="ret-mini-v">${textSafe(x[0])}</div><div class="ret-mini-l">${x[1]}</div></div>`).join('');
+  if($('retCsmStats')) $('retCsmStats').innerHTML = [
+    [csmStats.accounts,'Accounts'],[csmStats.overdue,'CSM Overdue'],[(csmStats.quarterSla||0)+'%','Quarter SLA'],[csmStats.renewals,'Renewals']
+  ].map(x=>`<div class="ret-mini"><div class="ret-mini-v">${textSafe(x[0])}</div><div class="ret-mini-l">${x[1]}</div></div>`).join('');
 }
 
 function updateClock(){
