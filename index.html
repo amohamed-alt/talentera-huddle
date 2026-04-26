@@ -271,7 +271,23 @@ body{font-family:var(--font);background:var(--page-bg);color:var(--text);-webkit
 .record-link::after{content:" ↗";font-size:9px;opacity:.45}
 @media(max-width:900px){.manager-summary-bar{align-items:flex-start;flex-direction:column}.manager-summary-actions{justify-content:flex-start}.action-strip{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:600px){.action-strip{grid-template-columns:1fr}.manager-chip{width:100%;text-align:center}}
-
+/* FINANCIAL DETAILS SECTION */
+.financial-card{border-top:3px solid var(--green)}
+.financial-summary-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border-bottom:1px solid var(--border)}
+.financial-box{background:var(--surface2);padding:16px 18px}
+.financial-v{font-family:var(--mono);font-size:28px;font-weight:800;line-height:1}
+.financial-l{font-size:9px;font-weight:900;color:var(--muted);text-transform:uppercase;letter-spacing:.12em;margin-top:8px}
+.financial-s{font-size:10px;color:var(--text2);font-weight:700;margin-top:5px}
+.financial-split{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:14px}
+.financial-subcard{border:1px solid var(--border);border-radius:var(--r);overflow:hidden;background:var(--surface);box-shadow:var(--sh-xs)}
+.financial-subhd{padding:11px 14px;background:var(--surface2);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;gap:8px}
+.financial-subtitle{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.1em;display:flex;align-items:center;gap:7px}
+.fin-status{font-size:8px;font-weight:900;padding:3px 8px;border-radius:999px;white-space:nowrap}
+.fin-status.ok{background:var(--green-bg);color:var(--green);border:1px solid var(--green-bd)}
+.fin-status.warn{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-bd)}
+.fin-status.risk{background:var(--red-bg);color:var(--red);border:1px solid var(--red-bd)}
+.fin-empty{padding:20px;text-align:center;color:var(--muted);font-size:12px;font-style:italic}
+@media(max-width:1100px){.financial-summary-grid,.financial-split{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -350,7 +366,68 @@ body{font-family:var(--font);background:var(--page-bg);color:var(--text);-webkit
                 <div class="command-card-body"><div class="command-main-value" style="color:var(--blue)" id="cpCallsMTD">&#8212;</div><div class="command-main-label">Calls MTD</div><div class="command-sub-row"><div class="command-mini"><div class="command-mini-v" style="color:var(--green)" id="cpConnMTD">&#8212;</div><div class="command-mini-l">Connected</div></div><div class="command-mini"><div class="command-mini-v" style="color:var(--purple)" id="cpMtgsMTD">&#8212;</div><div class="command-mini-l">Meetings</div></div></div></div>
               </div>
             </div>
+<div class="manager-section-label">Financial Details</div>
 
+<div class="card financial-card" id="financialDetailsCard">
+  <div class="card-hd">
+    <div class="card-title">
+      <div class="card-title-icon" style="background:var(--green-bg)">💰</div>
+      Financial Details
+    </div>
+    <div style="display:flex;gap:5px;flex-wrap:wrap">
+      <span class="badge bg" id="finCashingBadge">Cashing</span>
+      <span class="badge ba" id="finSignedBadge">Signed Contract</span>
+    </div>
+  </div>
+
+  <div class="financial-summary-grid" id="financialSummaryGrid"></div>
+
+  <div class="financial-split">
+    <div class="financial-subcard">
+      <div class="financial-subhd">
+        <div class="financial-subtitle" style="color:var(--green)">✅ Cashing</div>
+        <span class="badge bg" id="finCashingMini"></span>
+      </div>
+      <div style="overflow-x:auto">
+        <table class="tbl">
+          <thead>
+            <tr>
+              <th>Deal / Company</th>
+              <th>Rep</th>
+              <th class="c">Amount</th>
+              <th class="c">Signed</th>
+              <th class="c">Cashing</th>
+              <th class="c">Days</th>
+            </tr>
+          </thead>
+          <tbody id="financialCashingBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="financial-subcard">
+      <div class="financial-subhd">
+        <div class="financial-subtitle" style="color:var(--amber)">📝 Signed Contract / Booking</div>
+        <span class="badge ba" id="finSignedMini"></span>
+      </div>
+      <div style="overflow-x:auto">
+        <table class="tbl">
+          <thead>
+            <tr>
+              <th>Deal / Company</th>
+              <th>Rep</th>
+              <th class="c">Amount</th>
+              <th class="c">Signed</th>
+              <th class="c">Waiting</th>
+              <th class="c">Status</th>
+            </tr>
+          </thead>
+          <tbody id="financialSignedBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
             <div class="priority-card"><div class="priority-head"><div class="priority-title">&#9889; Priority Actions</div><span class="badge bb">Manager view</span></div><div class="priority-list" id="cpPriorityList"></div></div>
           </div>
           <!-- /COMMAND CENTER PREVIEW -->
@@ -710,7 +787,117 @@ function openDealsTable(show,rest,did){
 
 
 
+function renderFinancialDetails(){
+  const card = $("financialDetailsCard");
+  if(!card) return;
 
+  const fd = D?.financialDetails || {};
+  const summary = fd.summary || {};
+  const cashing = fd.cashing || [];
+  const signed = fd.signedContract || [];
+
+  const cashingAmount = Number(summary.cashingAmount || cashing.reduce((s,d)=>s+Number(d.amount||0),0));
+  const signedAmount = Number(summary.signedAmount || signed.reduce((s,d)=>s+Number(d.amount||0),0));
+  const pendingAmount = Number(summary.pendingToCashAmount || signedAmount);
+
+  const cashingCount = Number(summary.cashingCount ?? cashing.length);
+  const signedCount = Number(summary.signedCount ?? signed.length);
+
+  const setHTML = (id,v) => { const el=$(id); if(el) el.innerHTML=v; };
+  const setText = (id,v) => { const el=$(id); if(el) el.textContent=v; };
+
+  setText("finCashingBadge", `${cashingCount} Cashing · ${fmt(cashingAmount)}`);
+  setText("finSignedBadge", `${signedCount} Signed · ${fmt(signedAmount)}`);
+  setText("finCashingMini", `${cashingCount} deals`);
+  setText("finSignedMini", `${signedCount} deals`);
+
+  setHTML("financialSummaryGrid", [
+    {
+      v: fmt(cashingAmount),
+      l: "Cashing Revenue",
+      s: `${cashingCount} deals already in Cashing`,
+      c: "var(--green)"
+    },
+    {
+      v: fmt(signedAmount),
+      l: "Signed Contract",
+      s: `${signedCount} deals waiting for Cashing`,
+      c: "var(--amber)"
+    },
+    {
+      v: fmt(pendingAmount),
+      l: "Pending to Cash",
+      s: "Expected value still before Cashing",
+      c: "var(--blue)"
+    }
+  ].map(x => `
+    <div class="financial-box">
+      <div class="financial-v" style="color:${x.c}">${x.v}</div>
+      <div class="financial-l">${x.l}</div>
+      <div class="financial-s">${x.s}</div>
+    </div>
+  `).join(""));
+
+  const dateTxt = v => v ? esc(String(v).split("T")[0]) : "—";
+
+  const repBadge = d => `
+    <span class="badge" style="background:${d.repColor || "#64748b"}20;color:${d.repColor || "#64748b"}">
+      ${esc(d.rep || d.ownerName || "Unknown")}
+    </span>
+  `;
+
+  const cashingRow = d => `
+    <tr>
+      <td>
+        <div style="font-weight:700">${recordLink(d.name || d.dealName || "Unnamed deal", d.hubspotUrl)}</div>
+        <div style="font-size:9px;color:var(--muted)">${esc(d.stage || "Cashing")}</div>
+      </td>
+      <td>${repBadge(d)}</td>
+      <td class="c" style="font-family:var(--mono);font-weight:800;color:var(--green)">${fmt(d.amount || 0)}</td>
+      <td class="c" style="font-family:var(--mono);font-size:10px">${dateTxt(d.signedContractDate)}</td>
+      <td class="c" style="font-family:var(--mono);font-size:10px">${dateTxt(d.cashingDate)}</td>
+      <td class="c"><span class="fin-status ok">${d.daysFromSignedToCashing ?? "—"}d</span></td>
+    </tr>
+  `;
+
+  const signedRow = d => {
+    const days = d.daysWaiting ?? null;
+    const st = d.followUpStatus || (
+      days !== null && days >= 14 ? "Delayed" :
+      days !== null && days >= 7 ? "Needs follow-up" :
+      "Normal"
+    );
+    const cls = st === "Delayed" ? "risk" : st === "Needs follow-up" ? "warn" : "ok";
+
+    return `
+      <tr>
+        <td>
+          <div style="font-weight:700">${recordLink(d.name || d.dealName || "Unnamed deal", d.hubspotUrl)}</div>
+          <div style="font-size:9px;color:var(--muted)">${esc(d.stage || "Signed Contract / Booking")}</div>
+        </td>
+        <td>${repBadge(d)}</td>
+        <td class="c" style="font-family:var(--mono);font-weight:800;color:var(--amber)">${fmt(d.amount || 0)}</td>
+        <td class="c" style="font-family:var(--mono);font-size:10px">${dateTxt(d.signedContractDate)}</td>
+        <td class="c" style="font-family:var(--mono);font-size:10px">${days !== null ? days + "d" : "—"}</td>
+        <td class="c"><span class="fin-status ${cls}">${esc(st)}</span></td>
+      </tr>
+    `;
+  };
+
+  setHTML(
+    "financialCashingBody",
+    cashing.length
+      ? cashing.slice(0,10).map(cashingRow).join("")
+      : `<tr><td colspan="6"><div class="fin-empty">No Cashing deals available in current data.</div></td></tr>`
+  );
+
+  setHTML(
+    "financialSignedBody",
+    signed.length
+      ? signed.slice(0,10).map(signedRow).join("")
+      : `<tr><td colspan="6"><div class="fin-empty">No Signed Contract / Booking deals waiting for Cashing.</div></td></tr>`
+  );
+}
 function renderManagerAddons(){
   if(!D) return;
   const oc=D.outreachCoverage||{}, ct=oc.contacts||{}, co=oc.companies||{}, ss=oc.sourceSplit||oc.bySource||{};
@@ -921,7 +1108,8 @@ function render(){
   const activeReps=repData.filter(r=>r.type!=="view");
 
   renderCommandPreview();
-  renderManagerAddons();
+renderFinancialDetails();
+renderManagerAddons();
 
   $("topbarSub").textContent=`Updated ${meta.generatedAt||""} · Auto-refresh 5min`;
   $("perfDate").textContent=meta.yesterdayLabel||"";
