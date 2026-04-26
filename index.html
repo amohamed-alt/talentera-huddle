@@ -311,9 +311,9 @@ body{font-family:var(--font);background:var(--page-bg);color:var(--text);-webkit
       <div class="logo-sub">Sales Command Center</div>
     </div>
     <div class="sidebar-section">Main</div>
-    <button class="nav-item active" id="side-team" onclick="switchTab('team')"><span class="nav-icon">&#127970;</span> Team Overview</button>
-    <button class="nav-item" id="side-financial" onclick="switchTab('financial')"><span class="nav-icon">&#128176;</span> Financial Details</button>
-    <div class="sidebar-section">Reps</div>
+    <button class="nav-item active" id="side-acquisition" onclick="switchMainPanel('acquisition')"><span class="nav-icon">&#128202;</span> Acquisition</button>
+    <button class="nav-item" id="side-retention" onclick="switchMainPanel('retention')"><span class="nav-icon">&#128737;</span> Retention</button>
+    <div class="sidebar-section" id="repsSectionTitle">Acquisition Reps</div>
     <div id="sideRepLinks"></div>
     <div class="sidebar-bottom">
       <div class="user-row">
@@ -325,7 +325,7 @@ body{font-family:var(--font);background:var(--page-bg);color:var(--text);-webkit
   <div class="main-area">
     <div class="topbar">
       <div>
-        <div class="topbar-title" id="topbarTitle">Team Overview</div>
+        <div class="topbar-title" id="topbarTitle">Acquisition · Team Overview</div>
         <div class="topbar-sub" id="topbarSub">Loading...</div>
       </div>
       <div class="topbar-right">
@@ -334,7 +334,7 @@ body{font-family:var(--font);background:var(--page-bg);color:var(--text);-webkit
       </div>
     </div>
     <div class="tabs-bar" id="tabsBar">
-      <button class="tab-btn active" id="tab-team" onclick="switchTab('team')">&#127962; Team</button>
+      <button class="tab-btn active" id="tab-team" onclick="switchTab('team')">&#127962; Team Overview</button>
       <button class="tab-btn" id="tab-financial" onclick="switchTab('financial')">&#128176; Financial Details</button>
     </div>
     <div class="content">
@@ -670,6 +670,36 @@ body{font-family:var(--font);background:var(--page-bg);color:var(--text);-webkit
             </div>
           </div>
         </div>
+        <div class="panel" id="panel-retention">
+          <div class="financial-hero" style="border-left-color:var(--cyan)">
+            <div class="financial-hero-icon" style="background:var(--cyan-bg);border-color:rgba(8,145,178,.2);color:var(--cyan)">&#128737;</div>
+            <div>
+              <div class="financial-hero-title">Retention Dashboard</div>
+              <div class="financial-hero-sub">Customer Success view for account health, churn risk, renewals, inactive accounts, no-activity accounts, and upsell opportunities.</div>
+            </div>
+          </div>
+          <div class="summary-grid" style="grid-template-columns:repeat(6,1fr);margin-bottom:14px">
+            <div class="sum-card"><div class="sum-card-accent" style="background:var(--green)"></div><div class="sum-val" id="retTotalAccounts">—</div><div class="sum-lbl">Total Accounts</div><div class="sum-sub">CS managed</div></div>
+            <div class="sum-card"><div class="sum-card-accent" style="background:var(--green)"></div><div class="sum-val" id="retHealthy">—</div><div class="sum-lbl">Healthy</div><div class="sum-sub">On track</div></div>
+            <div class="sum-card"><div class="sum-card-accent" style="background:var(--amber)"></div><div class="sum-val" id="retAtRisk">—</div><div class="sum-lbl">At Risk</div><div class="sum-sub">Needs action</div></div>
+            <div class="sum-card"><div class="sum-card-accent" style="background:var(--red)"></div><div class="sum-val" id="retInactive">—</div><div class="sum-lbl">Inactive</div><div class="sum-sub">No recent activity</div></div>
+            <div class="sum-card"><div class="sum-card-accent" style="background:var(--blue)"></div><div class="sum-val" id="retRenewals">—</div><div class="sum-lbl">Renewals</div><div class="sum-sub">Next 90 days</div></div>
+            <div class="sum-card"><div class="sum-card-accent" style="background:var(--purple)"></div><div class="sum-val" id="retUpsell">—</div><div class="sum-lbl">Upsell</div><div class="sum-sub">Opportunities</div></div>
+          </div>
+          <div class="command-health-grid">
+            <div class="command-card"><div class="command-card-top"><div class="command-card-title">Accounts Health</div><span class="command-card-accent" style="background:var(--green)"></span></div><div class="command-card-body"><div class="command-main-value" style="color:var(--green)" id="retHealthRate">—</div><div class="command-main-label">Healthy Rate</div><div class="command-bar"><div class="command-bar-fill" id="retHealthBar" style="background:var(--green);width:0%"></div></div></div></div>
+            <div class="command-card"><div class="command-card-top"><div class="command-card-title">Churn Risk</div><span class="command-card-accent" style="background:var(--red)"></span></div><div class="command-card-body"><div class="command-main-value" style="color:var(--red)" id="retChurnRisk">—</div><div class="command-main-label">Risk Accounts</div><div class="command-sub-row"><div class="command-mini"><div class="command-mini-v" style="color:var(--amber)" id="retWatch">—</div><div class="command-mini-l">Watch</div></div><div class="command-mini"><div class="command-mini-v" style="color:var(--red)" id="retCritical">—</div><div class="command-mini-l">Critical</div></div></div></div></div>
+            <div class="command-card"><div class="command-card-top"><div class="command-card-title">Renewal Pipeline</div><span class="command-card-accent" style="background:var(--blue)"></span></div><div class="command-card-body"><div class="command-main-value" style="color:var(--blue)" id="retRenewalValue">—</div><div class="command-main-label">Upcoming Value</div><div class="command-sub-row"><div class="command-mini"><div class="command-mini-v" style="color:var(--purple)" id="retMeetings30">—</div><div class="command-mini-l">Meetings 30d</div></div><div class="command-mini"><div class="command-mini-v" style="color:var(--blue)" id="retCalls30">—</div><div class="command-mini-l">Calls 30d</div></div></div></div></div>
+          </div>
+          <div class="g2">
+            <div class="card manager-critical-card"><div class="card-hd"><div class="card-title"><div class="card-title-icon" style="background:var(--red-bg)">&#9888;</div>Accounts at Risk</div><span class="badge br" id="retRiskBadge">—</span></div><div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Account</th><th>CSM</th><th class="c">Health</th><th class="c">Last Activity</th><th class="c">Renewal</th><th>Reason</th></tr></thead><tbody id="retRiskBody"></tbody></table></div></div>
+            <div class="card manager-primary-card"><div class="card-hd"><div class="card-title"><div class="card-title-icon" style="background:var(--blue-bg)">&#128197;</div>Upcoming Renewals</div><span class="badge bb" id="retRenewalBadge">—</span></div><div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Account</th><th>CSM</th><th class="c">Renewal Date</th><th class="c">Days Left</th><th class="c">Value</th></tr></thead><tbody id="retRenewalBody"></tbody></table></div></div>
+          </div>
+          <div class="g2">
+            <div class="card"><div class="card-hd"><div class="card-title"><div class="card-title-icon" style="background:var(--amber-bg)">&#128164;</div>No Activity Accounts</div><span class="badge ba" id="retNoActivityBadge">—</span></div><div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Account</th><th>CSM</th><th class="c">Days Since Activity</th><th>Next Action</th></tr></thead><tbody id="retNoActivityBody"></tbody></table></div></div>
+            <div class="card"><div class="card-hd"><div class="card-title"><div class="card-title-icon" style="background:var(--purple-bg)">&#128640;</div>Upsell Opportunities</div><span class="badge bp" id="retUpsellBadge">—</span></div><div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Account</th><th>CSM</th><th class="c">Potential</th><th>Reason</th></tr></thead><tbody id="retUpsellBody"></tbody></table></div></div>
+          </div>
+        </div>
         <div id="repPanels"></div>
       </div>
     </div>
@@ -677,6 +707,7 @@ body{font-family:var(--font);background:var(--page-bg);color:var(--text);-webkit
 </div>
 <script>
 let D=null;
+let R=null;
 const $=id=>document.getElementById(id);
 const fmt=n=>{const v=parseFloat(n);if(!v||isNaN(v))return"$0";if(v>=1e6)return`$${(v/1e6).toFixed(1)}M`;if(v>=1e3)return`$${Math.round(v/1e3)}K`;return`$${Math.round(v)}`;};
 const rcColor=r=>r>=50?"var(--green)":r>=30?"var(--amber)":"var(--red)";
@@ -694,21 +725,45 @@ function recordLink(label,url,className="record-link"){
 
 const SC=["#4F46E5","#7C3AED","#2563EB","#0891B2","#059669","#D97706","#DC2626","#be185d","#16A34A","#6B7280"];
 
+function switchMainPanel(panel){
+  document.querySelectorAll(".nav-item").forEach(n=>n.classList.remove("active"));
+  if(panel === "retention"){
+    document.querySelectorAll(".tab-btn").forEach(t=>t.classList.remove("active"));
+    document.querySelectorAll(".panel").forEach(p=>p.classList.remove("active"));
+    $("tabsBar").style.display = "none";
+    $("side-retention")?.classList.add("active");
+    $("panel-retention")?.classList.add("active");
+    if($("repsSectionTitle")) $("repsSectionTitle").style.display = "none";
+    if($("sideRepLinks")) $("sideRepLinks").style.display = "none";
+    $("topbarTitle").textContent = "Retention";
+    if($("topbarSub")) $("topbarSub").textContent = R?.generatedAt ? `Updated ${R.generatedAt} · Customer Success` : "Accounts health · Churn risk · Renewals · Upsell";
+    renderRetention();
+    return;
+  }
+  $("tabsBar").style.display = "flex";
+  if($("repsSectionTitle")) $("repsSectionTitle").style.display = "block";
+  if($("sideRepLinks")) $("sideRepLinks").style.display = "block";
+  $("side-acquisition")?.classList.add("active");
+  const activeSubTab = document.querySelector(".tab-btn.active")?.id?.replace("tab-","") || "team";
+  switchTab(activeSubTab === "retention" ? "team" : activeSubTab);
+}
+
 function switchTab(id){
+  $("tabsBar").style.display = "flex";
+  if($("repsSectionTitle")) $("repsSectionTitle").style.display = "block";
+  if($("sideRepLinks")) $("sideRepLinks").style.display = "block";
   document.querySelectorAll(".tab-btn").forEach(t=>t.classList.remove("active"));
   document.querySelectorAll(".panel").forEach(p=>p.classList.remove("active"));
   document.querySelectorAll(".nav-item").forEach(n=>n.classList.remove("active"));
+  $("side-acquisition")?.classList.add("active");
   $("tab-"+id)?.classList.add("active");
   $("panel-"+id)?.classList.add("active");
-  if($("side-"+id))$("side-"+id).classList.add("active");
-
+  if($("side-"+id) && id !== "financial") $("side-"+id).classList.add("active");
   const repName = D ? (D.repData||[]).find(r=>r.name.toLowerCase().replace(/\s/g,"-")===id)?.name : null;
-  const title = id === "team" ? "Team Overview" : id === "financial" ? "Financial Details" : (repName || id);
+  const title = id === "team" ? "Acquisition · Team Overview" : id === "financial" ? "Acquisition · Financial Details" : `Acquisition · ${repName || id}`;
   $("topbarTitle").textContent = title;
   if($("topbarSub")){
-    $("topbarSub").textContent = id === "financial"
-      ? "Cashing revenue · Signed contracts · Pending to cash"
-      : D ? `Updated ${D.meta?.generatedAt||""} · Auto-refresh 5min` : "Loading...";
+    $("topbarSub").textContent = id === "financial" ? "Cashing revenue · Signed contracts · Pending to cash" : D ? `Updated ${D.meta?.generatedAt||""} · Auto-refresh 5min` : "Loading...";
   }
 }
 
@@ -1095,8 +1150,13 @@ async function loadData(){
     const res=await fetch("./data.json?t="+Date.now());
     if(!res.ok)throw new Error();
     D=await res.json();
+    try{
+      const rres=await fetch("./data-retention.json?t="+Date.now());
+      R=rres.ok ? await rres.json() : null;
+    }catch(_){ R=null; }
   }catch(e){
     D={meta:{yesterdayLabel:"No data",generatedAt:"--"},kpi:{yesterday:{},mtd:{},ytd:{}},team:{},repData:[],stageData:[],topInactiveRankAccounts:[],rankTotals:{},autoRecs:[],closedWon:[],closedLost:[],lostByReason:{},marketNews:[]};
+    R=null;
   }
   render();
   ri.classList.remove("spin");
@@ -1105,6 +1165,7 @@ async function loadData(){
 function render(){
   $("loadingState").style.display="none";
   $("dashMain").style.display="block";
+  renderRetention();
 
   const meta=D.meta||{},repData=D.repData||[],team=D.team||{},stageData=D.stageData||[];
   const kY=D.kpi?.yesterday||{},kM=D.kpi?.mtd||{},kT=D.kpi?.ytd||{};
@@ -1355,9 +1416,63 @@ renderManagerAddons();
   });
 }
 
+function renderRetention(){
+  if(!$('panel-retention')) return;
+  const data = R || {};
+  const summary = data.summary || {};
+  const accounts = data.accounts || [];
+  const tables = data.tables || {};
+  const num = v => Number(v || 0);
+  const pct = (a,b) => b ? Math.round((a/b)*100) : 0;
+  const money = v => fmt(v || 0);
+  const text = v => esc(v ?? '—');
+
+  const total = num(summary.totalAccounts || accounts.length);
+  const healthy = num(summary.healthyAccounts || accounts.filter(a => (a.healthStatus||'').toLowerCase()==='healthy').length);
+  const watch = num(summary.watchAccounts || accounts.filter(a => (a.healthStatus||'').toLowerCase()==='watch').length);
+  const atRisk = num(summary.atRiskAccounts || accounts.filter(a => /risk/i.test(a.healthStatus||'')).length);
+  const critical = num(summary.criticalAccounts || accounts.filter(a => /critical/i.test(a.healthStatus||'')).length);
+  const inactive = num(summary.inactiveAccounts || accounts.filter(a => num(a.daysSinceLastActivity)>30).length);
+  const renewals = num(summary.upcomingRenewals || (tables.upcomingRenewals||[]).length);
+  const upsell = num(summary.upsellOpportunities || (tables.upsellOpportunities||[]).length);
+  const healthRate = pct(healthy,total);
+
+  const setText=(id,val)=>{ if($(id)) $(id).textContent=val; };
+  setText('retTotalAccounts', total);
+  setText('retHealthy', healthy);
+  setText('retAtRisk', atRisk + critical);
+  setText('retInactive', inactive);
+  setText('retRenewals', renewals);
+  setText('retUpsell', upsell);
+  setText('retHealthRate', healthRate + '%');
+  if($('retHealthBar')) $('retHealthBar').style.width = healthRate + '%';
+  setText('retChurnRisk', num(summary.churnRiskAccounts || atRisk + critical));
+  setText('retWatch', watch);
+  setText('retCritical', critical);
+  setText('retRenewalValue', money(summary.renewalPipelineValue || accounts.reduce((sum,a)=>sum+num(a.renewalValue),0)));
+  setText('retMeetings30', num(summary.meetingsCount30d || accounts.reduce((sum,a)=>sum+num(a.meetingsCount30d),0)));
+  setText('retCalls30', num(summary.callsCount30d || accounts.reduce((sum,a)=>sum+num(a.callsCount30d),0)));
+
+  const riskRows = tables.accountsAtRisk || accounts.filter(a => /risk|critical/i.test(a.healthStatus||'')).slice(0,10);
+  const renewalRows = tables.upcomingRenewals || accounts.filter(a => a.renewalDate).sort((a,b)=>num(a.renewalDaysLeft)-num(b.renewalDaysLeft)).slice(0,10);
+  const noActRows = tables.noActivityAccounts || accounts.filter(a => num(a.daysSinceLastActivity)>30).sort((a,b)=>num(b.daysSinceLastActivity)-num(a.daysSinceLastActivity)).slice(0,10);
+  const upsellRows = tables.upsellOpportunities || accounts.filter(a => a.upsellPotential).slice(0,10);
+
+  setText('retRiskBadge', riskRows.length + ' accounts');
+  setText('retRenewalBadge', renewalRows.length + ' renewals');
+  setText('retNoActivityBadge', noActRows.length + ' accounts');
+  setText('retUpsellBadge', upsellRows.length + ' opportunities');
+
+  const empty = (cols,msg) => `<tr><td colspan="${cols}" style="text-align:center;color:var(--muted);padding:18px;font-style:italic">${msg}</td></tr>`;
+  if($('retRiskBody')) $('retRiskBody').innerHTML = riskRows.length ? riskRows.map(a=>`<tr><td style="font-weight:700">${recordLink(a.companyName||a.accountName||a.name||a.companyId,a.hubspotUrl)}</td><td>${text(a.csmOwnerName||a.ownerName)}</td><td class="c"><span class="badge ${/critical/i.test(a.healthStatus||'')?'br':'ba'}">${text(a.healthStatus||'At Risk')}</span></td><td class="c">${text(a.lastActivityDate||a.daysSinceLastActivity+'d ago')}</td><td class="c">${text(a.renewalDate||'—')}</td><td>${text((a.riskReasons||[]).join(' · ') || a.recommendedAction || 'Needs CSM follow-up')}</td></tr>`).join('') : empty(6,'No at-risk accounts found');
+  if($('retRenewalBody')) $('retRenewalBody').innerHTML = renewalRows.length ? renewalRows.map(a=>`<tr><td style="font-weight:700">${recordLink(a.companyName||a.accountName||a.name||a.companyId,a.hubspotUrl)}</td><td>${text(a.csmOwnerName||a.ownerName)}</td><td class="c">${text(a.renewalDate)}</td><td class="c"><span style="font-family:var(--mono);font-weight:700;color:${num(a.renewalDaysLeft)<=30?'var(--red)':num(a.renewalDaysLeft)<=60?'var(--amber)':'var(--blue)'}">${text(a.renewalDaysLeft ?? '—')}</span></td><td class="c" style="font-family:var(--mono)">${money(a.renewalValue||a.revenue)}</td></tr>`).join('') : empty(5,'No upcoming renewals found');
+  if($('retNoActivityBody')) $('retNoActivityBody').innerHTML = noActRows.length ? noActRows.map(a=>`<tr><td style="font-weight:700">${recordLink(a.companyName||a.accountName||a.name||a.companyId,a.hubspotUrl)}</td><td>${text(a.csmOwnerName||a.ownerName)}</td><td class="c"><span style="font-family:var(--mono);font-weight:700;color:var(--red)">${num(a.daysSinceLastActivity)}</span></td><td>${text(a.recommendedAction||'Schedule check-in')}</td></tr>`).join('') : empty(4,'No inactive accounts found');
+  if($('retUpsellBody')) $('retUpsellBody').innerHTML = upsellRows.length ? upsellRows.map(a=>`<tr><td style="font-weight:700">${recordLink(a.companyName||a.accountName||a.name||a.companyId,a.hubspotUrl)}</td><td>${text(a.csmOwnerName||a.ownerName)}</td><td class="c" style="font-family:var(--mono)">${money(a.upsellValue||a.revenue||a.renewalValue)}</td><td>${text(a.upsellReason||'Healthy account with expansion potential')}</td></tr>`).join('') : empty(4,'No upsell opportunities found');
+}
+
 function updateClock(){
   const now=new Date(),riy=new Date(now.toLocaleString("en-US",{timeZone:"Asia/Riyadh"}));
-  if($("topbarSub")&&D)$("topbarSub").textContent=`${riy.toLocaleTimeString("en-US",{hour:"2-digit",minute:"2-digit"})} Riyadh · Auto-refresh 5min`;
+  if($("topbarSub")&&D && !$("panel-retention")?.classList.contains("active") && !$("panel-financial")?.classList.contains("active"))$("topbarSub").textContent=`${riy.toLocaleTimeString("en-US",{hour:"2-digit",minute:"2-digit"})} Riyadh · Auto-refresh 5min`;
 }
 setInterval(updateClock,60000);
 loadData();
