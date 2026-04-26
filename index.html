@@ -779,11 +779,30 @@ function renderFinancialDetails(){
   const fd = D?.financialDetails || {};
   const summary = fd.summary || {};
   const cashing = fd.cashing || [];
-  const signed = fd.signedContract || [];
+  const signed =
+  fd.signed ||
+  fd.signedContract ||
+  fd.signedDeals ||
+  fd.financialSignedDeals ||
+  fd.booking ||
+  [];
+  const cashingAmount = Number(
+  summary.cashingRevenue ??
+  summary.cashingAmount ??
+  cashing.reduce((s,d)=>s+Number(d.amount||0),0)
+);
 
-  const cashingAmount = Number(summary.cashingAmount || cashing.reduce((s,d)=>s+Number(d.amount||0),0));
-  const signedAmount = Number(summary.signedAmount || signed.reduce((s,d)=>s+Number(d.amount||0),0));
-  const pendingAmount = Number(summary.pendingToCashAmount || signedAmount);
+const signedAmount = Number(
+  summary.signedRevenue ??
+  summary.signedAmount ??
+  signed.reduce((s,d)=>s+Number(d.amount||0),0)
+);
+
+const pendingAmount = Number(
+  summary.pendingToCash ??
+  summary.pendingToCashAmount ??
+  signedAmount
+);
 
   const cashingCount = Number(summary.cashingCount ?? cashing.length);
   const signedCount = Number(summary.signedCount ?? signed.length);
@@ -839,14 +858,14 @@ function renderFinancialDetails(){
       </td>
       <td>${repBadge(d)}</td>
       <td class="c" style="font-family:var(--mono);font-weight:800;color:var(--green)">${fmt(d.amount || 0)}</td>
-      <td class="c" style="font-family:var(--mono);font-size:10px">${dateTxt(d.signedContractDate)}</td>
+      <td class="c" style="font-family:var(--mono);font-size:10px">${dateTxt(d.signedDate || d.signedContractDate)}</td>
       <td class="c" style="font-family:var(--mono);font-size:10px">${dateTxt(d.cashingDate)}</td>
-      <td class="c"><span class="fin-status ok">${d.daysFromSignedToCashing ?? "—"}d</span></td>
+      <td class="c"><span class="fin-status ok">${d.daysFromSignedToCashing ?? d.daysFromSigned ?? "—"}d</span></td>
     </tr>
   `;
 
   const signedRow = d => {
-    const days = d.daysWaiting ?? null;
+    const days = d.daysWaiting ?? d.daysFromSigned ?? null;
     const st = d.followUpStatus || (
       days !== null && days >= 14 ? "Delayed" :
       days !== null && days >= 7 ? "Needs follow-up" :
@@ -862,7 +881,7 @@ function renderFinancialDetails(){
         </td>
         <td>${repBadge(d)}</td>
         <td class="c" style="font-family:var(--mono);font-weight:800;color:var(--amber)">${fmt(d.amount || 0)}</td>
-        <td class="c" style="font-family:var(--mono);font-size:10px">${dateTxt(d.signedContractDate)}</td>
+        <td class="c" style="font-family:var(--mono);font-size:10px">${dateTxt(d.signedDate || d.signedContractDate)}</td>
         <td class="c" style="font-family:var(--mono);font-size:10px">${days !== null ? days + "d" : "—"}</td>
         <td class="c"><span class="fin-status ${cls}">${esc(st)}</span></td>
       </tr>
