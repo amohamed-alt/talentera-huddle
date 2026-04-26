@@ -304,46 +304,36 @@ body{font-family:var(--font);background:var(--page-bg);color:var(--text);-webkit
 .qcq-logo-lg{width:58px;height:58px;border-radius:18px;background:linear-gradient(135deg,var(--cyan),#16A34A);color:#fff;display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:900;letter-spacing:0;box-shadow:0 8px 20px rgba(8,145,178,.22)}
 
 
-/* RETENTION RENEWAL DASHBOARD ADDON */
-.ret-period-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;padding:14px}
-.ret-period-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--sh);overflow:hidden;margin-bottom:14px}
-.ret-period-hd{padding:12px 18px;background:var(--surface2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:10px}
-.ret-period-title{font-size:11px;font-weight:900;color:var(--text2);text-transform:uppercase;letter-spacing:.08em}
-.ret-kpi{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:14px 12px;box-shadow:var(--sh-xs);position:relative;overflow:hidden}
-.ret-kpi::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:var(--rk,var(--green))}
-.ret-kpi-v{font-family:var(--mono);font-size:22px;font-weight:800;color:var(--rk,var(--text));line-height:1}
-.ret-kpi-l{font-size:8px;font-weight:900;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-top:8px}
-.ret-kpi-s{font-size:9px;color:var(--muted);font-weight:600;margin-top:3px}
-.ret-financial-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border-bottom:1px solid var(--border)}
-.ret-fin-box{background:var(--surface2);padding:16px 18px}
-.ret-fin-v{font-family:var(--mono);font-size:26px;font-weight:900;line-height:1}
-.ret-fin-l{font-size:8px;font-weight:900;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-top:8px}
-.ret-fin-s{font-size:10px;color:var(--text2);font-weight:700;margin-top:4px}
-.ret-coverage{padding:14px 18px}
-.ret-coverage-line{display:grid;grid-template-columns:160px 1fr 70px;gap:10px;align-items:center;margin-bottom:12px}
-.ret-coverage-label{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.08em}
-.ret-bar{height:8px;background:var(--page-bg);border-radius:999px;overflow:hidden}
-.ret-fill{height:100%;border-radius:999px;background:var(--rc,var(--green))}
-.ret-redline{border-left:3px solid var(--red)}
-.ret-amberline{border-left:3px solid var(--amber)}
-.ret-greenline{border-left:3px solid var(--green)}
-.ret-status-red{color:var(--red);font-weight:900}
-.ret-status-amber{color:var(--amber);font-weight:900}
-.ret-status-green{color:var(--green);font-weight:900}
-.ret-alert-row{display:flex;align-items:flex-start;gap:12px;padding:11px 14px;border-bottom:1px solid var(--border)}
-.ret-alert-row:last-child{border-bottom:0}
-.ret-alert-dot{width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;flex-shrink:0}
-.ret-alert-text{flex:1}
-.ret-alert-title{font-size:12px;font-weight:900;color:var(--text)}
-.ret-alert-desc{font-size:11px;color:var(--muted);line-height:1.55;margin-top:2px}
-.ret-owner-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.ret-owner-card{border:1px solid var(--border);background:var(--surface);border-radius:var(--r-lg);box-shadow:var(--sh);padding:14px;border-top:3px solid var(--oc,var(--green))}
-.ret-mini-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}
-.ret-mini{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px;text-align:center}
-.ret-mini-v{font-family:var(--mono);font-size:16px;font-weight:900}
-.ret-mini-l{font-size:7px;font-weight:900;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-top:4px}
-@media(max-width:1200px){.ret-period-grid{grid-template-columns:repeat(4,1fr)}.ret-financial-summary{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:900px){.ret-period-grid,.ret-owner-grid{grid-template-columns:1fr}.ret-financial-summary{grid-template-columns:1fr}.ret-coverage-line{grid-template-columns:1fr}}
+<!-- FILTERS -->
+<div class="ret-filters">
+  <select class="ret-select" id="rmFilter">
+    <option value="">All RM</option>
+    <option>Faizan</option>
+    <option>Jehad</option>
+    <option>Fadi</option>
+  </select>
+
+  <select class="ret-select" id="csmFilter">
+    <option value="">All CSM</option>
+    <option>Haia</option>
+    <option>Maryam</option>
+    <option>Sarah</option>
+    <option>Hatem</option>
+    <option>Darshna</option>
+  </select>
+</div>
+
+<!-- KPI BAR -->
+<div class="ret-kpi-bar">
+  <div class="ret-kpi-box"><div class="ret-kpi-v" id="kpiAccounts">0</div><div class="ret-kpi-l">Accounts</div></div>
+  <div class="ret-kpi-box"><div class="ret-kpi-v" id="kpiRenewed">0</div><div class="ret-kpi-l">Renewed</div></div>
+  <div class="ret-kpi-box"><div class="ret-kpi-v" id="kpiBooked">0</div><div class="ret-kpi-l">Booked</div></div>
+  <div class="ret-kpi-box"><div class="ret-kpi-v" id="kpiCashed">0</div><div class="ret-kpi-l">Cashed</div></div>
+  <div class="ret-kpi-box"><div class="ret-kpi-v" id="kpiChurn">0</div><div class="ret-kpi-l">Churn</div></div>
+  <div class="ret-kpi-box"><div class="ret-kpi-v" id="kpiDelayed">0</div><div class="ret-kpi-l">Delayed</div></div>
+  <div class="ret-kpi-box"><div class="ret-kpi-v" id="kpiCalls">0</div><div class="ret-kpi-l">Calls</div></div>
+  <div class="ret-kpi-box"><div class="ret-kpi-v" id="kpiMeetings">0</div><div class="ret-kpi-l">Meetings</div></div>
+</div>
 
 </style>
 </head>
