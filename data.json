@@ -2,7 +2,7 @@
   "yesterdayLabel": "Saturday, 25 Apr 2026",
   "meta": {
     "yesterdayLabel": "Saturday, 25 Apr 2026",
-    "generatedAt": "12:02 PM"
+    "generatedAt": "12:16 PM"
   },
   "debug": {
     "total_ranked": 850,
@@ -11,7 +11,7 @@
     "has_hs_sales_email_replied": 0,
     "has_notes_last_updated": 0,
     "has_any_contact_signal": 817,
-    "new_logic_contacted_ranked": 296,
+    "new_logic_contacted_ranked": 297,
     "first_company_property_keys": [
       "country",
       "createdate",
@@ -97,8 +97,8 @@
       "lostAmt": 0
     },
     "mtd": {
-      "calls": 1737,
-      "connected": 694,
+      "calls": 1741,
+      "connected": 696,
       "connRate": 40,
       "meetings": 133,
       "openDeals": 58,
@@ -111,14 +111,14 @@
       "lostAmt": 1302833.72
     },
     "ytd": {
-      "calls": 4974,
-      "connected": 1900,
+      "calls": 4978,
+      "connected": 1902,
       "connRate": 38,
       "meetings": 657,
       "openDeals": 701,
       "openDealsSnap": 254,
       "pipeline": 4827630.451833381,
-      "leads": 727,
+      "leads": 728,
       "wonAmt": 233171.4029,
       "wonDeals": 8,
       "lost": 97,
@@ -128,10 +128,10 @@
   "team": {
     "callsYest": 0,
     "callsConn": 0,
-    "callsMTD": 1737,
-    "callsMTDConn": 694,
-    "callsYTD": 4974,
-    "callsYTDConn": 1900,
+    "callsMTD": 1741,
+    "callsMTDConn": 696,
+    "callsYTD": 4978,
+    "callsYTDConn": 1902,
     "meetings": 0,
     "meetingsMTD": 133,
     "meetingsYTD": 657,
@@ -155,17 +155,17 @@
     "leadsMTD": 285,
     "leadsMTDInbound": 39,
     "leadsMTDOutbound": 246,
-    "leadsYTD": 727,
+    "leadsYTD": 728,
     "leadsYTDInbound": 113,
-    "leadsYTDOutbound": 614,
+    "leadsYTDOutbound": 615,
     "connRateYest": 0,
     "connRateMTD": 40,
     "connRateYTD": 38
   },
   "teamLeadActivities": {
     "callsYest": 0,
-    "callsMTD": 1737,
-    "callsYTD": 4974,
+    "callsMTD": 1741,
+    "callsYTD": 4978,
     "meetingsYest": 0,
     "meetingsMTD": 133,
     "meetingsYTD": 657
@@ -177,7 +177,7 @@
     "statusExistingClient": 334,
     "statusOther": 230,
     "sourceInbound": 113,
-    "sourceOutbound": 614,
+    "sourceOutbound": 615,
     "sourceImport": 0
   },
   "teamLeadFunnel": {
@@ -263,10 +263,10 @@
       "calls": {
         "yest": 0,
         "yestConn": 0,
-        "mtd": 721,
-        "mtdConn": 204,
-        "ytd": 2654,
-        "ytdConn": 808
+        "mtd": 724,
+        "mtdConn": 206,
+        "ytd": 2657,
+        "ytdConn": 810
       },
       "connRateYest": 0,
       "connRateMTD": 28,
@@ -291,8 +291,8 @@
       "lostYTD": 12,
       "lostAmtYTD": 48637,
       "rankA": 81,
-      "rankAContacted": 21,
-      "rankANotContacted": 60,
+      "rankAContacted": 22,
+      "rankANotContacted": 59,
       "rankAUntouched": [
         {
           "id": "80981449948",
@@ -520,12 +520,6 @@
           "id": "116473196781",
           "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-2/116473196781",
           "name": "Akel Company",
-          "country": "Saudi Arabia"
-        },
-        {
-          "id": "116860606652",
-          "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-2/116860606652",
-          "name": "Farabi Petrochemicals",
           "country": "Saudi Arabia"
         },
         {
@@ -1104,8 +1098,8 @@
       "rankAByCountry": {
         "Saudi Arabia": {
           "rankA": 67,
-          "rankAContacted": 13,
-          "rankANotContacted": 54,
+          "rankAContacted": 14,
+          "rankANotContacted": 53,
           "rankB": 0,
           "rankBContacted": 0,
           "rankBNotContacted": 0
@@ -1565,13 +1559,13 @@
       "leadsMTD": 43,
       "leadsMTDInbound": 8,
       "leadsMTDOutbound": 35,
-      "leadsYTD": 321,
+      "leadsYTD": 322,
       "leadsYTDInbound": 15,
-      "leadsYTDOutbound": 306,
+      "leadsYTDOutbound": 307,
       "leadActivities": {
         "callsYest": 0,
-        "callsMTD": 721,
-        "callsYTD": 2654,
+        "callsMTD": 724,
+        "callsYTD": 2657,
         "meetingsYest": 0,
         "meetingsMTD": 15,
         "meetingsYTD": 144
@@ -1583,7 +1577,7 @@
         "statusExistingClient": 1,
         "statusOther": 8,
         "sourceInbound": 15,
-        "sourceOutbound": 306,
+        "sourceOutbound": 307,
         "sourceImport": 0
       },
       "leadFunnel": {
@@ -2921,7 +2915,7 @@
         },
         {
           "name": "Ninja - New Deal",
-          "days": 328,
+          "days": 329,
           "amount": 14000,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3250,7 +3244,7 @@
         },
         {
           "name": "شركة محمد سعيد الكندي - New Deal",
-          "days": 131,
+          "days": 132,
           "amount": 8000,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3425,7 +3419,7 @@
         },
         {
           "name": "Al Munajem Foods Company- New Deal",
-          "days": 18,
+          "days": 19,
           "amount": 0,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -4204,7 +4198,7 @@
           "amount": 14000,
           "reasons": [
             "No activity for 165 days",
-            "Stuck in stage for 328 days"
+            "Stuck in stage for 329 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -4668,7 +4662,7 @@
           "name": "شركة محمد سعيد الكندي - New Deal",
           "amount": 8000,
           "reasons": [
-            "Stuck in stage for 131 days"
+            "Stuck in stage for 132 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -4904,7 +4898,7 @@
           "amount": 0,
           "reasons": [
             "No activity for 17 days",
-            "Stuck in stage for 18 days"
+            "Stuck in stage for 19 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -7750,9 +7744,9 @@
       "calls": {
         "yest": 0,
         "yestConn": 0,
-        "mtd": 290,
+        "mtd": 291,
         "mtdConn": 160,
-        "ytd": 492,
+        "ytd": 493,
         "ytdConn": 266
       },
       "connRateYest": 0,
@@ -8018,8 +8012,8 @@
       "leadsYTDOutbound": 77,
       "leadActivities": {
         "callsYest": 0,
-        "callsMTD": 290,
-        "callsYTD": 492,
+        "callsMTD": 291,
+        "callsYTD": 493,
         "meetingsYest": 0,
         "meetingsMTD": 12,
         "meetingsYTD": 21
@@ -9192,7 +9186,7 @@
         },
         {
           "name": "TALENTERA - ATS",
-          "days": 53,
+          "days": 54,
           "amount": 74676,
           "ownerName": "Jehad Al-Barqawi",
           "hubspotUrl": null
@@ -9413,7 +9407,7 @@
           "name": "TALENTERA - ATS",
           "amount": 74676,
           "reasons": [
-            "No activity for 53 days",
+            "No activity for 54 days",
             "Stuck in stage for 174 days"
           ],
           "ownerName": "Jehad Al-Barqawi",
@@ -9963,8 +9957,8 @@
   ],
   "rankTotals": {
     "A": 267,
-    "AContacted": 89,
-    "ANotContacted": 178,
+    "AContacted": 90,
+    "ANotContacted": 177,
     "B": 583,
     "BContacted": 207,
     "BNotContacted": 376,
@@ -11020,10 +11014,10 @@
   },
   "outreachCoverage": {
     "contacts": {
-      "total": 497,
+      "total": 498,
       "contacted": 320,
-      "notContacted": 177,
-      "contactedRate": 64.4,
+      "notContacted": 178,
+      "contactedRate": 64.3,
       "contactedList": [
         {
           "id": "765073021146",
@@ -17118,6 +17112,25 @@
           ]
         },
         {
+          "id": "764824388854",
+          "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/764824388854",
+          "name": "764824388854",
+          "email": null,
+          "ownerId": "31644369",
+          "ownerName": "Marita Chedid",
+          "ownerColor": "#7c3aed",
+          "leadStatus": "IN_PROGRESS",
+          "source": "OFFLINE",
+          "sourceBucket": "offline",
+          "createdAt": "2026-04-26",
+          "lastActivityDate": null,
+          "hasConnectedCall": false,
+          "hasCompletedMeeting": false,
+          "companyIds": [
+            "116860606652"
+          ]
+        },
+        {
           "id": "765371309262",
           "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/765371309262",
           "name": "765371309262",
@@ -20459,9 +20472,9 @@
     },
     "companies": {
       "total": 850,
-      "contacted": 296,
-      "notContacted": 554,
-      "contactedRate": 34.8,
+      "contacted": 297,
+      "notContacted": 553,
+      "contactedRate": 34.9,
       "contactedList": [
         {
           "id": "422921017583",
@@ -22776,6 +22789,19 @@
           "rank": "B",
           "createdAt": "2025-03-18",
           "lastActivityDate": "2026-04-08"
+        },
+        {
+          "id": "116860606652",
+          "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-2/116860606652",
+          "name": "Farabi Petrochemicals",
+          "domain": null,
+          "ownerId": "31644369",
+          "ownerName": "Marita Chedid",
+          "ownerColor": "#7c3aed",
+          "country": "Saudi Arabia",
+          "rank": "A",
+          "createdAt": "2025-03-18",
+          "lastActivityDate": "2026-04-26"
         },
         {
           "id": "116491025632",
@@ -27408,19 +27434,6 @@
           "lastActivityDate": "2025-07-06"
         },
         {
-          "id": "116860606652",
-          "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-2/116860606652",
-          "name": "Farabi Petrochemicals",
-          "domain": null,
-          "ownerId": "31644369",
-          "ownerName": "Marita Chedid",
-          "ownerColor": "#7c3aed",
-          "country": "Saudi Arabia",
-          "rank": "A",
-          "createdAt": "2025-03-18",
-          "lastActivityDate": "2026-04-26"
-        },
-        {
           "id": "116459075820",
           "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-2/116459075820",
           "name": "AlSayed Sons",
@@ -30499,7 +30512,7 @@
           "country": "Saudi Arabia",
           "rank": "B",
           "createdAt": "2025-01-16",
-          "lastActivityDate": "2026-04-14"
+          "lastActivityDate": "2026-04-26"
         },
         {
           "id": "80804273385",
@@ -31518,8 +31531,8 @@
       ]
     },
     "activities": {
-      "totalCalls": 4974,
-      "callsLinkedToContacts": 1810,
+      "totalCalls": 4978,
+      "callsLinkedToContacts": 1811,
       "totalMeetings": 657,
       "meetingsLinkedToContacts": 351
     },
@@ -31530,9 +31543,9 @@
         "notContacted": 24
       },
       "offline": {
-        "total": 395,
+        "total": 396,
         "contacted": 242,
-        "notContacted": 153
+        "notContacted": 154
       }
     },
     "byRep": [
@@ -31541,16 +31554,16 @@
         "color": "#7c3aed",
         "type": "acq",
         "contacts": {
-          "total": 313,
+          "total": 314,
           "contacted": 201,
-          "notContacted": 112,
-          "rate": 64.2
+          "notContacted": 113,
+          "rate": 64
         },
         "companies": {
           "total": 190,
-          "contacted": 66,
-          "notContacted": 124,
-          "rate": 34.7
+          "contacted": 67,
+          "notContacted": 123,
+          "rate": 35.3
         }
       },
       {
@@ -31643,15 +31656,15 @@
   "managerActions": [
     {
       "key": "lead_outreach",
-      "title": "Contact 177 eligible leads",
-      "count": 177,
+      "title": "Contact 178 eligible leads",
+      "count": 178,
       "severity": "high",
       "description": "Prioritize online/inbound leads first, then older offline leads."
     },
     {
       "key": "rank_coverage",
-      "title": "Review 554 untouched Rank A/B accounts",
-      "count": 554,
+      "title": "Review 553 untouched Rank A/B accounts",
+      "count": 553,
       "severity": "high",
       "description": "Accounts are untouched under association-based outreach logic."
     },
@@ -32130,6 +32143,37 @@
       "reason": "Online/inbound lead · Created 13 days ago · No qualified activity yet"
     },
     {
+      "id": "764824388854",
+      "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/764824388854",
+      "name": "764824388854",
+      "email": null,
+      "ownerId": "31644369",
+      "ownerName": "Marita Chedid",
+      "ownerColor": "#7c3aed",
+      "leadStatus": "IN_PROGRESS",
+      "source": "OFFLINE",
+      "sourceBucket": "offline",
+      "createdAt": "2026-04-26",
+      "lastActivityDate": null,
+      "hasConnectedCall": false,
+      "hasCompletedMeeting": false,
+      "companyIds": [
+        "116860606652"
+      ],
+      "score": 85,
+      "ageDays": 0,
+      "priority": "High",
+      "priorityReasons": [
+        "Offline/outbound lead",
+        "Created 0 days ago",
+        "No qualified activity yet",
+        "No connected call",
+        "No completed meeting",
+        "In progress"
+      ],
+      "reason": "Offline/outbound lead · Created 0 days ago · No qualified activity yet"
+    },
+    {
       "id": "759779346673",
       "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/759779346673",
       "name": "759779346673",
@@ -32557,62 +32601,31 @@
         "Attempted before but no qualified contact"
       ],
       "reason": "Offline/outbound lead · Created 3 days ago · No qualified activity yet"
-    },
-    {
-      "id": "762865626350",
-      "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/762865626350",
-      "name": "762865626350",
-      "email": null,
-      "ownerId": "32332250",
-      "ownerName": "Ahmad Khawajah",
-      "ownerColor": "#b45309",
-      "leadStatus": "ATTEMPTED_TO_CONTACT",
-      "source": "OFFLINE",
-      "sourceBucket": "offline",
-      "createdAt": "2026-04-23",
-      "lastActivityDate": null,
-      "hasConnectedCall": false,
-      "hasCompletedMeeting": false,
-      "companyIds": [
-        "427196180720"
-      ],
-      "score": 75,
-      "ageDays": 3,
-      "priority": "Medium",
-      "priorityReasons": [
-        "Offline/outbound lead",
-        "Created 3 days ago",
-        "No qualified activity yet",
-        "No connected call",
-        "No completed meeting",
-        "Attempted before but no qualified contact"
-      ],
-      "reason": "Offline/outbound lead · Created 3 days ago · No qualified activity yet"
     }
   ],
   "leadFunnel": {
-    "totalLeads": 1214,
-    "validLeads": 727,
-    "eligibleLeads": 497,
+    "totalLeads": 1215,
+    "validLeads": 728,
+    "eligibleLeads": 498,
     "contactedLeads": 320,
-    "notContactedLeads": 177,
+    "notContactedLeads": 178,
     "openDeals": 478,
     "wonDealsMTD": 3,
     "wonDealsYTD": 8,
-    "conversionToOpenDealRate": 96.2,
+    "conversionToOpenDealRate": 96,
     "conversionToWonMtdRate": 0.6,
     "stages": [
       {
         "label": "Total Leads",
-        "value": 1214
+        "value": 1215
       },
       {
         "label": "Valid Leads",
-        "value": 727
+        "value": 728
       },
       {
         "label": "Eligible Outreach",
-        "value": 497
+        "value": 498
       },
       {
         "label": "Contacted",
@@ -32636,19 +32649,19 @@
       "rate": 76.5
     },
     "offline": {
-      "total": 395,
+      "total": 396,
       "contacted": 242,
-      "notContacted": 153,
-      "rate": 61.3
+      "notContacted": 154,
+      "rate": 61.1
     }
   },
   "slaBreaches": {
     "summary": {
-      "total": 1278,
+      "total": 1277,
       "onlineLeadBreaches": 22,
       "offlineLeadBreaches": 149,
       "pipelineBreaches": 553,
-      "rankBreaches": 554
+      "rankBreaches": 553
     },
     "onlineLeadBreaches": [
       {
@@ -34204,15 +34217,6 @@
       {
         "type": "rank_a_untouched",
         "severity": "high",
-        "title": "Farabi Petrochemicals",
-        "ownerName": "Marita Chedid",
-        "country": "Saudi Arabia",
-        "message": "Rank A account untouched under new outreach logic",
-        "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-2/116860606652"
-      },
-      {
-        "type": "rank_a_untouched",
-        "severity": "high",
         "title": "SAMREF Saudi Aramco Mobil Refinery Company Ltd.",
         "ownerName": "Marita Chedid",
         "country": "Saudi Arabia",
@@ -34308,6 +34312,15 @@
         "country": "Saudi Arabia",
         "message": "Rank A account untouched under new outreach logic",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-2/132195034351"
+      },
+      {
+        "type": "rank_a_untouched",
+        "severity": "high",
+        "title": "ALHADDAD | الحداد",
+        "ownerName": "Marita Chedid",
+        "country": "Saudi Arabia",
+        "message": "Rank A account untouched under new outreach logic",
+        "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-2/132316377288"
       }
     ],
     "top": [
@@ -34516,13 +34529,13 @@
   "rankCoverageBreakdown": {
     "A": {
       "total": 267,
-      "contacted": 89,
-      "untouched": 178,
+      "contacted": 90,
+      "untouched": 177,
       "untouchedByRep": [
         {
           "name": "Marita Chedid",
           "color": "#7c3aed",
-          "count": 60,
+          "count": 59,
           "accounts": [
             {
               "id": "80981449948",
@@ -34750,12 +34763,6 @@
               "id": "116473196781",
               "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-2/116473196781",
               "name": "Akel Company",
-              "country": "Saudi Arabia"
-            },
-            {
-              "id": "116860606652",
-              "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-2/116860606652",
-              "name": "Farabi Petrochemicals",
               "country": "Saudi Arabia"
             },
             {
@@ -38059,7 +38066,7 @@
             "signedDate": "2025-01-29",
             "cashingDate": "2025-08-04",
             "exitedSignedDate": "2025-08-04",
-            "daysFromSigned": 451,
+            "daysFromSigned": 452,
             "status": "Cashed"
           },
           {
@@ -38517,29 +38524,29 @@
       "name": "Marita Chedid",
       "color": "#7c3aed",
       "contacts": {
-        "total": 313,
+        "total": 314,
         "contacted": 201,
-        "notContacted": 112,
-        "rate": 64.2
+        "notContacted": 113,
+        "rate": 64
       },
       "companies": {
         "total": 190,
-        "contacted": 66,
-        "notContacted": 124,
-        "rate": 34.7
+        "contacted": 67,
+        "notContacted": 123,
+        "rate": 35.3
       },
-      "rankAUntouched": 60,
+      "rankAUntouched": 59,
       "rankBUntouched": 64,
       "pipelineRisks": 42,
       "actions": [
         {
           "type": "lead_outreach",
-          "label": "Contact 112 eligible leads",
+          "label": "Contact 113 eligible leads",
           "priority": "high"
         },
         {
           "type": "rank_a",
-          "label": "Review 60 untouched Rank A accounts",
+          "label": "Review 59 untouched Rank A accounts",
           "priority": "high"
         },
         {
@@ -38675,7 +38682,7 @@
             "signedDate": "2025-01-29",
             "cashingDate": "2025-08-04",
             "exitedSignedDate": "2025-08-04",
-            "daysFromSigned": 451,
+            "daysFromSigned": 452,
             "status": "Cashed"
           },
           {
@@ -39291,7 +39298,7 @@
             "signedDate": "2025-01-29",
             "cashingDate": "2025-08-04",
             "exitedSignedDate": "2025-08-04",
-            "daysFromSigned": 451,
+            "daysFromSigned": 452,
             "status": "Cashed"
           },
           {
@@ -39907,7 +39914,7 @@
             "signedDate": "2025-01-29",
             "cashingDate": "2025-08-04",
             "exitedSignedDate": "2025-08-04",
-            "daysFromSigned": 451,
+            "daysFromSigned": 452,
             "status": "Cashed"
           },
           {
@@ -40518,7 +40525,7 @@
             "signedDate": "2025-01-29",
             "cashingDate": "2025-08-04",
             "exitedSignedDate": "2025-08-04",
-            "daysFromSigned": 451,
+            "daysFromSigned": 452,
             "status": "Cashed"
           },
           {
@@ -41134,7 +41141,7 @@
             "signedDate": "2025-01-29",
             "cashingDate": "2025-08-04",
             "exitedSignedDate": "2025-08-04",
-            "daysFromSigned": 451,
+            "daysFromSigned": 452,
             "status": "Cashed"
           },
           {
@@ -41635,45 +41642,45 @@
     "repLostSummary": "- Marita Chedid: 3 lost ($4200), 0 won ($0), conn rate 28%\n- Ursula Waked: 44 lost ($1298634), 0 won ($0), conn rate 42%",
     "stuckColdSummary": "- Marita Chedid: 17 stuck, 7 cold deals\n- Zein Fares: 99 stuck, 75 cold deals\n- Ursula Waked: 78 stuck, 7 cold deals\n- Mohammed Khalid: 1 stuck, 1 cold deals\n- Jehad Al-Barqawi: 24 stuck, 22 cold deals",
     "leadActivitySummary": "Marketing Leads: 113 total, 0 contacted (0%), 113 converted (100%) | Unqualified: 0 | Existing Clients: 334",
-    "kpiLine": "MTD: 1737 calls (40% connected), 133 meetings, 3 won ($184K), 47 lost ($1.3M), pipeline $4.8M"
+    "kpiLine": "MTD: 1741 calls (40% connected), 133 meetings, 3 won ($184K), 47 lost ($1.3M), pipeline $4.8M"
   },
   "aiInsights": {
-    "summary": "Ursula lost $1.3M across 44 deals while 219 deals sit stuck/cold - urgent pipeline health intervention needed",
+    "summary": "Lost $1.3M across 47 deals while pipeline sits at $4.8M with 219 stuck/cold deals requiring urgent action",
     "patterns": [
-      "Contact-ability issues caused only 4 lost deals but represent $973K (75% of total lost value) - high-value accounts going dark",
-      "Zein Fares has 174 stuck/cold deals (99+75) representing significant pipeline risk and potential revenue leakage",
-      "40% connection rate with only 3 wins from 1737 calls shows severe conversion funnel inefficiency (0.17% win rate)"
+      "Contact-ability issues caused only 4 lost deals but represent $973K (75% of total lost revenue) - high-value prospects going dark",
+      "Ursula Waked has 42% connection rate but lost $1.3M across 44 deals with 78 stuck deals - conversion issue not prospecting issue",
+      "Timing/Project Issues (15 deals, $174K) and Unresponsive (15 deals, $91K) account for 30 lost deals - engagement timing misalignment"
     ],
     "quick_wins": [
-      "Ursula: Immediately escalate 4 contact-ability deals ($973K) with executive sponsor outreach by Wednesday EOD",
-      "Zein: Qualify/disqualify 50 oldest stuck deals by Friday to clean pipeline and focus on viable opportunities"
+      "Ursula: Prioritize 78 stuck deals for immediate qualification or closure by Thursday - focus on top 10 by deal value to prevent further leakage",
+      "Zein: Review 99 stuck deals (highest on team) and move 75 cold deals to lost status by Friday to clean pipeline and focus on active opportunities"
     ],
     "risks": [
-      "$1.3M lost deals concentrated with one rep (Ursula) suggests coaching gap or territory mismatch requiring immediate review",
-      "219 stuck/cold deals across team could contaminate Q2 forecast - only $184K won MTD against $4.8M pipeline shows weak velocity"
+      "$973K lost to contact-ability issues signals champion turnover or poor multi-threading - could indicate systemic access problems at target accounts",
+      "Only 3 deals won ($184K) vs 47 lost ($1.3M) with 40% connection rate suggests qualification or value prop gaps impacting close rates"
     ]
   },
   "marketNews": [
     {
       "icon": "🌍",
       "tag": "Regulation",
+      "color": "#D97706",
       "source": "HRSD Saudi",
-      "text": "Saudi Arabia mandates AI-powered recruitment audits for Nitaqat compliance starting Q3 2026, affecting 12,000+ companies",
-      "color": "#D97706"
+      "text": "Saudi Arabia announces new Nitaqat compliance requirements for Q3 2026, mandating real-time workforce reporting for companies with 300+ employees"
     },
     {
       "icon": "📊",
       "tag": "M&A",
+      "color": "#7C3AED",
       "source": "Bloomberg",
-      "text": "Oracle acquires UAE-based HR tech startup TalentMENA for $87M to strengthen GCC market positioning",
-      "color": "#7C3AED"
+      "text": "LinkedIn Talent Solutions acquires UAE-based HR tech startup for $42M, expanding MENA enterprise footprint amid growing ATS competition"
     },
     {
       "icon": "⚡",
       "tag": "Trend",
+      "color": "#2563EB",
       "source": "Gartner",
-      "text": "GCC enterprise ATS adoption jumps 34% YoY as government entities accelerate digital transformation initiatives",
-      "color": "#2563EB"
+      "text": "GCC enterprises accelerate ATS adoption by 67% YoY as Emiratization mandates drive demand for localized compliance-ready platforms"
     }
   ]
 }
