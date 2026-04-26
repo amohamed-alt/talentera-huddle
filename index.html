@@ -742,23 +742,11 @@ body{font-family:var(--font);background:var(--page-bg);color:var(--text);-webkit
           </div>
 
 
-          <div class="ret-filter-card">
+          <div class="ret-filter-card" id="retOverviewKpiCard">
             <div class="ret-filters">
-              <div class="ret-filter-left">
-                <select class="ret-select" id="retRmFilter" onchange="renderRetention()">
-                  <option value="">All RM</option>
-                  <option value="Mohammed Faizan">Mohammed Faizan</option>
-                  <option value="Mohammad Jehad Al-Barqawi">Mohammad Jehad Al-Barqawi</option>
-                  <option value="Fadi Zanona">Fadi Zanona</option>
-                </select>
-                <select class="ret-select" id="retCsmFilter" onchange="renderRetention()">
-                  <option value="">All CSM</option>
-                  <option value="Haia Al-Zo’ubi">Haia Al-Zo’ubi</option>
-                  <option value="Maryam Alfarra">Maryam Alfarra</option>
-                  <option value="Sarah Al-jarrah">Sarah Al-jarrah</option>
-                  <option value="Hatem Alawneh">Hatem Alawneh</option>
-                  <option value="Darshna Suresh">Darshna Suresh</option>
-                </select>
+              <div>
+                <div class="ret-period-title">Retention Team Overview</div>
+                <div class="ret-filter-note">Click any RM or CSM in the left sidebar to open a dedicated owner page.</div>
               </div>
               <div class="ret-filter-note" id="retFilterNote">All retention portfolio</div>
             </div>
@@ -769,8 +757,8 @@ body{font-family:var(--font);background:var(--page-bg);color:var(--text);-webkit
               <div class="ret-kpi-box" style="--rk:var(--green)"><div class="ret-kpi-v" id="kpiCashed">0</div><div class="ret-kpi-l">Cashed</div></div>
               <div class="ret-kpi-box" style="--rk:var(--red)"><div class="ret-kpi-v" id="kpiChurn">0</div><div class="ret-kpi-l">Churn</div></div>
               <div class="ret-kpi-box" style="--rk:var(--amber)"><div class="ret-kpi-v" id="kpiDelayed">0</div><div class="ret-kpi-l">Delayed</div></div>
-              <div class="ret-kpi-box" style="--rk:var(--blue)"><div class="ret-kpi-v" id="kpiCalls">0</div><div class="ret-kpi-l">Calls YTD</div></div>
-              <div class="ret-kpi-box" style="--rk:var(--purple)"><div class="ret-kpi-v" id="kpiMeetings">0</div><div class="ret-kpi-l">Meetings YTD</div></div>
+              <div class="ret-kpi-box" style="--rk:var(--blue)"><div class="ret-kpi-v" id="kpiCalls">0</div><div class="ret-kpi-l">Connected Calls YTD</div></div>
+              <div class="ret-kpi-box" style="--rk:var(--purple)"><div class="ret-kpi-v" id="kpiMeetings">0</div><div class="ret-kpi-l">Completed Meetings YTD</div></div>
             </div>
           </div>
 
@@ -898,9 +886,9 @@ body{font-family:var(--font);background:var(--page-bg);color:var(--text);-webkit
               <div class="ret-mini-stats" id="retCsmStats"></div>
             </div>
           </div>
-          <div class="manager-section-label">Selected Owner Operational Details</div>
-          <div class="card" id="retOwnerDetailCard">
-            <div class="card-hd"><div class="card-title"><div class="card-title-icon" style="background:var(--blue-bg)">👤</div><span id="retOwnerDetailTitle">Choose RM / CSM from the sidebar or filters</span></div><span class="badge bb" id="retOwnerDetailBadge">Owner details</span></div>
+          <div class="manager-section-label">Owner Operational Details</div>
+          <div class="card" id="retOwnerDetailCard" style="display:none">
+            <div class="card-hd"><div class="card-title"><div class="card-title-icon" style="background:var(--blue-bg)">👤</div><span id="retOwnerDetailTitle">Choose RM / CSM from the sidebar</span></div><span class="badge bb" id="retOwnerDetailBadge">Owner details</span></div>
             <div id="retOwnerDetailBody"></div>
           </div>
         </div>
@@ -928,10 +916,12 @@ function recordLink(label,url,className="record-link"){
 }
 
 const SC=["#4F46E5","#7C3AED","#2563EB","#0891B2","#059669","#D97706","#DC2626","#be185d","#16A34A","#6B7280"];
+let activeRetentionOwnerId = null;
 
 function switchMainPanel(panel){
   document.querySelectorAll(".nav-item").forEach(n=>n.classList.remove("active"));
   if(panel === "retention"){
+    activeRetentionOwnerId = null;
     document.querySelectorAll(".tab-btn").forEach(t=>t.classList.remove("active"));
     document.querySelectorAll(".panel").forEach(p=>p.classList.remove("active"));
     $("tabsBar").style.display = "none";
@@ -939,7 +929,7 @@ function switchMainPanel(panel){
     $("panel-retention")?.classList.add("active");
     if($("repsSectionTitle")) { $("repsSectionTitle").style.display = "block"; $("repsSectionTitle").textContent = "Retention Team"; }
     if($("sideRepLinks")) $("sideRepLinks").style.display = "block";
-    $("topbarTitle").textContent = "Retention";
+    $("topbarTitle").textContent = "Retention · Team Overview";
     if($("topbarSub")) $("topbarSub").textContent = R?.generatedAt ? `Updated ${R.generatedAt} · Customer Success` : "Renewals · Booked · Cashed · Churn · Delayed";
     renderRetention();
     return;
@@ -1652,27 +1642,23 @@ function renderRetention(){
   const y=p('yesterday'), m=p('mtd'), t=p('ytd');
   const valueOf=(rows,key='amount')=>rows.reduce((s,r)=>s+num(r[key] ?? r.amount ?? r.renewalValue),0);
   const empty=(cols,msg)=>`<tr><td colspan="${cols}" style="text-align:center;color:var(--muted);padding:18px;font-style:italic">${msg}</td></tr>`;
-  const getRmFilter=()=> $('retRmFilter') ? $('retRmFilter').value : '';
-  const getCsmFilter=()=> $('retCsmFilter') ? $('retCsmFilter').value : '';
-  const rmFilter=getRmFilter(), csmFilter=getCsmFilter();
-  const selectedOwnerName = rmFilter || csmFilter || '';
-  const selectedRep = repData.find(r => r.name === selectedOwnerName) || null;
+  const selectedRep = repData.find(r => String(r.id) === String(activeRetentionOwnerId)) || null;
 
-  const match = row => (!rmFilter || row.rmOwnerName===rmFilter || row.ownerName===rmFilter) && (!csmFilter || row.csmOwnerName===csmFilter);
-  const accounts = accountsAll.filter(match);
-  const renewedDeals = renewedAll.filter(match);
-  const bookedDeals = bookedAll.filter(match);
-  const cashedDeals = cashedAll.filter(match);
-  const churnDeals = churnAll.filter(match);
-  const renewalPipeline = renewalPipelineAll.filter(match);
-  const renewalAttention = renewalAttentionAll.filter(match);
-  const delayedRenewals = delayedAll.filter(match);
+  // Retention overview is never filtered. Owner pages are rendered separately from ownerDetails.
+  const accounts = accountsAll;
+  const renewedDeals = renewedAll;
+  const bookedDeals = bookedAll;
+  const cashedDeals = cashedAll;
+  const churnDeals = churnAll;
+  const renewalPipeline = renewalPipelineAll;
+  const renewalAttention = renewalAttentionAll;
+  const delayedRenewals = delayedAll;
   const churnReasons = churnReasonsAll;
-  const allAlerts = (Array.isArray(alertsObj) ? alertsObj : (alertsObj.all || [])).filter(match);
-  const noActivityAlerts = (alertsObj.noActivity || []).filter(match);
-  const noMeetingAlerts = (alertsObj.noMeeting || []).filter(match);
+  const allAlerts = Array.isArray(alertsObj) ? alertsObj : (alertsObj.all || []);
+  const noActivityAlerts = alertsObj.noActivity || [];
+  const noMeetingAlerts = alertsObj.noMeeting || [];
 
-  if($('retFilterNote')) $('retFilterNote').textContent = selectedOwnerName ? `Filtered by ${selectedOwnerName}` : 'All retention portfolio';
+  if($('retFilterNote')) $('retFilterNote').textContent = selectedRep ? `${selectedRep.name} · ${selectedRep.role}` : 'All retention portfolio';
 
   // Sidebar Retention Team links
   if($('panel-retention')?.classList.contains('active') && $('sideRepLinks')){
@@ -1683,7 +1669,8 @@ function renderRetention(){
       const color=r.color||'var(--cyan)';
       const short=r.name.split(' ')[0];
       const badge = r.role === 'RM' ? (r.accounts||0) : (r.accounts||0);
-      return `<button class="nav-item" onclick="selectRetentionOwner('${textSafe(r.id)}')"><span class="nav-icon" style="color:${color}">${r.role==='RM'?'◆':'●'}</span>${textSafe(short)} <span class="ret">${r.role}</span><span class="nav-badge">${badge}</span></button>`;
+      const active = String(r.id) === String(activeRetentionOwnerId) ? ' active' : '';
+      return `<button class="nav-item${active}" onclick="selectRetentionOwner('${textSafe(r.id)}')"><span class="nav-icon" style="color:${color}">${r.role==='RM'?'◆':'●'}</span>${textSafe(r.name)} <span class="ret">${r.role}</span><span class="nav-badge">${badge}</span></button>`;
     }).join('');
   }
 
@@ -1694,9 +1681,8 @@ function renderRetention(){
   setText('kpiCashed', cashedDeals.length);
   setText('kpiChurn', churnDeals.length);
   setText('kpiDelayed', delayedRenewals.length);
-  const ownerDetailForSelected = selectedRep ? ownerDetails[selectedRep.id] : null;
-  setText('kpiCalls', ownerDetailForSelected ? ownerDetailForSelected.calls.length : (team.callsYTD || val(t,'calls')));
-  setText('kpiMeetings', ownerDetailForSelected ? ownerDetailForSelected.meetings.length : (team.meetingsYTD || val(t,'meetings')));
+  setText('kpiCalls', team.callsYTD || val(t,'calls'));
+  setText('kpiMeetings', team.meetingsYTD || val(t,'meetings'));
 
   // Period KPI cards
   setText('retYCalls', val(y,'calls')); setText('retYMeetings', val(y,'meetings'));
@@ -1801,17 +1787,34 @@ function renderRetention(){
   if($('retRmStats')) $('retRmStats').innerHTML = [[rmStats.accounts,'Accounts'],[rmStats.noContact,'No Touch'],[rmStats.delayed,'Delayed'],[rmStats.calls,'Calls']].map(x=>`<div class="ret-mini"><div class="ret-mini-v">${textSafe(x[0])}</div><div class="ret-mini-l">${x[1]}</div></div>`).join('');
   if($('retCsmStats')) $('retCsmStats').innerHTML = [[csmStats.accounts,'Accounts'],[csmStats.noMeeting,'No Meeting'],[csmStats.delayed,'Delayed'],[csmStats.meetings,'Meetings']].map(x=>`<div class="ret-mini"><div class="ret-mini-v">${textSafe(x[0])}</div><div class="ret-mini-l">${x[1]}</div></div>`).join('');
 
-  renderRetentionOwnerDetails(selectedRep?.id || null);
+  const ownerMode = !!selectedRep;
+  const retPanel = $('panel-retention');
+  if(retPanel){
+    [...retPanel.children].forEach(child=>{
+      const keep = child.classList.contains('financial-hero') || child.id === 'retOwnerDetailCard';
+      child.style.display = ownerMode ? (keep ? '' : 'none') : (child.id === 'retOwnerDetailCard' ? 'none' : '');
+    });
+  }
+  renderRetentionOwnerDetails(ownerMode ? selectedRep.id : null);
 }
 
 function selectRetentionOwner(repId){
   const data = R || {};
   const rep = (data.repData||[]).find(r=>String(r.id)===String(repId));
   if(!rep) return;
-  if(rep.role==='RM' && $('retRmFilter')) { $('retRmFilter').value = rep.name; if($('retCsmFilter')) $('retCsmFilter').value=''; }
-  if(rep.role==='CSM' && $('retCsmFilter')) { $('retCsmFilter').value = rep.name; if($('retRmFilter')) $('retRmFilter').value=''; }
+  activeRetentionOwnerId = String(repId);
+  document.querySelectorAll(".tab-btn").forEach(t=>t.classList.remove("active"));
+  document.querySelectorAll(".panel").forEach(p=>p.classList.remove("active"));
+  document.querySelectorAll(".nav-item").forEach(n=>n.classList.remove("active"));
+  $("tabsBar").style.display = "none";
+  $("side-retention")?.classList.add("active");
+  $("panel-retention")?.classList.add("active");
+  if($("repsSectionTitle")) { $("repsSectionTitle").style.display = "block"; $("repsSectionTitle").textContent = "Retention Team"; }
+  if($("sideRepLinks")) $("sideRepLinks").style.display = "block";
+  $("topbarTitle").textContent = `Retention · ${rep.name}`;
+  if($("topbarSub")) $("topbarSub").textContent = `${rep.role} · Connected calls + completed meetings · Owner portfolio`;
   renderRetention();
-  $('retOwnerDetailCard')?.scrollIntoView({behavior:'smooth', block:'start'});
+  window.scrollTo({top:0, behavior:'smooth'});
 }
 
 function renderRetentionOwnerDetails(repId){
@@ -1820,11 +1823,12 @@ function renderRetentionOwnerDetails(repId){
   const details = repId ? ownerDetails[repId] : null;
   if(!$('retOwnerDetailBody')) return;
   if(!details){
-    $('retOwnerDetailTitle').textContent = 'Choose RM / CSM from the sidebar or filters';
+    $('retOwnerDetailTitle').textContent = 'Choose RM / CSM from the sidebar';
     $('retOwnerDetailBadge').textContent = 'Owner details';
-    $('retOwnerDetailBody').innerHTML = '<div class="ret-explain">Click any RM or CSM name in the left sidebar, or choose from the filters above, to see the exact accounts, renewals, calls, meetings, no-touch and no-meeting lists behind the cards.</div>';
+    $('retOwnerDetailBody').innerHTML = '<div class="ret-explain">Click any RM or CSM name in the left sidebar to open a dedicated operational page with accounts, renewals, calls, meetings, no-touch and no-meeting lists.</div>';
     return;
   }
+  if($('retOwnerDetailCard')) $('retOwnerDetailCard').style.display = '';
   const m = details.metrics || {};
   $('retOwnerDetailTitle').textContent = `${details.name} · ${details.role} operational details`;
   $('retOwnerDetailBadge').textContent = `${m.accounts||0} accounts`;
@@ -1846,6 +1850,8 @@ function renderRetentionOwnerDetails(repId){
     ${table('Renewed deals', details.renewedDeals||[], 5, dealRow)}
     ${table('Booked deals', details.bookedDeals||[], 5, dealRow)}
     ${table('Cashed deals', details.cashedDeals||[], 5, dealRow)}
+    ${table('Churn deals', details.churnDeals||[], 5, dealRow)}
+    ${table('Renewal attention', details.renewalAttention||[], 5, dealRow)}
     ${table('Delayed renewals', details.delayedRenewals||[], 5, dealRow)}
     ${table('No touch accounts', details.noContactAccounts||[], 6, accountRow)}
     ${table('No meeting accounts', details.noMeetingAccounts||[], 6, accountRow)}
