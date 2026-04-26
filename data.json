@@ -2,7 +2,7 @@
   "yesterdayLabel": "Saturday, 25 Apr 2026",
   "meta": {
     "yesterdayLabel": "Saturday, 25 Apr 2026",
-    "generatedAt": "01:34 PM"
+    "generatedAt": "02:32 PM"
   },
   "debug": {
     "total_ranked": 850,
@@ -11,7 +11,7 @@
     "has_hs_sales_email_replied": 0,
     "has_notes_last_updated": 0,
     "has_any_contact_signal": 817,
-    "new_logic_contacted_ranked": 299,
+    "new_logic_contacted_ranked": 301,
     "first_company_property_keys": [
       "country",
       "createdate",
@@ -97,28 +97,28 @@
       "lostAmt": 0
     },
     "mtd": {
-      "calls": 1751,
-      "connected": 702,
+      "calls": 1759,
+      "connected": 706,
       "connRate": 40,
-      "meetings": 133,
+      "meetings": 134,
       "openDeals": 58,
       "openDealsSnap": 254,
       "pipeline": 4827630.451833381,
-      "leads": 288,
+      "leads": 291,
       "wonAmt": 184009,
       "wonDeals": 3,
       "lost": 47,
       "lostAmt": 1302833.72
     },
     "ytd": {
-      "calls": 4988,
-      "connected": 1908,
+      "calls": 4996,
+      "connected": 1912,
       "connRate": 38,
-      "meetings": 657,
+      "meetings": 658,
       "openDeals": 701,
       "openDealsSnap": 254,
       "pipeline": 4827630.451833381,
-      "leads": 730,
+      "leads": 733,
       "wonAmt": 233171.4029,
       "wonDeals": 8,
       "lost": 97,
@@ -128,13 +128,13 @@
   "team": {
     "callsYest": 0,
     "callsConn": 0,
-    "callsMTD": 1751,
-    "callsMTDConn": 702,
-    "callsYTD": 4988,
-    "callsYTDConn": 1908,
+    "callsMTD": 1759,
+    "callsMTDConn": 706,
+    "callsYTD": 4996,
+    "callsYTDConn": 1912,
     "meetings": 0,
-    "meetingsMTD": 133,
-    "meetingsYTD": 657,
+    "meetingsMTD": 134,
+    "meetingsYTD": 658,
     "openDeals": 254,
     "pipeline": 4827630.451833381,
     "won": 3,
@@ -152,32 +152,32 @@
     "leadsYest": 1,
     "leadsYestInbound": 1,
     "leadsYestOutbound": 0,
-    "leadsMTD": 288,
+    "leadsMTD": 291,
     "leadsMTDInbound": 39,
-    "leadsMTDOutbound": 249,
-    "leadsYTD": 730,
+    "leadsMTDOutbound": 252,
+    "leadsYTD": 733,
     "leadsYTDInbound": 113,
-    "leadsYTDOutbound": 617,
+    "leadsYTDOutbound": 620,
     "connRateYest": 0,
     "connRateMTD": 40,
     "connRateYTD": 38
   },
   "teamLeadActivities": {
     "callsYest": 0,
-    "callsMTD": 1751,
-    "callsYTD": 4988,
+    "callsMTD": 1759,
+    "callsYTD": 4996,
     "meetingsYest": 0,
-    "meetingsMTD": 133,
-    "meetingsYTD": 657
+    "meetingsMTD": 134,
+    "meetingsYTD": 658
   },
   "teamLeadQuality": {
     "statusNew": 28,
     "statusQualified": 153,
     "statusUnqualified": 0,
     "statusExistingClient": 334,
-    "statusOther": 230,
+    "statusOther": 231,
     "sourceInbound": 113,
-    "sourceOutbound": 617,
+    "sourceOutbound": 620,
     "sourceImport": 0
   },
   "teamLeadFunnel": {
@@ -263,10 +263,10 @@
       "calls": {
         "yest": 0,
         "yestConn": 0,
-        "mtd": 730,
-        "mtdConn": 210,
-        "ytd": 2663,
-        "ytdConn": 814
+        "mtd": 734,
+        "mtdConn": 211,
+        "ytd": 2667,
+        "ytdConn": 815
       },
       "connRateYest": 0,
       "connRateMTD": 29,
@@ -291,8 +291,8 @@
       "lostYTD": 12,
       "lostAmtYTD": 48637,
       "rankA": 81,
-      "rankAContacted": 24,
-      "rankANotContacted": 57,
+      "rankAContacted": 25,
+      "rankANotContacted": 56,
       "rankAUntouched": [
         {
           "id": "80981449948",
@@ -472,12 +472,6 @@
           "id": "109116541114",
           "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-2/109116541114",
           "name": "Al-Yamamah Company for Reinforcing Steel Bars",
-          "country": "Saudi Arabia"
-        },
-        {
-          "id": "111152181491",
-          "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-2/111152181491",
-          "name": "Basic Chemical Industries",
           "country": "Saudi Arabia"
         },
         {
@@ -1086,8 +1080,8 @@
       "rankAByCountry": {
         "Saudi Arabia": {
           "rankA": 67,
-          "rankAContacted": 16,
-          "rankANotContacted": 51,
+          "rankAContacted": 17,
+          "rankANotContacted": 50,
           "rankB": 0,
           "rankBContacted": 0,
           "rankBNotContacted": 0
@@ -1265,7 +1259,7 @@
         },
         {
           "name": "B D Holding - New Deal",
-          "days": 61,
+          "days": 62,
           "amount": 7600,
           "ownerName": "Marita Chedid",
           "hubspotUrl": null
@@ -1344,7 +1338,7 @@
         },
         {
           "name": "Bellevue Medical Center- New Deal",
-          "days": 30,
+          "days": 31,
           "amount": 10075,
           "ownerName": "Marita Chedid",
           "hubspotUrl": null
@@ -1459,7 +1453,7 @@
           "name": "B D Holding - New Deal",
           "amount": 7600,
           "reasons": [
-            "Stuck in stage for 61 days"
+            "Stuck in stage for 62 days"
           ],
           "ownerName": "Marita Chedid",
           "hubspotUrl": null
@@ -1505,7 +1499,7 @@
           "name": "Bellevue Medical Center- New Deal",
           "amount": 10075,
           "reasons": [
-            "No activity for 30 days",
+            "No activity for 31 days",
             "Stuck in stage for 31 days"
           ],
           "ownerName": "Marita Chedid",
@@ -1544,16 +1538,16 @@
       "leadsYest": 0,
       "leadsYestInbound": 0,
       "leadsYestOutbound": 0,
-      "leadsMTD": 46,
+      "leadsMTD": 47,
       "leadsMTDInbound": 8,
-      "leadsMTDOutbound": 38,
-      "leadsYTD": 324,
+      "leadsMTDOutbound": 39,
+      "leadsYTD": 325,
       "leadsYTDInbound": 15,
-      "leadsYTDOutbound": 309,
+      "leadsYTDOutbound": 310,
       "leadActivities": {
         "callsYest": 0,
-        "callsMTD": 730,
-        "callsYTD": 2663,
+        "callsMTD": 734,
+        "callsYTD": 2667,
         "meetingsYest": 0,
         "meetingsMTD": 15,
         "meetingsYTD": 144
@@ -1563,9 +1557,9 @@
         "statusQualified": 0,
         "statusUnqualified": 0,
         "statusExistingClient": 1,
-        "statusOther": 8,
+        "statusOther": 9,
         "sourceInbound": 15,
-        "sourceOutbound": 309,
+        "sourceOutbound": 310,
         "sourceImport": 0
       },
       "leadFunnel": {
@@ -2770,7 +2764,7 @@
         },
         {
           "name": "Saudi National Bank SNB - New Deal",
-          "days": 444,
+          "days": 445,
           "amount": 23069.55,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -2798,7 +2792,7 @@
         },
         {
           "name": "almoosahospital.com.sa - New Deal",
-          "days": 430,
+          "days": 431,
           "amount": 20000,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -2987,7 +2981,7 @@
         },
         {
           "name": "Saudi Manpower Solutions Co - New Deal",
-          "days": 237,
+          "days": 238,
           "amount": 50000,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3001,14 +2995,14 @@
         },
         {
           "name": "General Authority of Civil Aviation (GACA) - New Deal",
-          "days": 95,
+          "days": 96,
           "amount": 58813.7508,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "tree - New Deal",
-          "days": 95,
+          "days": 96,
           "amount": 26000,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3050,7 +3044,7 @@
         },
         {
           "name": "Dr. Mohammed Alfagih Hospital - New Deal",
-          "days": 212,
+          "days": 213,
           "amount": 40000,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3169,7 +3163,7 @@
         },
         {
           "name": "Infinite pl - New Deal",
-          "days": 157,
+          "days": 158,
           "amount": 13333,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3281,7 +3275,7 @@
         },
         {
           "name": "American Academy - Talentera",
-          "days": 110,
+          "days": 111,
           "amount": 14000,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3337,7 +3331,7 @@
         },
         {
           "name": "renco- New Deal",
-          "days": 46,
+          "days": 47,
           "amount": 0,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3372,7 +3366,7 @@
         },
         {
           "name": "SAJA- New Deal",
-          "days": 18,
+          "days": 19,
           "amount": 0,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3577,7 +3571,7 @@
         },
         {
           "name": "المركز الوطني للتنافسية - New Deal",
-          "days": 213,
+          "days": 214,
           "amount": 8133,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3640,7 +3634,7 @@
         },
         {
           "name": "Shade Corporation Lit - New Deal",
-          "days": 222,
+          "days": 223,
           "amount": 40000,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3675,7 +3669,7 @@
         },
         {
           "name": "tree - New Deal",
-          "days": 17,
+          "days": 18,
           "amount": 26000,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3738,7 +3732,7 @@
         },
         {
           "name": "fives group - New Deal",
-          "days": 192,
+          "days": 193,
           "amount": 5000,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3892,7 +3886,7 @@
         },
         {
           "name": "AhmedDaoud - New Deal",
-          "days": 59,
+          "days": 60,
           "amount": 0,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3998,7 +3992,7 @@
           "amount": 23069.55,
           "reasons": [
             "No activity for 104 days",
-            "Stuck in stage for 444 days"
+            "Stuck in stage for 445 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -4038,7 +4032,7 @@
           "amount": 20000,
           "reasons": [
             "No activity for 189 days",
-            "Stuck in stage for 430 days"
+            "Stuck in stage for 431 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -4175,7 +4169,7 @@
           "name": "المركز الوطني للتنافسية - New Deal",
           "amount": 8133,
           "reasons": [
-            "No activity for 213 days",
+            "No activity for 214 days",
             "Stuck in stage for 329 days"
           ],
           "ownerName": "Zein Fares",
@@ -4283,7 +4277,7 @@
           "name": "Shade Corporation Lit - New Deal",
           "amount": 40000,
           "reasons": [
-            "No activity for 222 days",
+            "No activity for 223 days",
             "Stuck in stage for 244 days"
           ],
           "ownerName": "Zein Fares",
@@ -4304,7 +4298,7 @@
           "amount": 50000,
           "reasons": [
             "No activity for 145 days",
-            "Stuck in stage for 237 days"
+            "Stuck in stage for 238 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -4324,7 +4318,7 @@
           "amount": 58813.7508,
           "reasons": [
             "No activity for 174 days",
-            "Stuck in stage for 95 days"
+            "Stuck in stage for 96 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -4333,8 +4327,8 @@
           "name": "tree - New Deal",
           "amount": 26000,
           "reasons": [
-            "No activity for 17 days",
-            "Stuck in stage for 95 days"
+            "No activity for 18 days",
+            "Stuck in stage for 96 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -4393,7 +4387,7 @@
           "name": "Dr. Mohammed Alfagih Hospital - New Deal",
           "amount": 40000,
           "reasons": [
-            "Stuck in stage for 212 days"
+            "Stuck in stage for 213 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -4441,7 +4435,7 @@
           "name": "fives group - New Deal",
           "amount": 5000,
           "reasons": [
-            "No activity for 192 days",
+            "No activity for 193 days",
             "Stuck in stage for 189 days"
           ],
           "ownerName": "Zein Fares",
@@ -4562,7 +4556,7 @@
           "amount": 13333,
           "reasons": [
             "No activity for 109 days",
-            "Stuck in stage for 157 days"
+            "Stuck in stage for 158 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -4714,7 +4708,7 @@
           "name": "American Academy - Talentera",
           "amount": 14000,
           "reasons": [
-            "Stuck in stage for 110 days"
+            "Stuck in stage for 111 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -4742,7 +4736,7 @@
           "name": "AhmedDaoud - New Deal",
           "amount": 0,
           "reasons": [
-            "No activity for 59 days",
+            "No activity for 60 days",
             "Stuck in stage for 66 days"
           ],
           "ownerName": "Zein Fares",
@@ -4790,7 +4784,7 @@
           "name": "renco- New Deal",
           "amount": 0,
           "reasons": [
-            "Stuck in stage for 46 days"
+            "Stuck in stage for 47 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -4839,7 +4833,7 @@
           "name": "SAJA- New Deal",
           "amount": 0,
           "reasons": [
-            "Stuck in stage for 18 days"
+            "Stuck in stage for 19 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -4969,11 +4963,11 @@
       "leadsYest": 0,
       "leadsYestInbound": 0,
       "leadsYestOutbound": 0,
-      "leadsMTD": 30,
-      "leadsMTDInbound": 13,
+      "leadsMTD": 29,
+      "leadsMTDInbound": 12,
       "leadsMTDOutbound": 17,
-      "leadsYTD": 100,
-      "leadsYTDInbound": 53,
+      "leadsYTD": 99,
+      "leadsYTDInbound": 52,
       "leadsYTDOutbound": 47,
       "leadActivities": {
         "callsYest": 0,
@@ -4984,19 +4978,19 @@
         "meetingsYTD": 104
       },
       "leadQuality": {
-        "statusNew": 3,
+        "statusNew": 2,
         "statusQualified": 0,
         "statusUnqualified": 0,
         "statusExistingClient": 3,
         "statusOther": 34,
-        "sourceInbound": 53,
+        "sourceInbound": 52,
         "sourceOutbound": 47,
         "sourceImport": 0
       },
       "leadFunnel": {
-        "created": 53,
+        "created": 52,
         "contacted": 0,
-        "converted": 53,
+        "converted": 52,
         "conversionRate": 100,
         "contactRate": 0
       },
@@ -5124,8 +5118,8 @@
       "connRateYTD": 42,
       "meetings": {
         "yest": 0,
-        "mtd": 48,
-        "ytd": 271
+        "mtd": 49,
+        "ytd": 272
       },
       "openDeals": 86,
       "pipeAmt": 1007236.5521997999,
@@ -6732,7 +6726,7 @@
         },
         {
           "name": "Synergi BPO - Evalufy New Deal",
-          "days": 61,
+          "days": 62,
           "amount": 4000,
           "ownerName": "Ursula Waked",
           "hubspotUrl": null
@@ -6753,7 +6747,7 @@
         },
         {
           "name": "Org Luxury - New Deal",
-          "days": 51,
+          "days": 52,
           "amount": 7000,
           "ownerName": "Ursula Waked",
           "hubspotUrl": null
@@ -6767,7 +6761,7 @@
         },
         {
           "name": "Sedco - New Deal",
-          "days": 47,
+          "days": 48,
           "amount": 7425,
           "ownerName": "Ursula Waked",
           "hubspotUrl": null
@@ -6802,7 +6796,7 @@
         },
         {
           "name": "Human Impact - New Deal",
-          "days": 18,
+          "days": 19,
           "amount": 3685,
           "ownerName": "Ursula Waked",
           "hubspotUrl": null
@@ -7469,7 +7463,7 @@
           "name": "Synergi BPO - Evalufy New Deal",
           "amount": 4000,
           "reasons": [
-            "Stuck in stage for 61 days"
+            "Stuck in stage for 62 days"
           ],
           "ownerName": "Ursula Waked",
           "hubspotUrl": null
@@ -7496,7 +7490,7 @@
           "name": "Org Luxury - New Deal",
           "amount": 7000,
           "reasons": [
-            "Stuck in stage for 51 days"
+            "Stuck in stage for 52 days"
           ],
           "ownerName": "Ursula Waked",
           "hubspotUrl": null
@@ -7514,7 +7508,7 @@
           "name": "Sedco - New Deal",
           "amount": 7425,
           "reasons": [
-            "Stuck in stage for 47 days"
+            "Stuck in stage for 48 days"
           ],
           "ownerName": "Ursula Waked",
           "hubspotUrl": null
@@ -7559,7 +7553,7 @@
           "name": "Human Impact - New Deal",
           "amount": 3685,
           "reasons": [
-            "Stuck in stage for 18 days"
+            "Stuck in stage for 19 days"
           ],
           "ownerName": "Ursula Waked",
           "hubspotUrl": null
@@ -7598,8 +7592,8 @@
         "callsMTD": 403,
         "callsYTD": 1141,
         "meetingsYest": 0,
-        "meetingsMTD": 48,
-        "meetingsYTD": 271
+        "meetingsMTD": 49,
+        "meetingsYTD": 272
       },
       "leadQuality": {
         "statusNew": 1,
@@ -7732,10 +7726,10 @@
       "calls": {
         "yest": 0,
         "yestConn": 0,
-        "mtd": 293,
-        "mtdConn": 161,
-        "ytd": 495,
-        "ytdConn": 267
+        "mtd": 294,
+        "mtdConn": 162,
+        "ytd": 496,
+        "ytdConn": 268
       },
       "connRateYest": 0,
       "connRateMTD": 55,
@@ -7992,34 +7986,34 @@
       "leadsYest": 0,
       "leadsYestInbound": 0,
       "leadsYestOutbound": 0,
-      "leadsMTD": 57,
-      "leadsMTDInbound": 3,
-      "leadsMTDOutbound": 54,
-      "leadsYTD": 81,
-      "leadsYTDInbound": 4,
-      "leadsYTDOutbound": 77,
+      "leadsMTD": 59,
+      "leadsMTDInbound": 4,
+      "leadsMTDOutbound": 55,
+      "leadsYTD": 83,
+      "leadsYTDInbound": 5,
+      "leadsYTDOutbound": 78,
       "leadActivities": {
         "callsYest": 0,
-        "callsMTD": 293,
-        "callsYTD": 495,
+        "callsMTD": 294,
+        "callsYTD": 496,
         "meetingsYest": 0,
         "meetingsMTD": 12,
         "meetingsYTD": 21
       },
       "leadQuality": {
-        "statusNew": 18,
+        "statusNew": 19,
         "statusQualified": 0,
         "statusUnqualified": 0,
         "statusExistingClient": 0,
         "statusOther": 42,
-        "sourceInbound": 4,
-        "sourceOutbound": 77,
+        "sourceInbound": 5,
+        "sourceOutbound": 78,
         "sourceImport": 0
       },
       "leadFunnel": {
-        "created": 4,
+        "created": 5,
         "contacted": 0,
-        "converted": 4,
+        "converted": 5,
         "conversionRate": 100,
         "contactRate": 0
       },
@@ -8057,10 +8051,10 @@
       "calls": {
         "yest": 0,
         "yestConn": 0,
-        "mtd": 259,
-        "mtdConn": 114,
-        "ytd": 480,
-        "ytdConn": 204
+        "mtd": 262,
+        "mtdConn": 116,
+        "ytd": 483,
+        "ytdConn": 206
       },
       "connRateYest": 0,
       "connRateMTD": 44,
@@ -8168,8 +8162,8 @@
         }
       ],
       "rankB": 118,
-      "rankBContacted": 54,
-      "rankBNotContacted": 64,
+      "rankBContacted": 55,
+      "rankBNotContacted": 63,
       "rankBUntouched": [
         {
           "id": "80974700759",
@@ -8313,12 +8307,6 @@
           "id": "109103556838",
           "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-2/109103556838",
           "name": "Matarat Holding Company",
-          "country": "Saudi Arabia"
-        },
-        {
-          "id": "112777524439",
-          "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-2/112777524439",
-          "name": "Al Jouf cement",
           "country": "Saudi Arabia"
         },
         {
@@ -8602,8 +8590,8 @@
           "rankAContacted": 0,
           "rankANotContacted": 0,
           "rankB": 103,
-          "rankBContacted": 45,
-          "rankBNotContacted": 58
+          "rankBContacted": 46,
+          "rankBNotContacted": 57
         },
         "Unknown": {
           "rankA": 0,
@@ -8663,16 +8651,16 @@
       "leadsYest": 0,
       "leadsYestInbound": 0,
       "leadsYestOutbound": 0,
-      "leadsMTD": 9,
+      "leadsMTD": 10,
       "leadsMTDInbound": 3,
-      "leadsMTDOutbound": 6,
-      "leadsYTD": 10,
+      "leadsMTDOutbound": 7,
+      "leadsYTD": 11,
       "leadsYTDInbound": 4,
-      "leadsYTDOutbound": 6,
+      "leadsYTDOutbound": 7,
       "leadActivities": {
         "callsYest": 0,
-        "callsMTD": 259,
-        "callsYTD": 480,
+        "callsMTD": 262,
+        "callsYTD": 483,
         "meetingsYest": 0,
         "meetingsMTD": 6,
         "meetingsYTD": 8
@@ -8684,7 +8672,7 @@
         "statusExistingClient": 0,
         "statusOther": 4,
         "sourceInbound": 4,
-        "sourceOutbound": 6,
+        "sourceOutbound": 7,
         "sourceImport": 0
       },
       "leadFunnel": {
@@ -8948,7 +8936,7 @@
         },
         {
           "name": "saudire - New Deal",
-          "days": 255,
+          "days": 256,
           "amount": 0,
           "ownerName": "Jehad Al-Barqawi",
           "hubspotUrl": null
@@ -9153,7 +9141,7 @@
         },
         {
           "name": "enjaz",
-          "days": 80,
+          "days": 81,
           "amount": 50006.25,
           "ownerName": "Jehad Al-Barqawi",
           "hubspotUrl": null
@@ -9306,7 +9294,7 @@
           "name": "saudire - New Deal",
           "amount": 0,
           "reasons": [
-            "Stuck in stage for 255 days"
+            "Stuck in stage for 256 days"
           ],
           "ownerName": "Jehad Al-Barqawi",
           "hubspotUrl": null
@@ -9365,7 +9353,7 @@
           "name": "enjaz",
           "amount": 50006.25,
           "reasons": [
-            "No activity for 80 days",
+            "No activity for 81 days",
             "Stuck in stage for 185 days"
           ],
           "ownerName": "Jehad Al-Barqawi",
@@ -9928,7 +9916,7 @@
     },
     {
       "type": "green",
-      "text": "MTD call pace: 67/day avg ✓"
+      "text": "MTD call pace: 68/day avg ✓"
     },
     {
       "type": "green",
@@ -9945,13 +9933,13 @@
   ],
   "rankTotals": {
     "A": 267,
-    "AContacted": 92,
-    "ANotContacted": 175,
+    "AContacted": 93,
+    "ANotContacted": 174,
     "B": 583,
-    "BContacted": 207,
-    "BNotContacted": 376,
+    "BContacted": 208,
+    "BNotContacted": 375,
     "AB": 850,
-    "total": 2526
+    "total": 2527
   },
   "topInactiveRankAccounts": [
     {
@@ -10013,8 +10001,8 @@
       "rank": "A",
       "rep": "Marita Chedid",
       "repColor": "#7c3aed",
-      "daysSinceActivity": 443,
-      "lastActivityLabel": "443d ago",
+      "daysSinceActivity": 444,
+      "lastActivityLabel": "444d ago",
       "employees": "3",
       "country": "Saudi Arabia",
       "contacted": false
@@ -10026,8 +10014,8 @@
       "rank": "A",
       "rep": "Ursula Waked",
       "repColor": "#be185d",
-      "daysSinceActivity": 443,
-      "lastActivityLabel": "443d ago",
+      "daysSinceActivity": 444,
+      "lastActivityLabel": "444d ago",
       "employees": "500",
       "country": "Saudi Arabia",
       "contacted": false
@@ -10039,8 +10027,8 @@
       "rank": "A",
       "rep": "Marita Chedid",
       "repColor": "#7c3aed",
-      "daysSinceActivity": 443,
-      "lastActivityLabel": "443d ago",
+      "daysSinceActivity": 444,
+      "lastActivityLabel": "444d ago",
       "employees": "5500",
       "country": "Saudi Arabia",
       "contacted": false
@@ -10052,8 +10040,8 @@
       "rank": "A",
       "rep": "Marita Chedid",
       "repColor": "#7c3aed",
-      "daysSinceActivity": 443,
-      "lastActivityLabel": "443d ago",
+      "daysSinceActivity": 444,
+      "lastActivityLabel": "444d ago",
       "employees": "2750",
       "country": "Saudi Arabia",
       "contacted": false
@@ -10078,8 +10066,8 @@
       "rank": "B",
       "rep": "Jehad Al-Barqawi",
       "repColor": "#0e7490",
-      "daysSinceActivity": 440,
-      "lastActivityLabel": "440d ago",
+      "daysSinceActivity": 441,
+      "lastActivityLabel": "441d ago",
       "employees": "900",
       "country": "Saudi Arabia",
       "contacted": false
@@ -11002,10 +10990,10 @@
   },
   "outreachCoverage": {
     "contacts": {
-      "total": 500,
-      "contacted": 323,
+      "total": 502,
+      "contacted": 325,
       "notContacted": 177,
-      "contactedRate": 64.6,
+      "contactedRate": 64.7,
       "contactedList": [
         {
           "id": "765073021146",
@@ -11062,6 +11050,42 @@
           "hasCompletedMeeting": false,
           "companyIds": [
             "427835246789"
+          ]
+        },
+        {
+          "id": "765074468031",
+          "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/765074468031",
+          "name": "765074468031",
+          "email": null,
+          "ownerId": "32332250",
+          "ownerName": "Ahmad Khawajah",
+          "ownerColor": "#b45309",
+          "leadStatus": "IN_PROGRESS",
+          "source": "OFFLINE",
+          "sourceBucket": "offline",
+          "createdAt": "2026-04-26",
+          "lastActivityDate": "2026-04-26",
+          "hasConnectedCall": true,
+          "hasCompletedMeeting": false,
+          "companyIds": []
+        },
+        {
+          "id": "765072312520",
+          "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/765072312520",
+          "name": "765072312520",
+          "email": null,
+          "ownerId": "32332251",
+          "ownerName": "Mohammed Khalid",
+          "ownerColor": "#065f46",
+          "leadStatus": "IN_PROGRESS",
+          "source": "OFFLINE",
+          "sourceBucket": "offline",
+          "createdAt": "2026-04-26",
+          "lastActivityDate": "2026-04-26",
+          "hasConnectedCall": true,
+          "hasCompletedMeeting": false,
+          "companyIds": [
+            "426084191418"
           ]
         },
         {
@@ -17237,9 +17261,9 @@
           "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/763016935638",
           "name": "763016935638",
           "email": null,
-          "ownerId": "31558980",
-          "ownerName": "Zein Fares",
-          "ownerColor": "#1d4ed8",
+          "ownerId": "32332250",
+          "ownerName": "Ahmad Khawajah",
+          "ownerColor": "#b45309",
           "leadStatus": "NEW",
           "source": "DIRECT_TRAFFIC",
           "sourceBucket": "online",
@@ -20498,9 +20522,9 @@
     },
     "companies": {
       "total": 850,
-      "contacted": 299,
-      "notContacted": 551,
-      "contactedRate": 35.2,
+      "contacted": 301,
+      "notContacted": 549,
+      "contactedRate": 35.4,
       "contactedList": [
         {
           "id": "422921017583",
@@ -23194,6 +23218,19 @@
           "lastActivityDate": "2026-04-26"
         },
         {
+          "id": "112777524439",
+          "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-2/112777524439",
+          "name": "Al Jouf cement",
+          "domain": null,
+          "ownerId": "32332251",
+          "ownerName": "Mohammed Khalid",
+          "ownerColor": "#065f46",
+          "country": "Saudi Arabia",
+          "rank": "B",
+          "createdAt": "2025-03-10",
+          "lastActivityDate": "2026-04-26"
+        },
+        {
           "id": "112777530567",
           "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-2/112777530567",
           "name": "Gulf Medical",
@@ -23231,6 +23268,19 @@
           "rank": "B",
           "createdAt": "2025-03-06",
           "lastActivityDate": "2026-04-15"
+        },
+        {
+          "id": "111152181491",
+          "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-2/111152181491",
+          "name": "Basic Chemical Industries",
+          "domain": null,
+          "ownerId": "31644369",
+          "ownerName": "Marita Chedid",
+          "ownerColor": "#7c3aed",
+          "country": "Saudi Arabia",
+          "rank": "A",
+          "createdAt": "2025-03-06",
+          "lastActivityDate": "2026-04-26"
         },
         {
           "id": "111106956479",
@@ -27600,7 +27650,7 @@
           "country": "Saudi Arabia",
           "rank": "B",
           "createdAt": "2025-03-16",
-          "lastActivityDate": "2026-03-03"
+          "lastActivityDate": "2026-04-26"
         },
         {
           "id": "114976634060",
@@ -27756,7 +27806,7 @@
           "country": "Saudi Arabia",
           "rank": "A",
           "createdAt": "2025-03-12",
-          "lastActivityDate": "2025-07-28"
+          "lastActivityDate": "2026-04-26"
         },
         {
           "id": "113783497952",
@@ -27860,20 +27910,7 @@
           "country": "Saudi Arabia",
           "rank": "A",
           "createdAt": "2025-03-10",
-          "lastActivityDate": "2025-03-10"
-        },
-        {
-          "id": "112777524439",
-          "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-2/112777524439",
-          "name": "Al Jouf cement",
-          "domain": null,
-          "ownerId": "32332251",
-          "ownerName": "Mohammed Khalid",
-          "ownerColor": "#065f46",
-          "country": "Saudi Arabia",
-          "rank": "B",
-          "createdAt": "2025-03-10",
-          "lastActivityDate": "2025-11-03"
+          "lastActivityDate": "2026-04-26"
         },
         {
           "id": "112789584075",
@@ -27952,19 +27989,6 @@
           "rank": "A",
           "createdAt": "2025-03-06",
           "lastActivityDate": "2025-06-24"
-        },
-        {
-          "id": "111152181491",
-          "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-2/111152181491",
-          "name": "Basic Chemical Industries",
-          "domain": null,
-          "ownerId": "31644369",
-          "ownerName": "Marita Chedid",
-          "ownerColor": "#7c3aed",
-          "country": "Saudi Arabia",
-          "rank": "A",
-          "createdAt": "2025-03-06",
-          "lastActivityDate": "2025-04-14"
         },
         {
           "id": "111106957506",
@@ -28172,7 +28196,7 @@
           "country": "Saudi Arabia",
           "rank": "A",
           "createdAt": "2025-03-02",
-          "lastActivityDate": "2025-09-10"
+          "lastActivityDate": "2026-04-26"
         },
         {
           "id": "108699835585",
@@ -28211,7 +28235,7 @@
           "country": "Saudi Arabia",
           "rank": "A",
           "createdAt": "2025-03-02",
-          "lastActivityDate": "2025-10-12"
+          "lastActivityDate": "2026-04-26"
         },
         {
           "id": "107979792608",
@@ -31557,9 +31581,9 @@
       ]
     },
     "activities": {
-      "totalCalls": 4988,
-      "callsLinkedToContacts": 1817,
-      "totalMeetings": 657,
+      "totalCalls": 4996,
+      "callsLinkedToContacts": 1821,
+      "totalMeetings": 658,
       "meetingsLinkedToContacts": 351
     },
     "sourceSplit": {
@@ -31569,8 +31593,8 @@
         "notContacted": 24
       },
       "offline": {
-        "total": 398,
-        "contacted": 245,
+        "total": 400,
+        "contacted": 247,
         "notContacted": 153
       }
     },
@@ -31587,9 +31611,9 @@
         },
         "companies": {
           "total": 190,
-          "contacted": 69,
-          "notContacted": 121,
-          "rate": 36.3
+          "contacted": 70,
+          "notContacted": 120,
+          "rate": 36.8
         }
       },
       {
@@ -31597,10 +31621,10 @@
         "color": "#1d4ed8",
         "type": "acq",
         "contacts": {
-          "total": 66,
+          "total": 65,
           "contacted": 42,
-          "notContacted": 24,
-          "rate": 63.6
+          "notContacted": 23,
+          "rate": 64.6
         },
         "companies": {
           "total": 175,
@@ -31631,10 +31655,10 @@
         "color": "#b45309",
         "type": "acq",
         "contacts": {
-          "total": 39,
-          "contacted": 24,
-          "notContacted": 15,
-          "rate": 61.5
+          "total": 41,
+          "contacted": 25,
+          "notContacted": 16,
+          "rate": 61
         },
         "companies": {
           "total": 92,
@@ -31648,16 +31672,16 @@
         "color": "#065f46",
         "type": "acq",
         "contacts": {
-          "total": 6,
-          "contacted": 3,
+          "total": 7,
+          "contacted": 4,
           "notContacted": 3,
-          "rate": 50
+          "rate": 57.1
         },
         "companies": {
           "total": 149,
-          "contacted": 72,
-          "notContacted": 77,
-          "rate": 48.3
+          "contacted": 73,
+          "notContacted": 76,
+          "rate": 49
         }
       },
       {
@@ -31689,8 +31713,8 @@
     },
     {
       "key": "rank_coverage",
-      "title": "Review 551 untouched Rank A/B accounts",
-      "count": 551,
+      "title": "Review 549 untouched Rank A/B accounts",
+      "count": 549,
       "severity": "high",
       "description": "Accounts are untouched under association-based outreach logic."
     },
@@ -31801,9 +31825,9 @@
       "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/763016935638",
       "name": "763016935638",
       "email": null,
-      "ownerId": "31558980",
-      "ownerName": "Zein Fares",
-      "ownerColor": "#1d4ed8",
+      "ownerId": "32332250",
+      "ownerName": "Ahmad Khawajah",
+      "ownerColor": "#b45309",
       "leadStatus": "NEW",
       "source": "DIRECT_TRAFFIC",
       "sourceBucket": "online",
@@ -32630,32 +32654,32 @@
     }
   ],
   "leadFunnel": {
-    "totalLeads": 1217,
-    "validLeads": 730,
-    "eligibleLeads": 500,
-    "contactedLeads": 323,
+    "totalLeads": 1220,
+    "validLeads": 733,
+    "eligibleLeads": 502,
+    "contactedLeads": 325,
     "notContactedLeads": 177,
     "openDeals": 478,
     "wonDealsMTD": 3,
     "wonDealsYTD": 8,
-    "conversionToOpenDealRate": 95.6,
+    "conversionToOpenDealRate": 95.2,
     "conversionToWonMtdRate": 0.6,
     "stages": [
       {
         "label": "Total Leads",
-        "value": 1217
+        "value": 1220
       },
       {
         "label": "Valid Leads",
-        "value": 730
+        "value": 733
       },
       {
         "label": "Eligible Outreach",
-        "value": 500
+        "value": 502
       },
       {
         "label": "Contacted",
-        "value": 323
+        "value": 325
       },
       {
         "label": "Open Deals",
@@ -32675,19 +32699,19 @@
       "rate": 76.5
     },
     "offline": {
-      "total": 398,
-      "contacted": 245,
+      "total": 400,
+      "contacted": 247,
       "notContacted": 153,
-      "rate": 61.6
+      "rate": 61.8
     }
   },
   "slaBreaches": {
     "summary": {
-      "total": 1274,
+      "total": 1272,
       "onlineLeadBreaches": 22,
       "offlineLeadBreaches": 148,
       "pipelineBreaches": 553,
-      "rankBreaches": 551
+      "rankBreaches": 549
     },
     "onlineLeadBreaches": [
       {
@@ -32714,7 +32738,7 @@
         "type": "online_lead_sla",
         "severity": "high",
         "title": "763016935638",
-        "ownerName": "Zein Fares",
+        "ownerName": "Ahmad Khawajah",
         "ageDays": 3,
         "message": "Online lead not contacted for 3 days",
         "createdAt": "2026-04-23",
@@ -33449,9 +33473,9 @@
         "severity": "medium",
         "title": "Bellevue Medical Center- New Deal",
         "ownerName": "Marita Chedid",
-        "ageDays": 30,
+        "ageDays": 31,
         "amount": 10075,
-        "message": "Cold deal with no recent activity for 30 days",
+        "message": "Cold deal with no recent activity for 31 days",
         "hubspotUrl": null
       },
       {
@@ -33579,9 +33603,9 @@
         "severity": "high",
         "title": "B D Holding - New Deal",
         "ownerName": "Marita Chedid",
-        "ageDays": 61,
+        "ageDays": 62,
         "amount": 7600,
-        "message": "Deal stuck in stage for 61 days",
+        "message": "Deal stuck in stage for 62 days",
         "hubspotUrl": null
       },
       {
@@ -34171,15 +34195,6 @@
       {
         "type": "rank_a_untouched",
         "severity": "high",
-        "title": "Basic Chemical Industries",
-        "ownerName": "Marita Chedid",
-        "country": "Saudi Arabia",
-        "message": "Rank A account untouched under new outreach logic",
-        "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-2/111152181491"
-      },
-      {
-        "type": "rank_a_untouched",
-        "severity": "high",
         "title": "ATCO Group",
         "ownerName": "Marita Chedid",
         "country": "Saudi Arabia",
@@ -34347,6 +34362,15 @@
         "country": "Saudi Arabia",
         "message": "Rank A account untouched under new outreach logic",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-2/135471705288"
+      },
+      {
+        "type": "rank_a_untouched",
+        "severity": "high",
+        "title": "Abdullah H. Al Shuwayer Trading & Contracting Company",
+        "ownerName": "Marita Chedid",
+        "country": "Saudi Arabia",
+        "message": "Rank A account untouched under new outreach logic",
+        "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-2/135471711442"
       }
     ],
     "top": [
@@ -34385,9 +34409,9 @@
         "severity": "high",
         "title": "Saudi National Bank SNB - New Deal",
         "ownerName": "Zein Fares",
-        "ageDays": 444,
+        "ageDays": 445,
         "amount": 23069.55,
-        "message": "Deal stuck in stage for 444 days",
+        "message": "Deal stuck in stage for 445 days",
         "hubspotUrl": null
       },
       {
@@ -34413,21 +34437,21 @@
       {
         "type": "stuck_deal",
         "severity": "high",
-        "title": "Al Faisal Holding - New Deal",
-        "ownerName": "Ursula Waked",
+        "title": "almoosahospital.com.sa - New Deal",
+        "ownerName": "Zein Fares",
         "ageDays": 431,
-        "amount": 41650,
+        "amount": 20000,
         "message": "Deal stuck in stage for 431 days",
         "hubspotUrl": null
       },
       {
         "type": "stuck_deal",
         "severity": "high",
-        "title": "almoosahospital.com.sa - New Deal",
-        "ownerName": "Zein Fares",
-        "ageDays": 430,
-        "amount": 20000,
-        "message": "Deal stuck in stage for 430 days",
+        "title": "Al Faisal Holding - New Deal",
+        "ownerName": "Ursula Waked",
+        "ageDays": 431,
+        "amount": 41650,
+        "message": "Deal stuck in stage for 431 days",
         "hubspotUrl": null
       },
       {
@@ -34555,13 +34579,13 @@
   "rankCoverageBreakdown": {
     "A": {
       "total": 267,
-      "contacted": 92,
-      "untouched": 175,
+      "contacted": 93,
+      "untouched": 174,
       "untouchedByRep": [
         {
           "name": "Marita Chedid",
           "color": "#7c3aed",
-          "count": 57,
+          "count": 56,
           "accounts": [
             {
               "id": "80981449948",
@@ -34741,12 +34765,6 @@
               "id": "109116541114",
               "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-2/109116541114",
               "name": "Al-Yamamah Company for Reinforcing Steel Bars",
-              "country": "Saudi Arabia"
-            },
-            {
-              "id": "111152181491",
-              "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-2/111152181491",
-              "name": "Basic Chemical Industries",
               "country": "Saudi Arabia"
             },
             {
@@ -35654,8 +35672,8 @@
     },
     "B": {
       "total": 583,
-      "contacted": 207,
-      "untouched": 376,
+      "contacted": 208,
+      "untouched": 375,
       "untouchedByRep": [
         {
           "name": "Marita Chedid",
@@ -37518,7 +37536,7 @@
         {
           "name": "Mohammed Khalid",
           "color": "#065f46",
-          "count": 64,
+          "count": 63,
           "accounts": [
             {
               "id": "80974700759",
@@ -37662,12 +37680,6 @@
               "id": "109103556838",
               "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-2/109103556838",
               "name": "Matarat Holding Company",
-              "country": "Saudi Arabia"
-            },
-            {
-              "id": "112777524439",
-              "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-2/112777524439",
-              "name": "Al Jouf cement",
               "country": "Saudi Arabia"
             },
             {
@@ -38179,7 +38191,7 @@
             },
             {
               "name": "B D Holding - New Deal",
-              "days": 61,
+              "days": 62,
               "amount": 7600,
               "rep": "Marita Chedid"
             }
@@ -38205,7 +38217,7 @@
             },
             {
               "name": "Bellevue Medical Center- New Deal",
-              "days": 30,
+              "days": 31,
               "amount": 10075,
               "rep": "Marita Chedid"
             },
@@ -38325,7 +38337,7 @@
               "name": "B D Holding - New Deal",
               "amount": 7600,
               "reasons": [
-                "Stuck in stage for 61 days"
+                "Stuck in stage for 62 days"
               ],
               "rep": "Marita Chedid"
             }
@@ -38347,11 +38359,11 @@
       },
       "companies": {
         "total": 190,
-        "contacted": 69,
-        "notContacted": 121,
-        "rate": 36.3
+        "contacted": 70,
+        "notContacted": 120,
+        "rate": 36.8
       },
-      "rankAUntouched": 57,
+      "rankAUntouched": 56,
       "rankBUntouched": 64,
       "pipelineRisks": 42,
       "actions": [
@@ -38362,7 +38374,7 @@
         },
         {
           "type": "rank_a",
-          "label": "Review 57 untouched Rank A accounts",
+          "label": "Review 56 untouched Rank A accounts",
           "priority": "high"
         },
         {
@@ -38597,7 +38609,7 @@
             },
             {
               "name": "B D Holding - New Deal",
-              "days": 61,
+              "days": 62,
               "amount": 7600,
               "rep": "Marita Chedid"
             }
@@ -38623,7 +38635,7 @@
             },
             {
               "name": "Bellevue Medical Center- New Deal",
-              "days": 30,
+              "days": 31,
               "amount": 10075,
               "rep": "Marita Chedid"
             },
@@ -38743,7 +38755,7 @@
               "name": "B D Holding - New Deal",
               "amount": 7600,
               "reasons": [
-                "Stuck in stage for 61 days"
+                "Stuck in stage for 62 days"
               ],
               "rep": "Marita Chedid"
             }
@@ -38758,10 +38770,10 @@
       "name": "Zein Fares",
       "color": "#1d4ed8",
       "contacts": {
-        "total": 66,
+        "total": 65,
         "contacted": 42,
-        "notContacted": 24,
-        "rate": 63.6
+        "notContacted": 23,
+        "rate": 64.6
       },
       "companies": {
         "total": 175,
@@ -38775,7 +38787,7 @@
       "actions": [
         {
           "type": "lead_outreach",
-          "label": "Contact 24 eligible leads",
+          "label": "Contact 23 eligible leads",
           "priority": "high"
         },
         {
@@ -39015,7 +39027,7 @@
             },
             {
               "name": "B D Holding - New Deal",
-              "days": 61,
+              "days": 62,
               "amount": 7600,
               "rep": "Marita Chedid"
             }
@@ -39041,7 +39053,7 @@
             },
             {
               "name": "Bellevue Medical Center- New Deal",
-              "days": 30,
+              "days": 31,
               "amount": 10075,
               "rep": "Marita Chedid"
             },
@@ -39161,7 +39173,7 @@
               "name": "B D Holding - New Deal",
               "amount": 7600,
               "reasons": [
-                "Stuck in stage for 61 days"
+                "Stuck in stage for 62 days"
               ],
               "rep": "Marita Chedid"
             }
@@ -39433,7 +39445,7 @@
             },
             {
               "name": "B D Holding - New Deal",
-              "days": 61,
+              "days": 62,
               "amount": 7600,
               "rep": "Marita Chedid"
             }
@@ -39459,7 +39471,7 @@
             },
             {
               "name": "Bellevue Medical Center- New Deal",
-              "days": 30,
+              "days": 31,
               "amount": 10075,
               "rep": "Marita Chedid"
             },
@@ -39579,7 +39591,7 @@
               "name": "B D Holding - New Deal",
               "amount": 7600,
               "reasons": [
-                "Stuck in stage for 61 days"
+                "Stuck in stage for 62 days"
               ],
               "rep": "Marita Chedid"
             }
@@ -39594,10 +39606,10 @@
       "name": "Ahmad Khawajah",
       "color": "#b45309",
       "contacts": {
-        "total": 39,
-        "contacted": 24,
-        "notContacted": 15,
-        "rate": 61.5
+        "total": 41,
+        "contacted": 25,
+        "notContacted": 16,
+        "rate": 61
       },
       "companies": {
         "total": 92,
@@ -39611,7 +39623,7 @@
       "actions": [
         {
           "type": "lead_outreach",
-          "label": "Contact 15 eligible leads",
+          "label": "Contact 16 eligible leads",
           "priority": "medium"
         },
         {
@@ -39846,7 +39858,7 @@
             },
             {
               "name": "B D Holding - New Deal",
-              "days": 61,
+              "days": 62,
               "amount": 7600,
               "rep": "Marita Chedid"
             }
@@ -39872,7 +39884,7 @@
             },
             {
               "name": "Bellevue Medical Center- New Deal",
-              "days": 30,
+              "days": 31,
               "amount": 10075,
               "rep": "Marita Chedid"
             },
@@ -39992,7 +40004,7 @@
               "name": "B D Holding - New Deal",
               "amount": 7600,
               "reasons": [
-                "Stuck in stage for 61 days"
+                "Stuck in stage for 62 days"
               ],
               "rep": "Marita Chedid"
             }
@@ -40007,19 +40019,19 @@
       "name": "Mohammed Khalid",
       "color": "#065f46",
       "contacts": {
-        "total": 6,
-        "contacted": 3,
+        "total": 7,
+        "contacted": 4,
         "notContacted": 3,
-        "rate": 50
+        "rate": 57.1
       },
       "companies": {
         "total": 149,
-        "contacted": 72,
-        "notContacted": 77,
-        "rate": 48.3
+        "contacted": 73,
+        "notContacted": 76,
+        "rate": 49
       },
       "rankAUntouched": 13,
-      "rankBUntouched": 64,
+      "rankBUntouched": 63,
       "pipelineRisks": 3,
       "actions": [
         {
@@ -40034,7 +40046,7 @@
         },
         {
           "type": "rank_b",
-          "label": "Review 64 untouched Rank B accounts",
+          "label": "Review 63 untouched Rank B accounts",
           "priority": "medium"
         },
         {
@@ -40264,7 +40276,7 @@
             },
             {
               "name": "B D Holding - New Deal",
-              "days": 61,
+              "days": 62,
               "amount": 7600,
               "rep": "Marita Chedid"
             }
@@ -40290,7 +40302,7 @@
             },
             {
               "name": "Bellevue Medical Center- New Deal",
-              "days": 30,
+              "days": 31,
               "amount": 10075,
               "rep": "Marita Chedid"
             },
@@ -40410,7 +40422,7 @@
               "name": "B D Holding - New Deal",
               "amount": 7600,
               "reasons": [
-                "Stuck in stage for 61 days"
+                "Stuck in stage for 62 days"
               ],
               "rep": "Marita Chedid"
             }
@@ -40682,7 +40694,7 @@
         },
         {
           "name": "B D Holding - New Deal",
-          "days": 61,
+          "days": 62,
           "amount": 7600,
           "rep": "Marita Chedid"
         }
@@ -40708,7 +40720,7 @@
         },
         {
           "name": "Bellevue Medical Center- New Deal",
-          "days": 30,
+          "days": 31,
           "amount": 10075,
           "rep": "Marita Chedid"
         },
@@ -40828,7 +40840,7 @@
           "name": "B D Holding - New Deal",
           "amount": 7600,
           "reasons": [
-            "Stuck in stage for 61 days"
+            "Stuck in stage for 62 days"
           ],
           "rep": "Marita Chedid"
         }
@@ -40845,22 +40857,22 @@
     "repLostSummary": "- Marita Chedid: 3 lost ($4200), 0 won ($0), conn rate 29%\n- Ursula Waked: 44 lost ($1298634), 0 won ($0), conn rate 42%",
     "stuckColdSummary": "- Marita Chedid: 17 stuck, 7 cold deals\n- Zein Fares: 99 stuck, 75 cold deals\n- Ursula Waked: 78 stuck, 7 cold deals\n- Mohammed Khalid: 1 stuck, 1 cold deals\n- Jehad Al-Barqawi: 24 stuck, 22 cold deals",
     "leadActivitySummary": "Marketing Leads: 113 total, 0 contacted (0%), 113 converted (100%) | Unqualified: 0 | Existing Clients: 334",
-    "kpiLine": "MTD: 1751 calls (40% connected), 133 meetings, 3 won ($184K), 47 lost ($1.3M), pipeline $4.8M"
+    "kpiLine": "MTD: 1759 calls (40% connected), 134 meetings, 3 won ($184K), 47 lost ($1.3M), pipeline $4.8M"
   },
   "aiInsights": {
-    "summary": "Critical pipeline health crisis: 219 stuck deals across team with only 40% call connect rate and $1.3M lost this month",
+    "summary": "Critical alert: 47 deals lost ($1.3M) vs only 3 won ($184K) with 293 stuck/cold pipeline deals requiring intervention",
     "patterns": [
-      "Ursula Waked lost 44 deals worth $1.3M with 0 wins despite 42% connect rate - qualification or closing issue",
-      "Contact-ability issues caused only 4 lost deals but represented $973K (75% of total loss value) - high-value prospects going dark",
-      "Zein Fares has 99 stuck and 75 cold deals (174 total stalled opportunities) - severe pipeline paralysis requiring intervention"
+      "40% connection rate significantly below benchmark - 1059 of 1759 calls not reaching decision makers",
+      "Ursula Waked lost 44 deals worth $1.3M with 78 stuck deals - urgent pipeline review and coaching needed",
+      "Contactability issues caused only 4 lost deals but represented $973K (75% of total lost revenue) - highest value loss driver"
     ],
     "quick_wins": [
-      "Ursula: Immediate deal review session to diagnose why 44 losses occurred with strong connect rate - implement new qualification criteria by Thursday",
-      "Zein: Triage 99 stuck deals this week - convert top 10 to meetings or disqualify by Friday to improve pipeline velocity"
+      "Ursula: Immediately triage 78 stuck deals and convert top 10 by value to active meetings by Thursday EOD",
+      "Zein: Clear 99 stuck deals - disqualify cold leads and re-engage warm prospects with Vision 2030 compliance angle by Friday"
     ],
     "risks": [
-      "$973K lost to contact-ability issues signals enterprise decision-maker access problem - multi-threading strategy failing on large accounts",
-      "219 stuck deals with only 3 wins ($184K) vs 47 losses ($1.3M) indicates 7:1 loss ratio - pipeline conversion collapsing and quota attainment at risk"
+      "$973K lost to contactability issues across only 4 deals suggests targeting wrong stakeholders or poor account mapping",
+      "293 total stuck/cold deals (61% of pipeline health issues) threaten Q2 revenue - pipeline velocity has stalled critically"
     ]
   },
   "marketNews": [
@@ -40869,21 +40881,21 @@
       "tag": "Regulation",
       "color": "#D97706",
       "source": "HRSD Saudi",
-      "text": "Saudi Arabia expands Nitaqat program requiring 60% nationalization in tech sectors by Q3 2026, driving demand for compliance-ready ATS platforms"
+      "text": "Saudi Arabia mandates ATS integration with QIWA platform for all enterprises by Q3 2026 to enforce Nitaqat 2.0 quotas"
     },
     {
       "icon": "📊",
       "tag": "M&A",
       "color": "#7C3AED",
       "source": "Bloomberg",
-      "text": "Oracle acquires regional HR tech provider for $240M to strengthen GCC presence, intensifying competition for enterprise accounts"
+      "text": "Oracle acquires UAE-based HCM startup TalentMENA for $240M, intensifying competition in government contract space"
     },
     {
       "icon": "⚡",
       "tag": "Trend",
       "color": "#2563EB",
       "source": "Gartner",
-      "text": "UAE enterprises increase HR tech budgets by 34% in 2026, with 78% prioritizing AI-powered recruitment tools for Emiratization compliance"
+      "text": "GCC enterprises increase HR tech budgets by 34% YoY as Emiratization targets rise to 10% in private sector by 2027"
     }
   ]
 }
