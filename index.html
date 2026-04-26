@@ -1570,11 +1570,17 @@ function renderRetention(){
   const control = data.control || summary || {};
   const financial = data.financial || data.retentionFinancials || {};
   const accounts = data.accounts || [];
-  const deals = data.renewalDeals || data.deals || [];
+  const dealsRaw = data.renewalDeals || data.deals || [];
+  const deals = Array.isArray(dealsRaw) ? dealsRaw : [
+    ...(dealsRaw.renewed || []),
+    ...(dealsRaw.booked || []),
+    ...(dealsRaw.cashed || []),
+    ...(dealsRaw.churn || [])
+  ];
   const monthly = data.monthlyRenewals || data.renewalMonths || [];
-  const alerts = data.alerts || data.priorityActions || [];
+  const alerts = Array.isArray(data.alerts) ? data.alerts : (data.alerts?.all || data.priorityActions || []);
   const ownerActivity = data.ownerActivity || data.owners || data.csmPerformance || [];
-  const matrix = data.ownerMatrix || data.rmCsmMatrix || data.followupMatrix || [];
+  const matrix = data.followupMatrix || data.accounts || data.rmCsmMatrix || [];
   const upsellCoverage = data.upsellCoverage || data.upsellOpportunities || (data.tables?.upsellOpportunities || []);
   const accountsToRenew = data.accountsToRenew || data.upcomingRenewals || (data.tables?.upcomingRenewals || []);
   const num = v => Number(v || 0);
@@ -1585,14 +1591,14 @@ function renderRetention(){
   const p=(name)=> kpi[name] || summary[name] || {};
   const y=p('yesterday'), m=p('mtd'), t=p('ytd');
 
-  setText('retYActivities', val(y,'activities','totalActivities','activityCount'));
+  setText('retYActivities', val(y,'activities','totalActivities','activityCount') || (num(y.calls) + num(y.meetings)));
   setText('retYRenewed', val(y,'renewed','renewedCount'));
   setText('retYBooked', val(y,'booked','booking','bookings'));
   setText('retYCashed', val(y,'cashed','cashing','cashings'));
   setText('retYChurn', val(y,'churn','churned'));
   setText('retYDelayed', val(y,'delayed','delayedRenewals'));
 
-  setText('retMActivities', val(m,'activities','totalActivities','activityCount'));
+  setText('retMActivities', val(m,'activities','totalActivities','activityCount') || (num(m.calls) + num(m.meetings)));
   setText('retMRenewed', val(m,'renewed','renewedCount'));
   setText('retMBooked', val(m,'booked','booking','bookings'));
   setText('retMCashed', val(m,'cashed','cashing','cashings'));
@@ -1601,7 +1607,7 @@ function renderRetention(){
   setText('retMBookedValue', money(val(m,'bookedValue','bookingValue','bookingsValue')));
   setText('retMCashedValue', money(val(m,'cashedValue','cashingValue','cashingsValue')));
 
-  setText('retYtdActivities', val(t,'activities','totalActivities','activityCount'));
+  setText('retYtdActivities', val(t,'activities','totalActivities','activityCount') || (num(t.calls) + num(t.meetings)));
   setText('retYtdRenewed', val(t,'renewed','renewedCount'));
   setText('retYtdBooked', val(t,'booked','booking','bookings'));
   setText('retYtdCashed', val(t,'cashed','cashing','cashings'));
@@ -1610,8 +1616,8 @@ function renderRetention(){
 
   const renewalsThisYear = val(control,'renewalsThisYear','totalRenewalsThisYear') || accounts.filter(a=>String(a.renewalDate||'').includes(String(new Date().getFullYear()))).length;
   const renewals90 = val(control,'renewalsNext90','upcomingRenewals') || accountsToRenew.length;
-  const noAct30 = val(control,'noActivity30','noActivityAccounts') || accounts.filter(a=>num(a.daysSinceLastActivity)>30).length;
-  const noMeetingQuarter = val(control,'noMeetingQuarter','noMeeting90') || accounts.filter(a=>num(a.daysSinceLastMeeting)>90).length;
+  const noAct30 = val(control,'noActivity30','noActivityAccounts') || accounts.filter(a=>num(a.daysSinceLastActivity ?? a.daysSinceActivity)>30).length;
+  const noMeetingQuarter = val(control,'noMeetingQuarter','noMeeting90') || accounts.filter(a=>num(a.daysSinceLastMeeting ?? a.daysSinceMeeting)>90).length;
   const renewedWon = val(control,'renewedWon','renewed') || val(m,'renewed','renewedCount');
   const cashing = val(control,'cashing','cashings') || val(m,'cashed','cashing','cashings');
   const churnRisk = val(control,'churnRisk','churnRiskAccounts') || accounts.filter(a=>/risk|critical/i.test(a.healthStatus||'')).length;
@@ -1653,10 +1659,12 @@ function renderRetention(){
 
   const dealRows = deals.length ? deals : accounts.filter(a=>a.renewalDate || a.contractRenewalDate).slice(0,10);
   if($('retRenewalDealBody')) $('retRenewalDealBody').innerHTML = dealRows.length ? dealRows.map(d=>{
-    const alert=d.alert||d.recommendedAction||((num(d.daysSinceLastActivity)>30||num(d.daysSinceLastMeeting)>90)?'Needs follow-up':'Covered');
+    const daysAct = num(d.daysSinceLastActivity ?? d.daysSinceActivity);
+    const daysMeet = num(d.daysSinceLastMeeting ?? d.daysSinceMeeting);
+    const alert=d.alert||d.recommendedAction||((daysAct>30||daysMeet>90)?'Needs follow-up':'Covered');
     const line=/covered|healthy/i.test(alert)?'ret-greenline':/overdue|no activity|risk|critical/i.test(alert)?'ret-redline':'ret-amberline';
-    return `<tr class="${line}"><td><div style="font-weight:800">${recordLink(d.dealName||d.name||d.companyName||'Renewal deal',d.dealUrl||d.hubspotUrl)}</div><div style="font-size:10px;color:var(--muted)">Retention deal</div></td><td>${recordLink(d.companyName||d.associatedCompany||d.accountName||'—',d.companyUrl)}</td><td>${textSafe(d.rmOwnerName||d.rmOwner)}</td><td>${textSafe(d.csmOwnerName||d.csmOwner)}</td><td class="c">${textSafe(d.contractStartDate||d.startDate)}</td><td class="c ${num(d.renewalDaysLeft)<=30?'ret-status-red':num(d.renewalDaysLeft)<=60?'ret-status-amber':'ret-status-green'}">${textSafe(d.contractRenewalDate||d.renewalDate)}</td><td class="c">${textSafe(d.lastDealActivity||d.dealActivity||((d.daysSinceLastDealActivity||d.daysSinceLastActivity)?(d.daysSinceLastDealActivity||d.daysSinceLastActivity)+'d':'—'))}</td><td class="c">${textSafe(d.lastCompanyActivity||d.companyActivity||((d.daysSinceLastCompanyActivity)?d.daysSinceLastCompanyActivity+'d':'—'))}</td><td><span class="badge ${/covered|healthy/i.test(alert)?'bg':/overdue|no activity|risk|critical/i.test(alert)?'br':'ba'}">${textSafe(alert)}</span></td></tr>`;
-  }).join('') : empty(9,'No renewal deals found');
+    return `<tr class="${line}"><td><div style="font-weight:800">${recordLink(d.dealName||d.name||d.companyName||'Renewal deal',d.dealUrl||d.hubspotUrl||d.companyUrl)}</div><div style="font-size:10px;color:var(--muted)">Retention deal/account</div></td><td>${recordLink(d.companyName||d.associatedCompany||d.accountName||'—',d.companyUrl)}</td><td>${textSafe(d.rmOwnerName||d.rmOwner)}</td><td>${textSafe(d.csmOwnerName||d.csmOwner)}</td><td class="c">${textSafe(d.contractStartDate||d.startDate)}</td><td class="c ${num(d.renewalDaysLeft)<=30?'ret-status-red':num(d.renewalDaysLeft)<=60?'ret-status-amber':'ret-status-green'}">${textSafe(d.contractRenewalDate||d.renewalDate)}</td><td class="c">${textSafe(d.lastDealActivity||d.dealActivity||d.lastActivityDate||(daysAct?daysAct+'d':'—'))}</td><td class="c">${textSafe(d.lastCompanyActivity||d.companyActivity||d.lastActivityDate||(d.daysSinceLastCompanyActivity?d.daysSinceLastCompanyActivity+'d':'—'))}</td><td><span class="badge ${/covered|healthy/i.test(alert)?'bg':/overdue|no activity|risk|critical/i.test(alert)?'br':'ba'}">${textSafe(alert)}</span></td></tr>`;
+  }).join('') : empty(9,'No renewal deals/accounts found');
 
   setText('retBookingsValue', money(val(financial,'bookingsMtdValue','bookedValue') || val(m,'bookedValue','bookingValue','bookingsValue')));
   setText('retBookingsCount', `${val(financial,'bookingsMtdCount','bookingsCount') || val(m,'booked','booking','bookings')} accounts`);
@@ -1679,9 +1687,12 @@ function renderRetention(){
 
   const matrixRows = matrix.length ? matrix : dealRows.slice(0,8);
   if($('retOwnerMatrixBody')) $('retOwnerMatrixBody').innerHTML = matrixRows.length ? matrixRows.map(a=>{
-    const alert=a.alert||a.recommendedAction||((num(a.rmDaysSinceLastTouch)>30)?'RM overdue':(num(a.csmDaysSinceLastTouch)>30)?'CSM overdue':'Healthy');
+    const rmTouch = a.rmLastTouch || a.lastActivityDate || (a.rmDaysSinceLastTouch ? a.rmDaysSinceLastTouch+'d' : (a.daysSinceActivity ? a.daysSinceActivity+'d' : '—'));
+    const csmTouch = a.csmLastTouch || a.lastActivityDate || (a.csmDaysSinceLastTouch ? a.csmDaysSinceLastTouch+'d' : (a.daysSinceActivity ? a.daysSinceActivity+'d' : '—'));
+    const meetingTouch = a.lastMeeting || a.lastMeetingDate || ((a.daysSinceLastMeeting ?? a.daysSinceMeeting) ? (a.daysSinceLastMeeting ?? a.daysSinceMeeting)+'d' : '—');
+    const alert=a.alert||a.recommendedAction||((num(a.rmDaysSinceLastTouch ?? a.daysSinceActivity)>30)?'RM overdue':(num(a.csmDaysSinceLastTouch ?? a.daysSinceActivity)>30)?'CSM overdue':(num(a.daysSinceLastMeeting ?? a.daysSinceMeeting)>90)?'Meeting overdue':'Healthy');
     const line=/healthy|covered/i.test(alert)?'ret-greenline':/overdue|risk|critical/i.test(alert)?'ret-redline':'ret-amberline';
-    return `<tr class="${line}"><td><div style="font-weight:800">${recordLink(a.companyName||a.accountName||a.name||a.dealName,a.hubspotUrl||a.companyUrl)}</div><div style="font-size:10px;color:var(--muted)">${textSafe(a.note||a.renewalDate||'')}</div></td><td>${textSafe(a.rmOwnerName||a.rmOwner)}</td><td>${textSafe(a.csmOwnerName||a.csmOwner)}</td><td class="c">${textSafe(a.rmLastTouch||a.rmDaysSinceLastTouch&&(a.rmDaysSinceLastTouch+'d'))}</td><td class="c">${textSafe(a.csmLastTouch||a.csmDaysSinceLastTouch&&(a.csmDaysSinceLastTouch+'d'))}</td><td class="c">${textSafe(a.lastMeeting||a.daysSinceLastMeeting&&(a.daysSinceLastMeeting+'d'))}</td><td><span class="badge ${/healthy|covered/i.test(alert)?'bg':/overdue|risk|critical/i.test(alert)?'br':'ba'}">${textSafe(alert)}</span></td></tr>`;
+    return `<tr class="${line}"><td><div style="font-weight:800">${recordLink(a.companyName||a.accountName||a.name||a.dealName,a.hubspotUrl||a.companyUrl)}</div><div style="font-size:10px;color:var(--muted)">${textSafe(a.note||a.renewalDate||a.accountStatus||'')}</div></td><td>${textSafe(a.rmOwnerName||a.rmOwner)}</td><td>${textSafe(a.csmOwnerName||a.csmOwner)}</td><td class="c">${textSafe(rmTouch)}</td><td class="c">${textSafe(csmTouch)}</td><td class="c">${textSafe(meetingTouch)}</td><td><span class="badge ${/healthy|covered/i.test(alert)?'bg':/overdue|risk|critical/i.test(alert)?'br':'ba'}">${textSafe(alert)}</span></td></tr>`;
   }).join('') : empty(7,'No RM / CSM matrix found');
 
   const rmStats = data.rmStats || {accounts: val(control,'rmAccounts')||accounts.length, noContact:noAct30, churnRisk, upsell};
