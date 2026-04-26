@@ -2,7 +2,7 @@
   "yesterdayLabel": "Saturday, 25 Apr 2026",
   "meta": {
     "yesterdayLabel": "Saturday, 25 Apr 2026",
-    "generatedAt": "01:08 PM"
+    "generatedAt": "01:19 PM"
   },
   "debug": {
     "total_ranked": 850,
@@ -97,7 +97,7 @@
       "lostAmt": 0
     },
     "mtd": {
-      "calls": 1747,
+      "calls": 1748,
       "connected": 700,
       "connRate": 40,
       "meetings": 133,
@@ -111,14 +111,14 @@
       "lostAmt": 1302833.72
     },
     "ytd": {
-      "calls": 4984,
+      "calls": 4985,
       "connected": 1906,
       "connRate": 38,
       "meetings": 657,
       "openDeals": 701,
       "openDealsSnap": 254,
       "pipeline": 4827630.451833381,
-      "leads": 729,
+      "leads": 730,
       "wonAmt": 233171.4029,
       "wonDeals": 8,
       "lost": 97,
@@ -128,9 +128,9 @@
   "team": {
     "callsYest": 0,
     "callsConn": 0,
-    "callsMTD": 1747,
+    "callsMTD": 1748,
     "callsMTDConn": 700,
-    "callsYTD": 4984,
+    "callsYTD": 4985,
     "callsYTDConn": 1906,
     "meetings": 0,
     "meetingsMTD": 133,
@@ -155,17 +155,17 @@
     "leadsMTD": 287,
     "leadsMTDInbound": 39,
     "leadsMTDOutbound": 248,
-    "leadsYTD": 729,
+    "leadsYTD": 730,
     "leadsYTDInbound": 113,
-    "leadsYTDOutbound": 616,
+    "leadsYTDOutbound": 617,
     "connRateYest": 0,
     "connRateMTD": 40,
     "connRateYTD": 38
   },
   "teamLeadActivities": {
     "callsYest": 0,
-    "callsMTD": 1747,
-    "callsYTD": 4984,
+    "callsMTD": 1748,
+    "callsYTD": 4985,
     "meetingsYest": 0,
     "meetingsMTD": 133,
     "meetingsYTD": 657
@@ -177,7 +177,7 @@
     "statusExistingClient": 334,
     "statusOther": 230,
     "sourceInbound": 113,
-    "sourceOutbound": 616,
+    "sourceOutbound": 617,
     "sourceImport": 0
   },
   "teamLeadFunnel": {
@@ -1553,9 +1553,9 @@
       "leadsMTD": 45,
       "leadsMTDInbound": 8,
       "leadsMTDOutbound": 37,
-      "leadsYTD": 323,
+      "leadsYTD": 324,
       "leadsYTDInbound": 15,
-      "leadsYTDOutbound": 308,
+      "leadsYTDOutbound": 309,
       "leadActivities": {
         "callsYest": 0,
         "callsMTD": 728,
@@ -1571,7 +1571,7 @@
         "statusExistingClient": 1,
         "statusOther": 8,
         "sourceInbound": 15,
-        "sourceOutbound": 308,
+        "sourceOutbound": 309,
         "sourceImport": 0
       },
       "leadFunnel": {
@@ -2923,7 +2923,7 @@
         },
         {
           "name": "fad international company - New Deal",
-          "days": 314,
+          "days": 315,
           "amount": 7200,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3049,7 +3049,7 @@
         },
         {
           "name": "ITSC - New Deal",
-          "days": 213,
+          "days": 214,
           "amount": 20000,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3499,7 +3499,7 @@
         },
         {
           "name": "almoosahospital.com.sa - New Deal",
-          "days": 188,
+          "days": 189,
           "amount": 20000,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3723,7 +3723,7 @@
         },
         {
           "name": "Front End Limited Company - New Deal",
-          "days": 52,
+          "days": 53,
           "amount": 16000,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -4043,7 +4043,7 @@
           "name": "almoosahospital.com.sa - New Deal",
           "amount": 20000,
           "reasons": [
-            "No activity for 188 days",
+            "No activity for 189 days",
             "Stuck in stage for 430 days"
           ],
           "ownerName": "Zein Fares",
@@ -4211,7 +4211,7 @@
           "amount": 7200,
           "reasons": [
             "No activity for 244 days",
-            "Stuck in stage for 314 days"
+            "Stuck in stage for 315 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -4390,7 +4390,7 @@
           "amount": 20000,
           "reasons": [
             "No activity for 199 days",
-            "Stuck in stage for 213 days"
+            "Stuck in stage for 214 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -4417,7 +4417,7 @@
           "name": "Front End Limited Company - New Deal",
           "amount": 16000,
           "reasons": [
-            "No activity for 52 days",
+            "No activity for 53 days",
             "Stuck in stage for 209 days"
           ],
           "ownerName": "Zein Fares",
@@ -6745,7 +6745,7 @@
         },
         {
           "name": "Eva Pharma - Evalufy New Deal",
-          "days": 53,
+          "days": 54,
           "amount": 3000,
           "ownerName": "Ursula Waked",
           "hubspotUrl": null
@@ -7484,7 +7484,7 @@
           "name": "Eva Pharma - Evalufy New Deal",
           "amount": 3000,
           "reasons": [
-            "Stuck in stage for 53 days"
+            "Stuck in stage for 54 days"
           ],
           "ownerName": "Ursula Waked",
           "hubspotUrl": null
@@ -7738,9 +7738,9 @@
       "calls": {
         "yest": 0,
         "yestConn": 0,
-        "mtd": 292,
+        "mtd": 293,
         "mtdConn": 161,
-        "ytd": 494,
+        "ytd": 495,
         "ytdConn": 267
       },
       "connRateYest": 0,
@@ -8006,8 +8006,8 @@
       "leadsYTDOutbound": 77,
       "leadActivities": {
         "callsYest": 0,
-        "callsMTD": 292,
-        "callsYTD": 494,
+        "callsMTD": 293,
+        "callsYTD": 495,
         "meetingsYest": 0,
         "meetingsMTD": 12,
         "meetingsYTD": 21
@@ -9957,7 +9957,7 @@
     "BContacted": 207,
     "BNotContacted": 376,
     "AB": 850,
-    "total": 2526
+    "total": 2527
   },
   "topInactiveRankAccounts": [
     {
@@ -11008,10 +11008,10 @@
   },
   "outreachCoverage": {
     "contacts": {
-      "total": 499,
+      "total": 500,
       "contacted": 322,
-      "notContacted": 177,
-      "contactedRate": 64.5,
+      "notContacted": 178,
+      "contactedRate": 64.4,
       "contactedList": [
         {
           "id": "765073021146",
@@ -17160,6 +17160,26 @@
           "hasCompletedMeeting": false,
           "companyIds": [
             "114687060181"
+          ]
+        },
+        {
+          "id": "764823670990",
+          "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/764823670990",
+          "name": "764823670990",
+          "email": null,
+          "ownerId": "31644369",
+          "ownerName": "Marita Chedid",
+          "ownerColor": "#7c3aed",
+          "leadStatus": "IN_PROGRESS",
+          "source": null,
+          "sourceBucket": "offline",
+          "createdAt": "2026-04-26",
+          "lastActivityDate": null,
+          "hasConnectedCall": false,
+          "hasCompletedMeeting": false,
+          "companyIds": [
+            "113783494863",
+            "428068372722"
           ]
         },
         {
@@ -25975,7 +25995,7 @@
           "country": "Saudi Arabia",
           "rank": "B",
           "createdAt": "2025-04-28",
-          "lastActivityDate": "2026-04-20"
+          "lastActivityDate": "2026-04-26"
         },
         {
           "id": "140632792281",
@@ -27743,7 +27763,7 @@
           "country": "Saudi Arabia",
           "rank": "A",
           "createdAt": "2025-03-12",
-          "lastActivityDate": "2025-04-06"
+          "lastActivityDate": "2026-04-26"
         },
         {
           "id": "113783497952",
@@ -31544,7 +31564,7 @@
       ]
     },
     "activities": {
-      "totalCalls": 4984,
+      "totalCalls": 4985,
       "callsLinkedToContacts": 1815,
       "totalMeetings": 657,
       "meetingsLinkedToContacts": 351
@@ -31556,9 +31576,9 @@
         "notContacted": 24
       },
       "offline": {
-        "total": 397,
+        "total": 398,
         "contacted": 244,
-        "notContacted": 153
+        "notContacted": 154
       }
     },
     "byRep": [
@@ -31567,10 +31587,10 @@
         "color": "#7c3aed",
         "type": "acq",
         "contacts": {
-          "total": 315,
+          "total": 316,
           "contacted": 202,
-          "notContacted": 113,
-          "rate": 64.1
+          "notContacted": 114,
+          "rate": 63.9
         },
         "companies": {
           "total": 190,
@@ -31669,8 +31689,8 @@
   "managerActions": [
     {
       "key": "lead_outreach",
-      "title": "Contact 177 eligible leads",
-      "count": 177,
+      "title": "Contact 178 eligible leads",
+      "count": 178,
       "severity": "high",
       "description": "Prioritize online/inbound leads first, then older offline leads."
     },
@@ -32156,6 +32176,38 @@
       "reason": "Online/inbound lead · Created 13 days ago · No qualified activity yet"
     },
     {
+      "id": "764823670990",
+      "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/764823670990",
+      "name": "764823670990",
+      "email": null,
+      "ownerId": "31644369",
+      "ownerName": "Marita Chedid",
+      "ownerColor": "#7c3aed",
+      "leadStatus": "IN_PROGRESS",
+      "source": null,
+      "sourceBucket": "offline",
+      "createdAt": "2026-04-26",
+      "lastActivityDate": null,
+      "hasConnectedCall": false,
+      "hasCompletedMeeting": false,
+      "companyIds": [
+        "113783494863",
+        "428068372722"
+      ],
+      "score": 85,
+      "ageDays": 0,
+      "priority": "High",
+      "priorityReasons": [
+        "Offline/outbound lead",
+        "Created 0 days ago",
+        "No qualified activity yet",
+        "No connected call",
+        "No completed meeting",
+        "In progress"
+      ],
+      "reason": "Offline/outbound lead · Created 0 days ago · No qualified activity yet"
+    },
+    {
       "id": "759779346673",
       "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/759779346673",
       "name": "759779346673",
@@ -32582,63 +32634,31 @@
         "Open deal status"
       ],
       "reason": "Offline/outbound lead · Created 12 days ago · No qualified activity yet"
-    },
-    {
-      "id": "762864047325",
-      "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/762864047325",
-      "name": "762864047325",
-      "email": null,
-      "ownerId": "31644369",
-      "ownerName": "Marita Chedid",
-      "ownerColor": "#7c3aed",
-      "leadStatus": "ATTEMPTED_TO_CONTACT",
-      "source": "OFFLINE",
-      "sourceBucket": "offline",
-      "createdAt": "2026-04-23",
-      "lastActivityDate": null,
-      "hasConnectedCall": false,
-      "hasCompletedMeeting": false,
-      "companyIds": [
-        "359837583563",
-        "427181307099"
-      ],
-      "score": 75,
-      "ageDays": 3,
-      "priority": "Medium",
-      "priorityReasons": [
-        "Offline/outbound lead",
-        "Created 3 days ago",
-        "No qualified activity yet",
-        "No connected call",
-        "No completed meeting",
-        "Attempted before but no qualified contact"
-      ],
-      "reason": "Offline/outbound lead · Created 3 days ago · No qualified activity yet"
     }
   ],
   "leadFunnel": {
-    "totalLeads": 1216,
-    "validLeads": 729,
-    "eligibleLeads": 499,
+    "totalLeads": 1217,
+    "validLeads": 730,
+    "eligibleLeads": 500,
     "contactedLeads": 322,
-    "notContactedLeads": 177,
+    "notContactedLeads": 178,
     "openDeals": 478,
     "wonDealsMTD": 3,
     "wonDealsYTD": 8,
-    "conversionToOpenDealRate": 95.8,
+    "conversionToOpenDealRate": 95.6,
     "conversionToWonMtdRate": 0.6,
     "stages": [
       {
         "label": "Total Leads",
-        "value": 1216
+        "value": 1217
       },
       {
         "label": "Valid Leads",
-        "value": 729
+        "value": 730
       },
       {
         "label": "Eligible Outreach",
-        "value": 499
+        "value": 500
       },
       {
         "label": "Contacted",
@@ -32662,10 +32682,10 @@
       "rate": 76.5
     },
     "offline": {
-      "total": 397,
+      "total": 398,
       "contacted": 244,
-      "notContacted": 153,
-      "rate": 61.5
+      "notContacted": 154,
+      "rate": 61.3
     }
   },
   "slaBreaches": {
@@ -33858,9 +33878,9 @@
         "severity": "medium",
         "title": "almoosahospital.com.sa - New Deal",
         "ownerName": "Zein Fares",
-        "ageDays": 188,
+        "ageDays": 189,
         "amount": 20000,
-        "message": "Cold deal with no recent activity for 188 days",
+        "message": "Cold deal with no recent activity for 189 days",
         "hubspotUrl": null
       },
       {
@@ -37955,12 +37975,12 @@
     {
       "financialDetails": {
         "summary": {
-          "cashingRevenue": 150396.4029,
-          "signedRevenue": 273772.24455,
-          "pendingToCash": 273772.24455,
-          "cashingCount": 9,
-          "signedCount": 8,
-          "delayedSignedCount": 5,
+          "cashingRevenue": 43962.4029,
+          "signedRevenue": 189209,
+          "pendingToCash": 189209,
+          "cashingCount": 4,
+          "signedCount": 4,
+          "delayedSignedCount": 1,
           "missingFinancialCount": 0
         },
         "cashing": [
@@ -38019,143 +38039,9 @@
             "exitedSignedDate": "2026-01-05",
             "daysFromSigned": 121,
             "status": "Cashed"
-          },
-          {
-            "id": "296064796918",
-            "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/296064796918",
-            "name": "CAVT - New Deal",
-            "rep": "Ursula Waked",
-            "repColor": "#be185d",
-            "amount": 4000,
-            "stage": "Cashing",
-            "signedDate": "2025-09-08",
-            "cashingDate": "2025-11-05",
-            "exitedSignedDate": "2025-11-05",
-            "daysFromSigned": 229,
-            "status": "Cashed"
-          },
-          {
-            "id": "117048844476",
-            "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/117048844476",
-            "name": "Al-Jasser Holding - New Deal",
-            "rep": "Zein Fares",
-            "repColor": "#1d4ed8",
-            "amount": 53200,
-            "stage": "Cashing",
-            "signedDate": "2025-05-27",
-            "cashingDate": "2025-10-29",
-            "exitedSignedDate": "2025-10-29",
-            "daysFromSigned": 333,
-            "status": "Cashed"
-          },
-          {
-            "id": "221972756685",
-            "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/221972756685",
-            "name": "Saudi Radwa Food Co - New Deal",
-            "rep": "Jehad Al-Barqawi",
-            "repColor": "#0e7490",
-            "amount": 21500,
-            "stage": "Cashing",
-            "signedDate": "2025-05-27",
-            "cashingDate": "2025-08-25",
-            "exitedSignedDate": "2025-08-25",
-            "daysFromSigned": 333,
-            "status": "Cashed"
-          },
-          {
-            "id": "112802435267",
-            "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/112802435267",
-            "name": "momah.gov.sa - New Deal",
-            "rep": "Zein Fares",
-            "repColor": "#1d4ed8",
-            "amount": 22400,
-            "stage": "Cashing",
-            "signedDate": "2025-01-29",
-            "cashingDate": "2025-08-04",
-            "exitedSignedDate": "2025-08-04",
-            "daysFromSigned": 452,
-            "status": "Cashed"
-          },
-          {
-            "id": "108694583525",
-            "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/108694583525",
-            "name": "360 للموارد البشرية - New Deal",
-            "rep": "Zein Fares",
-            "repColor": "#1d4ed8",
-            "amount": 5334,
-            "stage": "Cashing",
-            "signedDate": "2025-01-22",
-            "cashingDate": "2025-02-11",
-            "exitedSignedDate": "2025-02-11",
-            "daysFromSigned": 458,
-            "status": "Cashed"
           }
         ],
         "signed": [
-          {
-            "id": "110073093341",
-            "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/110073093341",
-            "name": "Digital Government Authority - New Deal",
-            "rep": "Zein Fares",
-            "repColor": "#1d4ed8",
-            "amount": 6757.24455,
-            "stage": "Signed Contract/Booking",
-            "signedDate": "2025-01-27",
-            "cashingDate": "2024-12-09",
-            "exitedSignedDate": null,
-            "daysFromSigned": 454,
-            "status": "Waiting Cash",
-            "isDelayed": true,
-            "riskLabel": "Delayed Cashing"
-          },
-          {
-            "id": "293493757169",
-            "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/293493757169",
-            "name": "JODDB - New Deal",
-            "rep": "Jehad Al-Barqawi",
-            "repColor": "#0e7490",
-            "amount": 3000,
-            "stage": "Signed Contract/Booking",
-            "signedDate": "2025-08-25",
-            "cashingDate": "2025-08-25",
-            "exitedSignedDate": null,
-            "daysFromSigned": 243,
-            "status": "Waiting Cash",
-            "isDelayed": true,
-            "riskLabel": "Delayed Cashing"
-          },
-          {
-            "id": "293493559482",
-            "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/293493559482",
-            "name": "aljasser holding الجاسر القابضه - New Deal",
-            "rep": "Zein Fares",
-            "repColor": "#1d4ed8",
-            "amount": 21466,
-            "stage": "Signed Contract/Booking",
-            "signedDate": "2025-10-01",
-            "cashingDate": "2025-10-01",
-            "exitedSignedDate": null,
-            "daysFromSigned": 206,
-            "status": "Waiting Cash",
-            "isDelayed": true,
-            "riskLabel": "Delayed Cashing"
-          },
-          {
-            "id": "328141813952",
-            "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/328141813952",
-            "name": "Magrabi Health ",
-            "rep": "Jehad Al-Barqawi",
-            "repColor": "#0e7490",
-            "amount": 53340,
-            "stage": "Signed Contract/Booking",
-            "signedDate": "2025-11-06",
-            "cashingDate": "2025-11-06",
-            "exitedSignedDate": null,
-            "daysFromSigned": 170,
-            "status": "Waiting Cash",
-            "isDelayed": true,
-            "riskLabel": "Delayed Cashing"
-          },
           {
             "id": "328369263809",
             "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/328369263809",
@@ -38225,76 +38111,12 @@
       },
       "firstLookSummary": {
         "money": {
-          "cashingRevenue": 150396.4029,
-          "signedRevenue": 273772.24455,
-          "pendingToCash": 273772.24455
+          "cashingRevenue": 43962.4029,
+          "signedRevenue": 189209,
+          "pendingToCash": 189209
         },
         "risks": {
           "delayedSigned": [
-            {
-              "id": "110073093341",
-              "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/110073093341",
-              "name": "Digital Government Authority - New Deal",
-              "rep": "Zein Fares",
-              "repColor": "#1d4ed8",
-              "amount": 6757.24455,
-              "stage": "Signed Contract/Booking",
-              "signedDate": "2025-01-27",
-              "cashingDate": "2024-12-09",
-              "exitedSignedDate": null,
-              "daysFromSigned": 454,
-              "status": "Waiting Cash",
-              "isDelayed": true,
-              "riskLabel": "Delayed Cashing"
-            },
-            {
-              "id": "293493757169",
-              "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/293493757169",
-              "name": "JODDB - New Deal",
-              "rep": "Jehad Al-Barqawi",
-              "repColor": "#0e7490",
-              "amount": 3000,
-              "stage": "Signed Contract/Booking",
-              "signedDate": "2025-08-25",
-              "cashingDate": "2025-08-25",
-              "exitedSignedDate": null,
-              "daysFromSigned": 243,
-              "status": "Waiting Cash",
-              "isDelayed": true,
-              "riskLabel": "Delayed Cashing"
-            },
-            {
-              "id": "293493559482",
-              "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/293493559482",
-              "name": "aljasser holding الجاسر القابضه - New Deal",
-              "rep": "Zein Fares",
-              "repColor": "#1d4ed8",
-              "amount": 21466,
-              "stage": "Signed Contract/Booking",
-              "signedDate": "2025-10-01",
-              "cashingDate": "2025-10-01",
-              "exitedSignedDate": null,
-              "daysFromSigned": 206,
-              "status": "Waiting Cash",
-              "isDelayed": true,
-              "riskLabel": "Delayed Cashing"
-            },
-            {
-              "id": "328141813952",
-              "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/328141813952",
-              "name": "Magrabi Health ",
-              "rep": "Jehad Al-Barqawi",
-              "repColor": "#0e7490",
-              "amount": 53340,
-              "stage": "Signed Contract/Booking",
-              "signedDate": "2025-11-06",
-              "cashingDate": "2025-11-06",
-              "exitedSignedDate": null,
-              "daysFromSigned": 170,
-              "status": "Waiting Cash",
-              "isDelayed": true,
-              "riskLabel": "Delayed Cashing"
-            },
             {
               "id": "328369263809",
               "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/328369263809",
@@ -38523,7 +38345,7 @@
           ]
         },
         "priority": [
-          "Follow up 5 signed deal(s) not cashed yet",
+          "Follow up 1 signed deal(s) not cashed yet",
           "Add next activity for 222 open deal(s)",
           "Contact top 10 priority lead(s)"
         ]
@@ -38531,10 +38353,10 @@
       "name": "Marita Chedid",
       "color": "#7c3aed",
       "contacts": {
-        "total": 315,
+        "total": 316,
         "contacted": 202,
-        "notContacted": 113,
-        "rate": 64.1
+        "notContacted": 114,
+        "rate": 63.9
       },
       "companies": {
         "total": 190,
@@ -38548,7 +38370,7 @@
       "actions": [
         {
           "type": "lead_outreach",
-          "label": "Contact 113 eligible leads",
+          "label": "Contact 114 eligible leads",
           "priority": "high"
         },
         {
@@ -38571,12 +38393,12 @@
     {
       "financialDetails": {
         "summary": {
-          "cashingRevenue": 150396.4029,
-          "signedRevenue": 273772.24455,
-          "pendingToCash": 273772.24455,
-          "cashingCount": 9,
-          "signedCount": 8,
-          "delayedSignedCount": 5,
+          "cashingRevenue": 43962.4029,
+          "signedRevenue": 189209,
+          "pendingToCash": 189209,
+          "cashingCount": 4,
+          "signedCount": 4,
+          "delayedSignedCount": 1,
           "missingFinancialCount": 0
         },
         "cashing": [
@@ -38635,143 +38457,9 @@
             "exitedSignedDate": "2026-01-05",
             "daysFromSigned": 121,
             "status": "Cashed"
-          },
-          {
-            "id": "296064796918",
-            "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/296064796918",
-            "name": "CAVT - New Deal",
-            "rep": "Ursula Waked",
-            "repColor": "#be185d",
-            "amount": 4000,
-            "stage": "Cashing",
-            "signedDate": "2025-09-08",
-            "cashingDate": "2025-11-05",
-            "exitedSignedDate": "2025-11-05",
-            "daysFromSigned": 229,
-            "status": "Cashed"
-          },
-          {
-            "id": "117048844476",
-            "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/117048844476",
-            "name": "Al-Jasser Holding - New Deal",
-            "rep": "Zein Fares",
-            "repColor": "#1d4ed8",
-            "amount": 53200,
-            "stage": "Cashing",
-            "signedDate": "2025-05-27",
-            "cashingDate": "2025-10-29",
-            "exitedSignedDate": "2025-10-29",
-            "daysFromSigned": 333,
-            "status": "Cashed"
-          },
-          {
-            "id": "221972756685",
-            "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/221972756685",
-            "name": "Saudi Radwa Food Co - New Deal",
-            "rep": "Jehad Al-Barqawi",
-            "repColor": "#0e7490",
-            "amount": 21500,
-            "stage": "Cashing",
-            "signedDate": "2025-05-27",
-            "cashingDate": "2025-08-25",
-            "exitedSignedDate": "2025-08-25",
-            "daysFromSigned": 333,
-            "status": "Cashed"
-          },
-          {
-            "id": "112802435267",
-            "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/112802435267",
-            "name": "momah.gov.sa - New Deal",
-            "rep": "Zein Fares",
-            "repColor": "#1d4ed8",
-            "amount": 22400,
-            "stage": "Cashing",
-            "signedDate": "2025-01-29",
-            "cashingDate": "2025-08-04",
-            "exitedSignedDate": "2025-08-04",
-            "daysFromSigned": 452,
-            "status": "Cashed"
-          },
-          {
-            "id": "108694583525",
-            "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/108694583525",
-            "name": "360 للموارد البشرية - New Deal",
-            "rep": "Zein Fares",
-            "repColor": "#1d4ed8",
-            "amount": 5334,
-            "stage": "Cashing",
-            "signedDate": "2025-01-22",
-            "cashingDate": "2025-02-11",
-            "exitedSignedDate": "2025-02-11",
-            "daysFromSigned": 458,
-            "status": "Cashed"
           }
         ],
         "signed": [
-          {
-            "id": "110073093341",
-            "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/110073093341",
-            "name": "Digital Government Authority - New Deal",
-            "rep": "Zein Fares",
-            "repColor": "#1d4ed8",
-            "amount": 6757.24455,
-            "stage": "Signed Contract/Booking",
-            "signedDate": "2025-01-27",
-            "cashingDate": "2024-12-09",
-            "exitedSignedDate": null,
-            "daysFromSigned": 454,
-            "status": "Waiting Cash",
-            "isDelayed": true,
-            "riskLabel": "Delayed Cashing"
-          },
-          {
-            "id": "293493757169",
-            "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/293493757169",
-            "name": "JODDB - New Deal",
-            "rep": "Jehad Al-Barqawi",
-            "repColor": "#0e7490",
-            "amount": 3000,
-            "stage": "Signed Contract/Booking",
-            "signedDate": "2025-08-25",
-            "cashingDate": "2025-08-25",
-            "exitedSignedDate": null,
-            "daysFromSigned": 243,
-            "status": "Waiting Cash",
-            "isDelayed": true,
-            "riskLabel": "Delayed Cashing"
-          },
-          {
-            "id": "293493559482",
-            "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/293493559482",
-            "name": "aljasser holding الجاسر القابضه - New Deal",
-            "rep": "Zein Fares",
-            "repColor": "#1d4ed8",
-            "amount": 21466,
-            "stage": "Signed Contract/Booking",
-            "signedDate": "2025-10-01",
-            "cashingDate": "2025-10-01",
-            "exitedSignedDate": null,
-            "daysFromSigned": 206,
-            "status": "Waiting Cash",
-            "isDelayed": true,
-            "riskLabel": "Delayed Cashing"
-          },
-          {
-            "id": "328141813952",
-            "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/328141813952",
-            "name": "Magrabi Health ",
-            "rep": "Jehad Al-Barqawi",
-            "repColor": "#0e7490",
-            "amount": 53340,
-            "stage": "Signed Contract/Booking",
-            "signedDate": "2025-11-06",
-            "cashingDate": "2025-11-06",
-            "exitedSignedDate": null,
-            "daysFromSigned": 170,
-            "status": "Waiting Cash",
-            "isDelayed": true,
-            "riskLabel": "Delayed Cashing"
-          },
           {
             "id": "328369263809",
             "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/328369263809",
@@ -38841,76 +38529,12 @@
       },
       "firstLookSummary": {
         "money": {
-          "cashingRevenue": 150396.4029,
-          "signedRevenue": 273772.24455,
-          "pendingToCash": 273772.24455
+          "cashingRevenue": 43962.4029,
+          "signedRevenue": 189209,
+          "pendingToCash": 189209
         },
         "risks": {
           "delayedSigned": [
-            {
-              "id": "110073093341",
-              "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/110073093341",
-              "name": "Digital Government Authority - New Deal",
-              "rep": "Zein Fares",
-              "repColor": "#1d4ed8",
-              "amount": 6757.24455,
-              "stage": "Signed Contract/Booking",
-              "signedDate": "2025-01-27",
-              "cashingDate": "2024-12-09",
-              "exitedSignedDate": null,
-              "daysFromSigned": 454,
-              "status": "Waiting Cash",
-              "isDelayed": true,
-              "riskLabel": "Delayed Cashing"
-            },
-            {
-              "id": "293493757169",
-              "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/293493757169",
-              "name": "JODDB - New Deal",
-              "rep": "Jehad Al-Barqawi",
-              "repColor": "#0e7490",
-              "amount": 3000,
-              "stage": "Signed Contract/Booking",
-              "signedDate": "2025-08-25",
-              "cashingDate": "2025-08-25",
-              "exitedSignedDate": null,
-              "daysFromSigned": 243,
-              "status": "Waiting Cash",
-              "isDelayed": true,
-              "riskLabel": "Delayed Cashing"
-            },
-            {
-              "id": "293493559482",
-              "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/293493559482",
-              "name": "aljasser holding الجاسر القابضه - New Deal",
-              "rep": "Zein Fares",
-              "repColor": "#1d4ed8",
-              "amount": 21466,
-              "stage": "Signed Contract/Booking",
-              "signedDate": "2025-10-01",
-              "cashingDate": "2025-10-01",
-              "exitedSignedDate": null,
-              "daysFromSigned": 206,
-              "status": "Waiting Cash",
-              "isDelayed": true,
-              "riskLabel": "Delayed Cashing"
-            },
-            {
-              "id": "328141813952",
-              "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/328141813952",
-              "name": "Magrabi Health ",
-              "rep": "Jehad Al-Barqawi",
-              "repColor": "#0e7490",
-              "amount": 53340,
-              "stage": "Signed Contract/Booking",
-              "signedDate": "2025-11-06",
-              "cashingDate": "2025-11-06",
-              "exitedSignedDate": null,
-              "daysFromSigned": 170,
-              "status": "Waiting Cash",
-              "isDelayed": true,
-              "riskLabel": "Delayed Cashing"
-            },
             {
               "id": "328369263809",
               "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/328369263809",
@@ -39139,7 +38763,7 @@
           ]
         },
         "priority": [
-          "Follow up 5 signed deal(s) not cashed yet",
+          "Follow up 1 signed deal(s) not cashed yet",
           "Add next activity for 222 open deal(s)",
           "Contact top 10 priority lead(s)"
         ]
@@ -39187,12 +38811,12 @@
     {
       "financialDetails": {
         "summary": {
-          "cashingRevenue": 150396.4029,
-          "signedRevenue": 273772.24455,
-          "pendingToCash": 273772.24455,
-          "cashingCount": 9,
-          "signedCount": 8,
-          "delayedSignedCount": 5,
+          "cashingRevenue": 43962.4029,
+          "signedRevenue": 189209,
+          "pendingToCash": 189209,
+          "cashingCount": 4,
+          "signedCount": 4,
+          "delayedSignedCount": 1,
           "missingFinancialCount": 0
         },
         "cashing": [
@@ -39251,143 +38875,9 @@
             "exitedSignedDate": "2026-01-05",
             "daysFromSigned": 121,
             "status": "Cashed"
-          },
-          {
-            "id": "296064796918",
-            "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/296064796918",
-            "name": "CAVT - New Deal",
-            "rep": "Ursula Waked",
-            "repColor": "#be185d",
-            "amount": 4000,
-            "stage": "Cashing",
-            "signedDate": "2025-09-08",
-            "cashingDate": "2025-11-05",
-            "exitedSignedDate": "2025-11-05",
-            "daysFromSigned": 229,
-            "status": "Cashed"
-          },
-          {
-            "id": "117048844476",
-            "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/117048844476",
-            "name": "Al-Jasser Holding - New Deal",
-            "rep": "Zein Fares",
-            "repColor": "#1d4ed8",
-            "amount": 53200,
-            "stage": "Cashing",
-            "signedDate": "2025-05-27",
-            "cashingDate": "2025-10-29",
-            "exitedSignedDate": "2025-10-29",
-            "daysFromSigned": 333,
-            "status": "Cashed"
-          },
-          {
-            "id": "221972756685",
-            "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/221972756685",
-            "name": "Saudi Radwa Food Co - New Deal",
-            "rep": "Jehad Al-Barqawi",
-            "repColor": "#0e7490",
-            "amount": 21500,
-            "stage": "Cashing",
-            "signedDate": "2025-05-27",
-            "cashingDate": "2025-08-25",
-            "exitedSignedDate": "2025-08-25",
-            "daysFromSigned": 333,
-            "status": "Cashed"
-          },
-          {
-            "id": "112802435267",
-            "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/112802435267",
-            "name": "momah.gov.sa - New Deal",
-            "rep": "Zein Fares",
-            "repColor": "#1d4ed8",
-            "amount": 22400,
-            "stage": "Cashing",
-            "signedDate": "2025-01-29",
-            "cashingDate": "2025-08-04",
-            "exitedSignedDate": "2025-08-04",
-            "daysFromSigned": 452,
-            "status": "Cashed"
-          },
-          {
-            "id": "108694583525",
-            "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/108694583525",
-            "name": "360 للموارد البشرية - New Deal",
-            "rep": "Zein Fares",
-            "repColor": "#1d4ed8",
-            "amount": 5334,
-            "stage": "Cashing",
-            "signedDate": "2025-01-22",
-            "cashingDate": "2025-02-11",
-            "exitedSignedDate": "2025-02-11",
-            "daysFromSigned": 458,
-            "status": "Cashed"
           }
         ],
         "signed": [
-          {
-            "id": "110073093341",
-            "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/110073093341",
-            "name": "Digital Government Authority - New Deal",
-            "rep": "Zein Fares",
-            "repColor": "#1d4ed8",
-            "amount": 6757.24455,
-            "stage": "Signed Contract/Booking",
-            "signedDate": "2025-01-27",
-            "cashingDate": "2024-12-09",
-            "exitedSignedDate": null,
-            "daysFromSigned": 454,
-            "status": "Waiting Cash",
-            "isDelayed": true,
-            "riskLabel": "Delayed Cashing"
-          },
-          {
-            "id": "293493757169",
-            "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/293493757169",
-            "name": "JODDB - New Deal",
-            "rep": "Jehad Al-Barqawi",
-            "repColor": "#0e7490",
-            "amount": 3000,
-            "stage": "Signed Contract/Booking",
-            "signedDate": "2025-08-25",
-            "cashingDate": "2025-08-25",
-            "exitedSignedDate": null,
-            "daysFromSigned": 243,
-            "status": "Waiting Cash",
-            "isDelayed": true,
-            "riskLabel": "Delayed Cashing"
-          },
-          {
-            "id": "293493559482",
-            "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/293493559482",
-            "name": "aljasser holding الجاسر القابضه - New Deal",
-            "rep": "Zein Fares",
-            "repColor": "#1d4ed8",
-            "amount": 21466,
-            "stage": "Signed Contract/Booking",
-            "signedDate": "2025-10-01",
-            "cashingDate": "2025-10-01",
-            "exitedSignedDate": null,
-            "daysFromSigned": 206,
-            "status": "Waiting Cash",
-            "isDelayed": true,
-            "riskLabel": "Delayed Cashing"
-          },
-          {
-            "id": "328141813952",
-            "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/328141813952",
-            "name": "Magrabi Health ",
-            "rep": "Jehad Al-Barqawi",
-            "repColor": "#0e7490",
-            "amount": 53340,
-            "stage": "Signed Contract/Booking",
-            "signedDate": "2025-11-06",
-            "cashingDate": "2025-11-06",
-            "exitedSignedDate": null,
-            "daysFromSigned": 170,
-            "status": "Waiting Cash",
-            "isDelayed": true,
-            "riskLabel": "Delayed Cashing"
-          },
           {
             "id": "328369263809",
             "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/328369263809",
@@ -39457,76 +38947,12 @@
       },
       "firstLookSummary": {
         "money": {
-          "cashingRevenue": 150396.4029,
-          "signedRevenue": 273772.24455,
-          "pendingToCash": 273772.24455
+          "cashingRevenue": 43962.4029,
+          "signedRevenue": 189209,
+          "pendingToCash": 189209
         },
         "risks": {
           "delayedSigned": [
-            {
-              "id": "110073093341",
-              "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/110073093341",
-              "name": "Digital Government Authority - New Deal",
-              "rep": "Zein Fares",
-              "repColor": "#1d4ed8",
-              "amount": 6757.24455,
-              "stage": "Signed Contract/Booking",
-              "signedDate": "2025-01-27",
-              "cashingDate": "2024-12-09",
-              "exitedSignedDate": null,
-              "daysFromSigned": 454,
-              "status": "Waiting Cash",
-              "isDelayed": true,
-              "riskLabel": "Delayed Cashing"
-            },
-            {
-              "id": "293493757169",
-              "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/293493757169",
-              "name": "JODDB - New Deal",
-              "rep": "Jehad Al-Barqawi",
-              "repColor": "#0e7490",
-              "amount": 3000,
-              "stage": "Signed Contract/Booking",
-              "signedDate": "2025-08-25",
-              "cashingDate": "2025-08-25",
-              "exitedSignedDate": null,
-              "daysFromSigned": 243,
-              "status": "Waiting Cash",
-              "isDelayed": true,
-              "riskLabel": "Delayed Cashing"
-            },
-            {
-              "id": "293493559482",
-              "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/293493559482",
-              "name": "aljasser holding الجاسر القابضه - New Deal",
-              "rep": "Zein Fares",
-              "repColor": "#1d4ed8",
-              "amount": 21466,
-              "stage": "Signed Contract/Booking",
-              "signedDate": "2025-10-01",
-              "cashingDate": "2025-10-01",
-              "exitedSignedDate": null,
-              "daysFromSigned": 206,
-              "status": "Waiting Cash",
-              "isDelayed": true,
-              "riskLabel": "Delayed Cashing"
-            },
-            {
-              "id": "328141813952",
-              "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/328141813952",
-              "name": "Magrabi Health ",
-              "rep": "Jehad Al-Barqawi",
-              "repColor": "#0e7490",
-              "amount": 53340,
-              "stage": "Signed Contract/Booking",
-              "signedDate": "2025-11-06",
-              "cashingDate": "2025-11-06",
-              "exitedSignedDate": null,
-              "daysFromSigned": 170,
-              "status": "Waiting Cash",
-              "isDelayed": true,
-              "riskLabel": "Delayed Cashing"
-            },
             {
               "id": "328369263809",
               "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/328369263809",
@@ -39755,7 +39181,7 @@
           ]
         },
         "priority": [
-          "Follow up 5 signed deal(s) not cashed yet",
+          "Follow up 1 signed deal(s) not cashed yet",
           "Add next activity for 222 open deal(s)",
           "Contact top 10 priority lead(s)"
         ]
@@ -39803,12 +39229,12 @@
     {
       "financialDetails": {
         "summary": {
-          "cashingRevenue": 150396.4029,
-          "signedRevenue": 273772.24455,
-          "pendingToCash": 273772.24455,
-          "cashingCount": 9,
-          "signedCount": 8,
-          "delayedSignedCount": 5,
+          "cashingRevenue": 43962.4029,
+          "signedRevenue": 189209,
+          "pendingToCash": 189209,
+          "cashingCount": 4,
+          "signedCount": 4,
+          "delayedSignedCount": 1,
           "missingFinancialCount": 0
         },
         "cashing": [
@@ -39867,143 +39293,9 @@
             "exitedSignedDate": "2026-01-05",
             "daysFromSigned": 121,
             "status": "Cashed"
-          },
-          {
-            "id": "296064796918",
-            "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/296064796918",
-            "name": "CAVT - New Deal",
-            "rep": "Ursula Waked",
-            "repColor": "#be185d",
-            "amount": 4000,
-            "stage": "Cashing",
-            "signedDate": "2025-09-08",
-            "cashingDate": "2025-11-05",
-            "exitedSignedDate": "2025-11-05",
-            "daysFromSigned": 229,
-            "status": "Cashed"
-          },
-          {
-            "id": "117048844476",
-            "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/117048844476",
-            "name": "Al-Jasser Holding - New Deal",
-            "rep": "Zein Fares",
-            "repColor": "#1d4ed8",
-            "amount": 53200,
-            "stage": "Cashing",
-            "signedDate": "2025-05-27",
-            "cashingDate": "2025-10-29",
-            "exitedSignedDate": "2025-10-29",
-            "daysFromSigned": 333,
-            "status": "Cashed"
-          },
-          {
-            "id": "221972756685",
-            "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/221972756685",
-            "name": "Saudi Radwa Food Co - New Deal",
-            "rep": "Jehad Al-Barqawi",
-            "repColor": "#0e7490",
-            "amount": 21500,
-            "stage": "Cashing",
-            "signedDate": "2025-05-27",
-            "cashingDate": "2025-08-25",
-            "exitedSignedDate": "2025-08-25",
-            "daysFromSigned": 333,
-            "status": "Cashed"
-          },
-          {
-            "id": "112802435267",
-            "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/112802435267",
-            "name": "momah.gov.sa - New Deal",
-            "rep": "Zein Fares",
-            "repColor": "#1d4ed8",
-            "amount": 22400,
-            "stage": "Cashing",
-            "signedDate": "2025-01-29",
-            "cashingDate": "2025-08-04",
-            "exitedSignedDate": "2025-08-04",
-            "daysFromSigned": 452,
-            "status": "Cashed"
-          },
-          {
-            "id": "108694583525",
-            "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/108694583525",
-            "name": "360 للموارد البشرية - New Deal",
-            "rep": "Zein Fares",
-            "repColor": "#1d4ed8",
-            "amount": 5334,
-            "stage": "Cashing",
-            "signedDate": "2025-01-22",
-            "cashingDate": "2025-02-11",
-            "exitedSignedDate": "2025-02-11",
-            "daysFromSigned": 458,
-            "status": "Cashed"
           }
         ],
         "signed": [
-          {
-            "id": "110073093341",
-            "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/110073093341",
-            "name": "Digital Government Authority - New Deal",
-            "rep": "Zein Fares",
-            "repColor": "#1d4ed8",
-            "amount": 6757.24455,
-            "stage": "Signed Contract/Booking",
-            "signedDate": "2025-01-27",
-            "cashingDate": "2024-12-09",
-            "exitedSignedDate": null,
-            "daysFromSigned": 454,
-            "status": "Waiting Cash",
-            "isDelayed": true,
-            "riskLabel": "Delayed Cashing"
-          },
-          {
-            "id": "293493757169",
-            "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/293493757169",
-            "name": "JODDB - New Deal",
-            "rep": "Jehad Al-Barqawi",
-            "repColor": "#0e7490",
-            "amount": 3000,
-            "stage": "Signed Contract/Booking",
-            "signedDate": "2025-08-25",
-            "cashingDate": "2025-08-25",
-            "exitedSignedDate": null,
-            "daysFromSigned": 243,
-            "status": "Waiting Cash",
-            "isDelayed": true,
-            "riskLabel": "Delayed Cashing"
-          },
-          {
-            "id": "293493559482",
-            "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/293493559482",
-            "name": "aljasser holding الجاسر القابضه - New Deal",
-            "rep": "Zein Fares",
-            "repColor": "#1d4ed8",
-            "amount": 21466,
-            "stage": "Signed Contract/Booking",
-            "signedDate": "2025-10-01",
-            "cashingDate": "2025-10-01",
-            "exitedSignedDate": null,
-            "daysFromSigned": 206,
-            "status": "Waiting Cash",
-            "isDelayed": true,
-            "riskLabel": "Delayed Cashing"
-          },
-          {
-            "id": "328141813952",
-            "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/328141813952",
-            "name": "Magrabi Health ",
-            "rep": "Jehad Al-Barqawi",
-            "repColor": "#0e7490",
-            "amount": 53340,
-            "stage": "Signed Contract/Booking",
-            "signedDate": "2025-11-06",
-            "cashingDate": "2025-11-06",
-            "exitedSignedDate": null,
-            "daysFromSigned": 170,
-            "status": "Waiting Cash",
-            "isDelayed": true,
-            "riskLabel": "Delayed Cashing"
-          },
           {
             "id": "328369263809",
             "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/328369263809",
@@ -40073,76 +39365,12 @@
       },
       "firstLookSummary": {
         "money": {
-          "cashingRevenue": 150396.4029,
-          "signedRevenue": 273772.24455,
-          "pendingToCash": 273772.24455
+          "cashingRevenue": 43962.4029,
+          "signedRevenue": 189209,
+          "pendingToCash": 189209
         },
         "risks": {
           "delayedSigned": [
-            {
-              "id": "110073093341",
-              "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/110073093341",
-              "name": "Digital Government Authority - New Deal",
-              "rep": "Zein Fares",
-              "repColor": "#1d4ed8",
-              "amount": 6757.24455,
-              "stage": "Signed Contract/Booking",
-              "signedDate": "2025-01-27",
-              "cashingDate": "2024-12-09",
-              "exitedSignedDate": null,
-              "daysFromSigned": 454,
-              "status": "Waiting Cash",
-              "isDelayed": true,
-              "riskLabel": "Delayed Cashing"
-            },
-            {
-              "id": "293493757169",
-              "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/293493757169",
-              "name": "JODDB - New Deal",
-              "rep": "Jehad Al-Barqawi",
-              "repColor": "#0e7490",
-              "amount": 3000,
-              "stage": "Signed Contract/Booking",
-              "signedDate": "2025-08-25",
-              "cashingDate": "2025-08-25",
-              "exitedSignedDate": null,
-              "daysFromSigned": 243,
-              "status": "Waiting Cash",
-              "isDelayed": true,
-              "riskLabel": "Delayed Cashing"
-            },
-            {
-              "id": "293493559482",
-              "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/293493559482",
-              "name": "aljasser holding الجاسر القابضه - New Deal",
-              "rep": "Zein Fares",
-              "repColor": "#1d4ed8",
-              "amount": 21466,
-              "stage": "Signed Contract/Booking",
-              "signedDate": "2025-10-01",
-              "cashingDate": "2025-10-01",
-              "exitedSignedDate": null,
-              "daysFromSigned": 206,
-              "status": "Waiting Cash",
-              "isDelayed": true,
-              "riskLabel": "Delayed Cashing"
-            },
-            {
-              "id": "328141813952",
-              "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/328141813952",
-              "name": "Magrabi Health ",
-              "rep": "Jehad Al-Barqawi",
-              "repColor": "#0e7490",
-              "amount": 53340,
-              "stage": "Signed Contract/Booking",
-              "signedDate": "2025-11-06",
-              "cashingDate": "2025-11-06",
-              "exitedSignedDate": null,
-              "daysFromSigned": 170,
-              "status": "Waiting Cash",
-              "isDelayed": true,
-              "riskLabel": "Delayed Cashing"
-            },
             {
               "id": "328369263809",
               "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/328369263809",
@@ -40371,7 +39599,7 @@
           ]
         },
         "priority": [
-          "Follow up 5 signed deal(s) not cashed yet",
+          "Follow up 1 signed deal(s) not cashed yet",
           "Add next activity for 222 open deal(s)",
           "Contact top 10 priority lead(s)"
         ]
@@ -40414,12 +39642,12 @@
     {
       "financialDetails": {
         "summary": {
-          "cashingRevenue": 150396.4029,
-          "signedRevenue": 273772.24455,
-          "pendingToCash": 273772.24455,
-          "cashingCount": 9,
-          "signedCount": 8,
-          "delayedSignedCount": 5,
+          "cashingRevenue": 43962.4029,
+          "signedRevenue": 189209,
+          "pendingToCash": 189209,
+          "cashingCount": 4,
+          "signedCount": 4,
+          "delayedSignedCount": 1,
           "missingFinancialCount": 0
         },
         "cashing": [
@@ -40478,143 +39706,9 @@
             "exitedSignedDate": "2026-01-05",
             "daysFromSigned": 121,
             "status": "Cashed"
-          },
-          {
-            "id": "296064796918",
-            "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/296064796918",
-            "name": "CAVT - New Deal",
-            "rep": "Ursula Waked",
-            "repColor": "#be185d",
-            "amount": 4000,
-            "stage": "Cashing",
-            "signedDate": "2025-09-08",
-            "cashingDate": "2025-11-05",
-            "exitedSignedDate": "2025-11-05",
-            "daysFromSigned": 229,
-            "status": "Cashed"
-          },
-          {
-            "id": "117048844476",
-            "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/117048844476",
-            "name": "Al-Jasser Holding - New Deal",
-            "rep": "Zein Fares",
-            "repColor": "#1d4ed8",
-            "amount": 53200,
-            "stage": "Cashing",
-            "signedDate": "2025-05-27",
-            "cashingDate": "2025-10-29",
-            "exitedSignedDate": "2025-10-29",
-            "daysFromSigned": 333,
-            "status": "Cashed"
-          },
-          {
-            "id": "221972756685",
-            "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/221972756685",
-            "name": "Saudi Radwa Food Co - New Deal",
-            "rep": "Jehad Al-Barqawi",
-            "repColor": "#0e7490",
-            "amount": 21500,
-            "stage": "Cashing",
-            "signedDate": "2025-05-27",
-            "cashingDate": "2025-08-25",
-            "exitedSignedDate": "2025-08-25",
-            "daysFromSigned": 333,
-            "status": "Cashed"
-          },
-          {
-            "id": "112802435267",
-            "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/112802435267",
-            "name": "momah.gov.sa - New Deal",
-            "rep": "Zein Fares",
-            "repColor": "#1d4ed8",
-            "amount": 22400,
-            "stage": "Cashing",
-            "signedDate": "2025-01-29",
-            "cashingDate": "2025-08-04",
-            "exitedSignedDate": "2025-08-04",
-            "daysFromSigned": 452,
-            "status": "Cashed"
-          },
-          {
-            "id": "108694583525",
-            "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/108694583525",
-            "name": "360 للموارد البشرية - New Deal",
-            "rep": "Zein Fares",
-            "repColor": "#1d4ed8",
-            "amount": 5334,
-            "stage": "Cashing",
-            "signedDate": "2025-01-22",
-            "cashingDate": "2025-02-11",
-            "exitedSignedDate": "2025-02-11",
-            "daysFromSigned": 458,
-            "status": "Cashed"
           }
         ],
         "signed": [
-          {
-            "id": "110073093341",
-            "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/110073093341",
-            "name": "Digital Government Authority - New Deal",
-            "rep": "Zein Fares",
-            "repColor": "#1d4ed8",
-            "amount": 6757.24455,
-            "stage": "Signed Contract/Booking",
-            "signedDate": "2025-01-27",
-            "cashingDate": "2024-12-09",
-            "exitedSignedDate": null,
-            "daysFromSigned": 454,
-            "status": "Waiting Cash",
-            "isDelayed": true,
-            "riskLabel": "Delayed Cashing"
-          },
-          {
-            "id": "293493757169",
-            "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/293493757169",
-            "name": "JODDB - New Deal",
-            "rep": "Jehad Al-Barqawi",
-            "repColor": "#0e7490",
-            "amount": 3000,
-            "stage": "Signed Contract/Booking",
-            "signedDate": "2025-08-25",
-            "cashingDate": "2025-08-25",
-            "exitedSignedDate": null,
-            "daysFromSigned": 243,
-            "status": "Waiting Cash",
-            "isDelayed": true,
-            "riskLabel": "Delayed Cashing"
-          },
-          {
-            "id": "293493559482",
-            "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/293493559482",
-            "name": "aljasser holding الجاسر القابضه - New Deal",
-            "rep": "Zein Fares",
-            "repColor": "#1d4ed8",
-            "amount": 21466,
-            "stage": "Signed Contract/Booking",
-            "signedDate": "2025-10-01",
-            "cashingDate": "2025-10-01",
-            "exitedSignedDate": null,
-            "daysFromSigned": 206,
-            "status": "Waiting Cash",
-            "isDelayed": true,
-            "riskLabel": "Delayed Cashing"
-          },
-          {
-            "id": "328141813952",
-            "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/328141813952",
-            "name": "Magrabi Health ",
-            "rep": "Jehad Al-Barqawi",
-            "repColor": "#0e7490",
-            "amount": 53340,
-            "stage": "Signed Contract/Booking",
-            "signedDate": "2025-11-06",
-            "cashingDate": "2025-11-06",
-            "exitedSignedDate": null,
-            "daysFromSigned": 170,
-            "status": "Waiting Cash",
-            "isDelayed": true,
-            "riskLabel": "Delayed Cashing"
-          },
           {
             "id": "328369263809",
             "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/328369263809",
@@ -40684,76 +39778,12 @@
       },
       "firstLookSummary": {
         "money": {
-          "cashingRevenue": 150396.4029,
-          "signedRevenue": 273772.24455,
-          "pendingToCash": 273772.24455
+          "cashingRevenue": 43962.4029,
+          "signedRevenue": 189209,
+          "pendingToCash": 189209
         },
         "risks": {
           "delayedSigned": [
-            {
-              "id": "110073093341",
-              "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/110073093341",
-              "name": "Digital Government Authority - New Deal",
-              "rep": "Zein Fares",
-              "repColor": "#1d4ed8",
-              "amount": 6757.24455,
-              "stage": "Signed Contract/Booking",
-              "signedDate": "2025-01-27",
-              "cashingDate": "2024-12-09",
-              "exitedSignedDate": null,
-              "daysFromSigned": 454,
-              "status": "Waiting Cash",
-              "isDelayed": true,
-              "riskLabel": "Delayed Cashing"
-            },
-            {
-              "id": "293493757169",
-              "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/293493757169",
-              "name": "JODDB - New Deal",
-              "rep": "Jehad Al-Barqawi",
-              "repColor": "#0e7490",
-              "amount": 3000,
-              "stage": "Signed Contract/Booking",
-              "signedDate": "2025-08-25",
-              "cashingDate": "2025-08-25",
-              "exitedSignedDate": null,
-              "daysFromSigned": 243,
-              "status": "Waiting Cash",
-              "isDelayed": true,
-              "riskLabel": "Delayed Cashing"
-            },
-            {
-              "id": "293493559482",
-              "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/293493559482",
-              "name": "aljasser holding الجاسر القابضه - New Deal",
-              "rep": "Zein Fares",
-              "repColor": "#1d4ed8",
-              "amount": 21466,
-              "stage": "Signed Contract/Booking",
-              "signedDate": "2025-10-01",
-              "cashingDate": "2025-10-01",
-              "exitedSignedDate": null,
-              "daysFromSigned": 206,
-              "status": "Waiting Cash",
-              "isDelayed": true,
-              "riskLabel": "Delayed Cashing"
-            },
-            {
-              "id": "328141813952",
-              "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/328141813952",
-              "name": "Magrabi Health ",
-              "rep": "Jehad Al-Barqawi",
-              "repColor": "#0e7490",
-              "amount": 53340,
-              "stage": "Signed Contract/Booking",
-              "signedDate": "2025-11-06",
-              "cashingDate": "2025-11-06",
-              "exitedSignedDate": null,
-              "daysFromSigned": 170,
-              "status": "Waiting Cash",
-              "isDelayed": true,
-              "riskLabel": "Delayed Cashing"
-            },
             {
               "id": "328369263809",
               "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/328369263809",
@@ -40982,7 +40012,7 @@
           ]
         },
         "priority": [
-          "Follow up 5 signed deal(s) not cashed yet",
+          "Follow up 1 signed deal(s) not cashed yet",
           "Add next activity for 222 open deal(s)",
           "Contact top 10 priority lead(s)"
         ]
@@ -41030,12 +40060,12 @@
     {
       "financialDetails": {
         "summary": {
-          "cashingRevenue": 150396.4029,
-          "signedRevenue": 273772.24455,
-          "pendingToCash": 273772.24455,
-          "cashingCount": 9,
-          "signedCount": 8,
-          "delayedSignedCount": 5,
+          "cashingRevenue": 43962.4029,
+          "signedRevenue": 189209,
+          "pendingToCash": 189209,
+          "cashingCount": 4,
+          "signedCount": 4,
+          "delayedSignedCount": 1,
           "missingFinancialCount": 0
         },
         "cashing": [
@@ -41094,143 +40124,9 @@
             "exitedSignedDate": "2026-01-05",
             "daysFromSigned": 121,
             "status": "Cashed"
-          },
-          {
-            "id": "296064796918",
-            "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/296064796918",
-            "name": "CAVT - New Deal",
-            "rep": "Ursula Waked",
-            "repColor": "#be185d",
-            "amount": 4000,
-            "stage": "Cashing",
-            "signedDate": "2025-09-08",
-            "cashingDate": "2025-11-05",
-            "exitedSignedDate": "2025-11-05",
-            "daysFromSigned": 229,
-            "status": "Cashed"
-          },
-          {
-            "id": "117048844476",
-            "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/117048844476",
-            "name": "Al-Jasser Holding - New Deal",
-            "rep": "Zein Fares",
-            "repColor": "#1d4ed8",
-            "amount": 53200,
-            "stage": "Cashing",
-            "signedDate": "2025-05-27",
-            "cashingDate": "2025-10-29",
-            "exitedSignedDate": "2025-10-29",
-            "daysFromSigned": 333,
-            "status": "Cashed"
-          },
-          {
-            "id": "221972756685",
-            "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/221972756685",
-            "name": "Saudi Radwa Food Co - New Deal",
-            "rep": "Jehad Al-Barqawi",
-            "repColor": "#0e7490",
-            "amount": 21500,
-            "stage": "Cashing",
-            "signedDate": "2025-05-27",
-            "cashingDate": "2025-08-25",
-            "exitedSignedDate": "2025-08-25",
-            "daysFromSigned": 333,
-            "status": "Cashed"
-          },
-          {
-            "id": "112802435267",
-            "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/112802435267",
-            "name": "momah.gov.sa - New Deal",
-            "rep": "Zein Fares",
-            "repColor": "#1d4ed8",
-            "amount": 22400,
-            "stage": "Cashing",
-            "signedDate": "2025-01-29",
-            "cashingDate": "2025-08-04",
-            "exitedSignedDate": "2025-08-04",
-            "daysFromSigned": 452,
-            "status": "Cashed"
-          },
-          {
-            "id": "108694583525",
-            "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/108694583525",
-            "name": "360 للموارد البشرية - New Deal",
-            "rep": "Zein Fares",
-            "repColor": "#1d4ed8",
-            "amount": 5334,
-            "stage": "Cashing",
-            "signedDate": "2025-01-22",
-            "cashingDate": "2025-02-11",
-            "exitedSignedDate": "2025-02-11",
-            "daysFromSigned": 458,
-            "status": "Cashed"
           }
         ],
         "signed": [
-          {
-            "id": "110073093341",
-            "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/110073093341",
-            "name": "Digital Government Authority - New Deal",
-            "rep": "Zein Fares",
-            "repColor": "#1d4ed8",
-            "amount": 6757.24455,
-            "stage": "Signed Contract/Booking",
-            "signedDate": "2025-01-27",
-            "cashingDate": "2024-12-09",
-            "exitedSignedDate": null,
-            "daysFromSigned": 454,
-            "status": "Waiting Cash",
-            "isDelayed": true,
-            "riskLabel": "Delayed Cashing"
-          },
-          {
-            "id": "293493757169",
-            "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/293493757169",
-            "name": "JODDB - New Deal",
-            "rep": "Jehad Al-Barqawi",
-            "repColor": "#0e7490",
-            "amount": 3000,
-            "stage": "Signed Contract/Booking",
-            "signedDate": "2025-08-25",
-            "cashingDate": "2025-08-25",
-            "exitedSignedDate": null,
-            "daysFromSigned": 243,
-            "status": "Waiting Cash",
-            "isDelayed": true,
-            "riskLabel": "Delayed Cashing"
-          },
-          {
-            "id": "293493559482",
-            "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/293493559482",
-            "name": "aljasser holding الجاسر القابضه - New Deal",
-            "rep": "Zein Fares",
-            "repColor": "#1d4ed8",
-            "amount": 21466,
-            "stage": "Signed Contract/Booking",
-            "signedDate": "2025-10-01",
-            "cashingDate": "2025-10-01",
-            "exitedSignedDate": null,
-            "daysFromSigned": 206,
-            "status": "Waiting Cash",
-            "isDelayed": true,
-            "riskLabel": "Delayed Cashing"
-          },
-          {
-            "id": "328141813952",
-            "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/328141813952",
-            "name": "Magrabi Health ",
-            "rep": "Jehad Al-Barqawi",
-            "repColor": "#0e7490",
-            "amount": 53340,
-            "stage": "Signed Contract/Booking",
-            "signedDate": "2025-11-06",
-            "cashingDate": "2025-11-06",
-            "exitedSignedDate": null,
-            "daysFromSigned": 170,
-            "status": "Waiting Cash",
-            "isDelayed": true,
-            "riskLabel": "Delayed Cashing"
-          },
           {
             "id": "328369263809",
             "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/328369263809",
@@ -41300,76 +40196,12 @@
       },
       "firstLookSummary": {
         "money": {
-          "cashingRevenue": 150396.4029,
-          "signedRevenue": 273772.24455,
-          "pendingToCash": 273772.24455
+          "cashingRevenue": 43962.4029,
+          "signedRevenue": 189209,
+          "pendingToCash": 189209
         },
         "risks": {
           "delayedSigned": [
-            {
-              "id": "110073093341",
-              "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/110073093341",
-              "name": "Digital Government Authority - New Deal",
-              "rep": "Zein Fares",
-              "repColor": "#1d4ed8",
-              "amount": 6757.24455,
-              "stage": "Signed Contract/Booking",
-              "signedDate": "2025-01-27",
-              "cashingDate": "2024-12-09",
-              "exitedSignedDate": null,
-              "daysFromSigned": 454,
-              "status": "Waiting Cash",
-              "isDelayed": true,
-              "riskLabel": "Delayed Cashing"
-            },
-            {
-              "id": "293493757169",
-              "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/293493757169",
-              "name": "JODDB - New Deal",
-              "rep": "Jehad Al-Barqawi",
-              "repColor": "#0e7490",
-              "amount": 3000,
-              "stage": "Signed Contract/Booking",
-              "signedDate": "2025-08-25",
-              "cashingDate": "2025-08-25",
-              "exitedSignedDate": null,
-              "daysFromSigned": 243,
-              "status": "Waiting Cash",
-              "isDelayed": true,
-              "riskLabel": "Delayed Cashing"
-            },
-            {
-              "id": "293493559482",
-              "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/293493559482",
-              "name": "aljasser holding الجاسر القابضه - New Deal",
-              "rep": "Zein Fares",
-              "repColor": "#1d4ed8",
-              "amount": 21466,
-              "stage": "Signed Contract/Booking",
-              "signedDate": "2025-10-01",
-              "cashingDate": "2025-10-01",
-              "exitedSignedDate": null,
-              "daysFromSigned": 206,
-              "status": "Waiting Cash",
-              "isDelayed": true,
-              "riskLabel": "Delayed Cashing"
-            },
-            {
-              "id": "328141813952",
-              "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/328141813952",
-              "name": "Magrabi Health ",
-              "rep": "Jehad Al-Barqawi",
-              "repColor": "#0e7490",
-              "amount": 53340,
-              "stage": "Signed Contract/Booking",
-              "signedDate": "2025-11-06",
-              "cashingDate": "2025-11-06",
-              "exitedSignedDate": null,
-              "daysFromSigned": 170,
-              "status": "Waiting Cash",
-              "isDelayed": true,
-              "riskLabel": "Delayed Cashing"
-            },
             {
               "id": "328369263809",
               "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/328369263809",
@@ -41598,7 +40430,7 @@
           ]
         },
         "priority": [
-          "Follow up 5 signed deal(s) not cashed yet",
+          "Follow up 1 signed deal(s) not cashed yet",
           "Add next activity for 222 open deal(s)",
           "Contact top 10 priority lead(s)"
         ]
@@ -42224,22 +41056,22 @@
     "repLostSummary": "- Marita Chedid: 3 lost ($4200), 0 won ($0), conn rate 29%\n- Ursula Waked: 44 lost ($1298634), 0 won ($0), conn rate 42%",
     "stuckColdSummary": "- Marita Chedid: 17 stuck, 7 cold deals\n- Zein Fares: 99 stuck, 75 cold deals\n- Ursula Waked: 78 stuck, 7 cold deals\n- Mohammed Khalid: 1 stuck, 1 cold deals\n- Jehad Al-Barqawi: 24 stuck, 22 cold deals",
     "leadActivitySummary": "Marketing Leads: 113 total, 0 contacted (0%), 113 converted (100%) | Unqualified: 0 | Existing Clients: 334",
-    "kpiLine": "MTD: 1747 calls (40% connected), 133 meetings, 3 won ($184K), 47 lost ($1.3M), pipeline $4.8M"
+    "kpiLine": "MTD: 1748 calls (40% connected), 133 meetings, 3 won ($184K), 47 lost ($1.3M), pipeline $4.8M"
   },
   "aiInsights": {
-    "summary": "Lost $1.3M across 47 deals with $973K from contactability issues while 269 deals stuck/cold threaten pipeline health",
+    "summary": "Pipeline at risk: $1.3M lost to contactability issues while 219 deals stuck across team with only 40% connect rate",
     "patterns": [
-      "Contactability issues caused only 4 lost deals but represent 75% of lost revenue ($973K), indicating high-value prospects going dark",
-      "Ursula Waked lost 44 deals worth $1.3M with 0 wins despite 42% connection rate, suggesting qualification or closing execution gaps",
-      "269 total stuck/cold deals across team with Zein Fares holding 174 stagnant opportunities, indicating severe pipeline hygiene issues"
+      "Contact-ability is the highest-value loss driver at $973K across just 4 deals, averaging $243K per lost opportunity",
+      "Ursula Waked lost 44 deals worth $1.3M with 0 wins despite highest connect rate at 42%, indicating qualification or closing issues",
+      "Zein Fares carries 174 stuck/cold deals (99 stuck, 75 cold), representing massive pipeline bloat and velocity concerns"
     ],
     "quick_wins": [
-      "Ursula: Emergency review of top 10 stuck deals ($100K+) by Wednesday - escalate to management for executive intervention on contactability blocks",
-      "Zein: Disqualify or reactivate 50 cold deals by Friday to clean pipeline and focus efforts on viable $4.8M opportunities with recent activity"
+      "Ursula: Immediate manager ride-along on top 3 stuck deals worth $300K+ to diagnose closing gaps before month-end",
+      "Zein & Jehad: Clean pipeline by Wednesday - disqualify 50+ cold deals over 30 days old and focus on 10 warmest opportunities"
     ],
     "risks": [
-      "$973K lost to contactability issues signals champion turnover or bureaucratic access barriers at enterprise accounts requiring executive sponsorship strategy",
-      "Only 3 wins ($184K) MTD against 47 losses indicates broken conversion funnel - current pipeline velocity suggests revenue target miss without immediate intervention"
+      "$973K lost to just 4 contactability issues suggests targeting wrong contacts or lack of multi-threading in enterprise accounts",
+      "Only 3 deals won ($184K) vs 47 lost ($1.3M) creates 7:1 loss ratio threatening Q2 targets with current $4.8M pipeline insufficient for coverage"
     ]
   },
   "marketNews": [
@@ -42248,21 +41080,21 @@
       "tag": "Regulation",
       "color": "#D97706",
       "source": "HRSD Saudi",
-      "text": "Saudi Arabia introduces mandatory AI-driven workforce analytics reporting for Nitaqat compliance starting Q3 2026, creating urgency for ATS upgrades across private sector employers"
+      "text": "Saudi Arabia raises Nitaqat compliance penalties to SR 50,000 per violation as Vision 2030 localization targets accelerate to 35% by Q3 2026"
     },
     {
       "icon": "📊",
       "tag": "M&A",
       "color": "#7C3AED",
       "source": "Bloomberg",
-      "text": "Oracle acquires regional HR tech startup Jisr for $120M, signaling intensified competition in MENA ATS market as global players consolidate local presence"
+      "text": "Oracle completes acquisition of regional HCM provider Tawzef, consolidating 18% of UAE enterprise recruitment market share"
     },
     {
       "icon": "⚡",
       "tag": "Trend",
       "color": "#2563EB",
       "source": "Gartner",
-      "text": "GCC enterprises increase HR tech budgets by 34% YoY with 67% prioritizing integrated ATS solutions for nationalization compliance and talent pipeline visibility"
+      "text": "GCC enterprises increase HR tech budgets by 42% YoY, with 67% prioritizing AI-powered ATS solutions for compliance automation"
     }
   ]
 }
