@@ -300,6 +300,9 @@ body{font-family:var(--font);background:var(--page-bg);color:var(--text);-webkit
 @media(max-width:1100px){.financial-guide-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:700px){.financial-hero{align-items:flex-start;flex-direction:column}.financial-guide-grid{grid-template-columns:1fr}}
 
+.qcq-logo{width:22px;height:22px;border-radius:7px;background:linear-gradient(135deg,var(--cyan),#16A34A);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;letter-spacing:0;box-shadow:0 0 0 1px rgba(255,255,255,.12) inset;flex-shrink:0}
+.qcq-logo-lg{width:58px;height:58px;border-radius:18px;background:linear-gradient(135deg,var(--cyan),#16A34A);color:#fff;display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:900;letter-spacing:0;box-shadow:0 8px 20px rgba(8,145,178,.22)}
+
 </style>
 </head>
 <body>
@@ -312,7 +315,7 @@ body{font-family:var(--font);background:var(--page-bg);color:var(--text);-webkit
     </div>
     <div class="sidebar-section">Main</div>
     <button class="nav-item active" id="side-acquisition" onclick="switchMainPanel('acquisition')"><span class="nav-icon">&#128202;</span> Acquisition</button>
-    <button class="nav-item" id="side-retention" onclick="switchMainPanel('retention')"><span class="nav-icon">&#128737;</span> Retention</button>
+    <button class="nav-item" id="side-retention" onclick="switchMainPanel('retention')"><span class="qcq-logo">🛡️</span> Retention</button>
     <div class="sidebar-section" id="repsSectionTitle">Acquisition Reps</div>
     <div id="sideRepLinks"></div>
     <div class="sidebar-bottom">
@@ -672,7 +675,7 @@ body{font-family:var(--font);background:var(--page-bg);color:var(--text);-webkit
         </div>
         <div class="panel" id="panel-retention">
           <div class="financial-hero" style="border-left-color:var(--cyan)">
-            <div class="financial-hero-icon" style="background:var(--cyan-bg);border-color:rgba(8,145,178,.2);color:var(--cyan)">&#128737;</div>
+            <div class="qcq-logo-lg">🛡️</div>
             <div>
               <div class="financial-hero-title">Retention Dashboard</div>
               <div class="financial-hero-sub">Customer Success view for account health, churn risk, renewals, inactive accounts, no-activity accounts, and upsell opportunities.</div>
