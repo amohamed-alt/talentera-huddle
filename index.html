@@ -1081,6 +1081,13 @@ const SC=["#4F46E5","#7C3AED","#2563EB","#0891B2","#059669","#D97706","#DC2626",
 let RET_SELECTED_OWNER_ID = null;
 let RETENTION_SUBVIEW = "overview";
 
+// Keeps the user on the same page after auto-refresh.
+// Without this, render() rebuilds Acquisition side links after every 5-minute refresh.
+let APP_MAIN_PANEL = "acquisition";          // acquisition | retention
+let APP_ACQ_TAB_ID = "team";                 // team | financial | rep slug
+let APP_RETENTION_VIEW = "overview";         // overview | financial | owner
+let APP_RETENTION_OWNER_ID = null;
+
 function ensureRetentionOwnerMount(){
   const panel = $("panel-retention");
   if(!panel) return null;
@@ -1132,6 +1139,9 @@ function renderRetentionSidebar(activeMode="overview"){
 }
 
 function switchRetentionFinancial(){
+  APP_MAIN_PANEL = "retention";
+  APP_RETENTION_VIEW = "financial";
+  APP_RETENTION_OWNER_ID = null;
   RET_SELECTED_OWNER_ID = null;
   RETENTION_SUBVIEW = 'financial';
   setRetentionOwnerMode(false);
@@ -1152,6 +1162,9 @@ function switchRetentionFinancial(){
 function switchMainPanel(panel){
   document.querySelectorAll(".nav-item").forEach(n=>n.classList.remove("active"));
   if(panel === "retention"){
+    APP_MAIN_PANEL = "retention";
+    APP_RETENTION_VIEW = "overview";
+    APP_RETENTION_OWNER_ID = null;
     RET_SELECTED_OWNER_ID = null;
     RETENTION_SUBVIEW = "overview";
     setRetentionOwnerMode(false);
@@ -1167,6 +1180,10 @@ function switchMainPanel(panel){
     window.scrollTo({top:0,behavior:"smooth"});
     return;
   }
+  APP_MAIN_PANEL = "acquisition";
+  APP_ACQ_TAB_ID = "team";
+  APP_RETENTION_VIEW = "overview";
+  APP_RETENTION_OWNER_ID = null;
   RET_SELECTED_OWNER_ID = null;
   setRetentionOwnerMode(false);
   if($("tabsBar")) $("tabsBar").style.display = "flex";
@@ -1178,6 +1195,10 @@ function switchMainPanel(panel){
 }
 
 function switchTab(id){
+  APP_MAIN_PANEL = "acquisition";
+  APP_ACQ_TAB_ID = id;
+  APP_RETENTION_VIEW = "overview";
+  APP_RETENTION_OWNER_ID = null;
   RET_SELECTED_OWNER_ID = null;
   RETENTION_SUBVIEW = "acquisition";
   setRetentionOwnerMode(false);
@@ -1576,6 +1597,80 @@ function renderOutreach(){
   if($("outreachCoNotToggle")){ $("outreachCoNotToggle").style.display = rlC.length ? "block" : "none"; $("outreachCoNotToggle").textContent = `▼ Show ${rlC.length} more`; }
 }
 
+
+function restoreCurrentView(options={}){
+  const keepScroll = options.keepScroll !== false;
+  const scrollY = keepScroll ? window.scrollY : null;
+
+  if(APP_MAIN_PANEL === "retention"){
+    document.querySelectorAll(".tab-btn").forEach(t=>t.classList.remove("active"));
+    document.querySelectorAll(".panel").forEach(p=>p.classList.remove("active"));
+    document.querySelectorAll(".nav-item").forEach(n=>n.classList.remove("active"));
+    if($("tabsBar")) $("tabsBar").style.display = "none";
+    $("side-retention")?.classList.add("active");
+
+    if(APP_RETENTION_VIEW === "financial"){
+      RET_SELECTED_OWNER_ID = null;
+      RETENTION_SUBVIEW = "financial";
+      setRetentionOwnerMode(false);
+      $("panel-retention-financial")?.classList.add("active");
+      renderRetentionSidebar("financial");
+      if($("topbarTitle")) $("topbarTitle").textContent = "Retention · Financial Details";
+      if($("topbarSub")) $("topbarSub").textContent = "Booked CY · Cashed CY · renewed value · delayed renewal exposure";
+      renderRetentionFinancialDetails();
+    } else if(APP_RETENTION_VIEW === "owner" && APP_RETENTION_OWNER_ID){
+      RET_SELECTED_OWNER_ID = String(APP_RETENTION_OWNER_ID);
+      RETENTION_SUBVIEW = "owner";
+      $("panel-retention")?.classList.add("active");
+      const rep = (R?.repData || R?.ownerMatrix || []).find(r=>String(r.id) === String(APP_RETENTION_OWNER_ID));
+      renderRetentionSidebar("owner");
+      setRetentionOwnerMode(true);
+      if($("topbarTitle")) $("topbarTitle").textContent = "Retention · " + (rep?.name || "Owner");
+      if($("topbarSub")) $("topbarSub").textContent = rep ? (rep.role || "Owner") + " · owner page · priority actions, financial movement, activity quality" : "Owner page";
+      renderRetention();
+      renderRetentionOwnerDetails(APP_RETENTION_OWNER_ID);
+    } else {
+      RET_SELECTED_OWNER_ID = null;
+      RETENTION_SUBVIEW = "overview";
+      setRetentionOwnerMode(false);
+      $("panel-retention")?.classList.add("active");
+      renderRetentionSidebar("overview");
+      if($("topbarTitle")) $("topbarTitle").textContent = "Retention · Team Overview";
+      if($("topbarSub")) $("topbarSub").textContent = R?.generatedAt ? "Updated " + R.generatedAt + " · Customer Success" : "Renewals · Booked · Cashed · Churn · Delayed";
+      renderRetention();
+    }
+  } else {
+    RET_SELECTED_OWNER_ID = null;
+    RETENTION_SUBVIEW = "acquisition";
+    setRetentionOwnerMode(false);
+    if($("tabsBar")) $("tabsBar").style.display = "flex";
+    if($("repsSectionTitle")){
+      $("repsSectionTitle").style.display = "block";
+      $("repsSectionTitle").textContent = "Acquisition Reps";
+    }
+    if($("sideRepLinks")) $("sideRepLinks").style.display = "block";
+    document.querySelectorAll(".tab-btn").forEach(t=>t.classList.remove("active"));
+    document.querySelectorAll(".panel").forEach(p=>p.classList.remove("active"));
+    document.querySelectorAll(".nav-item").forEach(n=>n.classList.remove("active"));
+    $("side-acquisition")?.classList.add("active");
+
+    const id = APP_ACQ_TAB_ID || "team";
+    $("tab-"+id)?.classList.add("active");
+    $("panel-"+id)?.classList.add("active");
+    if($("side-"+id) && id !== "financial") $("side-"+id).classList.add("active");
+
+    const repName = D ? (D.repData||[]).find(r=>r.name.toLowerCase().replace(/\s/g,"-")===id)?.name : null;
+    if($("topbarTitle")) $("topbarTitle").textContent = id === "team" ? "Acquisition · Team Overview" : id === "financial" ? "Acquisition · Financial Details" : "Acquisition · " + (repName || id);
+    if($("topbarSub")){
+      $("topbarSub").textContent = id === "financial" ? "Cashing revenue · Signed contracts · Pending to cash" : D ? "Updated " + (D.meta?.generatedAt||"") + " · Auto-refresh 5min" : "Loading...";
+    }
+  }
+
+  if(keepScroll && scrollY !== null){
+    requestAnimationFrame(()=>window.scrollTo(0, scrollY));
+  }
+}
+
 async function loadData(){
   const ri=$("ri");ri.classList.add("spin");
   try{
@@ -1590,7 +1685,10 @@ async function loadData(){
     D={meta:{yesterdayLabel:"No data",generatedAt:"--"},kpi:{yesterday:{},mtd:{},ytd:{}},team:{},repData:[],stageData:[],topInactiveRankAccounts:[],rankTotals:{},autoRecs:[],closedWon:[],closedLost:[],lostByReason:{},marketNews:[]};
     R=null;
   }
+  const scrollYBeforeRefresh = window.scrollY;
   render();
+  restoreCurrentView({ keepScroll: true });
+  requestAnimationFrame(()=>window.scrollTo(0, scrollYBeforeRefresh));
   ri.classList.remove("spin");
 }
 
@@ -2089,6 +2187,9 @@ function renderRetention(){
 }
 
 function selectRetentionOwner(repId){
+  APP_MAIN_PANEL = "retention";
+  APP_RETENTION_VIEW = "owner";
+  APP_RETENTION_OWNER_ID = String(repId);
   RETENTION_SUBVIEW = "owner";
   const data = R || {};
   const rep = (data.repData||[]).find(r=>String(r.id)===String(repId));
