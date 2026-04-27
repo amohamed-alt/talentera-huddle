@@ -989,6 +989,7 @@ function switchTab(id){
   if($("topbarSub")){
     $("topbarSub").textContent = id === "financial" ? "Cashing revenue · Signed contracts · Pending to cash" : D ? `Updated ${D.meta?.generatedAt||""} · Auto-refresh 5min` : "Loading...";
   }
+  if(id === "financial") renderFinancialDetails();
 }
 
 function toggleMore(id,btn,show,hide){
@@ -1055,64 +1056,106 @@ function renderFinancialDetails(){
   const card = $("financialDetailsCard");
   if(!card) return;
 
-  const fd = D?.financialDetails || {};
-  const summary = fd.summary || {};
-  const cashing = fd.cashing || [];
-  const signed =
-  fd.signed ||
-  fd.signedContract ||
-  fd.signedDeals ||
-  fd.financialSignedDeals ||
-  fd.booking ||
-  [];
-  const cashingAmount = Number(
-  summary.cashingRevenue ??
-  summary.cashingAmount ??
-  cashing.reduce((s,d)=>s+Number(d.amount||0),0)
-);
-
-const signedAmount = Number(
-  summary.signedRevenue ??
-  summary.signedAmount ??
-  signed.reduce((s,d)=>s+Number(d.amount||0),0)
-);
-
-const pendingAmount = Number(
-  summary.pendingToCash ??
-  summary.pendingToCashAmount ??
-  signedAmount
-);
-
-  const cashingCount = Number(summary.cashingCount ?? cashing.length);
-  const signedCount = Number(summary.signedCount ?? signed.length);
-
   const setHTML = (id,v) => { const el=$(id); if(el) el.innerHTML=v; };
   const setText = (id,v) => { const el=$(id); if(el) el.textContent=v; };
+  const arr = v => Array.isArray(v) ? v : [];
+  const n = v => { const x = Number(v || 0); return Number.isFinite(x) ? x : 0; };
+  const first = (...vals) => vals.find(v => v !== undefined && v !== null && v !== "") ?? null;
+  const dateOnly = v => v ? esc(String(v).split("T")[0]) : "—";
+  const dateMs = v => {
+    if(!v) return 0;
+    const d = new Date(v);
+    return isNaN(d.getTime()) ? 0 : d.getTime();
+  };
+  const diffDays = (from,to) => {
+    const a = dateMs(from), b = dateMs(to);
+    if(!a || !b) return null;
+    return Math.max(0, Math.round((b-a)/86400000));
+  };
+  const daysSinceDate = v => {
+    const a = dateMs(v);
+    if(!a) return null;
+    return Math.max(0, Math.floor((Date.now()-a)/86400000));
+  };
+  const money = v => fmt(n(v));
+  const dealName = d => first(d.name,d.dealName,d.deal_name,d.dealname,"Unnamed deal");
+  const dealUrl = d => first(d.hubspotUrl,d.url,d.dealUrl,d.recordUrl,null);
+  const repName = d => first(d.rep,d.repName,d.ownerName,d.dealOwner,d.owner,"Unknown");
+  const repColor = d => first(d.repColor,d.ownerColor,"#64748b");
+  const amount = d => n(first(d.amount,d.value,d.amount_in_home_currency,d.amountInHomeCurrency,0));
+  const signedDate = d => first(d.signedDate,d.signedContractDate,d.contractSignedDate,d.bookingDate,d.bookedDate,d.createdAt,d.closeDate,null);
+  const cashingDate = d => first(d.cashingDate,d.cashedDate,d.closedWonDate,d.closedate,d.closeDate,null);
+  const stageText = d => first(d.stage,d.stageLabel,d.dealstage,d.status,"");
 
-  setText("finCashingBadge", `${cashingCount} Cashing · ${fmt(cashingAmount)}`);
-  setText("finSignedBadge", `${signedCount} Signed · ${fmt(signedAmount)}`);
+  const fd = D?.financialDetails || {};
+  const summary = fd.summary || {};
+
+  // Primary source is data.json -> financialDetails. Fallbacks keep the tab alive with older data.json versions.
+  const cashing = arr(
+    fd.cashing ||
+    fd.cashingDeals ||
+    fd.financialCashingDeals ||
+    fd.cashed ||
+    D?.financialCashingDeals ||
+    D?.closedWon
+  );
+
+  const signed = arr(
+    fd.signed ||
+    fd.signedContract ||
+    fd.signedDeals ||
+    fd.financialSignedDeals ||
+    fd.booking ||
+    D?.financialSignedDeals ||
+    D?.signedDeals
+  );
+
+  const missing = arr(
+    fd.missingFinancials ||
+    fd.missing ||
+    D?.financialMissingDeals ||
+    D?.firstLookSummary?.risks?.missingFinancials
+  );
+
+  const cashingAmount = n(first(
+    summary.cashingRevenue,
+    summary.cashingAmount,
+    summary.cashingValue,
+    D?.firstLookSummary?.money?.cashingRevenue,
+    cashing.reduce((s,d)=>s+amount(d),0)
+  ));
+
+  const signedAmount = n(first(
+    summary.signedRevenue,
+    summary.signedAmount,
+    summary.signedValue,
+    D?.firstLookSummary?.money?.signedRevenue,
+    signed.reduce((s,d)=>s+amount(d),0)
+  ));
+
+  const pendingAmount = n(first(
+    summary.pendingToCash,
+    summary.pendingToCashAmount,
+    summary.pendingAmount,
+    D?.firstLookSummary?.money?.pendingToCash,
+    signedAmount
+  ));
+
+  const cashingCount = n(first(summary.cashingCount, cashing.length));
+  const signedCount = n(first(summary.signedCount, signed.length));
+  const missingCount = n(first(summary.missingFinancialCount, missing.length));
+  const delayedSignedCount = n(first(summary.delayedSignedCount, signed.filter(d => d.isDelayed || /delayed/i.test(String(d.riskLabel||d.followUpStatus||''))).length));
+
+  setText("finCashingBadge", `${cashingCount} Cashing · ${money(cashingAmount)}`);
+  setText("finSignedBadge", `${signedCount} Signed · ${money(signedAmount)}`);
   setText("finCashingMini", `${cashingCount} deals`);
   setText("finSignedMini", `${signedCount} deals`);
 
+  const sourceOk = !!D?.financialDetails;
   setHTML("financialSummaryGrid", [
-    {
-      v: fmt(cashingAmount),
-      l: "Cashing Revenue",
-      s: `${cashingCount} deals already in Cashing`,
-      c: "var(--green)"
-    },
-    {
-      v: fmt(signedAmount),
-      l: "Signed Contract",
-      s: `${signedCount} deals waiting for Cashing`,
-      c: "var(--amber)"
-    },
-    {
-      v: fmt(pendingAmount),
-      l: "Pending to Cash",
-      s: "Expected value still before Cashing",
-      c: "var(--blue)"
-    }
+    {v: money(cashingAmount), l: "Cashing Revenue", s: `${cashingCount} deal(s) already in Cashing`, c: "var(--green)"},
+    {v: money(signedAmount), l: "Signed Contract", s: `${signedCount} signed / booking deal(s) waiting`, c: "var(--amber)"},
+    {v: money(pendingAmount), l: "Pending to Cash", s: `${delayedSignedCount} delayed · ${missingCount} missing financial data`, c: "var(--blue)"}
   ].map(x => `
     <div class="financial-box">
       <div class="financial-v" style="color:${x.c}">${x.v}</div>
@@ -1121,47 +1164,62 @@ const pendingAmount = Number(
     </div>
   `).join(""));
 
-  const dateTxt = v => v ? esc(String(v).split("T")[0]) : "—";
+  let sourceNote = card.querySelector("#financialSourceNote");
+  if(!sourceNote){
+    sourceNote = document.createElement("div");
+    sourceNote.id = "financialSourceNote";
+    sourceNote.className = "ret-explain";
+    const split = card.querySelector(".financial-split");
+    if(split) card.insertBefore(sourceNote, split);
+  }
+  sourceNote.innerHTML = sourceOk
+    ? `<b>Source:</b> data.json → financialDetails · Cashing = closedwon/cashing YTD · Signed = contractsent/booking YTD not cashed yet.`
+    : `<b style="color:var(--amber)">Fallback mode:</b> financialDetails was not found in data.json, so the table is reading older fallback fields. Update the acquisition workflow output to include <code>financialDetails</code>.`;
 
   const repBadge = d => `
-    <span class="badge" style="background:${d.repColor || "#64748b"}20;color:${d.repColor || "#64748b"}">
-      ${esc(d.rep || d.ownerName || "Unknown")}
+    <span class="badge" style="background:${esc(repColor(d))}20;color:${esc(repColor(d))}">
+      ${esc(repName(d))}
     </span>
   `;
 
-  const cashingRow = d => `
-    <tr>
-      <td>
-        <div style="font-weight:700">${recordLink(d.name || d.dealName || "Unnamed deal", d.hubspotUrl)}</div>
-        <div style="font-size:9px;color:var(--muted)">${esc(d.stage || "Cashing")}</div>
-      </td>
-      <td>${repBadge(d)}</td>
-      <td class="c" style="font-family:var(--mono);font-weight:800;color:var(--green)">${fmt(d.amount || 0)}</td>
-      <td class="c" style="font-family:var(--mono);font-size:10px">${dateTxt(d.signedDate || d.signedContractDate)}</td>
-      <td class="c" style="font-family:var(--mono);font-size:10px">${dateTxt(d.cashingDate)}</td>
-      <td class="c"><span class="fin-status ok">${d.daysFromSignedToCashing ?? d.daysFromSigned ?? "—"}d</span></td>
-    </tr>
-  `;
-
-  const signedRow = d => {
-    const days = d.daysWaiting ?? d.daysFromSigned ?? null;
-    const st = d.followUpStatus || (
-      days !== null && days >= 14 ? "Delayed" :
-      days !== null && days >= 7 ? "Needs follow-up" :
-      "Normal"
-    );
-    const cls = st === "Delayed" ? "risk" : st === "Needs follow-up" ? "warn" : "ok";
-
+  const cashingRow = d => {
+    const sDate = signedDate(d);
+    const cDate = cashingDate(d);
+    const days = first(d.daysFromSignedToCashing, diffDays(sDate,cDate), d.daysFromSigned, null);
     return `
       <tr>
         <td>
-          <div style="font-weight:700">${recordLink(d.name || d.dealName || "Unnamed deal", d.hubspotUrl)}</div>
-          <div style="font-size:9px;color:var(--muted)">${esc(d.stage || "Signed Contract / Booking")}</div>
+          <div style="font-weight:800">${recordLink(dealName(d), dealUrl(d))}</div>
+          <div style="font-size:9px;color:var(--muted)">${esc(stageText(d) || "Cashing")}</div>
         </td>
         <td>${repBadge(d)}</td>
-        <td class="c" style="font-family:var(--mono);font-weight:800;color:var(--amber)">${fmt(d.amount || 0)}</td>
-        <td class="c" style="font-family:var(--mono);font-size:10px">${dateTxt(d.signedDate || d.signedContractDate)}</td>
-        <td class="c" style="font-family:var(--mono);font-size:10px">${days !== null ? days + "d" : "—"}</td>
+        <td class="c" style="font-family:var(--mono);font-weight:900;color:var(--green)">${money(amount(d))}</td>
+        <td class="c" style="font-family:var(--mono);font-size:10px">${dateOnly(sDate)}</td>
+        <td class="c" style="font-family:var(--mono);font-size:10px">${dateOnly(cDate)}</td>
+        <td class="c"><span class="fin-status ok">${days !== null && days !== undefined ? esc(days) + "d" : "—"}</span></td>
+      </tr>
+    `;
+  };
+
+  const signedRow = d => {
+    const sDate = signedDate(d);
+    const days = first(d.daysWaiting, d.daysFromSigned, daysSinceDate(sDate), null);
+    const st = first(d.followUpStatus, d.riskLabel,
+      days !== null && days !== undefined && Number(days) >= 14 ? "Delayed" :
+      days !== null && days !== undefined && Number(days) >= 7 ? "Needs follow-up" :
+      "On Track"
+    );
+    const cls = /delayed|risk/i.test(String(st)) ? "risk" : /follow|wait|pending/i.test(String(st)) ? "warn" : "ok";
+    return `
+      <tr>
+        <td>
+          <div style="font-weight:800">${recordLink(dealName(d), dealUrl(d))}</div>
+          <div style="font-size:9px;color:var(--muted)">${esc(stageText(d) || "Signed Contract / Booking")}</div>
+        </td>
+        <td>${repBadge(d)}</td>
+        <td class="c" style="font-family:var(--mono);font-weight:900;color:var(--amber)">${money(amount(d))}</td>
+        <td class="c" style="font-family:var(--mono);font-size:10px">${dateOnly(sDate)}</td>
+        <td class="c" style="font-family:var(--mono);font-size:10px">${days !== null && days !== undefined ? esc(days) + "d" : "—"}</td>
         <td class="c"><span class="fin-status ${cls}">${esc(st)}</span></td>
       </tr>
     `;
@@ -1170,16 +1228,46 @@ const pendingAmount = Number(
   setHTML(
     "financialCashingBody",
     cashing.length
-      ? cashing.slice(0,10).map(cashingRow).join("")
+      ? cashing.slice(0,25).map(cashingRow).join("")
       : `<tr><td colspan="6"><div class="fin-empty">No Cashing deals available in current data.</div></td></tr>`
   );
 
   setHTML(
     "financialSignedBody",
     signed.length
-      ? signed.slice(0,10).map(signedRow).join("")
+      ? signed.slice(0,25).map(signedRow).join("")
       : `<tr><td colspan="6"><div class="fin-empty">No Signed Contract / Booking deals waiting for Cashing.</div></td></tr>`
   );
+
+  let missingPanel = card.querySelector("#financialMissingPanel");
+  if(!missingPanel){
+    missingPanel = document.createElement("div");
+    missingPanel.id = "financialMissingPanel";
+    missingPanel.className = "financial-subcard";
+    missingPanel.style.margin = "0 14px 14px";
+    card.appendChild(missingPanel);
+  }
+
+  missingPanel.innerHTML = `
+    <div class="financial-subhd">
+      <div class="financial-subtitle" style="color:var(--red)">⚠️ Missing Financial Data</div>
+      <span class="fin-status ${missing.length ? "risk" : "ok"}">${missing.length} deal(s)</span>
+    </div>
+    <div style="overflow-x:auto">
+      <table class="tbl">
+        <thead><tr><th>Deal</th><th>Rep</th><th class="c">Amount</th><th>Missing Fields</th><th class="c">Stage</th></tr></thead>
+        <tbody>${missing.length ? missing.slice(0,20).map(d => `
+          <tr>
+            <td><div style="font-weight:800">${recordLink(dealName(d), dealUrl(d))}</div></td>
+            <td>${repBadge(d)}</td>
+            <td class="c" style="font-family:var(--mono);font-weight:800">${money(amount(d))}</td>
+            <td>${esc(Array.isArray(d.missing) ? d.missing.join(" · ") : first(d.missingFields,d.reason,"—"))}</td>
+            <td class="c"><span class="badge br">${esc(stageText(d) || "Financial")}</span></td>
+          </tr>
+        `).join("") : `<tr><td colspan="5"><div class="fin-empty">No missing financial data detected.</div></td></tr>`}</tbody>
+      </table>
+    </div>
+  `;
 }
 function renderManagerAddons(){
   if(!D) return;
