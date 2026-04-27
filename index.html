@@ -442,6 +442,38 @@ body{font-family:var(--font);background:var(--page-bg);color:var(--text);-webkit
 @media(max-width:1200px){.ret-kpi-period-row{grid-template-columns:1fr repeat(4,1fr)}.ret-kpi-period-label{grid-column:1/-1}}
 @media(max-width:800px){.ret-kpi-period-row{grid-template-columns:repeat(2,1fr)}.ret-kpi-period-label{grid-column:1/-1}}
 
+
+/* ═══════════════════════════════════════════
+   RETENTION FINANCIAL DETAILS — MANAGER VIEW
+   Scoped to retention financial panel only.
+   ═══════════════════════════════════════════ */
+.ret-fin-hero{display:flex;align-items:center;gap:18px;padding:20px 24px;margin-bottom:14px;background:linear-gradient(135deg,#ffffff 0%,#f7fbfa 100%);border:1px solid var(--border);border-left:4px solid var(--cyan);border-radius:var(--r-lg);box-shadow:var(--sh);position:relative;overflow:hidden}
+.ret-fin-hero::after{content:"";position:absolute;right:-70px;top:-70px;width:190px;height:190px;border-radius:50%;background:var(--cyan);opacity:.055}
+.ret-fin-hero-icon{width:58px;height:58px;border-radius:18px;background:var(--cyan-bg);border:1px solid rgba(8,145,178,.2);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0}
+.ret-fin-hero-title{font-size:20px;font-weight:900;color:var(--text);letter-spacing:-.03em}
+.ret-fin-hero-sub{font-size:12px;color:var(--muted);line-height:1.6;margin-top:5px;max-width:850px;font-weight:600}
+.ret-fin-top-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:14px}
+.ret-fin-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--sh-xs);padding:14px 12px;border-top:3px solid var(--fc,var(--green));position:relative;overflow:hidden}
+.ret-fin-card-v{font-family:var(--mono);font-size:25px;font-weight:900;color:var(--fc,var(--green));line-height:1}
+.ret-fin-card-l{font-size:8px;font-weight:900;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-top:8px}
+.ret-fin-card-s{font-size:10px;color:var(--text2);font-weight:700;margin-top:4px;line-height:1.45}
+.ret-fin-board{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--sh);overflow:hidden;margin-bottom:14px;border-top:3px solid var(--cyan)}
+.ret-fin-board-hd{padding:13px 18px;background:var(--surface2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px}
+.ret-fin-board-title{font-size:11px;font-weight:900;color:var(--text2);text-transform:uppercase;letter-spacing:.08em;display:flex;align-items:center;gap:8px}
+.ret-fin-split{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.ret-fin-subcard{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--sh);overflow:hidden;border-top:3px solid var(--sc,var(--green))}
+.ret-fin-subhd{padding:12px 16px;background:var(--surface2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:10px}
+.ret-fin-subtitle{font-size:11px;font-weight:900;color:var(--text2);text-transform:uppercase;letter-spacing:.08em;display:flex;align-items:center;gap:8px}
+.ret-fin-mini-note{font-size:10px;color:var(--muted);font-weight:700;line-height:1.45;padding:10px 14px;background:linear-gradient(135deg,#fff 0%,#f7faf8 100%);border-bottom:1px solid var(--border)}
+.ret-fin-empty{padding:18px;text-align:center;color:var(--muted);font-size:12px;font-style:italic}
+.ret-fin-owner-grid{display:grid;grid-template-columns:1.2fr repeat(5,.8fr);gap:1px;background:var(--border)}
+.ret-fin-owner-cell{background:var(--surface);padding:12px 14px;font-size:11px;font-weight:700;color:var(--text2)}
+.ret-fin-owner-head{background:var(--surface2);font-size:8px;font-weight:900;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
+.ret-fin-owner-name{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:900;color:var(--text)}
+.ret-fin-dot{width:9px;height:9px;border-radius:50%;background:var(--oc,var(--cyan));flex-shrink:0}
+@media(max-width:1200px){.ret-fin-top-grid{grid-template-columns:repeat(3,1fr)}.ret-fin-split{grid-template-columns:1fr}}
+@media(max-width:700px){.ret-fin-top-grid{grid-template-columns:1fr}.ret-fin-hero{align-items:flex-start;flex-direction:column}.ret-fin-owner-grid{display:block}.ret-fin-owner-cell{border-bottom:1px solid var(--border)}}
+
 </style>
 </head>
 <body>
@@ -812,6 +844,57 @@ body{font-family:var(--font);background:var(--page-bg);color:var(--text);-webkit
             </div>
           </div>
         </div>
+
+        <div class="panel" id="panel-retention-financial">
+          <div class="ret-fin-hero">
+            <div class="ret-fin-hero-icon">💰</div>
+            <div>
+              <div class="ret-fin-hero-title">Retention Financial Details</div>
+              <div class="ret-fin-hero-sub">A clean money view for Customer Success: current-year Booked, current-year Cashed, renewed value, delayed renewal exposure, and owner-level financial accountability.</div>
+            </div>
+          </div>
+
+          <div class="ret-fin-top-grid" id="retFinTopGrid"></div>
+
+          <div class="ret-fin-board">
+            <div class="ret-fin-board-hd">
+              <div class="ret-fin-board-title">📊 Owner Financial Summary</div>
+              <span class="badge bb" id="retFinOwnerBadge">Retention owners</span>
+            </div>
+            <div class="ret-fin-owner-grid" id="retFinOwnerGrid"></div>
+          </div>
+
+          <div class="ret-fin-split">
+            <div class="ret-fin-subcard" style="--sc:var(--green)">
+              <div class="ret-fin-subhd"><div class="ret-fin-subtitle" style="color:var(--green)">✅ Cashed This Year</div><span class="badge bg" id="retFinCashedBadge"></span></div>
+              <div class="ret-fin-mini-note">Stage = Cashed and deal created in the current year. Amount is the collected/confirmed retention money.</div>
+              <div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Deal / Company</th><th>Owner</th><th class="c">Amount</th><th class="c">Created</th><th class="c">Stage Date</th><th class="c">Status</th></tr></thead><tbody id="retFinCashedBody"></tbody></table></div>
+              <button class="ret-show-btn" id="retFinCashedToggle" onclick="toggleRetMore('retFinCashedBody', this)">▼ Show more</button>
+            </div>
+            <div class="ret-fin-subcard" style="--sc:var(--purple)">
+              <div class="ret-fin-subhd"><div class="ret-fin-subtitle" style="color:var(--purple)">📝 Booked This Year</div><span class="badge bp" id="retFinBookedBadge"></span></div>
+              <div class="ret-fin-mini-note">Stage = Booked and deal created in the current year. These are booked renewals that still need financial movement/follow-up.</div>
+              <div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Deal / Company</th><th>Owner</th><th class="c">Amount</th><th class="c">Created</th><th class="c">Stage Date</th><th class="c">Status</th></tr></thead><tbody id="retFinBookedBody"></tbody></table></div>
+              <button class="ret-show-btn" id="retFinBookedToggle" onclick="toggleRetMore('retFinBookedBody', this)">▼ Show more</button>
+            </div>
+          </div>
+
+          <div class="ret-fin-split">
+            <div class="ret-fin-subcard" style="--sc:var(--cyan)">
+              <div class="ret-fin-subhd"><div class="ret-fin-subtitle" style="color:var(--cyan)">🔁 Renewed Companies</div><span class="badge bb" id="retFinRenewedBadge"></span></div>
+              <div class="ret-fin-mini-note">Same-company current-year Booked/Cashed deal created after the contract renewal date.</div>
+              <div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Company</th><th>Renewed Deal</th><th class="c">Value</th><th class="c">Renewal Date</th><th class="c">Type</th><th>RM / CSM</th></tr></thead><tbody id="retFinRenewedBody"></tbody></table></div>
+              <button class="ret-show-btn" id="retFinRenewedToggle" onclick="toggleRetMore('retFinRenewedBody', this)">▼ Show more</button>
+            </div>
+            <div class="ret-fin-subcard" style="--sc:var(--red)">
+              <div class="ret-fin-subhd"><div class="ret-fin-subtitle" style="color:var(--red)">🚨 Delayed Renewal Exposure</div><span class="badge br" id="retFinDelayedBadge"></span></div>
+              <div class="ret-fin-mini-note">Renewal date passed and no same-company current-year Booked/Cashed deal exists after that date.</div>
+              <div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Company / Deal</th><th>Owner</th><th class="c">Exposure</th><th class="c">Renewal Date</th><th class="c">Overdue</th><th class="c">Action</th></tr></thead><tbody id="retFinDelayedBody"></tbody></table></div>
+              <button class="ret-show-btn" id="retFinDelayedToggle" onclick="toggleRetMore('retFinDelayedBody', this)">▼ Show more</button>
+            </div>
+          </div>
+        </div>
+
         <div class="panel" id="panel-retention">
           <div class="financial-hero" style="border-left-color:var(--cyan)">
             <div class="qcq-logo-lg">🛡️</div>
@@ -996,6 +1079,7 @@ function recordLink(label,url,className="record-link"){
 
 const SC=["#4F46E5","#7C3AED","#2563EB","#0891B2","#059669","#D97706","#DC2626","#be185d","#16A34A","#6B7280"];
 let RET_SELECTED_OWNER_ID = null;
+let RETENTION_SUBVIEW = "overview";
 
 function ensureRetentionOwnerMount(){
   const panel = $("panel-retention");
@@ -1020,18 +1104,63 @@ function setRetentionOwnerMode(isOwner){
 }
 
 
+function renderRetentionSidebar(activeMode="overview"){
+  if(!$('sideRepLinks')) return;
+  const data = R || {};
+  const repData = data.repData || data.ownerMatrix || [];
+  const dealsSplit = data.dealsSplit || {};
+  const bookedCount = (dealsSplit.booked || []).length;
+  const cashedCount = (dealsSplit.cashed || []).length;
+  $('sideRepLinks').style.display = 'block';
+  if($('repsSectionTitle')) { $('repsSectionTitle').style.display = 'block'; $('repsSectionTitle').textContent = 'Retention'; }
+  const overviewActive = activeMode === 'overview' ? ' active' : '';
+  const financialActive = activeMode === 'financial' ? ' active' : '';
+  const financialBadge = `${bookedCount}/${cashedCount}`;
+  const links = [
+    `<button class="nav-item${overviewActive}" id="side-ret-overview" onclick="switchMainPanel('retention')"><span class="nav-icon" style="color:var(--cyan)">🛡️</span>Team Overview<span class="view-tag">VIEW</span></button>`,
+    `<button class="nav-item${financialActive}" id="side-ret-financial" onclick="switchRetentionFinancial()"><span class="nav-icon" style="color:var(--green)">💰</span>Financial Details<span class="nav-badge">${financialBadge}</span></button>`,
+    `<div class="sidebar-section" style="padding:12px 10px 5px;margin:0;font-size:8px">Retention Team</div>`
+  ];
+  for(const r of repData){
+    const color = r.color || 'var(--cyan)';
+    const short = String(r.name || '').split(' ')[0] || 'Owner';
+    const active = activeMode === 'owner' && String(RET_SELECTED_OWNER_ID || '') === String(r.id) ? ' active' : '';
+    const badge = r.accounts || r.activeAccounts || 0;
+    links.push(`<button class="nav-item${active}" id="side-ret-${esc(r.id)}" onclick="selectRetentionOwner('${esc(r.id)}')"><span class="nav-icon" style="color:${color}">${r.role === 'RM' ? '◆' : '●'}</span>${esc(short)} <span class="ret">${esc(r.role || '')}</span><span class="nav-badge">${badge}</span></button>`);
+  }
+  $('sideRepLinks').innerHTML = links.join('');
+}
+
+function switchRetentionFinancial(){
+  RET_SELECTED_OWNER_ID = null;
+  RETENTION_SUBVIEW = 'financial';
+  setRetentionOwnerMode(false);
+  document.querySelectorAll('.tab-btn').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  if($('tabsBar')) $('tabsBar').style.display = 'none';
+  $('side-retention')?.classList.add('active');
+  $('panel-retention-financial')?.classList.add('active');
+  renderRetentionSidebar('financial');
+  if($('topbarTitle')) $('topbarTitle').textContent = 'Retention · Financial Details';
+  if($('topbarSub')) $('topbarSub').textContent = 'Booked CY · Cashed CY · renewed value · delayed renewal exposure';
+  renderRetentionFinancialDetails();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+
 function switchMainPanel(panel){
   document.querySelectorAll(".nav-item").forEach(n=>n.classList.remove("active"));
   if(panel === "retention"){
     RET_SELECTED_OWNER_ID = null;
+    RETENTION_SUBVIEW = "overview";
     setRetentionOwnerMode(false);
     document.querySelectorAll(".tab-btn").forEach(t=>t.classList.remove("active"));
     document.querySelectorAll(".panel").forEach(p=>p.classList.remove("active"));
     if($("tabsBar")) $("tabsBar").style.display = "none";
     $("side-retention")?.classList.add("active");
     $("panel-retention")?.classList.add("active");
-    if($("repsSectionTitle")) { $("repsSectionTitle").style.display = "block"; $("repsSectionTitle").textContent = "Retention Team"; }
-    if($("sideRepLinks")) $("sideRepLinks").style.display = "block";
+    renderRetentionSidebar("overview");
     if($("topbarTitle")) $("topbarTitle").textContent = "Retention · Team Overview";
     if($("topbarSub")) $("topbarSub").textContent = R?.generatedAt ? `Updated ${R.generatedAt} · Customer Success` : "Renewals · Booked · Cashed · Churn · Delayed";
     renderRetention();
@@ -1050,6 +1179,7 @@ function switchMainPanel(panel){
 
 function switchTab(id){
   RET_SELECTED_OWNER_ID = null;
+  RETENTION_SUBVIEW = "acquisition";
   setRetentionOwnerMode(false);
   if($("tabsBar")) $("tabsBar").style.display = "flex";
   if($("repsSectionTitle")) { $("repsSectionTitle").style.display = "block"; $("repsSectionTitle").textContent = "Acquisition Reps"; }
@@ -1468,6 +1598,7 @@ function render(){
   $("loadingState").style.display="none";
   $("dashMain").style.display="block";
   renderRetention();
+  renderRetentionFinancialDetails();
 
   const meta=D.meta||{},repData=D.repData||[],team=D.team||{},stageData=D.stageData||[];
   const kY=D.kpi?.yesterday||{},kM=D.kpi?.mtd||{},kT=D.kpi?.ytd||{};
@@ -1719,6 +1850,64 @@ renderManagerAddons();
 }
 
 
+
+function renderRetentionFinancialDetails(){
+  const data = R || {};
+  const dealsSplit = data.dealsSplit || {};
+  const booked = dealsSplit.booked || [];
+  const cashed = dealsSplit.cashed || [];
+  const renewed = dealsSplit.renewed || [];
+  const delayed = data.delayedRenewals || data.accountsToRenew || [];
+  const churn = dealsSplit.churn || [];
+  const repData = data.repData || data.ownerMatrix || [];
+  const ownerDetails = data.ownerDetails || {};
+  const num = v => Number(v || 0);
+  const amountOf = rows => (rows || []).reduce((s,r)=>s + num(r.amount ?? r.renewalValue ?? r.value ?? r.revenue),0);
+  const money = v => fmt(v || 0);
+  const safe = v => esc(v ?? '—');
+  const dateOnly = v => String(v || '').split('T')[0] || '—';
+  const ownerLabel = r => [r.ownerName, r.rmOwnerName, r.csmOwnerName].filter(Boolean).slice(0,2).join(' / ') || '—';
+  const empty = (cols,msg)=>`<tr><td colspan="${cols}" class="ret-fin-empty">${msg}</td></tr>`;
+  const set = (id,html)=>{ if($(id)) $(id).innerHTML = html; };
+  const setText = (id,txt)=>{ if($(id)) $(id).textContent = txt; };
+  const rowClass = (i, kind) => `${i>=5?'ret-hidden':''} ${kind==='risk'?'ret-row-critical':kind==='ok'?'ret-row-ok':'ret-row-warning'}`;
+
+  set('retFinTopGrid', [
+    {v:money(amountOf(cashed)), l:'Cashed CY', s:`${cashed.length} deals already cashed`, c:'var(--green)'},
+    {v:money(amountOf(booked)), l:'Booked CY', s:`${booked.length} booked deals`, c:'var(--purple)'},
+    {v:money(amountOf(renewed)), l:'Renewed Value', s:`${renewed.length} renewed companies`, c:'var(--cyan)'},
+    {v:money(amountOf(delayed)), l:'Delayed Exposure', s:`${delayed.length} overdue renewals`, c:'var(--red)'},
+    {v:money(amountOf(churn)), l:'Churn Value', s:`${churn.length} churn deals`, c:'var(--amber)'},
+  ].map(x=>`<div class="ret-fin-card" style="--fc:${x.c}"><div class="ret-fin-card-v">${x.v}</div><div class="ret-fin-card-l">${x.l}</div><div class="ret-fin-card-s">${x.s}</div></div>`).join(''));
+
+  setText('retFinCashedBadge', `${cashed.length} · ${money(amountOf(cashed))}`);
+  setText('retFinBookedBadge', `${booked.length} · ${money(amountOf(booked))}`);
+  setText('retFinRenewedBadge', `${renewed.length} · ${money(amountOf(renewed))}`);
+  setText('retFinDelayedBadge', `${delayed.length} · ${money(amountOf(delayed))}`);
+  setText('retFinOwnerBadge', `${repData.length} owners`);
+
+  const dealRow = (r,i,kind,status) => `<tr class="${rowClass(i,kind)}"><td><div style="font-weight:900">${recordLink(r.name || r.dealName || 'Unnamed Deal', r.hubspotUrl || r.dealUrl)}</div><div style="font-size:10px;color:var(--muted)">${recordLink(r.companyName || 'Unknown Company', r.companyUrl)}</div></td><td>${safe(ownerLabel(r))}</td><td class="c" style="font-family:var(--mono);font-weight:900">${money(r.amount ?? r.renewalValue)}</td><td class="c">${safe(dateOnly(r.createdAt || r.createdDate || r.hs_createdate))}</td><td class="c">${safe(dateOnly(r.actionDate || r.stageDate || r.cashedDate || r.bookedDate))}</td><td class="c"><span class="badge ${kind==='ok'?'bg':kind==='risk'?'br':'bp'}">${status}</span></td></tr>`;
+
+  set('retFinCashedBody', cashed.length ? cashed.map((r,i)=>dealRow(r,i,'ok','Cashed')).join('') : empty(6,'No current-year cashed retention deals found.'));
+  set('retFinBookedBody', booked.length ? booked.map((r,i)=>dealRow(r,i,'warn','Booked')).join('') : empty(6,'No current-year booked retention deals found.'));
+  if($('retFinCashedToggle')) $('retFinCashedToggle').style.display = cashed.length > 5 ? 'block' : 'none';
+  if($('retFinBookedToggle')) $('retFinBookedToggle').style.display = booked.length > 5 ? 'block' : 'none';
+
+  set('retFinRenewedBody', renewed.length ? renewed.map((r,i)=>`<tr class="${rowClass(i,'ok')}"><td><div style="font-weight:900">${recordLink(r.companyName || 'Unknown Company', r.companyUrl)}</div><div style="font-size:10px;color:var(--muted)">${safe(r.renewalSourceDealName || r.sourceDealName || '')}</div></td><td>${recordLink(r.name || r.renewedDealName || 'Renewed deal', r.hubspotUrl || r.renewedDealUrl)}</td><td class="c" style="font-family:var(--mono);font-weight:900">${money(r.renewalValue ?? r.amount)}</td><td class="c">${safe(r.originalContractRenewalDate || r.contractRenewalDate)}</td><td class="c"><span class="badge ${/cash/i.test(String(r.renewalType||''))?'bg':'bp'}">${safe(r.renewalType || 'Renewed')}</span></td><td>${safe([r.rmOwnerName,r.csmOwnerName].filter(Boolean).join(' / '))}</td></tr>`).join('') : empty(6,'No renewed companies found under the current-year renewal logic.'));
+  set('retFinDelayedBody', delayed.length ? delayed.map((r,i)=>`<tr class="${rowClass(i,'risk')}"><td><div style="font-weight:900">${recordLink(r.companyName || r.name || r.dealName || 'Renewal', r.companyUrl || r.hubspotUrl)}</div><div style="font-size:10px;color:var(--muted)">${safe(r.reason || r.alert || 'Delayed renewal')}</div></td><td>${safe([r.rmOwnerName,r.csmOwnerName].filter(Boolean).join(' / ') || r.ownerName)}</td><td class="c" style="font-family:var(--mono);font-weight:900;color:var(--red)">${money(r.renewalValue ?? r.amount)}</td><td class="c">${safe(r.contractRenewalDate || r.renewalDate)}</td><td class="c"><span class="badge br">${num(r.daysOverdue)}d</span></td><td class="c"><span class="badge ba">Follow up</span></td></tr>`).join('') : empty(6,'No delayed renewal exposure found.'));
+  if($('retFinRenewedToggle')) $('retFinRenewedToggle').style.display = renewed.length > 5 ? 'block' : 'none';
+  if($('retFinDelayedToggle')) $('retFinDelayedToggle').style.display = delayed.length > 5 ? 'block' : 'none';
+
+  const owners = repData.map(r=>{
+    const d = ownerDetails[String(r.id)] || {};
+    const m = d.metrics || r || {};
+    return { ...r, metrics:m };
+  });
+  const head = ['Owner','Booked','Cashed','Renewed','Delayed','Cash Value'];
+  const rows = owners.map(r=>`<div class="ret-fin-owner-cell"><div class="ret-fin-owner-name"><span class="ret-fin-dot" style="--oc:${r.color||'var(--cyan)'}"></span>${safe(r.name)} <span class="ret">${safe(r.role||'')}</span></div></div><div class="ret-fin-owner-cell" style="font-family:var(--mono);font-weight:900">${num(r.metrics.booked)}</div><div class="ret-fin-owner-cell" style="font-family:var(--mono);font-weight:900;color:var(--green)">${num(r.metrics.cashed)}</div><div class="ret-fin-owner-cell" style="font-family:var(--mono);font-weight:900;color:var(--cyan)">${num(r.metrics.renewed)}</div><div class="ret-fin-owner-cell" style="font-family:var(--mono);font-weight:900;color:${num(r.metrics.delayed)>0?'var(--red)':'var(--green)'}">${num(r.metrics.delayed)}</div><div class="ret-fin-owner-cell" style="font-family:var(--mono);font-weight:900;color:var(--green)">${money(r.metrics.cashedAmt)}</div>`).join('');
+  set('retFinOwnerGrid', head.map(h=>`<div class="ret-fin-owner-cell ret-fin-owner-head">${h}</div>`).join('') + (rows || `<div class="ret-fin-empty" style="grid-column:1/-1">No owner financial summary found.</div>`));
+}
+
 function renderRetention(){
   if(!$('panel-retention')) return;
   const data = R || {};
@@ -1778,19 +1967,8 @@ function renderRetention(){
     ? `${selectedRep.role} page · ${selectedRep.name} · showing this owner accounts and activities only`
     : 'Team Overview · choose any RM/CSM from the sidebar for a personal page';
 
-  // Sidebar Retention Team links
-  if($('panel-retention')?.classList.contains('active') && $('sideRepLinks')){
-    const reps = repData.length ? repData : [];
-    $('sideRepLinks').style.display='block';
-    if($('repsSectionTitle')) { $('repsSectionTitle').style.display='block'; $('repsSectionTitle').textContent='Retention Team'; }
-    $('sideRepLinks').innerHTML = reps.map(r=>{
-      const color=r.color||'var(--cyan)';
-      const short=r.name.split(' ')[0];
-      const badge = r.accounts || r.activeAccounts || 0;
-      const active = String(RET_SELECTED_OWNER_ID||'') === String(r.id) ? ' active' : '';
-      return `<button class="nav-item${active}" id="side-ret-${textSafe(r.id)}" onclick="selectRetentionOwner('${textSafe(r.id)}')"><span class="nav-icon" style="color:${color}">${r.role==='RM'?'◆':'●'}</span>${textSafe(short)} <span class="ret">${r.role}</span><span class="nav-badge">${badge}</span></button>`;
-    }).join('');
-  }
+  // Sidebar Retention navigation
+  if($('panel-retention')?.classList.contains('active')) renderRetentionSidebar(selectedRep ? 'owner' : 'overview');
 
   // Top KPI bar
   setText('kpiAccounts', accounts.length);
@@ -1911,6 +2089,7 @@ function renderRetention(){
 }
 
 function selectRetentionOwner(repId){
+  RETENTION_SUBVIEW = "owner";
   const data = R || {};
   const rep = (data.repData||[]).find(r=>String(r.id)===String(repId));
   if(!rep) return;
@@ -1921,8 +2100,7 @@ function selectRetentionOwner(repId){
   if($("tabsBar")) $("tabsBar").style.display = "none";
   $("side-retention")?.classList.add("active");
   $("panel-retention")?.classList.add("active");
-  if($("repsSectionTitle")) { $("repsSectionTitle").style.display = "block"; $("repsSectionTitle").textContent = "Retention Team"; }
-  if($("sideRepLinks")) $("sideRepLinks").style.display = "block";
+  renderRetentionSidebar("owner");
   if($("topbarTitle")) $("topbarTitle").textContent = "Retention · " + rep.name;
   if($("topbarSub")) $("topbarSub").textContent = rep.role + " · owner page · priority actions, financial movement, activity quality";
   setRetentionOwnerMode(true);
