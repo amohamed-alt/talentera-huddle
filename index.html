@@ -484,24 +484,25 @@ body{font-family:var(--font);background:var(--page-bg);color:var(--text);-webkit
 .ret-num-link{border:0;background:transparent;color:inherit;font:inherit;font-weight:900;cursor:pointer;padding:0;min-width:26px}
 .ret-num-link:hover{text-decoration:underline;color:var(--green)}
 .ret-drill-panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--sh);overflow:hidden;margin:-2px 0 14px;border-top:3px solid var(--blue);animation:fadeUp .2s cubic-bezier(.16,1,.3,1)}
-
-/* UNIVERSAL CLICKABLE METRIC CARDS — Acquisition + Retention */
-.metric-clickable{cursor:pointer;border-radius:8px;padding:2px 4px;transition:background .15s, transform .15s, box-shadow .15s;display:inline-block}
-.metric-clickable:hover{background:rgba(22,163,74,.08);box-shadow:0 0 0 1px rgba(22,163,74,.18) inset;transform:translateY(-1px)}
-.metric-clickable::after{content:"";display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--green);margin-left:5px;vertical-align:middle;opacity:.55}
-.metric-modal-backdrop{position:fixed;inset:0;background:rgba(15,26,20,.30);z-index:9998;display:none;align-items:flex-start;justify-content:center;padding:72px 24px 24px;backdrop-filter:blur(3px)}
-.metric-modal{width:min(980px,calc(100vw - 48px));max-height:calc(100vh - 110px);overflow:hidden;background:var(--surface);border:1px solid var(--border);border-radius:18px;box-shadow:0 24px 80px rgba(0,0,0,.25);border-top:4px solid var(--green);animation:fadeUp .18s cubic-bezier(.16,1,.3,1)}
-.metric-modal-hd{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:15px 18px;background:linear-gradient(135deg,#fff 0%,#f7faf8 100%);border-bottom:1px solid var(--border)}
-.metric-modal-title{font-size:14px;font-weight:900;color:var(--text);letter-spacing:-.02em}.metric-modal-sub{font-size:10px;color:var(--muted);font-weight:700;margin-top:4px;line-height:1.5}.metric-modal-close{border:none;background:var(--surface2);border:1px solid var(--border);border-radius:10px;width:32px;height:32px;cursor:pointer;font-size:16px;color:var(--text2)}
-.metric-modal-body{max-height:calc(100vh - 190px);overflow:auto}.metric-modal-empty{padding:28px;text-align:center;color:var(--muted);font-size:12px;line-height:1.7}.metric-row-title{font-weight:900;color:var(--text);font-size:12px}.metric-row-sub{font-size:10px;color:var(--muted);margin-top:3px;line-height:1.4}.metric-row-amount{font-family:var(--mono);font-weight:900}.metric-row-status{font-size:9px;font-weight:900;padding:3px 8px;border-radius:999px;white-space:nowrap;background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue-bd)}
-.metric-modal .tbl td{font-size:11px}.metric-modal .tbl th{font-size:8px}.metric-modal-note{padding:10px 18px;background:var(--amber-bg);border-bottom:1px solid var(--amber-bd);font-size:11px;color:var(--text2);font-weight:700;line-height:1.5}
-
 .ret-drill-head{padding:12px 16px;background:linear-gradient(135deg,#fff 0%,#f7faf8 100%);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:10px}
 .ret-drill-title{font-size:12px;font-weight:900;color:var(--text);display:flex;align-items:center;gap:8px;text-transform:uppercase;letter-spacing:.06em}
 .ret-drill-sub{font-size:10px;color:var(--muted);font-weight:700;margin-top:3px;text-transform:none;letter-spacing:0}
 .ret-drill-close{border:1px solid var(--border);background:var(--surface2);color:var(--muted);font-size:10px;font-weight:900;border-radius:999px;padding:5px 10px;cursor:pointer;font-family:var(--font)}
 .ret-drill-close:hover{background:var(--red-bg);color:var(--red);border-color:var(--red-bd)}
 .ret-drill-empty{padding:20px;text-align:center;color:var(--muted);font-size:12px;font-style:italic}
+
+
+/* UNIVERSAL ACQUISITION / RETENTION DRILLDOWN CARDS */
+.metric-clickable{cursor:pointer;border-radius:8px;padding:2px 5px;transition:background .15s,box-shadow .15s,transform .15s;display:inline-block}
+.metric-clickable:hover{background:rgba(22,163,74,.08);box-shadow:0 0 0 1px rgba(22,163,74,.18) inset;transform:translateY(-1px)}
+.metric-clickable::after{content:"";display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--green);margin-left:5px;vertical-align:middle;opacity:.6}
+.acq-modal-overlay{position:fixed;inset:0;background:rgba(15,26,20,.42);z-index:9999;display:none;align-items:flex-start;justify-content:center;padding:70px 22px 24px;overflow:auto;backdrop-filter:blur(3px)}
+.acq-modal-card{width:min(980px,100%);background:var(--surface);border:1px solid var(--border);border-radius:18px;box-shadow:0 24px 70px rgba(0,0,0,.25);overflow:hidden;animation:fadeUp .22s cubic-bezier(.16,1,.3,1)}
+.acq-modal-head{padding:14px 18px;background:linear-gradient(135deg,#fff 0%,#f7faf8 100%);border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:12px;border-top:4px solid var(--green)}
+.acq-modal-title{font-size:15px;font-weight:900;color:var(--text);letter-spacing:-.02em}.acq-modal-sub{font-size:11px;color:var(--muted);font-weight:600;margin-top:4px;line-height:1.5}.acq-modal-close{border:none;background:var(--surface2);border:1px solid var(--border);border-radius:10px;font-size:11px;font-weight:900;color:var(--text2);padding:7px 10px;cursor:pointer;font-family:var(--font)}
+.acq-modal-body{max-height:68vh;overflow:auto}.acq-modal-body .tbl td{font-size:11px}.acq-row-hidden{display:none}.acq-show-btn{width:100%;padding:10px;text-align:center;font-size:10px;font-weight:900;color:var(--green);border:none;border-top:1px solid var(--border);background:var(--surface);cursor:pointer;font-family:var(--font)}.acq-show-btn:hover{background:var(--surface2)}
+.acq-rep-followup{margin-bottom:14px;border-top:3px solid var(--red)}.acq-follow-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.acq-mini-note{font-size:10px;color:var(--muted);font-weight:700;line-height:1.5}.acq-click-card{cursor:pointer}.acq-click-card:hover{box-shadow:var(--sh-md);transform:translateY(-1px)}
+@media(max-width:900px){.acq-follow-grid{grid-template-columns:1fr}.acq-modal-overlay{padding:60px 12px 18px}}
 
 </style>
 </head>
@@ -1695,8 +1696,6 @@ function restoreCurrentView(options={}){
     }
   }
 
-  requestAnimationFrame(installUniversalMetricClicks);
-
   if(keepScroll && scrollY !== null){
     requestAnimationFrame(()=>window.scrollTo(0, scrollY));
   }
@@ -1722,6 +1721,124 @@ async function loadData(){
   requestAnimationFrame(()=>window.scrollTo(0, scrollYBeforeRefresh));
   ri.classList.remove("spin");
 }
+
+
+/* ACQUISITION CLICKABLE METRICS + REP FOLLOW-UP */
+function acqDateOnly(v){ return v ? String(v).split('T')[0] : '—'; }
+function acqMoney(v){ return fmt(Number(v||0)); }
+function acqOwnerMatch(row, rep){
+  if(!rep) return true;
+  const rid=String(rep.id||'');
+  const rn=String(rep.name||'').toLowerCase();
+  const vals=[row.ownerId,row.hubspot_owner_id,row.ownerName,row.rep,row.repName,row.salesRep,row.assignedTo].map(x=>String(x||'').toLowerCase());
+  return vals.includes(rid.toLowerCase()) || vals.includes(rn) || vals.some(v=>v && (v.includes(rn)||rn.includes(v)));
+}
+function acqRepByIdOrName(idOrName){
+  const x=String(idOrName||'');
+  return (D?.repData||[]).find(r=>String(r.id)===x || String(r.name)===x || String(r.name||'').toLowerCase()===x.toLowerCase());
+}
+function acqLeadRows(kind, rep){
+  const oc=D?.outreachCoverage||{}, ct=oc.contacts||{}, ss=oc.sourceSplit||oc.bySource||{};
+  let rows=[];
+  if(kind==='leads_not_contacted') rows=ct.notContactedList||[];
+  else if(kind==='leads_contacted') rows=ct.contactedList||[];
+  else if(kind==='online_not_contacted') rows=(ss.online?.notContactedList||ss.inbound?.notContactedList||[]).length ? (ss.online?.notContactedList||ss.inbound?.notContactedList||[]) : (ct.notContactedList||[]).filter(r=>/online|inbound|organic|paid|direct|referral|email|social/i.test(String(r.source||r.hs_analytics_source||'')));
+  else if(kind==='offline_not_contacted') rows=(ss.offline?.notContactedList||ss.outbound?.notContactedList||[]).length ? (ss.offline?.notContactedList||ss.outbound?.notContactedList||[]) : (ct.notContactedList||[]).filter(r=>/offline|outbound|phone|event|import/i.test(String(r.source||r.hs_analytics_source||'')));
+  else if(kind==='leads_total') rows=[...(ct.notContactedList||[]),...(ct.contactedList||[])];
+  rows=[...rows];
+  if(rep) rows=rows.filter(r=>acqOwnerMatch(r,rep));
+  return rows;
+}
+function acqCompanyRows(kind, rep){
+  const oc=D?.outreachCoverage||{}, co=oc.companies||{};
+  let rows=[];
+  if(kind==='companies_not_contacted') rows=co.notContactedList||D?.topInactiveRankAccounts||[];
+  else if(kind==='companies_contacted') rows=co.contactedList||[];
+  else if(kind==='rank_a_untouched') rows=(D?.repData||[]).flatMap(r=>(r.rankAUntouched||[]).map(x=>({...x,ownerName:r.name,ownerId:r.id,ownerColor:r.color,rank:'A'})));
+  else if(kind==='rank_b_untouched') rows=(D?.repData||[]).flatMap(r=>(r.rankBUntouched||[]).map(x=>({...x,ownerName:r.name,ownerId:r.id,ownerColor:r.color,rank:'B'})));
+  else if(kind==='rank_ab_untouched') rows=[...acqCompanyRows('rank_a_untouched'),...acqCompanyRows('rank_b_untouched')];
+  rows=[...rows];
+  if(rep) rows=rows.filter(r=>acqOwnerMatch(r,rep));
+  return rows;
+}
+function acqDealRiskRows(rep){
+  const reps=rep?[rep]:(D?.repData||[]);
+  const rows=[];
+  for(const r of reps){
+    for(const x of (r.needsAttention||[])) rows.push({...x,ownerName:r.name,kind:'Needs Attention',status:(x.reasons||[]).join(' · ')});
+    for(const x of (r.stuck||[])) rows.push({...x,ownerName:r.name,kind:'Stuck Deal',status:`Stuck ${x.days||'—'}d`});
+    for(const x of (r.cold||[])) rows.push({...x,ownerName:r.name,kind:'Cold Deal',status:`Cold ${x.days||'—'}d`});
+  }
+  return rows;
+}
+function acqRowLink(row,type){ return row.hubspotUrl || row.url || row.recordUrl || row.companyUrl || row.dealUrl || row.contactUrl || null; }
+function acqMetricRows(kind, opts={}){
+  const rep=opts.repId||opts.repName ? acqRepByIdOrName(opts.repId||opts.repName) : null;
+  if(kind.includes('lead')) return {type:'lead',rows:acqLeadRows(kind,rep),rep};
+  if(kind.includes('compan')||kind.includes('rank')) return {type:'company',rows:acqCompanyRows(kind,rep),rep};
+  if(kind==='deals_at_risk'||kind==='open_deals'||kind==='won_mtd'||kind==='lost_mtd'){
+    let rows=[];
+    if(kind==='deals_at_risk') rows=acqDealRiskRows(rep);
+    else if(kind==='open_deals') rows=(rep?(rep.topDeals||[]):((D?.repData||[]).flatMap(r=>(r.topDeals||[]).map(x=>({...x,ownerName:r.name})))));
+    else if(kind==='won_mtd') rows=(D?.closedWon||[]).filter(r=>!rep||acqOwnerMatch(r,rep));
+    else if(kind==='lost_mtd') rows=(D?.closedLost||[]).filter(r=>!rep||acqOwnerMatch(r,rep));
+    return {type:'deal',rows,rep};
+  }
+  return {type:'generic',rows:[],rep};
+}
+function acqMetricLabels(kind){ return ({leads_not_contacted:['Leads need contact','Eligible leads without connected call or completed meeting.'],leads_contacted:['Contacted leads','Leads already reached by a connected call or completed meeting.'],leads_total:['Eligible leads','All eligible leads available in the current data.'],online_not_contacted:['Online / inbound leads not contacted','Hotter inbound/online leads that still need follow-up.'],offline_not_contacted:['Offline / outbound leads not contacted','Offline or outbound leads still pending follow-up.'],companies_not_contacted:['Companies not contacted','Companies with no valid outreach signal.'],companies_contacted:['Contacted companies','Companies already touched.'],rank_a_untouched:['Rank A untouched accounts','High-priority Rank A companies not contacted.'],rank_b_untouched:['Rank B untouched accounts','Rank B companies not contacted.'],rank_ab_untouched:['Rank A/B untouched accounts','All Rank A and Rank B companies still not contacted.'],deals_at_risk:['Pipeline risk signals','Cold, stuck, or missing-next-action deals.'],open_deals:['Open deals','Open pipeline rows available for this view.'],won_mtd:['Won MTD','Closed won deals month to date.'],lost_mtd:['Lost MTD','Closed lost deals month to date.']}[kind] || ['Details','Rows available for this metric.']); }
+function renderAcqMetricTable(type,rows){
+  const limit=12, cls=i=>i>=limit?' class="acq-row-hidden"':'';
+  if(!rows.length) return `<div style="padding:24px;text-align:center;color:var(--muted);font-size:12px;font-style:italic">No rows available in current data.json for this metric.</div>`;
+  let head='',body='';
+  if(type==='lead'){
+    head='<tr><th>Lead</th><th>Owner</th><th>Status</th><th>Source</th><th class="c">Created</th></tr>';
+    body=rows.map((r,i)=>`<tr${cls(i)}><td><div style="font-weight:800">${recordLink(r.name||r.fullName||r.email||r.id||'Unknown lead',acqRowLink(r,'lead'))}</div><div style="font-family:var(--mono);font-size:9px;color:var(--muted)">${esc(r.email||r.phone||'')}</div></td><td>${esc(r.ownerName||r.rep||r.ownerId||'—')}</td><td>${r.leadStatus||r.status?`<span class="badge bb">${esc(r.leadStatus||r.status)}</span>`:'—'}</td><td>${esc(r.source||r.hs_analytics_source||'—')}</td><td class="c" style="font-family:var(--mono);font-size:10px">${acqDateOnly(r.createdAt||r.createdDate||r.hs_createdate)}</td></tr>`).join('');
+  }else if(type==='company'){
+    head='<tr><th>Company</th><th>Owner</th><th class="c">Rank</th><th>Country / Domain</th><th class="c">Last Activity</th></tr>';
+    body=rows.map((r,i)=>`<tr${cls(i)}><td><div style="font-weight:800">${recordLink(r.name||r.companyName||r.id||'Unknown company',acqRowLink(r,'company'))}</div></td><td>${esc(r.ownerName||r.rep||r.ownerId||'—')}</td><td class="c">${r.rank?`<span class="${String(r.rank).toUpperCase()==='A'?'rank-a':'rank-b'}">${esc(r.rank)}</span>`:'—'}</td><td>${esc([r.country,r.domain].filter(Boolean).join(' · ')||'—')}</td><td class="c" style="font-family:var(--mono);font-size:10px">${acqDateOnly(r.lastActivityDate||r.notes_last_updated||r.createdAt)}</td></tr>`).join('');
+  }else{
+    head='<tr><th>Deal / Item</th><th>Owner</th><th>Status</th><th class="c">Amount</th><th class="c">Days</th></tr>';
+    body=rows.map((r,i)=>`<tr${cls(i)}><td><div style="font-weight:800">${recordLink(r.name||r.dealName||r.companyName||'Unnamed',acqRowLink(r,'deal'))}</div><div style="font-size:9px;color:var(--muted)">${esc(r.kind||r.stage||'')}</div></td><td>${esc(r.ownerName||r.rep||'—')}</td><td>${r.status?`<span class="badge ba">${esc(r.status)}</span>`:'—'}</td><td class="c" style="font-family:var(--mono);font-weight:800">${acqMoney(r.amount||r.value)}</td><td class="c">${r.days?`<span class="badge br">${esc(r.days)}d</span>`:'—'}</td></tr>`).join('');
+  }
+  return `<div style="overflow-x:auto"><table class="tbl"><thead>${head}</thead><tbody>${body}</tbody></table></div>${rows.length>limit?`<button class="acq-show-btn" onclick="toggleAcqMetricRows(this)">▼ Show ${rows.length-limit} more</button>`:''}`;
+}
+function openAcqMetricCard(kind, opts={}){
+  const overlay=$('acqMetricOverlay'), title=$('acqMetricTitle'), sub=$('acqMetricSub'), body=$('acqMetricBody'); if(!overlay||!title||!sub||!body) return;
+  const data=acqMetricRows(kind,opts), labels=acqMetricLabels(kind);
+  title.textContent=labels[0] + (data.rep?` · ${data.rep.name}`:'');
+  sub.textContent=`${labels[1]} · ${data.rows.length} row${data.rows.length===1?'':'s'} · names open in HubSpot when links are available.`;
+  body.innerHTML=renderAcqMetricTable(data.type,data.rows); overlay.style.display='flex';
+}
+function closeAcqMetricCard(){ const overlay=$('acqMetricOverlay'); if(overlay) overlay.style.display='none'; }
+function toggleAcqMetricRows(btn){ const card=btn.closest('.acq-modal-card'); if(!card) return; const rows=[...card.querySelectorAll('.acq-row-hidden')]; const show=rows.some(r=>getComputedStyle(r).display==='none'); rows.forEach(r=>r.style.display=show?'table-row':'none'); btn.textContent=show?'▲ Show less':`▼ Show ${rows.length} more`; }
+function acqMakeClickable(id,kind,opts={}){ const el=$(id); if(!el) return; el.classList.add('metric-clickable'); el.onclick=(ev)=>{ev.stopPropagation();openAcqMetricCard(kind,opts)}; el.title='Click to see names'; }
+function enhanceAcqOverviewClickables(){
+  acqMakeClickable('cpNotLeads','leads_not_contacted'); acqMakeClickable('cpUntouched','rank_ab_untouched'); acqMakeClickable('cpAtRisk','deals_at_risk'); acqMakeClickable('cpContactedLeads','leads_contacted'); acqMakeClickable('cpNotContactedLeads','leads_not_contacted');
+  const action=$('managerActionStrip'); if(action){ [...action.children].forEach((el,i)=>{const kinds=['leads_not_contacted','rank_ab_untouched','deals_at_risk']; if(kinds[i]){el.classList.add('acq-click-card'); el.onclick=()=>openAcqMetricCard(kinds[i]); el.title='Click to see names';}});}
+  const funnel=$('leadFunnelGrid'); if(funnel){ [...funnel.children].forEach((el,i)=>{const kinds=['leads_total','leads_contacted','leads_not_contacted','open_deals','won_mtd']; if(kinds[i]){el.classList.add('acq-click-card'); el.onclick=()=>openAcqMetricCard(kinds[i]); el.title='Click to see names';}});}
+  const kpi=$('outreachKpiGrid'); if(kpi){ [...kpi.children].forEach((el,i)=>{const kinds=['leads_total','leads_contacted','leads_not_contacted','companies_not_contacted','companies_contacted','companies_not_contacted']; if(kinds[i]){el.classList.add('acq-click-card'); el.onclick=()=>openAcqMetricCard(kinds[i]); el.title='Click to see names';}});}
+  acqMakeClickable('outreachLeadNotBadge','leads_not_contacted'); acqMakeClickable('outreachCoNotBadge','companies_not_contacted'); acqMakeClickable('untouchedABadge','rank_a_untouched'); acqMakeClickable('untouchedBBadge','rank_b_untouched');
+  const online=$('outreachOnlineSplit'); if(online){online.classList.add('metric-clickable'); online.onclick=()=>openAcqMetricCard('online_not_contacted');}
+  const offline=$('outreachOfflineSplit'); if(offline){offline.classList.add('metric-clickable'); offline.onclick=()=>openAcqMetricCard('offline_not_contacted');}
+}
+function acqSmallRows(rows,type,limit=5){
+  if(!rows.length) return `<div style="padding:14px;color:var(--muted);font-size:12px;font-style:italic;text-align:center">No rows for this rep.</div>`;
+  const render=(r,i)=> type==='lead'?`<tr class="${i>=limit?'acq-row-hidden':''}"><td>${recordLink(r.name||r.fullName||r.email||r.id||'Unknown lead',acqRowLink(r,'lead'))}<div style="font-family:var(--mono);font-size:9px;color:var(--muted)">${esc(r.email||'')}</div></td><td>${r.leadStatus?`<span class="badge bb">${esc(r.leadStatus)}</span>`:'—'}</td><td>${esc(r.source||'—')}</td><td class="c">${acqDateOnly(r.createdAt||r.hs_createdate)}</td></tr>`:`<tr class="${i>=limit?'acq-row-hidden':''}"><td>${recordLink(r.name||r.companyName||'Company',acqRowLink(r,'company'))}</td><td class="c">${r.rank?`<span class="${String(r.rank).toUpperCase()==='A'?'rank-a':'rank-b'}">${esc(r.rank)}</span>`:'—'}</td><td>${esc(r.country||r.domain||'—')}</td><td class="c">${esc(r.ownerName||'—')}</td></tr>`;
+  const heads=type==='lead'?'<th>Lead</th><th>Status</th><th>Source</th><th class="c">Created</th>':'<th>Company</th><th class="c">Rank</th><th>Country / Domain</th><th class="c">Owner</th>';
+  return `<div style="overflow-x:auto"><table class="tbl"><thead><tr>${heads}</tr></thead><tbody>${rows.map(render).join('')}</tbody></table></div>${rows.length>limit?`<button class="acq-show-btn" onclick="toggleRepInlineRows(this)">▼ Show ${rows.length-limit} more</button>`:''}`;
+}
+function toggleRepInlineRows(btn){ const parent=btn.closest('.card'); if(!parent) return; const rows=[...parent.querySelectorAll('.acq-row-hidden')]; const show=rows.some(r=>getComputedStyle(r).display==='none'); rows.forEach(r=>r.style.display=show?'table-row':'none'); btn.textContent=show?'▲ Show less':`▼ Show ${rows.length} more`; }
+function injectAcqRepFollowupPanels(){
+  if(!D?.repData) return;
+  for(const r of D.repData){
+    const slug=String(r.name||'').toLowerCase().replace(/\s/g,'-'), panel=$('panel-'+slug); if(!panel||panel.querySelector('.acq-rep-followup')) continue;
+    const leads=acqLeadRows('leads_not_contacted',r), rankA=(r.rankAUntouched||[]).map(x=>({...x,ownerName:r.name,ownerId:r.id,ownerColor:r.color,rank:'A'})), rankB=(r.rankBUntouched||[]).map(x=>({...x,ownerName:r.name,ownerId:r.id,ownerColor:r.color,rank:'B'})), companies=[...rankA,...rankB];
+    const html=`<div class="acq-follow-grid acq-rep-followup"><div class="card" style="border-top:3px solid var(--red)"><div class="card-hd"><div class="card-title"><div class="card-title-icon" style="background:var(--red-bg)">☎</div>Leads need contact</div><span class="badge br metric-clickable" onclick="openAcqMetricCard('leads_not_contacted',{repId:'${esc(r.id)}'})">${leads.length} leads</span></div><div class="acq-mini-note" style="padding:10px 14px;border-bottom:1px solid var(--border)">Leads assigned to ${esc(r.name)} with no connected call or completed meeting.</div>${acqSmallRows(leads,'lead')}</div><div class="card" style="border-top:3px solid var(--amber)"><div class="card-hd"><div class="card-title"><div class="card-title-icon" style="background:var(--amber-bg)">🎯</div>Rank A/B not contacted</div><span class="badge ba metric-clickable" onclick="openAcqMetricCard('rank_ab_untouched',{repId:'${esc(r.id)}'})">${companies.length} accounts</span></div><div class="acq-mini-note" style="padding:10px 14px;border-bottom:1px solid var(--border)">High-priority companies that still need outreach.</div>${acqSmallRows(companies,'company')}</div></div>`;
+    const stat=panel.querySelector('.stat-chips'); if(stat) stat.insertAdjacentHTML('afterend',html); else panel.insertAdjacentHTML('afterbegin',html);
+  }
+}
+function enhanceAcquisitionInteractiveViews(){ enhanceAcqOverviewClickables(); injectAcqRepFollowupPanels(); }
 
 function render(){
   $("loadingState").style.display="none";
@@ -1976,6 +2093,7 @@ renderManagerAddons();
       </div>`;
     rpnl.appendChild(panel);
   });
+  enhanceAcquisitionInteractiveViews();
 }
 
 
@@ -2237,7 +2355,6 @@ function selectRetentionOwner(repId){
   if($("topbarSub")) $("topbarSub").textContent = rep.role + " · owner page · priority actions, financial movement, activity quality";
   setRetentionOwnerMode(true);
   renderRetention();
-  requestAnimationFrame(installUniversalMetricClicks);
   window.scrollTo({top:0, behavior:"smooth"});
 }
 
@@ -2537,5 +2654,19 @@ setInterval(updateClock,60000);
 loadData();
 setInterval(loadData,5*60*1000);
 </script>
+
+<div id="acqMetricOverlay" class="acq-modal-overlay" onclick="if(event.target===this)closeAcqMetricCard()">
+  <div class="acq-modal-card" role="dialog" aria-modal="true">
+    <div class="acq-modal-head">
+      <div>
+        <div class="acq-modal-title" id="acqMetricTitle">Details</div>
+        <div class="acq-modal-sub" id="acqMetricSub">Click a HubSpot-linked name to open the record.</div>
+      </div>
+      <button class="acq-modal-close" onclick="closeAcqMetricCard()">Close</button>
+    </div>
+    <div class="acq-modal-body" id="acqMetricBody"></div>
+  </div>
+</div>
+
 </body>
 </html>
