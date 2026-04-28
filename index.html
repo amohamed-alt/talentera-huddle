@@ -540,6 +540,13 @@ body{font-family:var(--font);background:var(--page-bg);color:var(--text);-webkit
 .acq-source-offline{background:var(--amber-bg);color:var(--amber);border-color:var(--amber-bd)}
 @media(max-width:1100px){.acq-follow-grid,.acq-lead-split{grid-template-columns:1fr}}
 
+
+
+/* FINAL ACQUISITION TRACKING UI — country filters + split leads */
+.acq-follow-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:14px 0}
+.acq-follow-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--sh);overflow:hidden;border-top:3px solid var(--fc,var(--green))}
+.acq-follow-hd{padding:12px 16px;background:var(--surface2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:10px}.acq-follow-title{font-size:11px;font-weight:900;color:var(--text2);text-transform:uppercase;letter-spacing:.08em;display:flex;align-items:center;gap:7px}.acq-follow-sub{font-size:10px;color:var(--muted);font-weight:700;line-height:1.5;padding:10px 14px;border-bottom:1px solid var(--border)}.acq-country-tools{padding:10px 14px;border-bottom:1px solid var(--border);background:#fbfdfc}.acq-country-row{display:flex;gap:7px;flex-wrap:wrap;align-items:center}.acq-country-chip{border:1px solid var(--border);background:#fff;border-radius:999px;padding:5px 9px;font-size:10px;font-weight:800;color:var(--text2);cursor:pointer;font-family:var(--font);transition:.12s all}.acq-country-chip:hover{border-color:var(--green);color:var(--green)}.acq-country-chip.active,.acq-country-chip.clear.active{background:var(--green-bg);border-color:var(--green-bd);color:var(--green)}.acq-lead-split{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:14px;background:var(--surface2)}.acq-mini-table{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh-xs)}.acq-mini-hd{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 12px;background:var(--surface2);border-bottom:1px solid var(--border)}.acq-mini-title{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.08em}.acq-source-pill{font-size:8px;font-weight:900;padding:3px 8px;border-radius:999px;border:1px solid var(--border)}.acq-source-online{background:var(--blue-bg);color:var(--blue);border-color:var(--blue-bd)}.acq-source-offline{background:var(--amber-bg);color:var(--amber);border-color:var(--amber-bd)}.acq-empty{padding:18px!important;text-align:center;color:var(--muted);font-size:11px;font-style:italic}.acq-show-btn{width:100%;padding:8px;text-align:center;font-size:10px;font-weight:900;color:var(--green);border:none;border-top:1px solid var(--border);background:var(--surface);cursor:pointer;font-family:var(--font)}.acq-show-btn:hover{background:var(--surface2)}.acq-muted-note{font-size:10px;color:var(--muted);font-weight:800}@media(max-width:1100px){.acq-follow-grid,.acq-lead-split{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body>
@@ -3224,6 +3231,232 @@ function enhanceAcquisitionRepFollowupSections(){
       window.acqV3Render(rep.id);
     });
   };
+})();
+
+
+
+/* FINAL ACQUISITION REP TRACKING PATCH — exact requirements
+   Leads need contact = split Online/Marketing vs Offline per owner.
+   Rank A/B not contacted = per owner with country filter.
+   Counts are owner-specific, never global fixed totals. Retention untouched. */
+(function(){
+  window._acqFinalLeadCountries = window._acqFinalLeadCountries || {};
+  window._acqFinalRankCountries = window._acqFinalRankCountries || {};
+
+  function q(id){ return document.getElementById(id); }
+  function s(v){
+    if(typeof esc === 'function') return esc(v);
+    return String(v == null ? '' : v).replace(/[&<>"']/g,function(ch){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch];});
+  }
+  function link(label,url){
+    label = label == null ? '—' : label;
+    if(typeof recordLink === 'function') return recordLink(label,url);
+    return url ? '<a class="record-link" target="_blank" href="'+s(url)+'">'+s(label)+'</a>' : s(label);
+  }
+  function slug(name){ return String(name||'').trim().toLowerCase().replace(/\s+/g,'-'); }
+  function text(v){ return String(v == null ? '' : v).trim(); }
+  function norm(v){ return text(v).toLowerCase().replace(/\s+/g,' '); }
+  function isAcqRep(rep){ return rep && rep.type !== 'view'; }
+
+  function countryOf(row){
+    var p=(row&&row.properties)||{};
+    var c=row&&(row.country||row.companyCountry||row.contactCountry||row.countryName||row.location||row.hs_country_region_code||p.country||p.hs_country_region_code);
+    c=text(c);
+    return c || 'Unknown';
+  }
+  function createdOf(row){
+    var p=(row&&row.properties)||{};
+    return text(row&&(row.createdAt||row.createdate||row.hs_createdate||row.createDate||row.date||p.hs_createdate||p.createdate)).slice(0,10) || '—';
+  }
+  function sourceRaw(row){
+    var p=(row&&row.properties)||{};
+    return text(row&&(row.sourceBucket||row.bucket||row.sourceType||row.source||row.leadSource||row.analyticsSource||row.hs_analytics_source||p.hs_analytics_source));
+  }
+  function leadBucket(row){
+    var b=text(row&&(row.sourceBucket||row.bucket||row.sourceType)).toLowerCase();
+    var src=text(row&&(row.source||row.leadSource||row.analyticsSource||row.hs_analytics_source||(row.properties||{}).hs_analytics_source)).toUpperCase();
+    if(b.includes('online')||b.includes('marketing')||b.includes('inbound')) return 'online';
+    if(b.includes('offline')||b.includes('outbound')) return 'offline';
+    if(src && src !== 'OFFLINE' && src !== 'IMPORT') return 'online';
+    return 'offline';
+  }
+  function ownerMatches(row,rep){
+    if(!row||!rep) return false;
+    var p=row.properties||{};
+    var rid=text(rep.id);
+    var ids=[row.ownerId,row.owner_id,row.hubspot_owner_id,row.hubspotOwnerId,row.repId,row.assignedOwnerId,p.hubspot_owner_id,p.ownerId];
+    if(ids.some(function(x){return text(x)===rid;})) return true;
+    var rn=norm(rep.name);
+    var names=[row.ownerName,row.owner,row.rep,row.repName,row.assignedTo,row.salesRep,row.ownerFullName,p.ownerName];
+    return names.some(function(x){return norm(x)===rn;});
+  }
+  function firstExistingArrays(obj,names){
+    var out=[]; names.forEach(function(n){ if(Array.isArray(obj&&obj[n])) out=out.concat(obj[n]); });
+    return out;
+  }
+  function uniqueRows(rows,kind){
+    var seen=new Set();
+    return (rows||[]).filter(function(r,i){
+      var key=text(r&&(r.id||r.contactId||r.companyId||r.objectId||r.hs_object_id||r.hubspotId||r.email||r.name||r.companyName))||kind+'-'+i;
+      if(seen.has(key)) return false;
+      seen.add(key); return true;
+    });
+  }
+  function normalizeLead(row,rep){
+    row=row||{}; var p=row.properties||{};
+    var id=row.id||row.contactId||row.hs_object_id||row.objectId||row.hubspotId||p.hs_object_id;
+    return Object.assign({},row,{
+      id:id,
+      name:row.name||row.fullName||row.contactName||row.email||id||'Unknown lead',
+      hubspotUrl:row.hubspotUrl||row.contactUrl||row.recordUrl||row.url||(typeof hubspotRecordUrl==='function'?hubspotRecordUrl('contact',id):''),
+      email:row.email||p.email||'',
+      leadStatus:row.leadStatus||row.status||row.hs_lead_status||p.hs_lead_status||'—',
+      sourceText:sourceRaw(row)||(leadBucket(row)==='online'?'Online':'Offline'),
+      country:countryOf(row),
+      createdAt:createdOf(row),
+      ownerId:row.ownerId||row.hubspot_owner_id||p.hubspot_owner_id||rep.id,
+      ownerName:row.ownerName||rep.name
+    });
+  }
+  function ownerLeads(rep){
+    var D0=window.D||{};
+    var oc=(D0.outreachCoverage&&D0.outreachCoverage.contacts)||{};
+    var sla=D0.slaBreaches||{};
+    var pools=[];
+    pools=pools.concat(Array.isArray(oc.notContactedList)?oc.notContactedList:[]);
+    pools=pools.concat(Array.isArray(sla.onlineLeadBreaches)?sla.onlineLeadBreaches:[]);
+    pools=pools.concat(Array.isArray(sla.offlineLeadBreaches)?sla.offlineLeadBreaches:[]);
+    pools=pools.concat(firstExistingArrays(rep,['notContactedLeads','leadsNeedContact','leadFollowups','pendingLeads','onlineLeadBreaches','offlineLeadBreaches']));
+    return uniqueRows(
+      pools.filter(function(x){return ownerMatches(x,rep);}).map(function(x){return normalizeLead(x,rep);}),
+      'lead'
+    ).sort(function(a,b){return text(b.createdAt).localeCompare(text(a.createdAt))||text(a.name).localeCompare(text(b.name));});
+  }
+  function normalizeRank(row,rank,rep){
+    row=row||{}; var p=row.properties||{};
+    var id=row.id||row.companyId||row.hs_object_id||row.objectId||row.hubspotId||p.hs_object_id;
+    var rk=text(row.rank||row.companyRank||row.accountRank||rank).toUpperCase();
+    if(rk!=='A'&&rk!=='B') rk=rk.includes('A')?'A':'B';
+    return Object.assign({},row,{
+      id:id,
+      name:row.name||row.companyName||row.title||row.domain||id||'Unknown company',
+      hubspotUrl:row.hubspotUrl||row.companyUrl||row.recordUrl||row.url||(typeof hubspotRecordUrl==='function'?hubspotRecordUrl('company',id):''),
+      country:countryOf(row),
+      createdAt:createdOf(row),
+      rank:rk,
+      ownerId:row.ownerId||row.hubspot_owner_id||p.hubspot_owner_id||rep.id,
+      ownerName:row.ownerName||rep.name
+    });
+  }
+  function ownerRanks(rep){
+    var rows=[];
+    (rep.rankAUntouched||[]).forEach(function(x){rows.push(normalizeRank(x,'A',rep));});
+    (rep.rankBUntouched||[]).forEach(function(x){rows.push(normalizeRank(x,'B',rep));});
+
+    // Fallback only if per-owner arrays are missing.
+    if(!rows.length){
+      var oc=(((window.D||{}).outreachCoverage||{}).companies||{});
+      (oc.notContactedList||[]).forEach(function(x){
+        var rk=text(x.rank||x.companyRank||x.accountRank).toUpperCase();
+        if((rk==='A'||rk==='B'||rk.includes('A')||rk.includes('B'))&&ownerMatches(x,rep)){
+          rows.push(normalizeRank(x,rk,rep));
+        }
+      });
+    }
+    return uniqueRows(rows,'rank').sort(function(a,b){
+      return countryOf(a).localeCompare(countryOf(b))||text(a.rank).localeCompare(text(b.rank))||text(a.name).localeCompare(text(b.name));
+    });
+  }
+  function countryCounts(rows){
+    var m=new Map();
+    (rows||[]).forEach(function(r){var c=countryOf(r); m.set(c,(m.get(c)||0)+1);});
+    return Array.from(m.entries()).sort(function(a,b){return a[0].localeCompare(b[0]);});
+  }
+  function selected(scope,repId,rows){
+    var store=scope==='lead'?window._acqFinalLeadCountries:window._acqFinalRankCountries;
+    if(!store[repId]) store[repId]=new Set();
+    var available=new Set((rows||[]).map(countryOf));
+    store[repId]=new Set(Array.from(store[repId]).filter(function(c){return available.has(c);}));
+    return store[repId];
+  }
+  function chips(scope,repId,rows){
+    var counts=countryCounts(rows), total=rows.length;
+    if(!counts.length) return '<span class="acq-muted-note">No country values in this list</span>';
+    var clearFn=scope==='lead'?'acqFinalClearLeadCountries':'acqFinalClearRankCountries';
+    var toggleFn=scope==='lead'?'acqFinalToggleLeadCountry':'acqFinalToggleRankCountry';
+    var dataAttr=scope==='lead'?'data-acq-final-lead-rep':'data-acq-final-rank-rep';
+    return '<button class="acq-country-chip clear active" id="acqFinalAll-'+scope+'-'+s(repId)+'" onclick="'+clearFn+'(\''+s(repId)+'\')">All countries <b>'+total+'</b></button>'+
+      counts.map(function(pair){
+        return '<button class="acq-country-chip" '+dataAttr+'="'+s(repId)+'" data-country="'+s(pair[0])+'" onclick="'+toggleFn+'(\''+s(repId)+'\', this.getAttribute(\'data-country\'))">'+s(pair[0])+' <b>'+pair[1]+'</b></button>';
+      }).join('');
+  }
+  function filterCountries(scope,repId,rows){
+    var set=selected(scope,repId,rows);
+    return set.size?rows.filter(function(r){return set.has(countryOf(r));}):rows;
+  }
+  function showMoreButton(id,total,limit){
+    var extra=Math.max(0,total-limit);
+    return extra?'<button class="acq-show-btn" data-base="'+s(id)+'" onclick="acqFinalToggleMore(this)">▼ Show '+extra+' more</button>':'';
+  }
+  function leadRows(rows,id){
+    if(!rows.length) return '<tr><td colspan="5" class="acq-empty">No leads in this bucket for the selected country filter</td></tr>';
+    return rows.map(function(x,i){
+      var bucket=leadBucket(x);
+      return '<tr '+(i>=5?'style="display:none"':'')+' data-acq-final-extra="'+s(id)+'"><td><div style="font-weight:900">'+link(x.name||x.email||x.id||'Unknown lead',x.hubspotUrl)+'</div><div style="font-size:9px;color:var(--muted)">'+s(x.email||'')+'</div></td><td class="c"><span class="acq-source-pill '+(bucket==='online'?'acq-source-online':'acq-source-offline')+'">'+(bucket==='online'?'Online':'Offline')+'</span></td><td class="c">'+s(countryOf(x))+'</td><td class="c">'+s(x.leadStatus||'—')+'</td><td class="c" style="font-family:var(--mono);font-size:10px">'+s(x.createdAt||'—')+'</td></tr>';
+    }).join('');
+  }
+  function rankRows(rows,id){
+    if(!rows.length) return '<tr><td colspan="5" class="acq-empty">No Rank A/B accounts for the selected country filter</td></tr>';
+    return rows.map(function(x,i){
+      return '<tr '+(i>=8?'style="display:none"':'')+' data-acq-final-extra="'+s(id)+'"><td>'+(x.rank==='A'?'<span class="rank-a">A</span>':'<span class="rank-b">B</span>')+'</td><td><div style="font-weight:900">'+link(x.name||x.id||'Unknown company',x.hubspotUrl)+'</div><div style="font-size:9px;color:var(--muted)">'+s(x.domain||x.website||'')+'</div></td><td class="c">'+s(countryOf(x))+'</td><td class="c" style="font-family:var(--mono);font-size:10px;color:var(--muted)">'+s(x.createdAt||'—')+'</td><td class="c"><span class="badge br">Follow up</span></td></tr>';
+    }).join('');
+  }
+  function cleanOld(panel){
+    panel.querySelectorAll('[data-acq-final-followup],[data-acq-v3-followup],[data-acq-enhanced-followup],.acq-rep-followup').forEach(function(n){n.remove();});
+  }
+  function cardHTML(rep){
+    var leads=ownerLeads(rep), ranks=ownerRanks(rep);
+    var selectedLeadRows=filterCountries('lead',rep.id,leads);
+    var online=selectedLeadRows.filter(function(x){return leadBucket(x)==='online';});
+    var offline=selectedLeadRows.filter(function(x){return leadBucket(x)==='offline';});
+    var selectedRankRows=filterCountries('rank',rep.id,ranks);
+    var onlineId='acqFinal-online-'+rep.id, offlineId='acqFinal-offline-'+rep.id, rankId='acqFinal-rank-'+rep.id;
+    return '<div class="acq-follow-grid" data-acq-final-followup="'+s(rep.id)+'">'+
+      '<div class="acq-follow-card" style="--fc:var(--red)"><div class="acq-follow-hd"><div class="acq-follow-title">🎯 Leads to Contact · '+s(rep.name)+'</div><span class="badge br">'+selectedLeadRows.length+' pending</span></div><div class="acq-follow-sub">Online/Marketing and Offline leads assigned to this owner. Filter by country; names open in HubSpot.</div><div class="acq-country-tools"><div class="acq-country-row">'+chips('lead',rep.id,leads)+'</div></div><div class="acq-lead-split"><div class="acq-mini-table"><div class="acq-mini-hd"><div class="acq-mini-title" style="color:var(--blue)">Online / Marketing Leads</div><span class="badge bb">'+online.length+'</span></div><div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Lead</th><th class="c">Bucket</th><th class="c">Country</th><th class="c">Status</th><th class="c">Created</th></tr></thead><tbody>'+leadRows(online,onlineId)+'</tbody></table></div>'+showMoreButton(onlineId,online.length,5)+'</div><div class="acq-mini-table"><div class="acq-mini-hd"><div class="acq-mini-title" style="color:var(--amber)">Offline Leads</div><span class="badge ba">'+offline.length+'</span></div><div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Lead</th><th class="c">Bucket</th><th class="c">Country</th><th class="c">Status</th><th class="c">Created</th></tr></thead><tbody>'+leadRows(offline,offlineId)+'</tbody></table></div>'+showMoreButton(offlineId,offline.length,5)+'</div></div></div>'+
+      '<div class="acq-follow-card" style="--fc:var(--amber)"><div class="acq-follow-hd"><div class="acq-follow-title">🏁 Rank A/B Not Contacted · Country Filter</div><span class="badge ba">'+selectedRankRows.length+' accounts</span></div><div class="acq-follow-sub">Only this owner’s untouched Rank A/B accounts. Filter by one or multiple countries.</div><div class="acq-country-tools"><div class="acq-country-row">'+chips('rank',rep.id,ranks)+'</div></div><div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Rank</th><th>Company</th><th class="c">Country</th><th class="c">Created</th><th class="c">Action</th></tr></thead><tbody>'+rankRows(selectedRankRows,rankId)+'</tbody></table></div>'+showMoreButton(rankId,selectedRankRows.length,8)+'</div></div>';
+  }
+  function renderOne(rep){
+    var panel=q('panel-'+slug(rep.name)); if(!panel) return;
+    cleanOld(panel);
+    var node=document.createElement('div'); node.innerHTML=cardHTML(rep);
+    var hero=panel.querySelector('.rep-hero');
+    if(hero) hero.insertAdjacentElement('afterend',node.firstChild);
+    else panel.insertAdjacentElement('afterbegin',node.firstChild);
+    updateChipStates(rep.id);
+  }
+  function updateChipStates(repId){
+    var rep=(window.D.repData||[]).find(function(r){return String(r.id)===String(repId);}); if(!rep) return;
+    var leadSet=selected('lead',repId,ownerLeads(rep)), rankSet=selected('rank',repId,ownerRanks(rep));
+    var allLead=q('acqFinalAll-lead-'+repId); if(allLead) allLead.classList.toggle('active',leadSet.size===0);
+    var allRank=q('acqFinalAll-rank-'+repId); if(allRank) allRank.classList.toggle('active',rankSet.size===0);
+    document.querySelectorAll('[data-acq-final-lead-rep="'+repId+'"]').forEach(function(ch){ch.classList.toggle('active',leadSet.has(ch.getAttribute('data-country')));});
+    document.querySelectorAll('[data-acq-final-rank-rep="'+repId+'"]').forEach(function(ch){ch.classList.toggle('active',rankSet.has(ch.getAttribute('data-country')));});
+  }
+  window.acqFinalToggleMore=function(btn){
+    var base=btn&&btn.getAttribute('data-base'); if(!base) return;
+    var rows=Array.from(document.querySelectorAll('[data-acq-final-extra="'+base+'"]'));
+    var show=rows.some(function(r){return r.style.display==='none'||getComputedStyle(r).display==='none';});
+    rows.forEach(function(r){r.style.display=show?'table-row':'none';});
+    btn.textContent=show?'▲ Show less':'▼ Show '+rows.length+' more';
+  };
+  window.acqFinalToggleLeadCountry=function(repId,country){ if(!window._acqFinalLeadCountries[repId]) window._acqFinalLeadCountries[repId]=new Set(); var set=window._acqFinalLeadCountries[repId]; set.has(country)?set.delete(country):set.add(country); var rep=(window.D.repData||[]).find(function(r){return String(r.id)===String(repId);}); if(rep) renderOne(rep); };
+  window.acqFinalClearLeadCountries=function(repId){ window._acqFinalLeadCountries[repId]=new Set(); var rep=(window.D.repData||[]).find(function(r){return String(r.id)===String(repId);}); if(rep) renderOne(rep); };
+  window.acqFinalToggleRankCountry=function(repId,country){ if(!window._acqFinalRankCountries[repId]) window._acqFinalRankCountries[repId]=new Set(); var set=window._acqFinalRankCountries[repId]; set.has(country)?set.delete(country):set.add(country); var rep=(window.D.repData||[]).find(function(r){return String(r.id)===String(repId);}); if(rep) renderOne(rep); };
+  window.acqFinalClearRankCountries=function(repId){ window._acqFinalRankCountries[repId]=new Set(); var rep=(window.D.repData||[]).find(function(r){return String(r.id)===String(repId);}); if(rep) renderOne(rep); };
+  function renderAll(){ if(!window.D||!Array.isArray(D.repData)) return; D.repData.filter(isAcqRep).forEach(renderOne); }
+  var prevOverviewClick=window.enhanceAcqOverviewClickables;
+  window.enhanceAcquisitionInteractiveViews=function(){ if(typeof prevOverviewClick==='function') prevOverviewClick(); renderAll(); };
+  window.enhanceAcquisitionRepFollowupSections=function(){ renderAll(); };
 })();
 
 function updateClock(){
