@@ -3521,11 +3521,13 @@ function enhanceAcquisitionRepFollowupSections(){
     if(!row||!rep) return false;
     var p=row.properties||{};
     var rid=txt(rep.id);
-    var ids=[row.ownerId,row.owner_id,row.hubspot_owner_id,row.hubspotOwnerId,row.repId,row.assignedOwnerId,p.hubspot_owner_id,p.ownerId];
-    if(ids.some(function(x){return txt(x)===rid;})) return true;
+    var ids=[row.ownerId,row.owner_id,row.hubspot_owner_id,row.hubspotOwnerId,row.repId,row.assignedOwnerId,p.hubspot_owner_id,p.ownerId]
+      .map(txt).filter(Boolean);
+    if(rid && ids.indexOf(rid) !== -1) return true;
     var rn=low(rep.name);
-    var names=[row.ownerName,row.owner,row.rep,row.repName,row.assignedTo,row.salesRep,row.ownerFullName,p.ownerName];
-    return names.some(function(x){return low(x)===rn;});
+    var names=[row.ownerName,row.owner,row.rep,row.repName,row.assignedTo,row.salesRep,row.ownerFullName,p.ownerName]
+      .map(low).filter(Boolean);
+    return !!rn && names.indexOf(rn) !== -1;
   }
   function gatherArrays(obj,names){
     var out=[];
@@ -3560,12 +3562,20 @@ function enhanceAcquisitionRepFollowupSections(){
     var D0=D||{};
     var oc=(D0.outreachCoverage&&D0.outreachCoverage.contacts)||{};
     var sla=D0.slaBreaches||{};
-    var pools=[];
-    pools=pools.concat(Array.isArray(oc.notContactedList)?oc.notContactedList:[]);
-    pools=pools.concat(Array.isArray(sla.onlineLeadBreaches)?sla.onlineLeadBreaches:[]);
-    pools=pools.concat(Array.isArray(sla.offlineLeadBreaches)?sla.offlineLeadBreaches:[]);
-    pools=pools.concat(gatherArrays(rep,['notContactedLeads','leadsNeedContact','leadFollowups','pendingLeads','onlineLeadBreaches','offlineLeadBreaches']));
-    return unique(pools.filter(function(x){return ownerMatches(x,rep);}).map(function(x){return normalizeLead(x,rep);}), 'lead')
+
+    // Global lists must have an owner id/name match. Never show team/global leads for every rep.
+    var globalPools=[];
+    globalPools=globalPools.concat(Array.isArray(oc.notContactedList)?oc.notContactedList:[]);
+    globalPools=globalPools.concat(Array.isArray(sla.onlineLeadBreaches)?sla.onlineLeadBreaches:[]);
+    globalPools=globalPools.concat(Array.isArray(sla.offlineLeadBreaches)?sla.offlineLeadBreaches:[]);
+
+    // Lists that live inside the rep object are already owner-specific, even if each row has no owner fields.
+    var repPools=gatherArrays(rep,['notContactedLeads','leadsNeedContact','leadFollowups','pendingLeads','onlineLeadBreaches','offlineLeadBreaches']);
+
+    var rows=globalPools.filter(function(x){return ownerMatches(x,rep);}).map(function(x){return normalizeLead(x,rep);})
+      .concat(repPools.map(function(x){return normalizeLead(x,rep);}));
+
+    return unique(rows, 'lead')
       .sort(function(a,b){return txt(b.createdAt).localeCompare(txt(a.createdAt))||txt(a.name).localeCompare(txt(b.name));});
   }
   function normalizeRank(row,rank,rep){
@@ -3628,23 +3638,23 @@ function enhanceAcquisitionRepFollowupSections(){
     (rows||[]).forEach(function(r){var rk=String(r.rank||'').toUpperCase(); if(rk==='A'||rk==='B') counts[rk]++;});
     var sel=selectedRankLetters(repId);
     var total=(rows||[]).length;
-    return '<button type="button" class="acq-country-chip clear '+(sel.size===0?'active':'')+'" data-acq5-action="rank-clear" data-rep-id="'+h(repId)+'">All ranks <b>'+total+'</b></button>'+
-      '<button type="button" class="acq-country-chip'+(sel.has('A')?' active':'')+'" data-acq5-action="rank-toggle" data-rep-id="'+h(repId)+'" data-rank="A">Rank A <b>'+counts.A+'</b></button>'+
-      '<button type="button" class="acq-country-chip'+(sel.has('B')?' active':'')+'" data-acq5-action="rank-toggle" data-rep-id="'+h(repId)+'" data-rank="B">Rank B <b>'+counts.B+'</b></button>';
+    return '<button type="button" class="acq-country-chip clear '+(sel.size===0?'active':'')+'" data-acq5-action="rank-clear" onclick="return acq5HandleClick(event,this)" data-rep-id="'+h(repId)+'">All ranks <b>'+total+'</b></button>'+
+      '<button type="button" class="acq-country-chip'+(sel.has('A')?' active':'')+'" data-acq5-action="rank-toggle" onclick="return acq5HandleClick(event,this)" data-rep-id="'+h(repId)+'" data-rank="A">Rank A <b>'+counts.A+'</b></button>'+
+      '<button type="button" class="acq-country-chip'+(sel.has('B')?' active':'')+'" data-acq5-action="rank-toggle" onclick="return acq5HandleClick(event,this)" data-rep-id="'+h(repId)+'" data-rank="B">Rank B <b>'+counts.B+'</b></button>';
   }
   function chips(scope,repId,rows){
     var counts=countryCounts(rows), total=rows.length, sel=selected(scope,repId,rows);
     if(!counts.length) return '<span class="acq-muted-note">No country values in this list</span>';
-    var html='<button type="button" class="acq-country-chip clear '+(sel.size===0?'active':'')+'" data-acq5-action="clear" data-scope="'+scope+'" data-rep-id="'+h(repId)+'">All countries <b>'+total+'</b></button>';
+    var html='<button type="button" class="acq-country-chip clear '+(sel.size===0?'active':'')+'" data-acq5-action="clear" onclick="return acq5HandleClick(event,this)" data-scope="'+scope+'" data-rep-id="'+h(repId)+'">All countries <b>'+total+'</b></button>';
     html+=counts.map(function(pair){
       var active=sel.has(pair[0])?' active':'';
-      return '<button type="button" class="acq-country-chip'+active+'" data-acq5-action="toggle" data-scope="'+scope+'" data-rep-id="'+h(repId)+'" data-country="'+h(pair[0])+'">'+h(pair[0])+' <b>'+pair[1]+'</b></button>';
+      return '<button type="button" class="acq-country-chip'+active+'" data-acq5-action="toggle" onclick="return acq5HandleClick(event,this)" data-scope="'+scope+'" data-rep-id="'+h(repId)+'" data-country="'+h(pair[0])+'">'+h(pair[0])+' <b>'+pair[1]+'</b></button>';
     }).join('');
     return html;
   }
   function showMoreButton(id,total,limit){
     var extra=Math.max(0,total-limit);
-    return extra?'<button type="button" class="acq-show-btn" data-acq5-action="more" data-base="'+h(id)+'">▼ Show '+extra+' more</button>':'';
+    return extra?'<button type="button" class="acq-show-btn" data-acq5-action="more" onclick="return acq5HandleClick(event,this)" data-base="'+h(id)+'">▼ Show '+extra+' more</button>':'';
   }
   function leadRows(rows,id){
     if(!rows.length) return '<tr><td colspan="5" class="acq-empty">No leads in this bucket for the selected country filter</td></tr>';
@@ -3698,50 +3708,58 @@ function enhanceAcquisitionRepFollowupSections(){
   function currentRep(repId){ return (D&&D.repData||[]).find(function(r){return String(r.id)===String(repId);}); }
   function rerenderRep(repId){ var rep=currentRep(repId); if(rep) renderOne(rep); }
 
+  window.acq5HandleClick=function(e,btn){
+    btn=btn || (e&&e.target&&e.target.closest ? e.target.closest('[data-acq5-action]') : null);
+    if(!btn) return false;
+    var action=btn.getAttribute('data-acq5-action');
+    if(action!=='toggle' && action!=='clear' && action!=='more' && action!=='rank-toggle' && action!=='rank-clear') return false;
+    if(e){ e.preventDefault(); e.stopPropagation(); }
+
+    if(action==='more'){
+      var base=btn.getAttribute('data-base');
+      var rows=Array.from(document.querySelectorAll('[data-acq5-extra="'+base+'"]'));
+      var show=rows.some(function(r){return r.style.display==='none'||getComputedStyle(r).display==='none';});
+      rows.forEach(function(r){r.style.display=show?'table-row':'none';});
+      btn.textContent=show?'▲ Show less':'▼ Show '+rows.length+' more';
+      return false;
+    }
+
+    if(action==='rank-toggle' || action==='rank-clear'){
+      var repRankId=btn.getAttribute('data-rep-id');
+      if(!repRankId) return false;
+      if(!window._acq5RankLetters[repRankId]) window._acq5RankLetters[repRankId]=new Set();
+      if(action==='rank-clear'){
+        window._acq5RankLetters[repRankId]=new Set();
+      }else{
+        var rk=btn.getAttribute('data-rank');
+        if(window._acq5RankLetters[repRankId].has(rk)) window._acq5RankLetters[repRankId].delete(rk);
+        else window._acq5RankLetters[repRankId].add(rk);
+      }
+      rerenderRep(repRankId);
+      return false;
+    }
+
+    var scope=btn.getAttribute('data-scope');
+    var repId=btn.getAttribute('data-rep-id');
+    if(!scope||!repId) return false;
+    var store=getStore(scope);
+    if(!store[repId]) store[repId]=new Set();
+    if(action==='clear'){
+      store[repId]=new Set();
+    }else{
+      var country=btn.getAttribute('data-country');
+      if(store[repId].has(country)) store[repId].delete(country);
+      else store[repId].add(country);
+    }
+    rerenderRep(repId);
+    return false;
+  };
+
   if(!window._acq5ClickBound){
     window._acq5ClickBound=true;
     document.addEventListener('click',function(e){
-      var btn=e.target.closest('[data-acq5-action]');
-      if(!btn) return;
-      var action=btn.getAttribute('data-acq5-action');
-      if(action!=='toggle' && action!=='clear' && action!=='more' && action!=='rank-toggle' && action!=='rank-clear') return;
-      e.preventDefault();
-      e.stopPropagation();
-      if(action==='more'){
-        var base=btn.getAttribute('data-base');
-        var rows=Array.from(document.querySelectorAll('[data-acq5-extra="'+base+'"]'));
-        var show=rows.some(function(r){return r.style.display==='none'||getComputedStyle(r).display==='none';});
-        rows.forEach(function(r){r.style.display=show?'table-row':'none';});
-        btn.textContent=show?'▲ Show less':'▼ Show '+rows.length+' more';
-        return;
-      }
-      if(action==='rank-toggle' || action==='rank-clear'){
-        var repRankId=btn.getAttribute('data-rep-id');
-        if(!repRankId) return;
-        if(!window._acq5RankLetters[repRankId]) window._acq5RankLetters[repRankId]=new Set();
-        if(action==='rank-clear'){
-          window._acq5RankLetters[repRankId]=new Set();
-        }else{
-          var rk=btn.getAttribute('data-rank');
-          if(window._acq5RankLetters[repRankId].has(rk)) window._acq5RankLetters[repRankId].delete(rk);
-          else window._acq5RankLetters[repRankId].add(rk);
-        }
-        rerenderRep(repRankId);
-        return;
-      }
-      var scope=btn.getAttribute('data-scope');
-      var repId=btn.getAttribute('data-rep-id');
-      if(!scope||!repId) return;
-      var store=getStore(scope);
-      if(!store[repId]) store[repId]=new Set();
-      if(action==='clear'){
-        store[repId]=new Set();
-      }else{
-        var country=btn.getAttribute('data-country');
-        if(store[repId].has(country)) store[repId].delete(country);
-        else store[repId].add(country);
-      }
-      rerenderRep(repId);
+      var btn=e.target.closest && e.target.closest('[data-acq5-action]');
+      if(btn) window.acq5HandleClick(e,btn);
     },true);
   }
 
