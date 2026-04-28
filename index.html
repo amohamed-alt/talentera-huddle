@@ -2107,7 +2107,6 @@ renderManagerAddons();
           ${[{v:calls,l:"Calls",c:calls<5?"var(--red)":"var(--blue)"},{v:rate+"%",l:"Rate",c:rc},{v:mtgs,l:"Meetings",c:"var(--purple)"},{v:fmt(r.pipeAmt||0),l:"Pipeline",c:"var(--cyan)"}].map(s=>`<div style="text-align:center"><div class="hstat-v" style="color:${s.c}">${s.v}</div><div class="hstat-l">${s.l}</div></div>`).join("")}
         </div>
       </div>
-      ${window.acqFinalCardHTML ? window.acqFinalCardHTML(r) : ""}
       <div class="stat-chips">
         ${[{v:calls,l:"Calls Yesterday",c:calls<5?"var(--red)":"var(--blue)"},{v:rate+"%",l:"Connection Rate",c:rc},{v:mtgs,l:"Meetings Yesterday",c:"var(--purple)"},{v:r.openDeals||0,l:"Open Deals",c:"var(--amber)"}].map(s=>`<div class="schip" style="--sc2:${s.c}"><div class="schip-accent"></div><div class="schip-v">${s.v}</div><div class="schip-l">${s.l}</div></div>`).join("")}
       </div>
@@ -3073,8 +3072,8 @@ function enhanceAcquisitionRepFollowupSections(){
     });
   }
   function allLeadsFor(rep){
-    var oc = (((window.D || {}).outreachCoverage || {}).contacts || {});
-    var sla = ((window.D || {}).slaBreaches || {});
+    var oc = (((D || {}).outreachCoverage || {}).contacts || {});
+    var sla = ((D || {}).slaBreaches || {});
     var sources = [];
     sources = sources.concat(Array.isArray(oc.notContactedList) ? oc.notContactedList : []);
     sources = sources.concat(Array.isArray(sla.onlineLeadBreaches) ? sla.onlineLeadBreaches : []);
@@ -3102,7 +3101,7 @@ function enhanceAcquisitionRepFollowupSections(){
 
     // Fallback only if rep arrays are missing. Avoid global leakage when the proper per-owner list exists.
     if(!rows.length){
-      var oc = (((window.D || {}).outreachCoverage || {}).companies || {});
+      var oc = (((D || {}).outreachCoverage || {}).companies || {});
       (oc.notContactedList || []).forEach(function(x){
         var rk = String(x.rank || x.companyRank || x.accountRank || '').toUpperCase();
         if((rk === 'A' || rk === 'B') && ownerMatches(x, rep)) rows.push(normalizeRank(x, rk));
@@ -3177,7 +3176,7 @@ function enhanceAcquisitionRepFollowupSections(){
   window.acqV3ClearRankCountries = function(repId){ window._acqV3RankCountries[repId] = new Set(); window.acqV3Render(repId); };
 
   window.acqV3Render = function(repId){
-    var rep = (window.D && Array.isArray(D.repData) ? D.repData : []).find(function(r){ return String(r.id) === String(repId); });
+    var rep = (D && Array.isArray(D.repData) ? D.repData : []).find(function(r){ return String(r.id) === String(repId); });
     if(!rep) return;
     var leads = allLeadsFor(rep), ranks = allRanksFor(rep);
     var selectedLeads = filterByCountry('lead', rep.id, leads);
@@ -3217,7 +3216,7 @@ function enhanceAcquisitionRepFollowupSections(){
   }
 
   window.enhanceAcquisitionRepFollowupSections = function(){
-    if(!window.D || !Array.isArray(D.repData)) return;
+    if(!D || !Array.isArray(D.repData)) return;
     D.repData.forEach(function(rep){
       var panel = q('panel-'+repSlug(rep.name));
       if(!panel) return;
@@ -3237,6 +3236,7 @@ function enhanceAcquisitionRepFollowupSections(){
 
 
 /* FINAL ACQUISITION REP TRACKING PATCH — exact requirements
+   FIXED: uses lexical D, not window.D, because global let D is not attached to window.
    Leads need contact = split Online/Marketing vs Offline per owner.
    Rank A/B not contacted = per owner with country filter.
    Counts are owner-specific, never global fixed totals. Retention untouched. */
@@ -3320,7 +3320,7 @@ function enhanceAcquisitionRepFollowupSections(){
     });
   }
   function ownerLeads(rep){
-    var D0=window.D||{};
+    var D0=D||{};
     var oc=(D0.outreachCoverage&&D0.outreachCoverage.contacts)||{};
     var sla=D0.slaBreaches||{};
     var pools=[];
@@ -3356,7 +3356,7 @@ function enhanceAcquisitionRepFollowupSections(){
 
     // Fallback only if per-owner arrays are missing.
     if(!rows.length){
-      var oc=(((window.D||{}).outreachCoverage||{}).companies||{});
+      var oc=(((D||{}).outreachCoverage||{}).companies||{});
       (oc.notContactedList||[]).forEach(function(x){
         var rk=text(x.rank||x.companyRank||x.accountRank).toUpperCase();
         if((rk==='A'||rk==='B'||rk.includes('A')||rk.includes('B'))&&ownerMatches(x,rep)){
@@ -3412,8 +3412,17 @@ function enhanceAcquisitionRepFollowupSections(){
       return '<tr '+(i>=8?'style="display:none"':'')+' data-acq-final-extra="'+s(id)+'"><td>'+(x.rank==='A'?'<span class="rank-a">A</span>':'<span class="rank-b">B</span>')+'</td><td><div style="font-weight:900">'+link(x.name||x.id||'Unknown company',x.hubspotUrl)+'</div><div style="font-size:9px;color:var(--muted)">'+s(x.domain||x.website||'')+'</div></td><td class="c">'+s(countryOf(x))+'</td><td class="c" style="font-family:var(--mono);font-size:10px;color:var(--muted)">'+s(x.createdAt||'—')+'</td><td class="c"><span class="badge br">Follow up</span></td></tr>';
     }).join('');
   }
-  function cleanOld(panel){
+  function cleanOld(panel, rep){
     panel.querySelectorAll('[data-acq-final-followup],[data-acq-v3-followup],[data-acq-enhanced-followup],.acq-rep-followup').forEach(function(n){n.remove();});
+    // Remove the legacy acquisition rep cards that caused duplicate/global data:
+    // 1) old Rank A/B Coverage card
+    // 2) old Leads period card for this rep
+    panel.querySelectorAll('.card').forEach(function(card){
+      var titleNode = card.querySelector('.card-title');
+      var title = (titleNode ? titleNode.textContent : card.textContent || '').trim();
+      if(/Rank\s*A\/B\s*Coverage/i.test(title)) card.remove();
+      if(rep && /Leads/i.test(title) && title.indexOf(rep.name) !== -1) card.remove();
+    });
   }
   function cardHTML(rep){
     var leads=ownerLeads(rep), ranks=ownerRanks(rep);
@@ -3428,7 +3437,7 @@ function enhanceAcquisitionRepFollowupSections(){
   }
   function renderOne(rep){
     var panel=q('panel-'+slug(rep.name)); if(!panel) return;
-    cleanOld(panel);
+    cleanOld(panel, rep);
     var node=document.createElement('div'); node.innerHTML=cardHTML(rep);
     var hero=panel.querySelector('.rep-hero');
     if(hero) hero.insertAdjacentElement('afterend',node.firstChild);
@@ -3436,7 +3445,7 @@ function enhanceAcquisitionRepFollowupSections(){
     updateChipStates(rep.id);
   }
   function updateChipStates(repId){
-    var rep=(window.D.repData||[]).find(function(r){return String(r.id)===String(repId);}); if(!rep) return;
+    var rep=(D.repData||[]).find(function(r){return String(r.id)===String(repId);}); if(!rep) return;
     var leadSet=selected('lead',repId,ownerLeads(rep)), rankSet=selected('rank',repId,ownerRanks(rep));
     var allLead=q('acqFinalAll-lead-'+repId); if(allLead) allLead.classList.toggle('active',leadSet.size===0);
     var allRank=q('acqFinalAll-rank-'+repId); if(allRank) allRank.classList.toggle('active',rankSet.size===0);
@@ -3450,11 +3459,11 @@ function enhanceAcquisitionRepFollowupSections(){
     rows.forEach(function(r){r.style.display=show?'table-row':'none';});
     btn.textContent=show?'▲ Show less':'▼ Show '+rows.length+' more';
   };
-  window.acqFinalToggleLeadCountry=function(repId,country){ if(!window._acqFinalLeadCountries[repId]) window._acqFinalLeadCountries[repId]=new Set(); var set=window._acqFinalLeadCountries[repId]; set.has(country)?set.delete(country):set.add(country); var rep=(window.D.repData||[]).find(function(r){return String(r.id)===String(repId);}); if(rep) renderOne(rep); };
-  window.acqFinalClearLeadCountries=function(repId){ window._acqFinalLeadCountries[repId]=new Set(); var rep=(window.D.repData||[]).find(function(r){return String(r.id)===String(repId);}); if(rep) renderOne(rep); };
-  window.acqFinalToggleRankCountry=function(repId,country){ if(!window._acqFinalRankCountries[repId]) window._acqFinalRankCountries[repId]=new Set(); var set=window._acqFinalRankCountries[repId]; set.has(country)?set.delete(country):set.add(country); var rep=(window.D.repData||[]).find(function(r){return String(r.id)===String(repId);}); if(rep) renderOne(rep); };
-  window.acqFinalClearRankCountries=function(repId){ window._acqFinalRankCountries[repId]=new Set(); var rep=(window.D.repData||[]).find(function(r){return String(r.id)===String(repId);}); if(rep) renderOne(rep); };
-  function renderAll(){ if(!window.D||!Array.isArray(D.repData)) return; D.repData.filter(isAcqRep).forEach(renderOne); }
+  window.acqFinalToggleLeadCountry=function(repId,country){ if(!window._acqFinalLeadCountries[repId]) window._acqFinalLeadCountries[repId]=new Set(); var set=window._acqFinalLeadCountries[repId]; set.has(country)?set.delete(country):set.add(country); var rep=(D.repData||[]).find(function(r){return String(r.id)===String(repId);}); if(rep) renderOne(rep); };
+  window.acqFinalClearLeadCountries=function(repId){ window._acqFinalLeadCountries[repId]=new Set(); var rep=(D.repData||[]).find(function(r){return String(r.id)===String(repId);}); if(rep) renderOne(rep); };
+  window.acqFinalToggleRankCountry=function(repId,country){ if(!window._acqFinalRankCountries[repId]) window._acqFinalRankCountries[repId]=new Set(); var set=window._acqFinalRankCountries[repId]; set.has(country)?set.delete(country):set.add(country); var rep=(D.repData||[]).find(function(r){return String(r.id)===String(repId);}); if(rep) renderOne(rep); };
+  window.acqFinalClearRankCountries=function(repId){ window._acqFinalRankCountries[repId]=new Set(); var rep=(D.repData||[]).find(function(r){return String(r.id)===String(repId);}); if(rep) renderOne(rep); };
+  function renderAll(){ if(!D||!Array.isArray(D.repData)) return; D.repData.filter(isAcqRep).forEach(renderOne); }
   var prevOverviewClick=window.enhanceAcqOverviewClickables;
   window.enhanceAcquisitionInteractiveViews=function(){ if(typeof prevOverviewClick==='function') prevOverviewClick(); renderAll(); };
   window.enhanceAcquisitionRepFollowupSections=function(){ renderAll(); };
