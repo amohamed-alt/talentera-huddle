@@ -3768,6 +3768,130 @@ function enhanceAcquisitionRepFollowupSections(){
 
 
 
+
+
+/* ACQ RANK/COUNTRY DOM FILTER FIX — final, scoped only to Rank A/B card
+   Keeps current leads and all other sections unchanged. Prevents old inline handlers from swallowing/toggling the filter back. */
+(function(){
+  if(window.__acqRankDomFilterFixInstalled) return;
+  window.__acqRankDomFilterFixInstalled = true;
+
+  function closestRankCard(el){
+    var card = el && el.closest ? el.closest('.acq-follow-card') : null;
+    if(!card) return null;
+    var title = card.querySelector('.acq-follow-title');
+    var text = title ? title.textContent : card.textContent || '';
+    return text.toLowerCase().indexOf('rank a/b') !== -1 ? card : null;
+  }
+  function getState(card){
+    if(!card.__acqRankFilterState){
+      card.__acqRankFilterState = { ranks:new Set(), countries:new Set(), showAll:false };
+    }
+    return card.__acqRankFilterState;
+  }
+  function rowRank(row){
+    var t = (row.cells && row.cells[0] ? row.cells[0].textContent : '').trim().toUpperCase();
+    return t.indexOf('A') !== -1 ? 'A' : t.indexOf('B') !== -1 ? 'B' : '';
+  }
+  function rowCountry(row){
+    return (row.cells && row.cells[2] ? row.cells[2].textContent : '').trim() || 'Unknown';
+  }
+  function rowsOf(card){
+    return Array.from(card.querySelectorAll('tbody tr')).filter(function(r){ return !r.hasAttribute('data-acq-rank-empty'); });
+  }
+  function updateChipStates(card, state){
+    card.querySelectorAll('[data-acq5-action="rank-clear"]').forEach(function(b){ b.classList.toggle('active', state.ranks.size === 0); });
+    card.querySelectorAll('[data-acq5-action="rank-toggle"]').forEach(function(b){ b.classList.toggle('active', state.ranks.has((b.getAttribute('data-rank')||'').toUpperCase())); });
+    card.querySelectorAll('[data-acq5-action="clear"][data-scope="rank"]').forEach(function(b){ b.classList.toggle('active', state.countries.size === 0); });
+    card.querySelectorAll('[data-acq5-action="toggle"][data-scope="rank"]').forEach(function(b){ b.classList.toggle('active', state.countries.has(b.getAttribute('data-country') || 'Unknown')); });
+  }
+  function updateTable(card){
+    var state = getState(card);
+    var rows = rowsOf(card);
+    var matched = rows.filter(function(row){
+      var rk = rowRank(row);
+      var c = rowCountry(row);
+      var rankOk = !state.ranks.size || state.ranks.has(rk);
+      var countryOk = !state.countries.size || state.countries.has(c);
+      return rankOk && countryOk;
+    });
+
+    card.querySelectorAll('[data-acq-rank-empty]').forEach(function(r){ r.remove(); });
+
+    rows.forEach(function(row){ row.style.display = 'none'; });
+    matched.forEach(function(row, i){
+      row.style.display = (state.showAll || i < 8) ? 'table-row' : 'none';
+    });
+
+    if(!matched.length){
+      var tbody = card.querySelector('tbody');
+      if(tbody){
+        var tr = document.createElement('tr');
+        tr.setAttribute('data-acq-rank-empty','1');
+        tr.innerHTML = '<td colspan="5" class="acq-empty">No Rank A/B accounts for the selected filter</td>';
+        tbody.appendChild(tr);
+      }
+    }
+
+    var badge = card.querySelector('.acq-follow-hd .badge.ba, .acq-follow-hd .badge');
+    if(badge) badge.textContent = matched.length + ' accounts';
+
+    var more = card.querySelector('[data-acq5-action="more"], .acq-show-btn');
+    if(more){
+      var extra = Math.max(0, matched.length - 8);
+      more.style.display = extra ? 'block' : 'none';
+      more.textContent = state.showAll ? '▲ Show less' : '▼ Show ' + extra + ' more';
+    }
+    updateChipStates(card, state);
+  }
+  function handleRankCardClick(e){
+    var btn = e.target && e.target.closest ? e.target.closest('[data-acq5-action]') : null;
+    if(!btn) return;
+    var card = closestRankCard(btn);
+    if(!card) return;
+    var action = btn.getAttribute('data-acq5-action');
+    if(['rank-clear','rank-toggle','clear','toggle','more'].indexOf(action) === -1) return;
+
+    // Stop all older inline onclick / document handlers for this card only.
+    e.preventDefault();
+    e.stopPropagation();
+    if(e.stopImmediatePropagation) e.stopImmediatePropagation();
+
+    var state = getState(card);
+    if(action === 'more'){
+      state.showAll = !state.showAll;
+      updateTable(card);
+      return false;
+    }
+    if(action === 'rank-clear'){
+      state.ranks.clear();
+      state.showAll = false;
+      updateTable(card);
+      return false;
+    }
+    if(action === 'rank-toggle'){
+      var rk = (btn.getAttribute('data-rank') || '').toUpperCase();
+      if(rk){ state.ranks.has(rk) ? state.ranks.delete(rk) : state.ranks.add(rk); }
+      state.showAll = false;
+      updateTable(card);
+      return false;
+    }
+    if(btn.getAttribute('data-scope') === 'rank'){
+      if(action === 'clear'){
+        state.countries.clear();
+      }else if(action === 'toggle'){
+        var country = btn.getAttribute('data-country') || 'Unknown';
+        state.countries.has(country) ? state.countries.delete(country) : state.countries.add(country);
+      }
+      state.showAll = false;
+      updateTable(card);
+      return false;
+    }
+  }
+
+  document.addEventListener('click', handleRankCardClick, true);
+})();
+
 /* Single-click mode: filters use the inline acq5HandleClick handler only. Duplicate document click handlers removed. */
 function updateClock(){
   const now=new Date(),riy=new Date(now.toLocaleString("en-US",{timeZone:"Asia/Riyadh"}));
