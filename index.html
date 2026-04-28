@@ -2029,7 +2029,14 @@ renderManagerAddons();
   const news=D.marketNews||[];
   $("newsContainer").innerHTML=news.length?news.map(n=>`<div class="news-item"><span class="news-icon">${n.icon||"&#128240;"}</span><div style="flex:1"><div class="news-meta"><span class="badge" style="background:${n.color||"#ccc"}20;color:${n.color||"#999"}">${n.tag||""}</span><span style="font-size:9px;color:var(--muted);font-weight:600">${n.source||""}</span></div><div class="news-text">${n.text||""}</div></div></div>`).join(""):`<div style="padding:18px;text-align:center;color:var(--muted);font-size:12px">No news available</div>`;
 
+  // Keep Acquisition rep pages outside the Retention panel.
+  // A previous layout placed #repPanels inside #panel-retention, so rep pages were rendered but hidden by the inactive retention panel.
+  const repMount = $("repPanels");
+  if(repMount && $("dashMain") && repMount.parentElement?.id !== "dashMain"){
+    $("dashMain").appendChild(repMount);
+  }
   const tabs=$("tabsBar"),rpnl=$("repPanels"),sl=$("sideRepLinks");
+  if(!tabs || !rpnl || !sl) return;
   rpnl.innerHTML="";sl.innerHTML="";
   tabs.querySelectorAll(".tab-btn[data-rep]").forEach(b=>b.remove());
 
