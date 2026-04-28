@@ -2107,6 +2107,7 @@ renderManagerAddons();
           ${[{v:calls,l:"Calls",c:calls<5?"var(--red)":"var(--blue)"},{v:rate+"%",l:"Rate",c:rc},{v:mtgs,l:"Meetings",c:"var(--purple)"},{v:fmt(r.pipeAmt||0),l:"Pipeline",c:"var(--cyan)"}].map(s=>`<div style="text-align:center"><div class="hstat-v" style="color:${s.c}">${s.v}</div><div class="hstat-l">${s.l}</div></div>`).join("")}
         </div>
       </div>
+      ${window.acqFinalCardHTML ? window.acqFinalCardHTML(r) : ""}
       <div class="stat-chips">
         ${[{v:calls,l:"Calls Yesterday",c:calls<5?"var(--red)":"var(--blue)"},{v:rate+"%",l:"Connection Rate",c:rc},{v:mtgs,l:"Meetings Yesterday",c:"var(--purple)"},{v:r.openDeals||0,l:"Open Deals",c:"var(--amber)"}].map(s=>`<div class="schip" style="--sc2:${s.c}"><div class="schip-accent"></div><div class="schip-v">${s.v}</div><div class="schip-l">${s.l}</div></div>`).join("")}
       </div>
