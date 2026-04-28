@@ -2140,27 +2140,64 @@ renderManagerAddons();
 
 
 /* ACQUISITION OWNER FOLLOW-UP UPGRADE
-   Adds Online/Offline leads-to-contact lists + multi-country filter for Rank A/B untouched accounts.
-   It enhances Acquisition rep panels after they are rendered; Retention logic is untouched. */
+   Adds Online/Offline leads-to-contact lists + multi-country filters for leads and Rank A/B untouched accounts.
+   It enhances all Acquisition rep panels after they are rendered; Retention logic is untouched. */
 window._acqCountryFilters = window._acqCountryFilters || {};
+window._acqLeadCountryFilters = window._acqLeadCountryFilters || {};
 function acqRepPanelSlug(name){ return String(name||'').toLowerCase().replace(/\s/g,'-'); }
+function acqRowCountry(row){
+  return String(
+    row?.country ||
+    row?.companyCountry ||
+    row?.contactCountry ||
+    row?.location ||
+    row?.properties?.country ||
+    row?.properties?.hs_country_region_code ||
+    'Unknown'
+  ).trim() || 'Unknown';
+}
 function acqLeadBucket(row){
   const b = String(row?.sourceBucket || '').toLowerCase();
-  const s = String(row?.source || '').trim().toUpperCase();
-  if (b === 'online' || b === 'inbound') return 'online';
+  const s = String(row?.source || row?.leadSource || row?.analyticsSource || '').trim().toUpperCase();
+  if (b === 'online' || b === 'inbound' || b === 'marketing') return 'online';
   if (b === 'offline' || b === 'outbound') return 'offline';
   if (s && s !== 'OFFLINE' && s !== 'IMPORT') return 'online';
   return 'offline';
 }
-function acqLeadOwnerMatch(row, rep){ return String(row?.ownerId || '') === String(rep?.id || '') || String(row?.ownerName || '') === String(rep?.name || ''); }
-function acqRepNotContactedLeads(rep, bucket){
+function acqLeadOwnerMatch(row, rep){
+  return String(row?.ownerId || row?.hubspot_owner_id || '') === String(rep?.id || '') ||
+         String(row?.ownerName || '').trim().toLowerCase() === String(rep?.name || '').trim().toLowerCase();
+}
+function acqRepAllNotContactedLeads(rep){
   const rows = (((D||{}).outreachCoverage||{}).contacts||{}).notContactedList || [];
-  return rows.filter(x => acqLeadOwnerMatch(x, rep) && acqLeadBucket(x) === bucket).sort((a,b)=>String(a.createdAt||'').localeCompare(String(b.createdAt||'')));
+  return rows.filter(x => acqLeadOwnerMatch(x, rep)).sort((a,b)=>String(a.createdAt||'').localeCompare(String(b.createdAt||'')) || String(a.name||'').localeCompare(String(b.name||'')));
+}
+function acqRepNotContactedLeads(rep, bucket){
+  const selected = window._acqLeadCountryFilters[rep.id] || new Set();
+  const set = selected && selected.size ? selected : null;
+  return acqRepAllNotContactedLeads(rep)
+    .filter(x => acqLeadBucket(x) === bucket)
+    .filter(x => !set || set.has(acqRowCountry(x)));
 }
 function acqSafeAttr(v){ return String(v||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/'/g,'&#39;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function acqCountryCounts(rows){
+  const m = new Map();
+  (rows||[]).forEach(r=>{ const c = acqRowCountry(r); m.set(c,(m.get(c)||0)+1); });
+  return Array.from(m.entries()).sort((a,b)=>a[0].localeCompare(b[0]));
+}
+function acqCountryChips(repId, rows, scope){
+  const counts = acqCountryCounts(rows);
+  const total = rows.length;
+  const attr = scope === 'leads' ? 'data-acq-lead-country-rep' : 'data-acq-country-rep';
+  const clearFn = scope === 'leads' ? 'acqClearLeadCountries' : 'acqClearCountries';
+  const toggleFn = scope === 'leads' ? 'acqToggleLeadCountry' : 'acqToggleCountry';
+  if(!counts.length) return '<span style="font-size:10px;color:var(--muted);font-weight:700">No countries available</span>';
+  return '<button class="acq-country-chip clear" onclick="'+clearFn+'(\''+repId+'\')">All countries <b>'+total+'</b></button>' +
+    counts.map(([c,n])=>'<button class="acq-country-chip" '+attr+'="'+repId+'" data-country="'+acqSafeAttr(c)+'" onclick="'+toggleFn+'(\''+repId+'\', this.getAttribute(\'data-country\'))">'+esc(c)+' <b>'+n+'</b></button>').join('');
+}
 function acqLeadRows(rows, idBase){
-  if(!rows.length) return '<tr><td colspan="4" class="acq-empty">No leads pending in this bucket</td></tr>';
-  return rows.map((x,i)=>'<tr class="'+(i>=5?'acq-hidden-row':'')+'" data-acq-extra="'+idBase+'"><td><div style="font-weight:800">'+recordLink(x.name || x.email || x.id || 'Unknown lead', x.hubspotUrl)+'</div><div style="font-size:9px;color:var(--muted)">'+esc(x.email || '')+'</div></td><td class="c"><span class="acq-source-pill '+(acqLeadBucket(x)==='online'?'acq-source-online':'acq-source-offline')+'">'+(acqLeadBucket(x)==='online'?'Online':'Offline')+'</span></td><td class="c" style="font-size:10px;color:var(--muted)">'+esc(x.leadStatus || '—')+'</td><td class="c" style="font-family:var(--mono);font-size:10px">'+esc(String(x.createdAt || '—').slice(0,10))+'</td></tr>').join('');
+  if(!rows.length) return '<tr><td colspan="5" class="acq-empty">No leads pending in this bucket for the selected country filter</td></tr>';
+  return rows.map((x,i)=>'<tr class="'+(i>=5?'acq-hidden-row':'')+'" data-acq-extra="'+idBase+'"><td><div style="font-weight:800">'+recordLink(x.name || x.email || x.id || 'Unknown lead', x.hubspotUrl)+'</div><div style="font-size:9px;color:var(--muted)">'+esc(x.email || '')+'</div></td><td class="c"><span class="acq-source-pill '+(acqLeadBucket(x)==='online'?'acq-source-online':'acq-source-offline')+'">'+(acqLeadBucket(x)==='online'?'Online':'Offline')+'</span></td><td class="c" style="font-size:10px;color:var(--muted)">'+esc(acqRowCountry(x))+'</td><td class="c" style="font-size:10px;color:var(--muted)">'+esc(x.leadStatus || '—')+'</td><td class="c" style="font-family:var(--mono);font-size:10px">'+esc(String(x.createdAt || '—').slice(0,10))+'</td></tr>').join('');
 }
 function acqToggleRows(idBase, btn){
   const rows = Array.from(document.querySelectorAll('[data-acq-extra="'+idBase+'"]'));
@@ -2168,38 +2205,65 @@ function acqToggleRows(idBase, btn){
   rows.forEach(r => r.style.display = shouldShow ? 'table-row' : 'none');
   if(btn) btn.textContent = shouldShow ? '▲ Show less' : '▼ Show '+rows.length+' more';
 }
+function acqUpdateMoreButton(idBase, btnId, rows, limit){
+  const btn = document.getElementById(btnId);
+  if(!btn) return;
+  btn.style.display = rows.length > limit ? 'block' : 'none';
+  btn.textContent = '▼ Show '+Math.max(0, rows.length-limit)+' more';
+}
+function acqRenderLeadTables(repId){
+  const rep = (D.repData||[]).find(r=>String(r.id)===String(repId)); if(!rep) return;
+  const online = acqRepNotContactedLeads(rep,'online');
+  const offline = acqRepNotContactedLeads(rep,'offline');
+  const onBody = document.getElementById('acqLeadOnlineBody-'+repId);
+  const offBody = document.getElementById('acqLeadOfflineBody-'+repId);
+  const badge = document.getElementById('acqLeadsBadge-'+repId);
+  const onlineBadge = document.getElementById('acqOnlineBadge-'+repId);
+  const offlineBadge = document.getElementById('acqOfflineBadge-'+repId);
+  if(badge) badge.textContent = (online.length+offline.length)+' pending';
+  if(onlineBadge) onlineBadge.textContent = online.length;
+  if(offlineBadge) offlineBadge.textContent = offline.length;
+  if(onBody) onBody.innerHTML = acqLeadRows(online,'acq-leads-'+repId+'-online');
+  if(offBody) offBody.innerHTML = acqLeadRows(offline,'acq-leads-'+repId+'-offline');
+  acqUpdateMoreButton('acq-leads-'+repId+'-online','acqLeadMoreOnline-'+repId,online,5);
+  acqUpdateMoreButton('acq-leads-'+repId+'-offline','acqLeadMoreOffline-'+repId,offline,5);
+  const selected = window._acqLeadCountryFilters[repId] || new Set();
+  document.querySelectorAll('[data-acq-lead-country-rep="'+repId+'"]').forEach(ch => ch.classList.toggle('active', selected.has(ch.getAttribute('data-country'))));
+}
+function acqToggleLeadCountry(repId, country){ if(!window._acqLeadCountryFilters[repId]) window._acqLeadCountryFilters[repId] = new Set(); const set=window._acqLeadCountryFilters[repId]; if(set.has(country)) set.delete(country); else set.add(country); acqRenderLeadTables(repId); }
+function acqClearLeadCountries(repId){ window._acqLeadCountryFilters[repId] = new Set(); acqRenderLeadTables(repId); }
 function renderAcqRepLeadFollowupCard(rep){
-  const online = acqRepNotContactedLeads(rep,'online'), offline = acqRepNotContactedLeads(rep,'offline'), base = 'acq-leads-'+rep.id;
-  const tbl = (title, rows, suffix, color) => {
-    const idBase = base+'-'+suffix;
-    return '<div class="acq-mini-table"><div class="acq-mini-hd"><div class="acq-mini-title" style="color:'+color+'">'+title+'</div><span class="badge '+(suffix==='online'?'bb':'ba')+'">'+rows.length+'</span></div><div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Lead</th><th class="c">Bucket</th><th class="c">Status</th><th class="c">Created</th></tr></thead><tbody>'+acqLeadRows(rows,idBase)+'</tbody></table></div>'+(rows.length>5?'<button class="acq-show-btn" onclick="acqToggleRows(\''+idBase+'\',this)">▼ Show '+(rows.length-5)+' more</button>':'')+'</div>';
+  const all = acqRepAllNotContactedLeads(rep);
+  const countryButtons = acqCountryChips(rep.id, all, 'leads');
+  const tbl = (title, suffix, color, badgeId) => {
+    const idBase = 'acq-leads-'+rep.id+'-'+suffix;
+    return '<div class="acq-mini-table"><div class="acq-mini-hd"><div class="acq-mini-title" style="color:'+color+'">'+title+'</div><span class="badge '+(suffix==='online'?'bb':'ba')+'" id="'+badgeId+'">0</span></div><div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Lead</th><th class="c">Bucket</th><th class="c">Country</th><th class="c">Status</th><th class="c">Created</th></tr></thead><tbody id="acqLead'+(suffix==='online'?'Online':'Offline')+'Body-'+rep.id+'"></tbody></table></div><button class="acq-show-btn" id="acqLeadMore'+(suffix==='online'?'Online':'Offline')+'-'+rep.id+'" style="display:none" onclick="acqToggleRows(\''+idBase+'\',this)">▼ Show more</button></div>';
   };
-  return '<div class="acq-follow-card" style="--fc:var(--red)"><div class="acq-follow-hd"><div class="acq-follow-title">🎯 Leads to Contact · '+esc(rep.name)+'</div><span class="badge br">'+(online.length+offline.length)+' pending</span></div><div class="acq-follow-sub">Split by source so the manager can track Online/Marketing leads separately from Offline/Outbound leads. Names open directly in HubSpot.</div><div class="acq-lead-split">'+tbl('Online / Marketing Leads',online,'online','var(--blue)')+tbl('Offline Leads',offline,'offline','var(--amber)')+'</div></div>';
+  return '<div class="acq-follow-card" style="--fc:var(--red)"><div class="acq-follow-hd"><div class="acq-follow-title">🎯 Leads to Contact · '+esc(rep.name)+'</div><span class="badge br" id="acqLeadsBadge-'+rep.id+'">'+all.length+' pending</span></div><div class="acq-follow-sub">Split by source and country so the manager can track Online/Marketing and Offline/Outbound follow-ups. Names open directly in HubSpot.</div><div class="acq-country-tools"><div style="font-size:10px;color:var(--muted);font-weight:800;line-height:1.5">Filter leads by one or multiple countries. Click a chip to include/exclude it.</div><div class="acq-country-row">'+countryButtons+'</div></div><div class="acq-lead-split">'+tbl('Online / Marketing Leads','online','var(--blue)','acqOnlineBadge-'+rep.id)+tbl('Offline Leads','offline','var(--amber)','acqOfflineBadge-'+rep.id)+'</div></div>';
 }
 function acqRankRows(rep, selectedCountries){
   const set = selectedCountries && selectedCountries.size ? selectedCountries : null;
-  return [ ...((rep.rankAUntouched||[]).map(x=>({...x,rank:'A'}))), ...((rep.rankBUntouched||[]).map(x=>({...x,rank:'B'}))) ].filter(x => !set || set.has(String(x.country || 'Unknown'))).sort((a,b)=>String(a.country||'').localeCompare(String(b.country||'')) || String(a.rank||'').localeCompare(String(b.rank||'')) || String(a.name||'').localeCompare(String(b.name||'')));
+  return [ ...((rep.rankAUntouched||[]).map(x=>({...x,rank:'A'}))), ...((rep.rankBUntouched||[]).map(x=>({...x,rank:'B'}))) ].filter(x => !set || set.has(acqRowCountry(x))).sort((a,b)=>acqRowCountry(a).localeCompare(acqRowCountry(b)) || String(a.rank||'').localeCompare(String(b.rank||'')) || String(a.name||'').localeCompare(String(b.name||'')));
 }
 function acqRenderRankTable(repId){
   const rep = (D.repData||[]).find(r=>String(r.id)===String(repId)); if(!rep) return;
   const selected = window._acqCountryFilters[repId] || new Set(), rows = acqRankRows(rep, selected), tbody = document.getElementById('acqRankBody-'+repId), badge = document.getElementById('acqRankBadge-'+repId);
   if(badge) badge.textContent = rows.length+' accounts'; if(!tbody) return;
   if(!rows.length) tbody.innerHTML = '<tr><td colspan="5" class="acq-empty">No untouched Rank A/B accounts for selected country filter</td></tr>';
-  else tbody.innerHTML = rows.map((x,i)=>'<tr class="'+(i>=8?'acq-hidden-row':'')+'" data-acq-extra="acq-rank-'+repId+'"><td>'+(x.rank==='A'?'<span class="rank-a">A</span>':'<span class="rank-b">B</span>')+'</td><td><div style="font-weight:800">'+recordLink(x.name || x.id || 'Unknown company', x.hubspotUrl)+'</div><div style="font-size:9px;color:var(--muted)">'+esc(x.domain || '')+'</div></td><td class="c">'+esc(x.country || 'Unknown')+'</td><td class="c" style="font-family:var(--mono);font-size:10px;color:var(--muted)">'+esc(String(x.createdAt || '—').slice(0,10))+'</td><td class="c"><span class="badge br">Follow up</span></td></tr>').join('');
+  else tbody.innerHTML = rows.map((x,i)=>'<tr class="'+(i>=8?'acq-hidden-row':'')+'" data-acq-extra="acq-rank-'+repId+'"><td>'+(x.rank==='A'?'<span class="rank-a">A</span>':'<span class="rank-b">B</span>')+'</td><td><div style="font-weight:800">'+recordLink(x.name || x.id || 'Unknown company', x.hubspotUrl)+'</div><div style="font-size:9px;color:var(--muted)">'+esc(x.domain || '')+'</div></td><td class="c">'+esc(acqRowCountry(x))+'</td><td class="c" style="font-family:var(--mono);font-size:10px;color:var(--muted)">'+esc(String(x.createdAt || '—').slice(0,10))+'</td><td class="c"><span class="badge br">Follow up</span></td></tr>').join('');
   const btn = document.getElementById('acqRankMore-'+repId); if(btn){ btn.style.display = rows.length>8 ? 'block' : 'none'; btn.textContent = '▼ Show '+Math.max(0, rows.length-8)+' more'; }
   document.querySelectorAll('[data-acq-country-rep="'+repId+'"]').forEach(ch => ch.classList.toggle('active', selected.has(ch.getAttribute('data-country'))));
 }
 function acqToggleCountry(repId, country){ if(!window._acqCountryFilters[repId]) window._acqCountryFilters[repId] = new Set(); const set=window._acqCountryFilters[repId]; if(set.has(country)) set.delete(country); else set.add(country); acqRenderRankTable(repId); }
 function acqClearCountries(repId){ window._acqCountryFilters[repId] = new Set(); acqRenderRankTable(repId); }
 function renderAcqRepRankCountryCard(rep){
-  const all = [...(rep.rankAUntouched||[]),...(rep.rankBUntouched||[])], countries = [...new Set(all.map(x=>String(x.country || 'Unknown')))].sort((a,b)=>a.localeCompare(b));
-  const countryButtons = countries.length ? countries.map(c=>'<button class="acq-country-chip" data-acq-country-rep="'+rep.id+'" data-country="'+acqSafeAttr(c)+'" onclick="acqToggleCountry(\''+rep.id+'\', this.getAttribute(\'data-country\'))">'+esc(c)+'</button>').join('') : '<span style="font-size:10px;color:var(--muted);font-weight:700">No countries available</span>';
-  return '<div class="acq-follow-card" style="--fc:var(--amber)"><div class="acq-follow-hd"><div class="acq-follow-title">🏁 Rank A/B Untouched · Country Filter</div><span class="badge ba" id="acqRankBadge-'+rep.id+'">'+all.length+' accounts</span></div><div class="acq-country-tools"><div style="font-size:10px;color:var(--muted);font-weight:800;line-height:1.5">Filter untouched Rank A/B accounts by one or multiple countries. Click a country chip to include/exclude it.</div><div class="acq-country-row"><button class="acq-country-chip clear" onclick="acqClearCountries(\''+rep.id+'\')">All countries</button>'+countryButtons+'</div></div><div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Rank</th><th>Company</th><th class="c">Country</th><th class="c">Created</th><th class="c">Action</th></tr></thead><tbody id="acqRankBody-'+rep.id+'"></tbody></table></div><button class="acq-show-btn" id="acqRankMore-'+rep.id+'" style="display:none" onclick="acqToggleRows(\'acq-rank-'+rep.id+'\',this)">▼ Show more</button></div>';
+  const all = [...(rep.rankAUntouched||[]),...(rep.rankBUntouched||[])];
+  const countryButtons = acqCountryChips(rep.id, all, 'rank');
+  return '<div class="acq-follow-card" style="--fc:var(--amber)"><div class="acq-follow-hd"><div class="acq-follow-title">🏁 Rank A/B Untouched · Country Filter</div><span class="badge ba" id="acqRankBadge-'+rep.id+'">'+all.length+' accounts</span></div><div class="acq-country-tools"><div style="font-size:10px;color:var(--muted);font-weight:800;line-height:1.5">Filter untouched Rank A/B accounts by one or multiple countries. Chips show how many accounts exist in each country.</div><div class="acq-country-row">'+countryButtons+'</div></div><div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Rank</th><th>Company</th><th class="c">Country</th><th class="c">Created</th><th class="c">Action</th></tr></thead><tbody id="acqRankBody-'+rep.id+'"></tbody></table></div><button class="acq-show-btn" id="acqRankMore-'+rep.id+'" style="display:none" onclick="acqToggleRows(\'acq-rank-'+rep.id+'\',this)">▼ Show more</button></div>';
 }
 function enhanceAcquisitionRepFollowupSections(){
   if(!D || !Array.isArray(D.repData)) return;
   D.repData.forEach(rep=>{
-    if(rep.type === 'view') return;
     const panel = document.getElementById('panel-'+acqRepPanelSlug(rep.name)); if(!panel) return;
     const old = panel.querySelector('[data-acq-enhanced-followup="'+rep.id+'"]'); if(old) old.remove();
     const hero = panel.querySelector('.rep-hero'), wrap = document.createElement('div');
@@ -2207,10 +2271,10 @@ function enhanceAcquisitionRepFollowupSections(){
     wrap.innerHTML = '<div class="acq-follow-grid">'+renderAcqRepLeadFollowupCard(rep)+renderAcqRepRankCountryCard(rep)+'</div>';
     if(hero) hero.insertAdjacentElement('afterend', wrap); else panel.insertAdjacentElement('afterbegin', wrap);
     Array.from(panel.querySelectorAll('.card')).filter(card => /Rank A\/B Coverage/i.test(card.textContent || '')).forEach(card => card.remove());
+    acqRenderLeadTables(rep.id);
     acqRenderRankTable(rep.id);
   });
 }
-
 function renderRetentionFinancialDetails(){
   const data = R || {};
   const dealsSplit = data.dealsSplit || {};
