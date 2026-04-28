@@ -3774,6 +3774,113 @@ function enhanceAcquisitionRepFollowupSections(){
   window.enhanceAcquisitionRepFollowupSections=function(){ renderAll(); };
 })();
 
+
+/* FINAL CLICK FIX — Acquisition Rank/Country filter buttons only
+   Purpose: make Rank A/B + Country chips respond reliably without changing any data logic or Retention. */
+(function(){
+  if(window._acqFilterHardFixInstalled) return;
+  window._acqFilterHardFixInstalled = true;
+
+  function ensureStore(name, repId){
+    window[name] = window[name] || {};
+    if(!window[name][repId]) window[name][repId] = new Set();
+    return window[name][repId];
+  }
+
+  function repaint(repId){
+    try{
+      if(typeof window.enhanceAcquisitionRepFollowupSections === 'function'){
+        window.enhanceAcquisitionRepFollowupSections();
+      }else if(typeof window.enhanceAcquisitionInteractiveViews === 'function'){
+        window.enhanceAcquisitionInteractiveViews();
+      }
+    }catch(err){
+      console.warn('Acquisition filter repaint failed:', err);
+    }
+  }
+
+  function toggleHiddenRows(btn){
+    var base = btn.getAttribute('data-base');
+    if(!base) return;
+    var rows = Array.from(document.querySelectorAll('[data-acq5-extra="'+base+'"],[data-acq-final-extra="'+base+'"]'));
+    var show = rows.some(function(r){ return r.style.display === 'none' || getComputedStyle(r).display === 'none'; });
+    rows.forEach(function(r){ r.style.display = show ? 'table-row' : 'none'; });
+    btn.textContent = show ? '▲ Show less' : '▼ Show ' + rows.length + ' more';
+  }
+
+  window.acq5HandleClick = function(e, btn){
+    btn = btn || (e && e.target && e.target.closest ? e.target.closest('[data-acq5-action]') : null);
+    if(!btn) return false;
+
+    var action = btn.getAttribute('data-acq5-action');
+    if(!action) return false;
+
+    if(e){
+      e.preventDefault();
+      e.stopPropagation();
+      if(e.stopImmediatePropagation) e.stopImmediatePropagation();
+    }
+
+    if(action === 'more'){
+      toggleHiddenRows(btn);
+      return false;
+    }
+
+    var repId = btn.getAttribute('data-rep-id');
+    if(!repId){
+      var wrap = btn.closest('[data-acq5-followup],[data-acq-final-followup]');
+      repId = wrap ? (wrap.getAttribute('data-acq5-followup') || wrap.getAttribute('data-acq-final-followup')) : '';
+    }
+    if(!repId) return false;
+
+    if(action === 'rank-clear'){
+      window._acq5RankLetters = window._acq5RankLetters || {};
+      window._acq5RankLetters[repId] = new Set();
+      repaint(repId);
+      return false;
+    }
+
+    if(action === 'rank-toggle'){
+      var rk = btn.getAttribute('data-rank');
+      var rankSet = ensureStore('_acq5RankLetters', repId);
+      if(rankSet.has(rk)) rankSet.delete(rk); else rankSet.add(rk);
+      repaint(repId);
+      return false;
+    }
+
+    if(action === 'clear'){
+      var scopeClear = btn.getAttribute('data-scope');
+      if(scopeClear === 'lead'){
+        window._acq5LeadCountries = window._acq5LeadCountries || {};
+        window._acq5LeadCountries[repId] = new Set();
+      }else if(scopeClear === 'rank'){
+        window._acq5RankCountries = window._acq5RankCountries || {};
+        window._acq5RankCountries[repId] = new Set();
+      }
+      repaint(repId);
+      return false;
+    }
+
+    if(action === 'toggle'){
+      var scope = btn.getAttribute('data-scope');
+      var country = btn.getAttribute('data-country');
+      if(!country) return false;
+      var storeName = scope === 'lead' ? '_acq5LeadCountries' : '_acq5RankCountries';
+      var countrySet = ensureStore(storeName, repId);
+      if(countrySet.has(country)) countrySet.delete(country); else countrySet.add(country);
+      repaint(repId);
+      return false;
+    }
+
+    return false;
+  };
+
+  document.addEventListener('click', function(e){
+    var btn = e.target.closest && e.target.closest('[data-acq5-action]');
+    if(btn) return window.acq5HandleClick(e, btn);
+  }, true);
+})();
+
 function updateClock(){
   const now=new Date(),riy=new Date(now.toLocaleString("en-US",{timeZone:"Asia/Riyadh"}));
   if($("topbarSub")&&D && !$("panel-retention")?.classList.contains("active") && !$("panel-financial")?.classList.contains("active"))$("topbarSub").textContent=`${riy.toLocaleTimeString("en-US",{hour:"2-digit",minute:"2-digit"})} Riyadh · Auto-refresh 5min`;
