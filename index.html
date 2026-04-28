@@ -474,6 +474,35 @@ body{font-family:var(--font);background:var(--page-bg);color:var(--text);-webkit
 @media(max-width:1200px){.ret-fin-top-grid{grid-template-columns:repeat(3,1fr)}.ret-fin-split{grid-template-columns:1fr}}
 @media(max-width:700px){.ret-fin-top-grid{grid-template-columns:1fr}.ret-fin-hero{align-items:flex-start;flex-direction:column}.ret-fin-owner-grid{display:block}.ret-fin-owner-cell{border-bottom:1px solid var(--border)}}
 
+
+
+/* RETENTION CLICK-THROUGH DETAILS */
+.ret-click-card{cursor:pointer;position:relative}
+.ret-click-card:hover{transform:translateY(-2px);box-shadow:var(--sh-md);border-color:color-mix(in srgb,var(--fc,var(--green)) 38%,var(--border))}
+.ret-click-card::after{content:"Open details";position:absolute;right:10px;top:10px;font-size:8px;font-weight:900;color:var(--fc,var(--green));opacity:0;transition:.15s opacity;text-transform:uppercase;letter-spacing:.08em}
+.ret-click-card:hover::after{opacity:.85}
+.ret-num-link{border:0;background:transparent;color:inherit;font:inherit;font-weight:900;cursor:pointer;padding:0;min-width:26px}
+.ret-num-link:hover{text-decoration:underline;color:var(--green)}
+.ret-drill-panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--sh);overflow:hidden;margin:-2px 0 14px;border-top:3px solid var(--blue);animation:fadeUp .2s cubic-bezier(.16,1,.3,1)}
+
+/* UNIVERSAL CLICKABLE METRIC CARDS — Acquisition + Retention */
+.metric-clickable{cursor:pointer;border-radius:8px;padding:2px 4px;transition:background .15s, transform .15s, box-shadow .15s;display:inline-block}
+.metric-clickable:hover{background:rgba(22,163,74,.08);box-shadow:0 0 0 1px rgba(22,163,74,.18) inset;transform:translateY(-1px)}
+.metric-clickable::after{content:"";display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--green);margin-left:5px;vertical-align:middle;opacity:.55}
+.metric-modal-backdrop{position:fixed;inset:0;background:rgba(15,26,20,.30);z-index:9998;display:none;align-items:flex-start;justify-content:center;padding:72px 24px 24px;backdrop-filter:blur(3px)}
+.metric-modal{width:min(980px,calc(100vw - 48px));max-height:calc(100vh - 110px);overflow:hidden;background:var(--surface);border:1px solid var(--border);border-radius:18px;box-shadow:0 24px 80px rgba(0,0,0,.25);border-top:4px solid var(--green);animation:fadeUp .18s cubic-bezier(.16,1,.3,1)}
+.metric-modal-hd{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:15px 18px;background:linear-gradient(135deg,#fff 0%,#f7faf8 100%);border-bottom:1px solid var(--border)}
+.metric-modal-title{font-size:14px;font-weight:900;color:var(--text);letter-spacing:-.02em}.metric-modal-sub{font-size:10px;color:var(--muted);font-weight:700;margin-top:4px;line-height:1.5}.metric-modal-close{border:none;background:var(--surface2);border:1px solid var(--border);border-radius:10px;width:32px;height:32px;cursor:pointer;font-size:16px;color:var(--text2)}
+.metric-modal-body{max-height:calc(100vh - 190px);overflow:auto}.metric-modal-empty{padding:28px;text-align:center;color:var(--muted);font-size:12px;line-height:1.7}.metric-row-title{font-weight:900;color:var(--text);font-size:12px}.metric-row-sub{font-size:10px;color:var(--muted);margin-top:3px;line-height:1.4}.metric-row-amount{font-family:var(--mono);font-weight:900}.metric-row-status{font-size:9px;font-weight:900;padding:3px 8px;border-radius:999px;white-space:nowrap;background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue-bd)}
+.metric-modal .tbl td{font-size:11px}.metric-modal .tbl th{font-size:8px}.metric-modal-note{padding:10px 18px;background:var(--amber-bg);border-bottom:1px solid var(--amber-bd);font-size:11px;color:var(--text2);font-weight:700;line-height:1.5}
+
+.ret-drill-head{padding:12px 16px;background:linear-gradient(135deg,#fff 0%,#f7faf8 100%);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:10px}
+.ret-drill-title{font-size:12px;font-weight:900;color:var(--text);display:flex;align-items:center;gap:8px;text-transform:uppercase;letter-spacing:.06em}
+.ret-drill-sub{font-size:10px;color:var(--muted);font-weight:700;margin-top:3px;text-transform:none;letter-spacing:0}
+.ret-drill-close{border:1px solid var(--border);background:var(--surface2);color:var(--muted);font-size:10px;font-weight:900;border-radius:999px;padding:5px 10px;cursor:pointer;font-family:var(--font)}
+.ret-drill-close:hover{background:var(--red-bg);color:var(--red);border-color:var(--red-bd)}
+.ret-drill-empty{padding:20px;text-align:center;color:var(--muted);font-size:12px;font-style:italic}
+
 </style>
 </head>
 <body>
@@ -1666,6 +1695,8 @@ function restoreCurrentView(options={}){
     }
   }
 
+  requestAnimationFrame(installUniversalMetricClicks);
+
   if(keepScroll && scrollY !== null){
     requestAnimationFrame(()=>window.scrollTo(0, scrollY));
   }
@@ -2206,7 +2237,117 @@ function selectRetentionOwner(repId){
   if($("topbarSub")) $("topbarSub").textContent = rep.role + " · owner page · priority actions, financial movement, activity quality";
   setRetentionOwnerMode(true);
   renderRetention();
+  requestAnimationFrame(installUniversalMetricClicks);
   window.scrollTo({top:0, behavior:"smooth"});
+}
+
+
+function retOwnerMonthKey(v){
+  const s = String(v || '').trim();
+  return s && s.length >= 7 ? s.slice(0,7) : 'No date';
+}
+
+function retOwnerRenewalRows(details){
+  const rows = [
+    ...(details?.delayedRenewals || []),
+    ...(details?.renewalAttention || []),
+    ...(details?.renewedDeals || [])
+  ];
+  const seen = new Set();
+  return rows.filter(row => {
+    const key = [row.companyId || row.companyName || row.name, row.id || row.renewalSourceDealId || row.contractRenewalDate || row.originalContractRenewalDate, row.status || row.stageType || row.renewalType].join('|');
+    if(seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
+function retOwnerFinancialRows(details){
+  return [
+    ...(details?.cashedDeals || []).map(d => ({...d, bucket:'Cashed'})),
+    ...(details?.bookedDeals || []).map(d => ({...d, bucket:'Booked'})),
+    ...(details?.renewedDeals || []).map(d => ({...d, bucket:'Renewed'})),
+    ...(details?.churnDeals || []).map(d => ({...d, bucket:'Churn'})),
+  ];
+}
+
+function closeRetOwnerSlice(){
+  const panel = $('retOwnerClickPanel');
+  if(panel){ panel.style.display = 'none'; panel.innerHTML = ''; }
+}
+
+function openRetOwnerSlice(repId, slice, month, status){
+  const data = R || {};
+  const details = data.ownerDetails?.[String(repId || APP_RETENTION_OWNER_ID || RET_SELECTED_OWNER_ID || '')];
+  const panel = $('retOwnerClickPanel');
+  if(!details || !panel) return;
+
+  const safe = v => esc(v ?? '—');
+  const money = v => fmt(v || 0);
+  const rowLimit = 12;
+  let title = 'Details';
+  let sub = `${details.name || 'Owner'} · click another number to switch this view`;
+  let rows = [];
+  let headers = [];
+  let rowFn = null;
+  let empty = 'No rows found for this selection.';
+
+  const renewalRows = retOwnerRenewalRows(details);
+  const financialRows = retOwnerFinancialRows(details);
+
+  if(slice === 'month'){
+    title = `${month || 'Month'} Renewal Details`;
+    sub = `${status === 'due' ? 'All due renewals' : status === 'renewed' ? 'Renewed rows' : status === 'delayed' ? 'Delayed rows' : status === 'upcoming' ? 'Upcoming rows' : 'Renewal rows'} for ${details.name || 'this owner'}`;
+    rows = renewalRows.filter(r => retOwnerMonthKey(r.contractRenewalDate || r.originalContractRenewalDate || r.renewalDate) === String(month));
+    if(status && status !== 'due'){
+      rows = rows.filter(r => {
+        const st = String(r.status || r.stageType || r.renewalType || '').toLowerCase();
+        if(status === 'delayed') return st.includes('delayed');
+        if(status === 'upcoming') return st.includes('upcoming');
+        if(status === 'renewed') return st.includes('renewed') || st.includes('cashed') || st.includes('booked');
+        return true;
+      });
+    }
+    headers = [{t:'Account / Deal'},{t:'Renewal',c:1},{t:'Value',c:1},{t:'Type',c:1},{t:'Status',c:1}];
+    rowFn = (d,i) => { const st = d.status || d.stageType || d.renewalType || '—'; return `<tr class="${/delayed/i.test(st)?'ret-row-critical':/upcoming/i.test(st)?'ret-row-warning':'ret-row-ok'} ${i>=rowLimit?'ret-hidden':''}"><td>${recordLink(d.companyName||d.name||'Account',d.companyUrl||d.hubspotUrl)}<div style="font-size:10px;color:var(--muted)">${recordLink(d.name||d.renewalSourceDealName||'Deal',d.hubspotUrl||d.renewalSourceDealUrl)}</div></td><td class="c">${safe(d.contractRenewalDate||d.originalContractRenewalDate)}</td><td class="c" style="font-family:var(--mono);font-weight:900">${money(d.renewalValue||d.amount)}</td><td class="c">${safe(d.renewalType||d.stageType||'—')}</td><td class="c"><span class="badge ${/delayed/i.test(st)?'br':/upcoming/i.test(st)?'ba':'bg'}">${safe(st)}</span></td></tr>`; };
+  }
+
+  if(slice === 'delayed'){
+    title = 'Delayed Renewals';
+    sub = 'Renewal date passed with no current-year Booked/Cashed renewal for the same company';
+    rows = details.delayedRenewals || [];
+    headers = [{t:'Account / Deal'},{t:'Renewal',c:1},{t:'Days',c:1},{t:'Value',c:1},{t:'Action',c:1}];
+    rowFn = (d,i) => `<tr class="ret-row-critical ${i>=rowLimit?'ret-hidden':''}"><td>${recordLink(d.companyName||d.name||'Account',d.companyUrl||d.hubspotUrl)}<div style="font-size:10px;color:var(--muted)">${safe(d.reason||'No Booked/Cashed renewal found')}</div></td><td class="c">${safe(d.contractRenewalDate||d.originalContractRenewalDate)}</td><td class="c"><span class="badge br">${safe(d.daysOverdue||'—')}d</span></td><td class="c" style="font-family:var(--mono);font-weight:900">${money(d.renewalValue||d.amount)}</td><td class="c"><span class="badge br">Chase now</span></td></tr>`;
+  }
+
+  if(slice === 'notouch'){
+    title = 'No Touch 30D';
+    sub = 'Accounts with no connected call or completed meeting from assigned RM/CSM';
+    rows = details.noContactAccounts || [];
+    headers = [{t:'Account'},{t:'Last Touch',c:1},{t:'Days',c:1},{t:'RM / CSM'},{t:'Action',c:1}];
+    rowFn = (a,i) => `<tr class="ret-row-critical ${i>=rowLimit?'ret-hidden':''}"><td>${recordLink(a.companyName,a.companyUrl)}</td><td class="c">${safe(a.lastActivityDate||'—')}</td><td class="c"><span class="badge br">${safe(a.daysSinceActivity||'—')}d</span></td><td>${safe(a.rmOwnerName||'—')} / ${safe(a.csmOwnerName||'—')}</td><td class="c"><span class="badge br">Call now</span></td></tr>`;
+  }
+
+  if(slice === 'booked' || slice === 'cashed' || slice === 'renewed' || slice === 'financial'){
+    title = slice === 'financial' ? 'Booked / Cashed / Renewed Movement' : `${slice.charAt(0).toUpperCase()+slice.slice(1)} Deals`;
+    sub = 'Current-year financial movement for this owner';
+    rows = slice === 'financial' ? financialRows : (slice === 'booked' ? details.bookedDeals||[] : slice === 'cashed' ? details.cashedDeals||[] : details.renewedDeals||[]).map(d => ({...d, bucket:slice.charAt(0).toUpperCase()+slice.slice(1)}));
+    headers = [{t:'Deal / Company'},{t:'Bucket',c:1},{t:'Created',c:1},{t:'Value',c:1},{t:'Reason / Product'}];
+    rowFn = (d,i) => `<tr class="${d.bucket==='Churn'?'ret-row-critical':d.bucket==='Renewed'||d.bucket==='Cashed'?'ret-row-ok':d.bucket==='Booked'?'ret-row-warning':''} ${i>=rowLimit?'ret-hidden':''}"><td>${recordLink(d.name||d.companyName,d.hubspotUrl||d.companyUrl)}<div style="font-size:10px;color:var(--muted)">${recordLink(d.companyName,d.companyUrl)}</div></td><td class="c"><span class="badge ${d.bucket==='Churn'?'br':d.bucket==='Booked'?'bp':'bg'}">${safe(d.bucket)}</span></td><td class="c">${safe(d.createdAt||d.renewedDealCreatedAt||d.actionDate)}</td><td class="c" style="font-family:var(--mono);font-weight:900">${money(d.amount||d.renewalValue)}</td><td>${safe(d.churnReason||d.product||d.statusReason||'—')}</td></tr>`;
+  }
+
+  if(slice === 'accounts'){
+    title = 'Accounts Owned';
+    sub = 'Owned accounts with touch status and next action';
+    rows = details.accounts || [];
+    headers = [{t:'Account'},{t:'Status',c:1},{t:'RM Touch',c:1},{t:'CSM Touch',c:1},{t:'Next Action',c:1}];
+    rowFn = (a,i) => { const bad = Number(a.daysSinceActivity||0)>30 || Number(a.daysSinceMeeting||0)>90; const act = Number(a.daysSinceActivity||0)>30 ? 'Call now' : Number(a.daysSinceMeeting||0)>90 ? 'Book meeting' : 'Healthy'; return `<tr class="${bad?'ret-row-warning':'ret-row-ok'} ${i>=rowLimit?'ret-hidden':''}"><td>${recordLink(a.companyName,a.companyUrl)}<div style="font-size:10px;color:var(--muted)">RM ${safe(a.rmOwnerName)} · CSM ${safe(a.csmOwnerName)}</div></td><td class="c">${safe(a.accountStatus)}</td><td class="c">${safe(a.rmLastTouch||a.rmLastCall||a.rmLastMeeting)}</td><td class="c">${safe(a.csmLastTouch||a.csmLastCall||a.csmLastMeeting)}</td><td class="c"><span class="badge ${bad?'ba':'bg'}">${act}</span></td></tr>`; };
+  }
+
+  const table = rows.length ? `<div class="ret-compact-table" style="overflow-x:auto"><table class="tbl"><thead><tr>${headers.map(h=>`<th${h.c?' class="c"':''}>${h.t}</th>`).join('')}</tr></thead><tbody>${rows.map((r,i)=>rowFn(r,i)).join('')}</tbody></table></div>${rows.length>rowLimit?'<button class="ret-show-btn" onclick="toggleInlineHidden(this)">▼ Show more</button>':''}` : `<div class="ret-drill-empty">${safe(empty)}</div>`;
+  panel.innerHTML = `<div class="ret-drill-head"><div><div class="ret-drill-title">🔎 ${safe(title)} <span class="badge bb">${rows.length} rows</span></div><div class="ret-drill-sub">${safe(sub)}</div></div><button class="ret-drill-close" onclick="closeRetOwnerSlice()">Close</button></div>${table}`;
+  panel.style.display = 'block';
+  panel.scrollIntoView({behavior:'smooth', block:'start'});
 }
 
 function renderRetentionOwnerDetails(repId){
@@ -2236,8 +2377,8 @@ function renderRetentionOwnerDetails(repId){
   const byAmountDesc = arr => [...(arr||[])].sort((a,b)=>Number(b.amount||b.renewalValue||0)-Number(a.amount||a.renewalValue||0));
   const byDateAsc = arr => [...(arr||[])].sort((a,b)=>String(a.contractRenewalDate||a.originalContractRenewalDate||a.month||'').localeCompare(String(b.contractRenewalDate||b.originalContractRenewalDate||b.month||'')));
 
-  const focus = (value,label,sub,colorVar) => `
-    <div class="ret-focus-card" style="--fc:${colorVar}">
+  const focus = (value,label,sub,colorVar,slice) => `
+    <div class="ret-focus-card ret-click-card" style="--fc:${colorVar}" onclick="openRetOwnerSlice('${safe(repId)}','${slice}')" title="Open ${label} details">
       <div class="ret-focus-v">${safe(value)}</div>
       <div class="ret-focus-l">${label}</div>
       <div class="ret-focus-s">${sub}</div>
@@ -2290,7 +2431,7 @@ function renderRetentionOwnerDetails(repId){
   const renewalMonthTable = simpleTable(
     [{t:'Renewal Month'},{t:'Due',c:1},{t:'Renewed',c:1},{t:'Delayed',c:1},{t:'Upcoming',c:1},{t:'Value',c:1}],
     renewalMonthRows,
-    (r,i)=>`<tr class="${r.delayed?'ret-row-critical':r.upcoming?'ret-row-warning':'ret-row-ok'} ${hidden(i)}"><td><b>${safe(r.month)}</b></td><td class="c">${r.due}</td><td class="c"><span class="badge bg">${r.renewed}</span></td><td class="c"><span class="badge ${r.delayed?'br':'bg'}">${r.delayed}</span></td><td class="c"><span class="badge ba">${r.upcoming}</span></td><td class="c">${moneyCell(r.value)}</td></tr>`,
+    (r,i)=>`<tr class="${r.delayed?'ret-row-critical':r.upcoming?'ret-row-warning':'ret-row-ok'} ${hidden(i)}"><td><b>${safe(r.month)}</b></td><td class="c"><button class="ret-num-link" onclick="openRetOwnerSlice('${safe(repId)}','month','${safe(r.month)}','due')">${r.due}</button></td><td class="c"><span class="badge bg"><button class="ret-num-link" onclick="openRetOwnerSlice('${safe(repId)}','month','${safe(r.month)}','renewed')">${r.renewed}</button></span></td><td class="c"><span class="badge ${r.delayed?'br':'bg'}"><button class="ret-num-link" onclick="openRetOwnerSlice('${safe(repId)}','month','${safe(r.month)}','delayed')">${r.delayed}</button></span></td><td class="c"><span class="badge ba"><button class="ret-num-link" onclick="openRetOwnerSlice('${safe(repId)}','month','${safe(r.month)}','upcoming')">${r.upcoming}</button></span></td><td class="c">${moneyCell(r.value)}</td></tr>`,
     'No renewal months found for this owner.'
   );
 
@@ -2335,7 +2476,8 @@ function renderRetentionOwnerDetails(repId){
         <div style="flex:1;position:relative;z-index:1"><div class="ret-owner-clean-name">${safe(details.name)} <span class="ret">${safe(details.role)}</span></div><div class="ret-owner-clean-sub">Focused owner page: renewals by month, no-touch accounts, Booked / Cashed / Renewed movement, and owned accounts only. Lists show first ${limit} rows.</div></div>
         <div class="ret-owner-clean-actions"><div class="ret-owner-clean-stat"><div class="ret-owner-clean-stat-v" style="color:${riskCount?'var(--red)':'var(--green)'}">${riskCount}</div><div class="ret-owner-clean-stat-l">Actions</div></div><div class="ret-owner-clean-stat"><div class="ret-owner-clean-stat-v" style="color:var(--cyan)">${m.accounts||0}</div><div class="ret-owner-clean-stat-l">Accounts</div></div><div class="ret-owner-clean-stat"><div class="ret-owner-clean-stat-v" style="color:var(--green)">${fmt(revenueValue)}</div><div class="ret-owner-clean-stat-l">Revenue</div></div></div>
       </div>
-      <div class="ret-focus-strip">${focus(m.delayed||0,'Delayed Renewals','Renewal passed with no current-year Booked/Cashed','var(--red)')}${focus(m.noContact||0,'No Touch 30D','Needs connected call or completed meeting','var(--amber)')}${focus(`${m.booked||0} / ${m.cashed||0}`,'Booked / Cashed','Current-year created deals','var(--purple)')}${focus(m.renewed||0,'Renewed','Same-company renewal movement','var(--green)')}</div>
+      <div class="ret-focus-strip">${focus(m.delayed||0,'Delayed Renewals','Renewal passed with no current-year Booked/Cashed','var(--red)','delayed')}${focus(m.noContact||0,'No Touch 30D','Needs connected call or completed meeting','var(--amber)','notouch')}${focus(`${m.booked||0} / ${m.cashed||0}`,'Booked / Cashed','Current-year created deals','var(--purple)','financial')}${focus(m.renewed||0,'Renewed','Same-company renewal movement','var(--green)','renewed')}</div>
+      <div id="retOwnerClickPanel" class="ret-drill-panel" style="display:none"></div>
       ${card('⚡ Manager Focus', `${actionRows.length} actions`, `<div class="ret-action-list">${actionList(actionRows)}</div>`, actionRows.length?'var(--red)':'var(--green)')}
       <div class="ret-clean-grid">${card('📅 Renewals by Month', `${renewalMonthRows.length} months`, renewalMonthTable, 'var(--amber)')}${card('💰 Booked / Cashed / Renewed', `${financialRows.length} rows`, financialTable, 'var(--green)')}</div>
       <div class="ret-clean-grid">${card('☎️ No Touch 30D', `${(details.noContactAccounts||[]).length} accounts`, noTouchTable, 'var(--red)')}${card('🏢 Accounts Owned', `${(details.accounts||[]).length} accounts`, accountsTable, 'var(--cyan)')}</div>
