@@ -3767,6 +3767,216 @@ function enhanceAcquisitionRepFollowupSections(){
 })();
 
 
+/* ACQUISITION FILTER DOM LOCK — fixes Rank/Country chips without touching data, Retention, or layout. */
+(function(){
+  if(window.__acqDomFilterLockInstalled) return;
+  window.__acqDomFilterLockInstalled = true;
+  window.__acqDomFilterState = window.__acqDomFilterState || {};
+
+  function getRepState(repId){
+    repId = String(repId || '');
+    if(!window.__acqDomFilterState[repId]){
+      window.__acqDomFilterState[repId] = {
+        leadCountries: new Set(),
+        rankCountries: new Set(),
+        rankLetters: new Set(),
+        expanded: {}
+      };
+    }
+    return window.__acqDomFilterState[repId];
+  }
+  function toText(v){ return String(v == null ? '' : v).trim(); }
+  function getRepIdFrom(btn){
+    if(!btn) return '';
+    var repId = btn.getAttribute('data-rep-id') || '';
+    if(repId) return repId;
+    var wrap = btn.closest && btn.closest('[data-acq5-followup]');
+    return wrap ? (wrap.getAttribute('data-acq5-followup') || '') : '';
+  }
+  function cardTitle(card){
+    var t = card && card.querySelector('.acq-follow-title');
+    return toText(t ? t.textContent : '');
+  }
+  function countryFromRow(row){
+    if(!row || !row.cells || row.cells.length < 3) return 'Unknown';
+    return toText(row.cells[2].textContent) || 'Unknown';
+  }
+  function rankFromRow(row){
+    if(!row || !row.cells || !row.cells.length) return '';
+    var r = toText(row.cells[0].textContent).toUpperCase();
+    if(r.indexOf('A') >= 0) return 'A';
+    if(r.indexOf('B') >= 0) return 'B';
+    return r;
+  }
+  function rowsForCard(card){
+    return Array.prototype.slice.call(card ? card.querySelectorAll('tbody tr[data-acq5-extra]') : []);
+  }
+  function headerBadge(card){
+    return card ? card.querySelector('.acq-follow-hd .badge') : null;
+  }
+  function toggleButton(card, base){
+    return card ? card.querySelector('button[data-acq5-action="more"][data-base="'+CSS.escape(base)+'"]') : null;
+  }
+  function setChipStates(card, scope, selectedSet){
+    if(!card) return;
+    card.querySelectorAll('button[data-acq5-action="clear"][data-scope="'+scope+'"]').forEach(function(btn){
+      btn.classList.toggle('active', selectedSet.size === 0);
+    });
+    card.querySelectorAll('button[data-acq5-action="toggle"][data-scope="'+scope+'"]').forEach(function(btn){
+      btn.classList.toggle('active', selectedSet.has(btn.getAttribute('data-country')));
+    });
+  }
+  function setRankChipStates(card, selectedSet){
+    if(!card) return;
+    card.querySelectorAll('button[data-acq5-action="rank-clear"]').forEach(function(btn){
+      btn.classList.toggle('active', selectedSet.size === 0);
+    });
+    card.querySelectorAll('button[data-acq5-action="rank-toggle"]').forEach(function(btn){
+      btn.classList.toggle('active', selectedSet.has(btn.getAttribute('data-rank')));
+    });
+  }
+  function applyRows(card, rows, matches, limit, expanded, emptyText){
+    var shown = 0;
+    rows.forEach(function(row, idx){
+      var ok = !!matches[idx];
+      row.dataset.acqDomMatch = ok ? '1' : '0';
+      if(!ok){ row.style.display = 'none'; return; }
+      shown++;
+      row.style.display = (expanded || shown <= limit) ? 'table-row' : 'none';
+    });
+    var totalMatched = matches.filter(Boolean).length;
+    var sampleBase = rows[0] ? rows[0].getAttribute('data-acq5-extra') : '';
+    if(sampleBase){
+      var btn = toggleButton(card, sampleBase);
+      if(btn){
+        var extra = Math.max(0, totalMatched - limit);
+        btn.style.display = extra ? 'block' : 'none';
+        btn.textContent = expanded ? '▲ Show less' : ('▼ Show ' + extra + ' more');
+      }
+    }
+    return totalMatched;
+  }
+  function refreshLeadCard(card, st){
+    if(!card) return;
+    var selected = st.leadCountries;
+    setChipStates(card, 'lead', selected);
+    var rows = rowsForCard(card);
+    var byBase = {};
+    rows.forEach(function(row){
+      var base = row.getAttribute('data-acq5-extra') || 'lead';
+      if(!byBase[base]) byBase[base] = [];
+      byBase[base].push(row);
+    });
+    var total = 0;
+    Object.keys(byBase).forEach(function(base){
+      var group = byBase[base];
+      var matches = group.map(function(row){
+        var c = countryFromRow(row);
+        return selected.size === 0 || selected.has(c);
+      });
+      total += applyRows(card, group, matches, 5, !!st.expanded[base]);
+    });
+    var badge = headerBadge(card);
+    if(badge) badge.textContent = total + ' pending';
+    card.querySelectorAll('.acq-mini-table').forEach(function(tbl){
+      var b = tbl.querySelector('.acq-mini-hd .badge');
+      var count = Array.prototype.slice.call(tbl.querySelectorAll('tbody tr[data-acq5-extra]')).filter(function(r){ return r.dataset.acqDomMatch === '1'; }).length;
+      if(b) b.textContent = count;
+    });
+  }
+  function refreshRankCard(card, st){
+    if(!card) return;
+    var countries = st.rankCountries;
+    var ranks = st.rankLetters;
+    setChipStates(card, 'rank', countries);
+    setRankChipStates(card, ranks);
+    var rows = rowsForCard(card);
+    var matches = rows.map(function(row){
+      var c = countryFromRow(row);
+      var r = rankFromRow(row);
+      var countryOK = countries.size === 0 || countries.has(c);
+      var rankOK = ranks.size === 0 || ranks.has(r);
+      return countryOK && rankOK;
+    });
+    var base = rows[0] ? rows[0].getAttribute('data-acq5-extra') : 'rank';
+    var total = applyRows(card, rows, matches, 8, !!st.expanded[base]);
+    var badge = headerBadge(card);
+    if(badge) badge.textContent = total + ' accounts';
+  }
+  function applyRep(repId){
+    var wrap = document.querySelector('[data-acq5-followup="'+CSS.escape(String(repId || ''))+'"]');
+    if(!wrap) return;
+    var st = getRepState(repId);
+    var cards = Array.prototype.slice.call(wrap.querySelectorAll('.acq-follow-card'));
+    cards.forEach(function(card){
+      var title = cardTitle(card);
+      if(/Leads\s+to\s+Contact/i.test(title)) refreshLeadCard(card, st);
+      if(/Rank\s*A\/B/i.test(title)) refreshRankCard(card, st);
+    });
+  }
+  function handleAcqFilterClick(e){
+    var btn = e && e.target && e.target.closest ? e.target.closest('button[data-acq5-action]') : null;
+    if(!btn || !btn.closest('[data-acq5-followup]')) return;
+    var action = btn.getAttribute('data-acq5-action');
+    if(['toggle','clear','rank-toggle','rank-clear','more'].indexOf(action) === -1) return;
+    e.preventDefault();
+    e.stopPropagation();
+    if(e.stopImmediatePropagation) e.stopImmediatePropagation();
+
+    var repId = getRepIdFrom(btn);
+    if(!repId) return false;
+    var st = getRepState(repId);
+
+    if(action === 'more'){
+      var base = btn.getAttribute('data-base') || '';
+      st.expanded[base] = !st.expanded[base];
+      applyRep(repId);
+      return false;
+    }
+    if(action === 'rank-clear'){
+      st.rankLetters = new Set();
+      applyRep(repId);
+      return false;
+    }
+    if(action === 'rank-toggle'){
+      var rk = btn.getAttribute('data-rank');
+      if(st.rankLetters.has(rk)) st.rankLetters.delete(rk); else st.rankLetters.add(rk);
+      applyRep(repId);
+      return false;
+    }
+    var scope = btn.getAttribute('data-scope');
+    var country = btn.getAttribute('data-country');
+    var set = scope === 'rank' ? st.rankCountries : st.leadCountries;
+    if(action === 'clear') set.clear();
+    else if(country){ if(set.has(country)) set.delete(country); else set.add(country); }
+    applyRep(repId);
+    return false;
+  }
+
+  document.addEventListener('click', handleAcqFilterClick, true);
+
+  var pending = false;
+  function applyAllVisible(){
+    pending = false;
+    document.querySelectorAll('[data-acq5-followup]').forEach(function(wrap){
+      var repId = wrap.getAttribute('data-acq5-followup');
+      applyRep(repId);
+    });
+  }
+  function scheduleApply(){
+    if(pending) return;
+    pending = true;
+    setTimeout(applyAllVisible, 0);
+  }
+  if(window.MutationObserver && document.body){
+    new MutationObserver(scheduleApply).observe(document.body, {childList:true, subtree:true});
+  }
+  setTimeout(applyAllVisible, 0);
+})();
+
+
+
+
 
 /* Single-click mode: filters use the inline acq5HandleClick handler only. Duplicate document click handlers removed. */
 function updateClock(){
