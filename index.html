@@ -672,7 +672,7 @@ body{font-family:var(--font);background:var(--page-bg);color:var(--text);-webkit
 
           <div class="manager-section-label">Detailed Performance</div>
 
-          <div class="compact-section collapsible manager-secondary" id="legacyKpiWrap">
+          <div class="compact-section collapsible manager-secondary open" id="legacyKpiWrap">
             <div class="compact-hd">
               <div class="compact-title">📊 Detailed KPI Cards</div>
               <button class="collapse-toggle collapse-state" onclick="toggleCollapse('legacyKpiWrap')"></button>
@@ -3831,24 +3831,32 @@ setInterval(loadData,5*60*1000);
       var legacyKpi = byId('legacyKpiWrap');
 
       // Put the manager decision flow at the very top of Acquisition Team Overview.
+      // Keep removed sections removed; only reorder visible sections.
+      // Requested: Insights + Detailed KPI Cards should appear after Team Performance,
+      // and Detailed KPI Cards should be visible by default.
+      if(legacyKpi){
+        legacyKpi.classList.add('open');
+        var legacyBody = legacyKpi.querySelector('.collapsible-body');
+        if(legacyBody) legacyBody.style.display = 'block';
+      }
       moveTopInOrder(panel, [
         commandPreview,              // 1 Today’s Focus + Health Snapshot + Priority Actions
         perfCard,                    // 2 Team Performance
-        criticalLabel,               // 3 Critical Follow-ups label
-        priorityLeads,               // 4 Priority Leads / SLA
-        leadFunnel,                  // 5 Lead Funnel / Source Performance
-        leadsOverview,               // 6 Leads Overview
-        coverageLabel,               // 7 Coverage Control label
-        outreach,                    // 8 Outreach Coverage
-        rankCoverage,                // 9 Rank A/B Coverage
-        acquisitionPipeline,         // 10 Acquisition Pipeline
-        openPipeline,                // 11 Open Pipeline by Rep
-        aiCoaching,                  // 12 AI Coaching
-        wonLost,                     // 13 Closed Won / Lost
-        recCard,                     // 14 Insights & Recommendations
-        aiSales,                     // 15 AI Sales Insights
-        marketNews,                  // 16 Market News
-        legacyKpi                    // 17 Detailed KPI Cards collapsed at bottom
+        recCard,                     // 3 Insights & Recommendations
+        legacyKpi,                   // 4 Detailed KPI Cards visible by default
+        criticalLabel,               // 5 Critical Follow-ups label
+        priorityLeads,               // 6 Priority Leads / SLA
+        leadFunnel,                  // 7 Lead Funnel / Source Performance
+        leadsOverview,               // 8 Leads Overview
+        coverageLabel,               // 9 Coverage Control label
+        outreach,                    // 10 Outreach Coverage
+        rankCoverage,                // 11 Rank A/B Coverage
+        acquisitionPipeline,         // 12 Acquisition Pipeline
+        openPipeline,                // 13 Open Pipeline by Rep
+        aiCoaching,                  // 14 AI Coaching
+        wonLost,                     // 15 Closed Won / Lost
+        aiSales,                     // 16 AI Sales Insights
+        marketNews                   // 17 Market News
       ]);
     } finally {
       running = false;
