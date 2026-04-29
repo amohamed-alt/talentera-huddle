@@ -3768,238 +3768,6 @@ function enhanceAcquisitionRepFollowupSections(){
 
 
 
-
-/* ACQUISITION FILTERS — FINAL INLINE HANDLER ONLY
-   Fixes Rank A/B + Country chips by filtering the current visible DOM rows.
-   No re-render, no data changes, no Retention changes, no layout/order changes. */
-(function(){
-  window.__acqInlineFilterState = window.__acqInlineFilterState || {};
-
-  function repKey(v){ return String(v == null ? '' : v); }
-  function text(v){ return String(v == null ? '' : v).trim(); }
-  function cssEscape(v){
-    if(window.CSS && CSS.escape) return CSS.escape(String(v));
-    return String(v).replace(/"/g,'\"');
-  }
-  function getWrapFromButton(btn){ return btn && btn.closest ? btn.closest('[data-acq5-followup]') : null; }
-  function getRepId(btn){
-    var id = btn && btn.getAttribute ? btn.getAttribute('data-rep-id') : '';
-    if(id) return repKey(id);
-    var wrap = getWrapFromButton(btn);
-    return wrap ? repKey(wrap.getAttribute('data-acq5-followup')) : '';
-  }
-  function getState(repId){
-    repId = repKey(repId);
-    if(!window.__acqInlineFilterState[repId]){
-      window.__acqInlineFilterState[repId] = {
-        leadCountries: new Set(),
-        rankCountries: new Set(),
-        rankLetters: new Set(),
-        expanded: {}
-      };
-    }
-    return window.__acqInlineFilterState[repId];
-  }
-  function getRows(card){
-    return Array.prototype.slice.call(card ? card.querySelectorAll('tbody tr[data-acq5-extra]') : []);
-  }
-  function getCountry(row){
-    if(!row || !row.cells || row.cells.length < 3) return 'Unknown';
-    return text(row.cells[2] ? row.cells[2].textContent : '') || 'Unknown';
-  }
-  function getRank(row){
-    if(!row || !row.cells || !row.cells.length) return '';
-    var v = text(row.cells[0] ? row.cells[0].textContent : '').toUpperCase();
-    if(v.indexOf('A') !== -1) return 'A';
-    if(v.indexOf('B') !== -1) return 'B';
-    return v;
-  }
-  function isRankCard(card){
-    var t = card && card.querySelector('.acq-follow-title');
-    return /Ranks*As*/s*B/i.test(text(t ? t.textContent : ''));
-  }
-  function isLeadCard(card){
-    var t = card && card.querySelector('.acq-follow-title');
-    return /Leadss+tos+Contact/i.test(text(t ? t.textContent : ''));
-  }
-  function findButtonByBase(card, base){
-    if(!card || !base) return null;
-    return card.querySelector('button[data-acq5-action="more"][data-base="'+cssEscape(base)+'"]');
-  }
-  function setCountryChipStates(card, scope, selected){
-    if(!card) return;
-    card.querySelectorAll('button[data-acq5-action="clear"][data-scope="'+scope+'"]').forEach(function(btn){
-      btn.classList.toggle('active', selected.size === 0);
-    });
-    card.querySelectorAll('button[data-acq5-action="toggle"][data-scope="'+scope+'"]').forEach(function(btn){
-      btn.classList.toggle('active', selected.has(btn.getAttribute('data-country')));
-    });
-  }
-  function setRankChipStates(card, selected){
-    if(!card) return;
-    card.querySelectorAll('button[data-acq5-action="rank-clear"]').forEach(function(btn){
-      btn.classList.toggle('active', selected.size === 0);
-    });
-    card.querySelectorAll('button[data-acq5-action="rank-toggle"]').forEach(function(btn){
-      btn.classList.toggle('active', selected.has(btn.getAttribute('data-rank')));
-    });
-  }
-  function applyGroup(card, base, rows, matchFn, limit, expanded){
-    var matched = 0;
-    rows.forEach(function(row){
-      var ok = !!matchFn(row);
-      row.dataset.acqFilterMatch = ok ? '1' : '0';
-      if(!ok){
-        row.style.display = 'none';
-        return;
-      }
-      matched += 1;
-      row.style.display = (expanded || matched <= limit) ? 'table-row' : 'none';
-    });
-    var btn = findButtonByBase(card, base);
-    if(btn){
-      var extra = Math.max(0, matched - limit);
-      btn.style.display = extra ? 'block' : 'none';
-      btn.textContent = expanded ? '▲ Show less' : ('▼ Show ' + extra + ' more');
-    }
-    return matched;
-  }
-  function groupRowsByBase(rows){
-    var out = {};
-    rows.forEach(function(row){
-      var base = row.getAttribute('data-acq5-extra') || 'default';
-      if(!out[base]) out[base] = [];
-      out[base].push(row);
-    });
-    return out;
-  }
-  function updateHeaderBadge(card, total, word){
-    var badge = card && card.querySelector('.acq-follow-hd .badge');
-    if(badge) badge.textContent = total + ' ' + word;
-  }
-  function updateMiniBadges(card){
-    if(!card) return;
-    card.querySelectorAll('.acq-mini-table').forEach(function(tbl){
-      var badge = tbl.querySelector('.acq-mini-hd .badge');
-      if(!badge) return;
-      var count = Array.prototype.slice.call(tbl.querySelectorAll('tbody tr[data-acq5-extra]')).filter(function(row){
-        return row.dataset.acqFilterMatch === '1';
-      }).length;
-      badge.textContent = count;
-    });
-  }
-  function applyLeadCard(card, st){
-    var selected = st.leadCountries;
-    setCountryChipStates(card, 'lead', selected);
-    var groups = groupRowsByBase(getRows(card));
-    var total = 0;
-    Object.keys(groups).forEach(function(base){
-      total += applyGroup(card, base, groups[base], function(row){
-        return selected.size === 0 || selected.has(getCountry(row));
-      }, 5, !!st.expanded[base]);
-    });
-    updateHeaderBadge(card, total, 'pending');
-    updateMiniBadges(card);
-  }
-  function applyRankCard(card, st){
-    var countries = st.rankCountries;
-    var ranks = st.rankLetters;
-    setCountryChipStates(card, 'rank', countries);
-    setRankChipStates(card, ranks);
-    var groups = groupRowsByBase(getRows(card));
-    var total = 0;
-    Object.keys(groups).forEach(function(base){
-      total += applyGroup(card, base, groups[base], function(row){
-        var cOk = countries.size === 0 || countries.has(getCountry(row));
-        var rOk = ranks.size === 0 || ranks.has(getRank(row));
-        return cOk && rOk;
-      }, 8, !!st.expanded[base]);
-    });
-    updateHeaderBadge(card, total, 'accounts');
-  }
-  function applyRep(repId){
-    repId = repKey(repId);
-    var wrap = document.querySelector('[data-acq5-followup="'+cssEscape(repId)+'"]');
-    if(!wrap) return;
-    var st = getState(repId);
-    Array.prototype.slice.call(wrap.querySelectorAll('.acq-follow-card')).forEach(function(card){
-      if(isLeadCard(card)) applyLeadCard(card, st);
-      if(isRankCard(card)) applyRankCard(card, st);
-    });
-  }
-  function applyAll(){
-    document.querySelectorAll('[data-acq5-followup]').forEach(function(wrap){
-      applyRep(wrap.getAttribute('data-acq5-followup'));
-    });
-  }
-
-  window.acq5HandleClick = function(e, btn){
-    btn = btn || (e && e.target && e.target.closest ? e.target.closest('button[data-acq5-action]') : null);
-    if(!btn) return false;
-    var action = btn.getAttribute('data-acq5-action') || '';
-    if(['toggle','clear','rank-toggle','rank-clear','more'].indexOf(action) === -1) return false;
-    if(e){
-      e.preventDefault();
-      e.stopPropagation();
-      if(e.stopImmediatePropagation) e.stopImmediatePropagation();
-    }
-
-    var repId = getRepId(btn);
-    if(!repId) return false;
-    var st = getState(repId);
-
-    if(action === 'more'){
-      var base = btn.getAttribute('data-base') || '';
-      st.expanded[base] = !st.expanded[base];
-      applyRep(repId);
-      return false;
-    }
-
-    if(action === 'rank-clear'){
-      st.rankLetters.clear();
-      applyRep(repId);
-      return false;
-    }
-
-    if(action === 'rank-toggle'){
-      var rank = btn.getAttribute('data-rank') || '';
-      if(st.rankLetters.has(rank)) st.rankLetters.delete(rank);
-      else st.rankLetters.add(rank);
-      applyRep(repId);
-      return false;
-    }
-
-    var scope = btn.getAttribute('data-scope') || 'rank';
-    var set = scope === 'lead' ? st.leadCountries : st.rankCountries;
-
-    if(action === 'clear'){
-      set.clear();
-      applyRep(repId);
-      return false;
-    }
-
-    var country = btn.getAttribute('data-country') || '';
-    if(country){
-      if(set.has(country)) set.delete(country);
-      else set.add(country);
-    }
-    applyRep(repId);
-    return false;
-  };
-
-  window.__applyAcq5InlineFilters = applyAll;
-
-  setTimeout(applyAll, 0);
-  setTimeout(applyAll, 300);
-  if(window.MutationObserver && document.body){
-    var t = null;
-    new MutationObserver(function(){
-      clearTimeout(t);
-      t = setTimeout(applyAll, 50);
-    }).observe(document.body, {childList:true, subtree:true});
-  }
-})();
-
 /* Single-click mode: filters use the inline acq5HandleClick handler only. Duplicate document click handlers removed. */
 function updateClock(){
   const now=new Date(),riy=new Date(now.toLocaleString("en-US",{timeZone:"Asia/Riyadh"}));
@@ -4132,6 +3900,192 @@ setInterval(loadData,5*60*1000);
     };
     window.switchTab.__managerOrderWrapped = true;
   }
+})();
+</script>
+
+<script>
+/* ACQUISITION REP FILTERS — RELIABLE DOM LAYER
+   Fixes Rank A/B + Country filters only. It does not touch Retention, data, ordering, or lead ownership logic. */
+(function(){
+  if(window.__acqReliableFilterInstalled) return;
+  window.__acqReliableFilterInstalled = true;
+
+  function closest(el, sel){ return el && el.closest ? el.closest(sel) : null; }
+  function buttons(root, sel){ return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
+  function text(el){ return String(el && el.textContent || '').trim(); }
+  function norm(v){ return String(v || '').trim().toLowerCase(); }
+  function cssEscape(v){
+    if(window.CSS && CSS.escape) return CSS.escape(String(v));
+    return String(v).replace(/[^a-zA-Z0-9_-]/g, '\\$&');
+  }
+  function setActive(btn, on){ if(btn) btn.classList.toggle('active', !!on); }
+  function selectedCountries(card){
+    return buttons(card, 'button[data-acq5-action="toggle"][data-country].active')
+      .map(function(b){ return b.getAttribute('data-country') || ''; })
+      .filter(Boolean);
+  }
+  function selectedRanks(card){
+    return buttons(card, 'button[data-acq5-action="rank-toggle"][data-rank].active')
+      .map(function(b){ return String(b.getAttribute('data-rank') || '').toUpperCase(); })
+      .filter(Boolean);
+  }
+  function rowCountry(row){
+    var cells = row.children || [];
+    // Current tables: Rank, Company, Country, Created, Action OR Lead, Bucket, Country, Status, Created
+    return text(cells[2]);
+  }
+  function rowRank(row){
+    var cells = row.children || [];
+    var r = text(cells[0]).toUpperCase();
+    if(r.indexOf('A') !== -1) return 'A';
+    if(r.indexOf('B') !== -1) return 'B';
+    return '';
+  }
+  function getLimit(card, base){
+    var isRank = !!card.querySelector('button[data-acq5-action="rank-toggle"]');
+    return isRank ? 8 : 5;
+  }
+  function ensureShowStore(card){
+    if(!card.__acqShowAll) card.__acqShowAll = {};
+    return card.__acqShowAll;
+  }
+  function removeEmptyRows(card){
+    buttons(card, 'tr[data-acq-filter-empty="1"]').forEach(function(r){ r.remove(); });
+  }
+  function addEmptyRowIfNeeded(card, table, colspan){
+    var tbody = table && table.querySelector('tbody');
+    if(!tbody) return;
+    var tr = document.createElement('tr');
+    tr.setAttribute('data-acq-filter-empty','1');
+    tr.innerHTML = '<td colspan="'+colspan+'" class="acq-empty">No rows match the selected filter</td>';
+    tbody.appendChild(tr);
+  }
+  function updateBadges(card, totalMatching){
+    var isRank = !!card.querySelector('button[data-acq5-action="rank-toggle"]');
+    var headerBadge = card.querySelector('.acq-follow-hd .badge');
+    if(headerBadge){
+      headerBadge.textContent = isRank ? (totalMatching + ' accounts') : (totalMatching + ' pending');
+    }
+    if(!isRank){
+      var miniTables = buttons(card, '.acq-mini-table');
+      miniTables.forEach(function(tbl){
+        var badge = tbl.querySelector('.acq-mini-hd .badge');
+        if(!badge) return;
+        var rows = buttons(tbl, 'tbody tr[data-acq5-extra]');
+        var count = rows.filter(function(r){ return r.__acqFilterMatch === true; }).length;
+        badge.textContent = count;
+      });
+    }
+  }
+  function updateMoreButton(card, base, matchingCount){
+    var btn = card.querySelector('button[data-acq5-action="more"][data-base="'+cssEscape(base)+'"]');
+    if(!btn) return;
+    var limit = getLimit(card, base);
+    var extra = Math.max(0, matchingCount - limit);
+    var store = ensureShowStore(card);
+    if(extra <= 0){
+      btn.style.display = 'none';
+      store[base] = false;
+      return;
+    }
+    btn.style.display = 'block';
+    btn.textContent = store[base] ? '▲ Show less' : ('▼ Show ' + extra + ' more');
+  }
+  function applyCardFilter(card){
+    if(!card) return;
+    removeEmptyRows(card);
+
+    var countries = selectedCountries(card).map(norm);
+    var ranks = selectedRanks(card);
+    var isRankCard = !!card.querySelector('button[data-acq5-action="rank-toggle"]');
+    var store = ensureShowStore(card);
+    var rows = buttons(card, 'tbody tr[data-acq5-extra]');
+    var groups = {};
+    var totalMatching = 0;
+
+    rows.forEach(function(row){
+      var countryOk = !countries.length || countries.indexOf(norm(rowCountry(row))) !== -1;
+      var rankOk = !isRankCard || !ranks.length || ranks.indexOf(rowRank(row)) !== -1;
+      var ok = countryOk && rankOk;
+      row.__acqFilterMatch = ok;
+      var base = row.getAttribute('data-acq5-extra') || 'default';
+      if(!groups[base]) groups[base] = [];
+      if(ok){ groups[base].push(row); totalMatching++; }
+      row.style.display = 'none';
+    });
+
+    Object.keys(groups).forEach(function(base){
+      var limit = getLimit(card, base);
+      var showAll = !!store[base];
+      groups[base].forEach(function(row, i){
+        row.style.display = (showAll || i < limit) ? 'table-row' : 'none';
+      });
+      updateMoreButton(card, base, groups[base].length);
+    });
+
+    // Add a clear empty row per table if its filtered result is empty.
+    buttons(card, 'table').forEach(function(table){
+      var tableRows = buttons(table, 'tbody tr[data-acq5-extra]');
+      if(!tableRows.length) return;
+      var anyMatch = tableRows.some(function(r){ return r.__acqFilterMatch === true; });
+      if(!anyMatch) addEmptyRowIfNeeded(card, table, table.querySelectorAll('thead th').length || 5);
+    });
+
+    updateBadges(card, totalMatching);
+  }
+  function syncClearButtons(card){
+    var countryActive = buttons(card, 'button[data-acq5-action="toggle"][data-country].active').length;
+    buttons(card, 'button[data-acq5-action="clear"]').forEach(function(b){ setActive(b, countryActive === 0); });
+    var rankActive = buttons(card, 'button[data-acq5-action="rank-toggle"].active').length;
+    buttons(card, 'button[data-acq5-action="rank-clear"]').forEach(function(b){ setActive(b, rankActive === 0); });
+  }
+
+  document.addEventListener('click', function(e){
+    var btn = closest(e.target, 'button[data-acq5-action]');
+    if(!btn) return;
+    var card = closest(btn, '.acq-follow-card');
+    if(!card || !closest(card, '[data-acq5-followup]')) return;
+
+    var action = btn.getAttribute('data-acq5-action') || '';
+    if(['toggle','clear','rank-toggle','rank-clear','more'].indexOf(action) === -1) return;
+
+    // Stop the older inline/re-render handlers from undoing the filter click.
+    e.preventDefault();
+    e.stopPropagation();
+    if(e.stopImmediatePropagation) e.stopImmediatePropagation();
+
+    if(action === 'clear'){
+      buttons(card, 'button[data-acq5-action="toggle"][data-country]').forEach(function(b){ setActive(b, false); });
+      setActive(btn, true);
+    } else if(action === 'toggle'){
+      btn.classList.toggle('active');
+    } else if(action === 'rank-clear'){
+      buttons(card, 'button[data-acq5-action="rank-toggle"]').forEach(function(b){ setActive(b, false); });
+      setActive(btn, true);
+    } else if(action === 'rank-toggle'){
+      btn.classList.toggle('active');
+    } else if(action === 'more'){
+      var base = btn.getAttribute('data-base') || 'default';
+      var store = ensureShowStore(card);
+      store[base] = !store[base];
+    }
+
+    syncClearButtons(card);
+    applyCardFilter(card);
+    return false;
+  }, true);
+
+  // Keep the filter state visually consistent after each render.
+  function applyAll(){
+    buttons(document, '[data-acq5-followup] .acq-follow-card').forEach(function(card){
+      syncClearButtons(card);
+      applyCardFilter(card);
+    });
+  }
+  window.acqApplyReliableFilters = applyAll;
+  setTimeout(applyAll, 0);
+  setTimeout(applyAll, 400);
+  setTimeout(applyAll, 1200);
 })();
 </script>
 
