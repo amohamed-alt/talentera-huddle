@@ -496,6 +496,19 @@ body{font-family:var(--font);background:var(--page-bg);color:var(--text);-webkit
 .metric-clickable{cursor:pointer;border-radius:8px;padding:2px 5px;transition:background .15s,box-shadow .15s,transform .15s;display:inline-block}
 .metric-clickable:hover{background:rgba(22,163,74,.08);box-shadow:0 0 0 1px rgba(22,163,74,.18) inset;transform:translateY(-1px)}
 .metric-clickable::after{content:"";display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--green);margin-left:5px;vertical-align:middle;opacity:.6}
+
+.ret-click-num{cursor:pointer;border-radius:8px;padding:2px 5px;display:inline-block;transition:background .15s,box-shadow .15s,transform .15s}
+.ret-click-num:hover{background:rgba(22,163,74,.08);box-shadow:0 0 0 1px rgba(22,163,74,.18) inset;transform:translateY(-1px)}
+.ret-click-num::after{content:"";display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--green);margin-left:5px;vertical-align:middle;opacity:.55}
+.ret-filter-bar{display:flex;align-items:center;gap:7px;flex-wrap:wrap;padding:10px 14px;border-bottom:1px solid var(--border);background:var(--surface2)}
+.ret-filter-chip{border:1px solid var(--border);background:var(--surface);border-radius:999px;padding:6px 10px;font-size:10px;font-weight:900;color:var(--text2);cursor:pointer;transition:.15s}
+.ret-filter-chip:hover{transform:translateY(-1px);box-shadow:var(--sh-xs)}
+.ret-filter-chip.active{background:var(--green-bg);border-color:var(--green-bd);color:var(--green)}
+.ret-detail-table{width:100%;border-collapse:collapse}
+.ret-detail-table th{font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);background:var(--surface2);padding:9px 12px;text-align:left;border-bottom:1px solid var(--border)}
+.ret-detail-table td{padding:10px 12px;border-bottom:1px solid var(--border);font-size:12px;vertical-align:top}
+.ret-detail-table tr:hover{background:var(--surface2)}
+.ret-detail-mini{font-size:10px;color:var(--muted);font-weight:700;margin-top:2px}
 .acq-follow-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:14px 0}
 .acq-mini-note{font-size:10px;color:var(--muted);font-weight:700;line-height:1.45;background:var(--surface2)}
 .acq-detail-backdrop{position:fixed;inset:0;background:rgba(15,26,20,.42);z-index:9998;display:flex;align-items:flex-start;justify-content:center;padding:72px 20px 24px;overflow:auto}
@@ -1097,6 +1110,7 @@ body{font-family:var(--font);background:var(--page-bg);color:var(--text);-webkit
           <div class="manager-section-label">RM / CSM Follow-up Metrics by Tier</div>
           <div class="card">
             <div class="card-hd"><div class="card-title"><div class="card-title-icon" style="background:var(--purple-bg)">👥</div>RM / CSM Follow-up Metrics</div><span class="badge bp">Company tier cadence</span></div>
+            <div class="ret-filter-bar" id="retTierFilterBar"></div>
             <div style="overflow-x:auto"><table class="tbl">
               <thead><tr><th>Account</th><th class="c">Tier</th><th>RM Owner</th><th class="c">RM Last Activity</th><th class="c">RM Cadence</th><th>CSM Owner</th><th class="c">CSM Last Activity</th><th class="c">CSM Cadence</th><th>Alert</th></tr></thead>
               <tbody id="retOwnerMatrixBody"></tbody>
@@ -1139,6 +1153,7 @@ function recordLink(label,url,className="record-link"){
 const SC=["#4F46E5","#7C3AED","#2563EB","#0891B2","#059669","#D97706","#DC2626","#be185d","#16A34A","#6B7280"];
 let RET_SELECTED_OWNER_ID = null;
 let RETENTION_SUBVIEW = "overview";
+let RET_TIER_MATRIX_FILTER = "all";
 
 // Keeps the user on the same page after auto-refresh.
 // Without this, render() rebuilds Acquisition side links after every 5-minute refresh.
@@ -2399,7 +2414,8 @@ function retRoleActivity(account, related, role){
   const r = String(role || '').toLowerCase();
   const isRm = r === 'rm';
   const prefix = isRm ? 'rm' : 'csm';
-  const directDays = Number(account?.[prefix + 'DaysSinceTouch']);
+  const rawDirectDays = Number(account?.[prefix + 'DaysSinceTouch']);
+  const directDays = Number.isFinite(rawDirectDays) && rawDirectDays >= 0 && rawDirectDays < 9000 ? rawDirectDays : null;
   const candidates = [
     account?.[prefix + 'LastTouch'],
     account?.[prefix + 'LastActivity'],
@@ -2421,7 +2437,7 @@ function retRoleActivity(account, related, role){
   });
 
   const latest = retLatestDate(candidates);
-  const days = latest ? retDaysSinceDate(latest) : (Number.isFinite(directDays) && directDays >= 0 ? directDays : null);
+  const days = latest ? retDaysSinceDate(latest) : directDays;
   return { latest, days };
 }
 
@@ -2459,6 +2475,108 @@ function retBuildTierFollowupRows(accounts, relatedRows){
     };
   });
 }
+
+
+function retHumanLastActivity(latest, days){
+  if(latest) return retDateText(latest) + ' · ' + (days ?? 0) + 'd';
+  if(days === null || days === undefined || Number(days) >= 9000) return 'No activity';
+  return String(days) + 'd';
+}
+function retOpenUrl(row){ return row && (row.companyUrl || row.hubspotUrl || row.dealUrl || row.renewedDealUrl || row.renewalSourceDealUrl) || null; }
+function retRowName(row){ return row && (row.companyName || row.accountName || row.dealName || row.name || row.title || row.reason) || 'Record'; }
+function retMetricMeta(row){
+  const pieces = [];
+  const tier = retNormTier(row && (row.company_tier || row.companyTier || row.tier || row.accountTier));
+  if(tier) pieces.push('Tier ' + tier);
+  if(row && (row.contractRenewalDate || row.renewalDate)) pieces.push('Renewal ' + (row.contractRenewalDate || row.renewalDate));
+  if(row && row.date) pieces.push(row.date);
+  if(row && row.createdAt) pieces.push('Created ' + row.createdAt);
+  if(row && row.actionDate) pieces.push('Action ' + row.actionDate);
+  if(row && row.message) pieces.push(row.message);
+  return pieces.filter(Boolean).join(' · ');
+}
+function retOwnerText(row){ if(!row) return '—'; return [row.rmOwnerName || row.rmOwner, row.csmOwnerName || row.csmOwner, row.ownerName].filter(Boolean).join(' / ') || '—'; }
+function retMetricValue(row){
+  if(!row) return '—';
+  const v = row.renewalValue ?? row.amount ?? row.value ?? row.revenue;
+  if(v !== undefined && v !== null && v !== '') return fmt(v);
+  if(row.daysOverdue) return row.daysOverdue + 'd overdue';
+  if(row.daysLeft !== undefined && row.daysLeft !== null) return row.daysLeft + 'd left';
+  return row.status || row.alert || row.stageType || row.outcome || '—';
+}
+function retInPeriod(dateLike, period){
+  if(!dateLike) return false;
+  const d = new Date(dateLike); if(isNaN(d)) return false;
+  const now = new Date();
+  const startToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const startYesterday = new Date(startToday.getTime() - 86400000);
+  const endYesterday = new Date(startToday.getTime() - 1);
+  const startMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+  const startYear = new Date(now.getFullYear(), 0, 1);
+  if(period === 'yest' || period === 'yesterday') return d >= startYesterday && d <= endYesterday;
+  if(period === 'mtd') return d >= startMonth && d <= now;
+  if(period === 'ytd') return d >= startYear && d <= now;
+  return true;
+}
+function retMetricRows(kind, opts={}){
+  const store = window.__retentionMetricStore || {};
+  if(kind === 'focus-delayed') return store.delayedRenewals || [];
+  if(kind === 'focus-tier-a') return (store.tierRows || []).filter(r => r.tier === 'A' && (r.rmOverdue || r.csmOverdue)).map(r => Object.assign({}, r.account||{}, {tier:r.tier, alert:r.alert, daysOverdue: Math.max(r.rmDays||0,r.csmDays||0)}));
+  if(kind === 'focus-csm') return (store.tierRows || []).filter(r => r.csmOverdue).map(r => Object.assign({}, r.account||{}, {tier:r.tier, alert:r.alert, csmDays:r.csmDays, daysOverdue:r.csmDays}));
+  if(kind === 'focus-rm') return (store.tierRows || []).filter(r => r.rmOverdue).map(r => Object.assign({}, r.account||{}, {tier:r.tier, alert:r.alert, rmDays:r.rmDays, daysOverdue:r.rmDays}));
+  if(kind === 'monthly'){
+    const row = (store.monthRows || [])[Number(opts.monthIndex || 0)] || null;
+    const rows = row && row.rows || [];
+    const bucket = String(opts.bucket || 'due').toLowerCase();
+    if(bucket === 'due') return rows;
+    if(bucket === 'renewed') return rows.filter(r => String(r.status||'').toLowerCase()==='renewed');
+    if(bucket === 'booked') return rows.filter(r => String(r.status||'').toLowerCase()==='renewed' && (r.renewalType === 'Booked' || (r.bookedDateEntered && !r.cashedDateEntered)));
+    if(bucket === 'cashed') return rows.filter(r => String(r.status||'').toLowerCase()==='renewed' && (r.renewalType === 'Cashed' || r.cashedDateEntered));
+    if(bucket === 'delayed') return rows.filter(r => String(r.status||'').toLowerCase()==='delayed');
+    return rows;
+  }
+  if(kind === 'period'){
+    const p = String(opts.period || 'ytd').toLowerCase();
+    const metric = String(opts.metric || '').toLowerCase();
+    let rows = [];
+    if(metric === 'calls') rows = store.calls || [];
+    if(metric === 'meetings') rows = store.meetings || [];
+    if(metric === 'renewed') rows = store.renewedDeals || [];
+    if(metric === 'booked') rows = store.bookedDeals || [];
+    if(metric === 'cashed') rows = store.cashedDeals || [];
+    if(metric === 'churn') rows = store.churnDeals || [];
+    if(metric === 'delayed') rows = store.delayedRenewals || [];
+    const dateKey = metric === 'delayed' ? 'contractRenewalDate' : (metric === 'calls' || metric === 'meetings' ? 'date' : 'actionDate');
+    return rows.filter(r => retInPeriod((r && (r[dateKey] || r.createdAt || r.contractRenewalDate)), p));
+  }
+  if(kind === 'tier-matrix'){
+    const f = String(opts.tier || 'all').toUpperCase();
+    return (store.tierRows || []).filter(r => f === 'ALL' ? true : f === 'NO' ? !r.tier : r.tier === f).map(r => Object.assign({}, r.account||{}, {tier:r.tier, alert:r.alert, rmDays:r.rmDays, csmDays:r.csmDays}));
+  }
+  return [];
+}
+function openRetentionMetricDetails(kind, opts={}){
+  const rows = retMetricRows(kind, opts);
+  const titles = {'focus-delayed':'Delayed renewals','focus-tier-a':'Tier A overdue','focus-csm':'CSM follow-up due','focus-rm':'RM follow-up due','monthly':'Monthly renewal pipeline','period':'Retention KPI details','tier-matrix':'RM / CSM tier follow-up details'};
+  const sub = opts.label || opts.metric || opts.bucket || 'Retention records';
+  document.getElementById('retMetricBackdrop')?.remove();
+  let body = '<div class="acq-detail-empty">No rows available for this number in the current retention data.</div>';
+  if(rows.length){
+    body = '<table class="ret-detail-table"><thead><tr><th>Name</th><th>Owner</th><th>Status</th><th class="c">Value / Date</th></tr></thead><tbody>' + rows.slice(0,100).map(function(row){
+      const name = retRowName(row), url = retOpenUrl(row), status = row.status || row.alert || row.stageType || row.outcome || row.bucket || '—';
+      return '<tr><td><div style="font-weight:900">' + recordLink(name,url) + '</div><div class="ret-detail-mini">' + esc(retMetricMeta(row)) + '</div></td><td>' + esc(retOwnerText(row)) + '</td><td><span class="acq-detail-pill">' + esc(status) + '</span></td><td class="c" style="font-family:var(--mono);font-weight:900">' + esc(retMetricValue(row)) + '</td></tr>';
+    }).join('') + '</tbody></table>' + (rows.length>100 ? '<div class="acq-detail-empty" style="padding:12px">Showing first 100 of ' + rows.length.toLocaleString() + ' rows.</div>' : '');
+  }
+  const node=document.createElement('div');
+  node.id='retMetricBackdrop'; node.className='acq-detail-backdrop'; node.onclick=function(e){ if(e.target===node) node.remove(); };
+  node.innerHTML='<div class="acq-detail-card"><div class="acq-detail-hd"><div><div class="acq-detail-title">' + esc(titles[kind]||'Retention details') + ' <span class="badge bb" style="margin-left:8px">' + rows.length.toLocaleString() + ' rows</span></div><div class="acq-detail-sub">' + esc(sub) + ' · Names open directly in HubSpot when a link is available.</div></div><button class="acq-detail-close" onclick="document.getElementById(&quot;retMetricBackdrop&quot;)?.remove()">×</button></div><div class="acq-detail-body">' + body + '</div></div>';
+  document.body.appendChild(node);
+}
+function retMakeClickable(id, kind, opts={}, title='Click to open details'){
+  const el = $(id); if(!el) return;
+  el.classList.add('ret-click-num'); el.title = title; el.onclick = function(){ openRetentionMetricDetails(kind, opts); };
+}
+function retSetTierMatrixFilter(tier){ RET_TIER_MATRIX_FILTER = String(tier || 'all').toLowerCase(); renderRetention(); }
 
 function renderRetentionTodayFocus(ctx){
   const setText=(id,val)=>{ if($(id)) $(id).textContent=val; };
@@ -2559,6 +2677,9 @@ function renderRetention(){
   const noMeetingAlerts = (alertsObj.noMeeting || []).filter(match);
   const retentionRelatedRows = retentionRelatedRowsAll.filter(match);
   const tierFollowupRows = retBuildTierFollowupRows(accounts, retentionRelatedRows);
+  const ownerDetailRows = selectedRep ? ownerDetails[selectedRep.id] : null;
+  const activityCalls = (ownerDetailRows?.calls || data.activityDetails?.calls || []).filter(match);
+  const activityMeetings = (ownerDetailRows?.meetings || data.activityDetails?.meetings || []).filter(match);
 
   if($('retFilterNote')) $('retFilterNote').textContent = selectedRep
     ? `${selectedRep.role} page · ${selectedRep.name} · showing this owner accounts and activities only`
@@ -2577,6 +2698,16 @@ function renderRetention(){
   const ownerDetailForSelected = selectedRep ? ownerDetails[selectedRep.id] : null;
   setText('kpiCalls', ownerDetailForSelected ? ownerDetailForSelected.calls.length : (team.callsYTD || val(t,'calls')));
   setText('kpiMeetings', ownerDetailForSelected ? ownerDetailForSelected.meetings.length : (team.meetingsYTD || val(t,'meetings')));
+  setTimeout(function(){
+    retMakeClickable('kpiAccounts','tier-matrix',{tier:'all',label:'All retention accounts'},'Open account details');
+    retMakeClickable('kpiRenewed','period',{period:'ytd',metric:'renewed',label:'Renewed YTD'},'Open renewed details');
+    retMakeClickable('kpiBooked','period',{period:'ytd',metric:'booked',label:'Booked YTD'},'Open booked details');
+    retMakeClickable('kpiCashed','period',{period:'ytd',metric:'cashed',label:'Cashed YTD'},'Open cashed details');
+    retMakeClickable('kpiChurn','period',{period:'ytd',metric:'churn',label:'Churn YTD'},'Open churn details');
+    retMakeClickable('kpiDelayed','focus-delayed',{},'Open delayed renewals');
+    retMakeClickable('kpiCalls','period',{period:'ytd',metric:'calls',label:'Calls YTD'},'Open calls');
+    retMakeClickable('kpiMeetings','period',{period:'ytd',metric:'meetings',label:'Meetings YTD'},'Open meetings');
+  },0);
 
   // Period KPI cards
   setText('retYCalls', val(y,'calls')); setText('retYMeetings', val(y,'meetings'));
@@ -2617,9 +2748,20 @@ function renderRetention(){
   }).filter(r=>r.due>0).sort((a,b)=>String(a.month).localeCompare(String(b.month)));
   if($('retRenewalMonthBody')) $('retRenewalMonthBody').innerHTML = monthRows.length ? monthRows.map((r,i)=>{
     const action = r.delayed>0 ? `${r.delayed} delayed renewal(s) need action` : r.upcoming>0 ? `${r.upcoming} upcoming renewal(s)` : `${r.renewed} renewed`;
-    return `<tr class="${r.delayed>0?'ret-redline':r.upcoming>0?'ret-amberline':'ret-greenline'} ${i>=5?'ret-hidden':''}"><td><div style="font-weight:900">${textSafe(retMonthLabel(r.month))}</div><div style="font-size:10px;color:var(--muted)">contract_renewal_date month</div></td><td class="c" style="font-family:var(--mono);font-weight:800">${num(r.due)}</td><td class="c ret-status-green">${num(r.renewed)}</td><td class="c">${num(r.booked)}</td><td class="c">${num(r.cashed)}</td><td class="c ${num(r.delayed)>0?'ret-status-red':''}">${num(r.delayed)}</td><td class="c" style="font-family:var(--mono);font-weight:800">${money(r.value)}</td><td><span class="badge ${r.delayed>0?'br':r.upcoming>0?'ba':'bg'}">${textSafe(action)}</span></td></tr>`;
+    const mLabel = retMonthLabel(r.month);
+    const clickCell = (bucket, value, cls='') => '<span class="ret-click-num ' + cls + '" onclick="openRetentionMetricDetails(\'monthly\',{monthIndex:' + i + ',bucket:\'' + bucket + '\',label:\'' + esc(mLabel) + ' · ' + bucket + '\'})">' + value + '</span>';
+    return '<tr class="' + (r.delayed>0?'ret-redline':r.upcoming>0?'ret-amberline':'ret-greenline') + ' ' + (i>=5?'ret-hidden':'') + '"><td><div style="font-weight:900">' + textSafe(mLabel) + '</div><div style="font-size:10px;color:var(--muted)">contract_renewal_date month</div></td><td class="c" style="font-family:var(--mono);font-weight:800">' + clickCell('due',num(r.due)) + '</td><td class="c ret-status-green">' + clickCell('renewed',num(r.renewed),'ret-status-green') + '</td><td class="c">' + clickCell('booked',num(r.booked)) + '</td><td class="c">' + clickCell('cashed',num(r.cashed)) + '</td><td class="c ' + (num(r.delayed)>0?'ret-status-red':'') + '">' + clickCell('delayed',num(r.delayed),num(r.delayed)>0?'ret-status-red':'') + '</td><td class="c" style="font-family:var(--mono);font-weight:800">' + money(r.value) + '</td><td><span class="badge ' + (r.delayed>0?'br':r.upcoming>0?'ba':'bg') + '">' + textSafe(action) + '</span></td></tr>';
   }).join('') : empty(8,'No monthly renewal pipeline rows found.');
   if($('retRenewalMonthToggle')) $('retRenewalMonthToggle').style.display = monthRows.length>5?'block':'none';
+
+  window.__retentionMetricStore = {
+    accounts, renewedDeals, bookedDeals, cashedDeals, churnDeals, delayedRenewals, renewalPipeline, renewalAttention, monthRows, tierRows: tierFollowupRows, calls: activityCalls, meetings: activityMeetings
+  };
+  retMakeClickable('retFocusDelayed','focus-delayed',{},'Open delayed renewals');
+  retMakeClickable('retFocusTierA','focus-tier-a',{},'Open Tier A overdue accounts');
+  retMakeClickable('retFocusCsm','focus-csm',{},'Open CSM follow-up due accounts');
+  retMakeClickable('retFocusRm','focus-rm',{},'Open RM follow-up due accounts');
+  [['retYCalls','yesterday','calls'],['retYMeetings','yesterday','meetings'],['retYRenewed','yesterday','renewed'],['retYBooked','yesterday','booked'],['retYCashed','yesterday','cashed'],['retYChurn','yesterday','churn'],['retYDelayed','yesterday','delayed'],['retMCalls','mtd','calls'],['retMMeetings','mtd','meetings'],['retMRenewed','mtd','renewed'],['retMBooked','mtd','booked'],['retMCashed','mtd','cashed'],['retMChurn','mtd','churn'],['retMDelayed','mtd','delayed'],['retYtdCalls','ytd','calls'],['retYtdMeetings','ytd','meetings'],['retYtdRenewed','ytd','renewed'],['retYtdBooked','ytd','booked'],['retYtdCashed','ytd','cashed'],['retYtdChurn','ytd','churn'],['retYtdDelayed','ytd','delayed']].forEach(function(x){ retMakeClickable(x[0],'period',{period:x[1],metric:x[2],label:x[1].toUpperCase() + ' · ' + x[2]},'Open KPI details'); });
 
   // Smart alerts
   if($('retAlertList')) $('retAlertList').innerHTML = allAlerts.length ? allAlerts.slice(0,24).map((a,i)=>{
@@ -2669,17 +2811,20 @@ function renderRetention(){
   if($('retChurnReasonsToggle')) $('retChurnReasonsToggle').style.display = churnReasons.length>5?'block':'none';
 
   // RM/CSM follow-up metrics — company_tier cadence, based on company + associated renewal deals
-  if($('retOwnerMatrixBody')) $('retOwnerMatrixBody').innerHTML = tierFollowupRows.length ? tierFollowupRows.map((tr,i)=>{
+  const tierCounts = {all:tierFollowupRows.length, a:tierFollowupRows.filter(r=>r.tier==='A').length, b:tierFollowupRows.filter(r=>r.tier==='B').length, c:tierFollowupRows.filter(r=>r.tier==='C').length, no:tierFollowupRows.filter(r=>!r.tier).length};
+  if($('retTierFilterBar')) $('retTierFilterBar').innerHTML = [['all','All tiers',tierCounts.all],['a','Tier A',tierCounts.a],['b','Tier B',tierCounts.b],['c','Tier C',tierCounts.c],['no','No tier',tierCounts.no]].map(function(x){ return '<button class="ret-filter-chip ' + (RET_TIER_MATRIX_FILTER===x[0]?'active':'') + '" onclick="retSetTierMatrixFilter(\'' + x[0] + '\')">' + x[1] + ' ' + x[2] + '</button>'; }).join('');
+  const tierRowsVisible = tierFollowupRows.filter(r => RET_TIER_MATRIX_FILTER === 'all' ? true : RET_TIER_MATRIX_FILTER === 'no' ? !r.tier : String(r.tier || '').toLowerCase() === RET_TIER_MATRIX_FILTER);
+  if($('retOwnerMatrixBody')) $('retOwnerMatrixBody').innerHTML = tierRowsVisible.length ? tierRowsVisible.map((tr,i)=>{
     const a = tr.account || {};
     const healthy = tr.alert === 'Healthy';
     const warn = tr.alert === 'Missing tier';
-    const rmLast = tr.rmLatest ? `${retDateText(tr.rmLatest)} · ${tr.rmDays}d` : (tr.rmDays !== null ? `${tr.rmDays}d` : '—');
-    const csmLast = tr.csmLatest ? `${retDateText(tr.csmLatest)} · ${tr.csmDays}d` : (tr.csmDays !== null ? `${tr.csmDays}d` : '—');
+    const rmLast = retHumanLastActivity(tr.rmLatest, tr.rmDays);
+    const csmLast = retHumanLastActivity(tr.csmLatest, tr.csmDays);
     const rmCadence = tr.rmThreshold ? `${tr.rmThreshold}d` : '—';
     const csmCadence = tr.csmThreshold ? `${tr.csmThreshold}d` : '—';
     return `<tr class="${healthy?'ret-greenline':warn?'ret-amberline':'ret-redline'} ${i>=5?'ret-hidden':''}"><td><div style="font-weight:800">${recordLink(a.companyName||a.accountName||a.name,a.companyUrl||a.hubspotUrl)}</div><div style="font-size:10px;color:var(--muted)">Company + associated renewal deals</div></td><td class="c">${retTierBadge(tr.tier)}</td><td>${textSafe(a.rmOwnerName||a.rmOwner)}</td><td class="c ${tr.rmOverdue?'ret-status-red':''}">${textSafe(rmLast)}</td><td class="c">${textSafe(rmCadence)}</td><td>${textSafe(a.csmOwnerName||a.csmOwner)}</td><td class="c ${tr.csmOverdue?'ret-status-red':''}">${textSafe(csmLast)}</td><td class="c">${textSafe(csmCadence)}</td><td><span class="badge ${healthy?'bg':warn?'ba':'br'}">${textSafe(tr.alert)}</span></td></tr>`;
-  }).join('') : empty(9,'No RM / CSM matrix rows found.');
-  if($('retOwnerMatrixToggle')) $('retOwnerMatrixToggle').style.display = tierFollowupRows.length>5?'block':'none';
+  }).join('') : empty(9,'No RM / CSM matrix rows found for this tier filter.');
+  if($('retOwnerMatrixToggle')) $('retOwnerMatrixToggle').style.display = tierRowsVisible.length>5?'block':'none';
 
   const rmStats = {accounts: (data.rmMatrix||[]).reduce((s,r)=>s+num(r.accounts),0), noContact: (data.rmMatrix||[]).reduce((s,r)=>s+num(r.noContact),0), delayed: (data.rmMatrix||[]).reduce((s,r)=>s+num(r.delayed),0), calls: (data.rmMatrix||[]).reduce((s,r)=>s+num(r.calls),0)};
   const csmStats = {accounts: (data.csmMatrix||[]).reduce((s,r)=>s+num(r.accounts),0), noMeeting: (data.csmMatrix||[]).reduce((s,r)=>s+num(r.noMeeting),0), delayed: (data.csmMatrix||[]).reduce((s,r)=>s+num(r.delayed),0), meetings: (data.csmMatrix||[]).reduce((s,r)=>s+num(r.meetings),0)};
