@@ -631,7 +631,7 @@ body{font-family:var(--font);background:var(--page-bg);color:var(--text);-webkit
           </div>
           <!-- /COMMAND CENTER PREVIEW -->
 
-          <div class="manager-summary-bar" id="managerSummaryBar" style="display:none!important">
+          <div class="manager-summary-bar" id="managerSummaryBar">
             <div>
               <div class="manager-summary-main" id="managerSummaryMain">Loading executive summary…</div>
               <div class="manager-summary-sub" id="managerSummarySub">Prioritized for manager action.</div>
@@ -639,9 +639,9 @@ body{font-family:var(--font);background:var(--page-bg);color:var(--text);-webkit
             <div class="manager-summary-actions" id="managerSummaryActions"></div>
           </div>
 
-          <div class="manager-section-label" style="display:none!important">Manager Action Plan</div>
+          <div class="manager-section-label">Manager Action Plan</div>
 
-          <div class="action-strip" id="managerActionStrip" style="display:none!important"></div>
+          <div class="action-strip" id="managerActionStrip"></div>
 
           <div class="manager-section-label">Critical Follow-ups</div>
 
@@ -662,7 +662,7 @@ body{font-family:var(--font);background:var(--page-bg);color:var(--text);-webkit
             <div class="funnel" id="leadFunnelGrid"></div>
           </div>
 
-          <div class="compact-section" id="dataQualitySection" style="display:none!important">
+          <div class="compact-section" id="dataQualitySection">
             <div class="compact-hd">
               <div class="compact-title">🧹 Data Quality Warnings</div>
               <span class="badge ba" id="dataQualityBadge">Auto check</span>
@@ -797,7 +797,7 @@ body{font-family:var(--font);background:var(--page-bg);color:var(--text);-webkit
                 </div>
               </div>
             </div>
-            <div style="display:none!important">
+            <div>
               <div style="padding:10px 18px 6px;display:flex;align-items:center;justify-content:space-between">
                 <span style="font-size:10px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.1em">&#128203; Leads Not Contacted Yet</span>
                 <span class="badge br" id="outreachLeadNotBadge"></span>
@@ -832,7 +832,7 @@ body{font-family:var(--font);background:var(--page-bg);color:var(--text);-webkit
               </tr></thead>
               <tbody id="rankRepBody"></tbody>
             </table></div>
-            <div style="border-top:1px solid var(--border);display:none!important">
+            <div style="border-top:1px solid var(--border)">
               <div style="padding:10px 18px 6px;display:flex;align-items:center;justify-content:space-between">
                 <span style="font-size:10px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.1em">&#128203; Untouched Rank A Accounts</span>
                 <span class="badge br" id="untouchedABadge"></span>
@@ -841,7 +841,7 @@ body{font-family:var(--font);background:var(--page-bg);color:var(--text);-webkit
               <div id="untouchedAMore" style="display:none"><table class="tbl"><tbody id="untouchedABodyMore"></tbody></table></div>
               <button class="see-more" id="untouchedAToggle" style="display:none" onclick="toggleUntouched('A')">&#9660; Show more</button>
             </div>
-            <div style="border-top:1px solid var(--border);display:none!important">
+            <div style="border-top:1px solid var(--border)">
               <div style="padding:10px 18px 6px;display:flex;align-items:center;justify-content:space-between">
                 <span style="font-size:10px;font-weight:700;color:var(--amber);text-transform:uppercase;letter-spacing:.1em">&#128203; Untouched Rank B Accounts</span>
                 <span class="badge ba" id="untouchedBBadge"></span>
@@ -850,7 +850,7 @@ body{font-family:var(--font);background:var(--page-bg);color:var(--text);-webkit
               <div id="untouchedBMore" style="display:none"><table class="tbl"><tbody id="untouchedBBodyMore"></tbody></table></div>
               <button class="see-more" id="untouchedBToggle" style="display:none" onclick="toggleUntouched('B')">&#9660; Show more</button>
             </div>
-            <div style="border-top:1px solid var(--border);display:none!important">
+            <div style="border-top:1px solid var(--border)">
               <div class="card-hd" style="background:transparent;border:none;padding:8px 18px">
                 <span style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.1em">Top 10 Inactive Accounts</span>
               </div>
@@ -3777,5 +3777,159 @@ setInterval(updateClock,60000);
 loadData();
 setInterval(loadData,5*60*1000);
 </script>
+
+
+<!-- ACQUISITION MANAGER ORDER PATCH - only reorders Team Overview sections, no data/logic changes -->
+<script>
+(function(){
+  if (window.__acqManagerOrderPatch) return;
+  window.__acqManagerOrderPatch = true;
+
+  function q(sel, root){ return (root || document).querySelector(sel); }
+  function qa(sel, root){ return Array.from((root || document).querySelectorAll(sel)); }
+  function normText(el){ return (el && el.textContent || '').replace(/\s+/g,' ').trim().toLowerCase(); }
+
+  function findDirectCardByTitle(panel, needle){
+    needle = String(needle || '').toLowerCase();
+    return qa(':scope > .card, :scope > .g2, :scope > div', panel).find(function(el){
+      if (!el) return false;
+      const title = q('.card-title, .sec-title', el);
+      return title && normText(title).includes(needle);
+    });
+  }
+
+  function findDirectElementContaining(panel, selector){
+    return qa(':scope > div', panel).find(function(el){ return el.querySelector && el.querySelector(selector); });
+  }
+
+  function findLabel(panel, needle){
+    needle = String(needle || '').toLowerCase();
+    return qa(':scope > .manager-section-label', panel).find(function(el){ return normText(el).includes(needle); });
+  }
+
+  function ensureLabel(panel, id, text){
+    let el = document.getElementById(id);
+    if (!el) {
+      el = document.createElement('div');
+      el.className = 'manager-section-label';
+      el.id = id;
+      el.textContent = text;
+    } else {
+      el.textContent = text;
+    }
+    return el;
+  }
+
+  function push(nodes, el){
+    if (el && nodes.indexOf(el) === -1) nodes.push(el);
+  }
+
+  function applyAcqManagerOrder(){
+    const panel = document.getElementById('panel-team');
+    if (!panel) return;
+
+    const commandPreview = document.getElementById('commandPreview');
+    const managerSummary = document.getElementById('managerSummaryBar');
+    const actionLabel = findLabel(panel, 'manager action') || ensureLabel(panel, 'managerActionPlanLabel', 'Manager Action Plan');
+    const actionStrip = document.getElementById('managerActionStrip');
+
+    const teamPerfLabel = findLabel(panel, 'detailed performance') || ensureLabel(panel, 'teamPerformanceLabel', 'Team Performance');
+    teamPerfLabel.textContent = 'Team Performance';
+    const perfCard = findDirectCardByTitle(panel, "yesterday's performance");
+    const legacyKpis = document.getElementById('legacyKpiWrap');
+
+    const outreachLabel = findLabel(panel, 'critical follow') || ensureLabel(panel, 'outreachLeadCoverageLabel', 'Outreach / Leads Coverage');
+    outreachLabel.textContent = 'Outreach / Leads Coverage';
+    const priorityLeads = document.getElementById('priorityLeadsSection');
+    const leadFunnel = document.getElementById('leadFunnelSection');
+    const dataQuality = document.getElementById('dataQualitySection');
+    const leadsOverview = findDirectCardByTitle(panel, 'leads overview');
+    const coverageLabel = findLabel(panel, 'coverage control');
+    if (coverageLabel) coverageLabel.textContent = 'Outreach Coverage Details';
+    const outreachCard = document.getElementById('outreachCard');
+
+    const rankLabel = ensureLabel(panel, 'rankCoverageOrderLabel', 'Rank A/B Coverage');
+    const rankCard = document.getElementById('rankCoverageCard');
+
+    const pipelineLabel = ensureLabel(panel, 'pipelineOrderLabel', 'Pipeline / Open Deals');
+    const pipelineCard = findDirectCardByTitle(panel, 'acquisition pipeline');
+    const pipelineByRep = findDirectElementContaining(panel, '#pipeCards');
+
+    const financialLabel = ensureLabel(panel, 'financialOrderLabel', 'Financial Details');
+    const wonLostGrid = qa(':scope > .g2', panel).find(function(el){
+      return el.querySelector('#wonContainer') || el.querySelector('#lostContainer');
+    });
+
+    const aiLabel = ensureLabel(panel, 'aiOrderLabel', 'AI Insights');
+    const insightsCard = findDirectCardByTitle(panel, 'insights & recommendations');
+    const aiCoaching = findDirectCardByTitle(panel, 'ai coaching insights');
+    const aiSales = findDirectCardByTitle(panel, 'ai sales intelligence');
+    const marketNews = findDirectCardByTitle(panel, 'market news');
+
+    const ordered = [];
+    push(ordered, commandPreview);
+    push(ordered, managerSummary);
+    push(ordered, actionLabel);
+    push(ordered, actionStrip);
+    push(ordered, teamPerfLabel);
+    push(ordered, perfCard);
+    push(ordered, legacyKpis);
+    push(ordered, outreachLabel);
+    push(ordered, priorityLeads);
+    push(ordered, leadFunnel);
+    push(ordered, dataQuality);
+    push(ordered, leadsOverview);
+    push(ordered, coverageLabel);
+    push(ordered, outreachCard);
+    push(ordered, rankLabel);
+    push(ordered, rankCard);
+    push(ordered, pipelineLabel);
+    push(ordered, pipelineCard);
+    push(ordered, pipelineByRep);
+    push(ordered, financialLabel);
+    push(ordered, wonLostGrid);
+    push(ordered, aiLabel);
+    push(ordered, insightsCard);
+    push(ordered, aiCoaching);
+    push(ordered, aiSales);
+    push(ordered, marketNews);
+
+    ordered.forEach(function(el){
+      if (!el) return;
+      if (el.parentNode === panel) panel.appendChild(el);
+      else if (!el.parentNode) panel.appendChild(el);
+    });
+  }
+
+  window.applyAcqManagerOrder = applyAcqManagerOrder;
+
+  function scheduleOrder(){
+    setTimeout(applyAcqManagerOrder, 0);
+    setTimeout(applyAcqManagerOrder, 250);
+    setTimeout(applyAcqManagerOrder, 900);
+  }
+
+  document.addEventListener('DOMContentLoaded', scheduleOrder);
+  window.addEventListener('load', scheduleOrder);
+  document.addEventListener('click', function(e){
+    if (e.target && (e.target.closest('#tab-team') || e.target.closest('#side-acquisition') || e.target.closest('.tab-btn'))) {
+      scheduleOrder();
+    }
+  }, true);
+
+  const oldLoadData = window.loadData;
+  if (typeof oldLoadData === 'function') {
+    window.loadData = function(){
+      const result = oldLoadData.apply(this, arguments);
+      if (result && typeof result.then === 'function') result.finally(scheduleOrder);
+      else scheduleOrder();
+      return result;
+    };
+  }
+
+  scheduleOrder();
+})();
+</script>
+
 </body>
 </html>
