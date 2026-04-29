@@ -1469,7 +1469,7 @@ function renderFinancialDetails(){
   }
 
   function getHubSpotUrl(d){
-    return first(d.hubspotUrl, d.url, d.link, d.id ? hubspotRecordUrl("deal", d.id) : null);
+    return first(d.hubspotUrl, d.url, d.link, (d.id && typeof hubspotRecordUrl === "function") ? hubspotRecordUrl("deal", d.id) : null);
   }
 
   function getSignedDate(d){
@@ -4290,6 +4290,213 @@ function enhanceAcquisitionRepFollowupSections(){
 })();
 
 
+
+
+
+/* ═══════════════════════════════════════════
+   HARD NAVIGATION ROUTER FIX — Acquisition and Retention isolated
+   This prevents Acquisition tabs from showing Retention content and keeps refresh on the current page.
+   ═══════════════════════════════════════════ */
+(function(){
+  if(window.__talenteraHardRouterFix) return;
+  window.__talenteraHardRouterFix = true;
+
+  if(typeof window.hubspotRecordUrl !== "function"){
+    window.hubspotRecordUrl = function(){ return ""; };
+  }
+
+  var baseRender = window.render;
+  var baseLoadData = window.loadData;
+
+  function q(id){ return document.getElementById(id); }
+  function panels(){ return Array.prototype.slice.call(document.querySelectorAll('.panel')); }
+  function navs(){ return Array.prototype.slice.call(document.querySelectorAll('.nav-item')); }
+  function tabs(){ return Array.prototype.slice.call(document.querySelectorAll('.tab-btn')); }
+  function safeCall(fn){ try{ if(typeof fn === 'function') return fn(); }catch(e){ console.error('[Talentera router]', e); } }
+
+  function hideAllPanels(){ panels().forEach(function(p){ p.classList.remove('active'); }); }
+  function clearActiveNavigation(){ navs().forEach(function(n){ n.classList.remove('active'); }); tabs().forEach(function(t){ t.classList.remove('active'); }); }
+
+  function acquisitionLabel(id){
+    if(id === 'team') return 'Acquisition · Team Overview';
+    if(id === 'financial') return 'Acquisition · Financial Details';
+    var rep = (window.D && D.repData || []).find(function(r){ return String(r.name||'').toLowerCase().replace(/\s/g,'-') === String(id); });
+    return 'Acquisition · ' + (rep ? rep.name : id);
+  }
+
+  function activateAcquisition(id, keepScroll){
+    id = id || 'team';
+    APP_MAIN_PANEL = 'acquisition';
+    APP_ACQ_TAB_ID = id;
+    APP_RETENTION_VIEW = 'overview';
+    APP_RETENTION_OWNER_ID = null;
+    RET_SELECTED_OWNER_ID = null;
+    RETENTION_SUBVIEW = 'acquisition';
+    safeCall(function(){ setRetentionOwnerMode(false); });
+
+    clearActiveNavigation();
+    hideAllPanels();
+
+    var tabsBar = q('tabsBar');
+    if(tabsBar) tabsBar.style.display = 'flex';
+    var repTitle = q('repsSectionTitle');
+    if(repTitle){ repTitle.style.display = 'block'; repTitle.textContent = 'Acquisition Reps'; }
+    var sideLinks = q('sideRepLinks');
+    if(sideLinks) sideLinks.style.display = 'block';
+
+    q('side-acquisition') && q('side-acquisition').classList.add('active');
+    q('tab-' + id) && q('tab-' + id).classList.add('active');
+    q('panel-' + id) && q('panel-' + id).classList.add('active');
+    if(q('side-' + id) && id !== 'financial') q('side-' + id).classList.add('active');
+
+    var title = q('topbarTitle');
+    if(title) title.textContent = acquisitionLabel(id);
+    var sub = q('topbarSub');
+    if(sub){
+      sub.textContent = id === 'financial'
+        ? 'Cashing revenue · Signed contracts · Pending to cash'
+        : (window.D ? ('Updated ' + ((D.meta && D.meta.generatedAt) || '') + ' · Auto-refresh 5min') : 'Loading...');
+    }
+    if(id === 'financial') safeCall(window.renderFinancialDetails);
+    safeCall(window.enhanceAcquisitionInteractiveViews);
+    if(window.orderAcquisitionManagerOverview && id === 'team') setTimeout(window.orderAcquisitionManagerOverview, 0);
+    if(!keepScroll) window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  function activateRetentionOverview(keepScroll){
+    APP_MAIN_PANEL = 'retention';
+    APP_RETENTION_VIEW = 'overview';
+    APP_RETENTION_OWNER_ID = null;
+    RET_SELECTED_OWNER_ID = null;
+    RETENTION_SUBVIEW = 'overview';
+
+    clearActiveNavigation();
+    hideAllPanels();
+
+    var tabsBar = q('tabsBar');
+    if(tabsBar) tabsBar.style.display = 'none';
+    q('side-retention') && q('side-retention').classList.add('active');
+    q('panel-retention') && q('panel-retention').classList.add('active');
+    safeCall(function(){ setRetentionOwnerMode(false); });
+    safeCall(function(){ renderRetentionSidebar('overview'); });
+
+    var title = q('topbarTitle');
+    if(title) title.textContent = 'Retention · Team Overview';
+    var sub = q('topbarSub');
+    if(sub) sub.textContent = (window.R && R.generatedAt) ? ('Updated ' + R.generatedAt + ' · Customer Success') : 'Renewals · Booked · Cashed · Churn · Delayed';
+    safeCall(window.renderRetention);
+    if(!keepScroll) window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  function activateRetentionFinancial(keepScroll){
+    APP_MAIN_PANEL = 'retention';
+    APP_RETENTION_VIEW = 'financial';
+    APP_RETENTION_OWNER_ID = null;
+    RET_SELECTED_OWNER_ID = null;
+    RETENTION_SUBVIEW = 'financial';
+
+    clearActiveNavigation();
+    hideAllPanels();
+
+    var tabsBar = q('tabsBar');
+    if(tabsBar) tabsBar.style.display = 'none';
+    q('side-retention') && q('side-retention').classList.add('active');
+    q('panel-retention-financial') && q('panel-retention-financial').classList.add('active');
+    safeCall(function(){ setRetentionOwnerMode(false); });
+    safeCall(function(){ renderRetentionSidebar('financial'); });
+
+    var title = q('topbarTitle');
+    if(title) title.textContent = 'Retention · Financial Details';
+    var sub = q('topbarSub');
+    if(sub) sub.textContent = 'Booked CY · Cashed CY · renewed value · delayed renewal exposure';
+    safeCall(window.renderRetentionFinancialDetails);
+    if(!keepScroll) window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  function activateRetentionOwner(repId, keepScroll){
+    APP_MAIN_PANEL = 'retention';
+    APP_RETENTION_VIEW = 'owner';
+    APP_RETENTION_OWNER_ID = String(repId || '');
+    RET_SELECTED_OWNER_ID = String(repId || '');
+    RETENTION_SUBVIEW = 'owner';
+    var rep = (window.R && (R.repData || R.ownerMatrix) || []).find(function(r){ return String(r.id) === String(repId); });
+
+    clearActiveNavigation();
+    hideAllPanels();
+
+    var tabsBar = q('tabsBar');
+    if(tabsBar) tabsBar.style.display = 'none';
+    q('side-retention') && q('side-retention').classList.add('active');
+    q('panel-retention') && q('panel-retention').classList.add('active');
+    safeCall(function(){ renderRetentionSidebar('owner'); });
+    safeCall(function(){ setRetentionOwnerMode(true); });
+
+    var title = q('topbarTitle');
+    if(title) title.textContent = 'Retention · ' + (rep ? rep.name : 'Owner');
+    var sub = q('topbarSub');
+    if(sub) sub.textContent = rep ? ((rep.role || 'Owner') + ' · owner page · priority actions, financial movement, activity quality') : 'Owner page';
+    safeCall(window.renderRetention);
+    safeCall(function(){ renderRetentionOwnerDetails(repId); });
+    if(!keepScroll) window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  window.restoreCurrentView = function(options){
+    options = options || {};
+    var y = window.scrollY;
+    var keep = options.keepScroll !== false;
+    if(APP_MAIN_PANEL === 'retention'){
+      if(APP_RETENTION_VIEW === 'financial') activateRetentionFinancial(true);
+      else if(APP_RETENTION_VIEW === 'owner' && APP_RETENTION_OWNER_ID) activateRetentionOwner(APP_RETENTION_OWNER_ID, true);
+      else activateRetentionOverview(true);
+    } else {
+      activateAcquisition(APP_ACQ_TAB_ID || 'team', true);
+    }
+    if(keep) requestAnimationFrame(function(){ window.scrollTo(0, y); });
+  };
+
+  window.switchMainPanel = function(panel){
+    if(panel === 'retention'){
+      if(window.R) safeCall(window.renderRetention);
+      activateRetentionOverview(false);
+      return;
+    }
+    if(window.D && typeof baseRender === 'function') safeCall(baseRender);
+    activateAcquisition('team', false);
+  };
+
+  window.switchTab = function(id){
+    if(!id) id = 'team';
+    if(window.D && !q('panel-' + id) && typeof baseRender === 'function') safeCall(baseRender);
+    activateAcquisition(id, false);
+  };
+
+  window.switchRetentionFinancial = function(){
+    if(window.R) safeCall(window.renderRetentionFinancialDetails);
+    activateRetentionFinancial(false);
+  };
+
+  window.selectRetentionOwner = function(repId){
+    activateRetentionOwner(repId, false);
+  };
+
+  if(typeof baseLoadData === 'function'){
+    window.loadData = async function(){
+      var y = window.scrollY;
+      try{
+        var res = baseLoadData.apply(this, arguments);
+        if(res && typeof res.then === 'function') await res;
+      } finally {
+        window.restoreCurrentView({keepScroll:true});
+        requestAnimationFrame(function(){ window.scrollTo(0, y); });
+      }
+    };
+  }
+
+  // Correct any mixed state from the original first render.
+  setTimeout(function(){ window.restoreCurrentView({keepScroll:true}); }, 0);
+  setTimeout(function(){ window.restoreCurrentView({keepScroll:true}); }, 300);
+  setTimeout(function(){ window.restoreCurrentView({keepScroll:true}); }, 1200);
+})();
 
 /* Single-click mode: filters use the inline acq5HandleClick handler only. Duplicate document click handlers removed. */
 function updateClock(){
