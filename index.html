@@ -3777,95 +3777,123 @@ setInterval(updateClock,60000);
 loadData();
 setInterval(loadData,5*60*1000);
 </script>
+
+
 <script>
-/* Acquisition Team Overview ordering — built on the cleaned version only.
-   Moves existing sections; does not create/re-add removed sections or change data logic. */
+/* FINAL MANAGER ORDER — clean version only.
+   Reorders existing Acquisition Team Overview sections; does not recreate removed sections,
+   does not change data logic, Retention, filters, or rep pages. */
 (function(){
+  var running = false;
   function byId(id){ return document.getElementById(id); }
-  function closestByChild(childId, selector){
-    var el = byId(childId);
-    return el ? el.closest(selector || '.card') : null;
-  }
-  function directChildren(panel){
-    return Array.prototype.filter.call(panel.children || [], function(x){ return x && x.nodeType === 1; });
-  }
+  function cardByChild(id){ var el = byId(id); return el ? el.closest('.card') : null; }
+  function sectionByChild(id){ var el = byId(id); return el ? el.parentElement : null; }
   function labelByText(panel, text){
     text = String(text || '').trim().toLowerCase();
-    return directChildren(panel).find(function(el){
+    return Array.prototype.slice.call(panel.children || []).find(function(el){
       return el.classList && el.classList.contains('manager-section-label') &&
         String(el.textContent || '').trim().toLowerCase() === text;
     }) || null;
   }
-  function appendOnce(panel, el){
-    if(el && el.parentNode === panel) panel.appendChild(el);
+  function moveTopInOrder(panel, items){
+    var frag = document.createDocumentFragment();
+    items.forEach(function(el){
+      if(el && el.parentNode){ frag.appendChild(el); }
+    });
+    panel.insertBefore(frag, panel.firstChild);
   }
   function orderAcquisitionManagerOverview(){
-    var panel = byId('panel-team');
-    if(!panel) return;
+    if(running) return;
+    running = true;
+    try{
+      var panel = byId('panel-team');
+      if(!panel) return;
 
-    var commandPreview = byId('commandPreview');
-    var hiddenSummary = byId('managerSummaryBar');
-    var hiddenActionStrip = byId('managerActionStrip');
-    var hiddenManagerLabel = labelByText(panel, 'Manager Action Plan');
+      var commandPreview = byId('commandPreview');
+      var perfCard = cardByChild('perfBody');
 
-    var criticalLabel = labelByText(panel, 'Critical Follow-ups');
-    var detailedLabel = labelByText(panel, 'Detailed Performance');
-    var coverageLabel = labelByText(panel, 'Coverage Control');
+      var criticalLabel = labelByText(panel, 'Critical Follow-ups');
+      var priorityLeads = byId('priorityLeadsSection');
+      var leadFunnel = byId('leadFunnelSection');
+      var leadsOverview = cardByChild('leadsPeriods');
 
-    var perfCard = closestByChild('perfBody', '.card');
-    var priorityLeads = byId('priorityLeadsSection');
-    var leadFunnel = byId('leadFunnelSection');
-    var dataQuality = byId('dataQualitySection');
-    var legacyKpi = byId('legacyKpiWrap');
-    var recCard = closestByChild('recContainer', '.card');
-    var acquisitionPipeline = closestByChild('pipeHorizContainer', '.card');
-    var openPipeline = closestByChild('pipeCards', 'div');
-    var aiCoaching = closestByChild('aiGrid', '.card');
-    var leadsOverview = closestByChild('leadsPeriods', '.card');
-    var outreach = byId('outreachCard');
-    var rankCoverage = byId('rankCoverageCard');
-    var wonLost = closestByChild('wonContainer', '.g2');
-    var aiSales = closestByChild('aiInsightsContainer', '.card');
-    var marketNews = closestByChild('newsContainer', '.card');
+      var coverageLabel = labelByText(panel, 'Coverage Control');
+      var outreach = byId('outreachCard');
+      var rankCoverage = byId('rankCoverageCard');
 
-    var ordered = [
-      commandPreview,
-      hiddenSummary,
-      hiddenManagerLabel,
-      hiddenActionStrip,
-      detailedLabel,
-      perfCard,
-      criticalLabel,
-      priorityLeads,
-      leadFunnel,
-      dataQuality,
-      leadsOverview,
-      coverageLabel,
-      outreach,
-      rankCoverage,
-      acquisitionPipeline,
-      openPipeline,
-      aiCoaching,
-      wonLost,
-      recCard,
-      aiSales,
-      marketNews,
-      legacyKpi
-    ];
+      var acquisitionPipeline = cardByChild('pipeHorizContainer');
+      var openPipeline = sectionByChild('pipeCards');
+      var aiCoaching = cardByChild('aiGrid');
+      var wonLost = byId('wonContainer') ? byId('wonContainer').closest('.g2') : null;
+      var recCard = cardByChild('recContainer');
+      var aiSales = cardByChild('aiInsightsContainer');
+      var marketNews = cardByChild('newsContainer');
+      var legacyKpi = byId('legacyKpiWrap');
 
-    ordered.forEach(function(el){ appendOnce(panel, el); });
+      // Put the manager decision flow at the very top of Acquisition Team Overview.
+      moveTopInOrder(panel, [
+        commandPreview,              // 1 Today’s Focus + Health Snapshot + Priority Actions
+        perfCard,                    // 2 Team Performance
+        criticalLabel,               // 3 Critical Follow-ups label
+        priorityLeads,               // 4 Priority Leads / SLA
+        leadFunnel,                  // 5 Lead Funnel / Source Performance
+        leadsOverview,               // 6 Leads Overview
+        coverageLabel,               // 7 Coverage Control label
+        outreach,                    // 8 Outreach Coverage
+        rankCoverage,                // 9 Rank A/B Coverage
+        acquisitionPipeline,         // 10 Acquisition Pipeline
+        openPipeline,                // 11 Open Pipeline by Rep
+        aiCoaching,                  // 12 AI Coaching
+        wonLost,                     // 13 Closed Won / Lost
+        recCard,                     // 14 Insights & Recommendations
+        aiSales,                     // 15 AI Sales Insights
+        marketNews,                  // 16 Market News
+        legacyKpi                    // 17 Detailed KPI Cards collapsed at bottom
+      ]);
+    } finally {
+      running = false;
+    }
   }
 
   window.orderAcquisitionManagerOverview = orderAcquisitionManagerOverview;
 
-  if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', orderAcquisitionManagerOverview);
-  } else {
-    orderAcquisitionManagerOverview();
+  function scheduleOrder(){
+    setTimeout(orderAcquisitionManagerOverview, 0);
+    setTimeout(orderAcquisitionManagerOverview, 250);
+    setTimeout(orderAcquisitionManagerOverview, 900);
   }
-  setTimeout(orderAcquisitionManagerOverview, 300);
-  setTimeout(orderAcquisitionManagerOverview, 1500);
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', scheduleOrder);
+  } else {
+    scheduleOrder();
+  }
+
+  // Re-apply after refresh/render without touching the original logic.
+  if(typeof window.loadData === 'function' && !window.loadData.__managerOrderWrapped){
+    var oldLoadData = window.loadData;
+    window.loadData = function(){
+      var result = oldLoadData.apply(this, arguments);
+      try{
+        if(result && typeof result.then === 'function') result.then(scheduleOrder).catch(scheduleOrder);
+        else scheduleOrder();
+      }catch(e){ scheduleOrder(); }
+      return result;
+    };
+    window.loadData.__managerOrderWrapped = true;
+  }
+
+  if(typeof window.switchTab === 'function' && !window.switchTab.__managerOrderWrapped){
+    var oldSwitchTab = window.switchTab;
+    window.switchTab = function(){
+      var result = oldSwitchTab.apply(this, arguments);
+      scheduleOrder();
+      return result;
+    };
+    window.switchTab.__managerOrderWrapped = true;
+  }
 })();
 </script>
+
 </body>
 </html>
