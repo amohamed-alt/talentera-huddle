@@ -1,8 +1,8 @@
 {
-  "yesterdayLabel": "Thursday, 30 Apr 2026",
+  "yesterdayLabel": "Friday, 1 May 2026",
   "meta": {
-    "yesterdayLabel": "Thursday, 30 Apr 2026",
-    "generatedAt": "02:06 AM"
+    "yesterdayLabel": "Friday, 1 May 2026",
+    "generatedAt": "02:07 AM"
   },
   "debug": {
     "total_ranked": 850,
@@ -83,42 +83,42 @@
   },
   "kpi": {
     "yesterday": {
-      "calls": 64,
-      "connected": 25,
-      "connRate": 39,
-      "meetings": 5,
-      "openDeals": 2,
-      "openDealsSnap": 248,
-      "pipeline": 4739612.448154381,
-      "leads": 5,
-      "wonAmt": 0,
-      "wonDeals": 0,
-      "lost": 1,
-      "lostAmt": 0
-    },
-    "mtd": {
-      "calls": 0,
+      "calls": 1,
       "connected": 0,
       "connRate": 0,
       "meetings": 0,
       "openDeals": 0,
       "openDealsSnap": 248,
       "pipeline": 4739612.448154381,
-      "leads": 0,
+      "leads": 1,
+      "wonAmt": 0,
+      "wonDeals": 0,
+      "lost": 0,
+      "lostAmt": 0
+    },
+    "mtd": {
+      "calls": 1,
+      "connected": 0,
+      "connRate": 0,
+      "meetings": 0,
+      "openDeals": 0,
+      "openDealsSnap": 248,
+      "pipeline": 4739612.448154381,
+      "leads": 1,
       "wonAmt": 0,
       "wonDeals": 0,
       "lost": 0,
       "lostAmt": 0
     },
     "ytd": {
-      "calls": 5278,
+      "calls": 5279,
       "connected": 2031,
       "connRate": 38,
       "meetings": 694,
       "openDeals": 702,
       "openDealsSnap": 248,
       "pipeline": 4739612.448154381,
-      "leads": 757,
+      "leads": 759,
       "wonAmt": 261311.72,
       "wonDeals": 8,
       "lost": 103,
@@ -126,13 +126,13 @@
     }
   },
   "team": {
-    "callsYest": 64,
-    "callsConn": 25,
-    "callsMTD": 0,
+    "callsYest": 1,
+    "callsConn": 0,
+    "callsMTD": 1,
     "callsMTDConn": 0,
-    "callsYTD": 5278,
+    "callsYTD": 5279,
     "callsYTDConn": 2031,
-    "meetings": 5,
+    "meetings": 0,
     "meetingsMTD": 0,
     "meetingsYTD": 694,
     "openDeals": 248,
@@ -145,45 +145,45 @@
     "wonAmtYTD": 261311.72,
     "lost": 0,
     "lostAmt": 0,
-    "lostYest": 1,
+    "lostYest": 0,
     "lostAmtYest": 0,
     "lostYTD": 103,
     "lostAmtYTD": 1657664.98083,
-    "leadsYest": 5,
-    "leadsYestInbound": 2,
-    "leadsYestOutbound": 3,
-    "leadsMTD": 0,
-    "leadsMTDInbound": 0,
+    "leadsYest": 1,
+    "leadsYestInbound": 1,
+    "leadsYestOutbound": 0,
+    "leadsMTD": 1,
+    "leadsMTDInbound": 1,
     "leadsMTDOutbound": 0,
-    "leadsYTD": 757,
-    "leadsYTDInbound": 115,
+    "leadsYTD": 759,
+    "leadsYTDInbound": 117,
     "leadsYTDOutbound": 642,
-    "connRateYest": 39,
+    "connRateYest": 0,
     "connRateMTD": 0,
     "connRateYTD": 38
   },
   "teamLeadActivities": {
-    "callsYest": 64,
-    "callsMTD": 0,
-    "callsYTD": 5278,
-    "meetingsYest": 5,
+    "callsYest": 1,
+    "callsMTD": 1,
+    "callsYTD": 5279,
+    "meetingsYest": 0,
     "meetingsMTD": 0,
     "meetingsYTD": 694
   },
   "teamLeadQuality": {
-    "statusNew": 29,
-    "statusQualified": 161,
+    "statusNew": 30,
+    "statusQualified": 160,
     "statusUnqualified": 0,
     "statusExistingClient": 342,
     "statusOther": 243,
-    "sourceInbound": 115,
+    "sourceInbound": 117,
     "sourceOutbound": 642,
     "sourceImport": 0
   },
   "teamLeadFunnel": {
-    "created": 115,
+    "created": 117,
     "contacted": 0,
-    "converted": 115,
+    "converted": 117,
     "conversionRate": 100,
     "contactRate": 0
   },
@@ -261,18 +261,18 @@
       "color": "#7c3aed",
       "type": "acq",
       "calls": {
-        "yest": 35,
-        "yestConn": 10,
-        "mtd": 0,
+        "yest": 1,
+        "yestConn": 0,
+        "mtd": 1,
         "mtdConn": 0,
-        "ytd": 2832,
+        "ytd": 2833,
         "ytdConn": 870
       },
-      "connRateYest": 29,
+      "connRateYest": 0,
       "connRateMTD": 0,
       "connRateYTD": 31,
       "meetings": {
-        "yest": 1,
+        "yest": 0,
         "mtd": 0,
         "ytd": 150
       },
@@ -1121,49 +1121,56 @@
       "cold": [
         {
           "name": "IssaHolding - New Deal",
-          "days": 65,
+          "days": 66,
           "amount": 24836,
           "ownerName": "Marita Chedid",
           "hubspotUrl": null
         },
         {
+          "name": " شركة الركيزة لخدمات التشغيل - New Deal",
+          "days": 15,
+          "amount": 6000,
+          "ownerName": "Marita Chedid",
+          "hubspotUrl": null
+        },
+        {
           "name": "Tanmia- New Deal",
-          "days": 51,
+          "days": 52,
           "amount": 6900,
           "ownerName": "Marita Chedid",
           "hubspotUrl": null
         },
         {
           "name": "B D Holding - New Deal",
-          "days": 16,
+          "days": 17,
           "amount": 7600,
           "ownerName": "Marita Chedid",
           "hubspotUrl": null
         },
         {
           "name": "SHBC Mechanical Engineering - New Deal",
-          "days": 17,
+          "days": 18,
           "amount": 38850,
           "ownerName": "Marita Chedid",
           "hubspotUrl": null
         },
         {
-          "name": "Harb Electric - New Deal",
-          "days": 29,
-          "amount": 10500,
+          "name": "Bikhazi Medical Group- New Deal",
+          "days": 15,
+          "amount": 5225,
           "ownerName": "Marita Chedid",
           "hubspotUrl": null
         },
         {
           "name": "Bellevue Medical Center- New Deal",
-          "days": 35,
+          "days": 36,
           "amount": 10075,
           "ownerName": "Marita Chedid",
           "hubspotUrl": null
         },
         {
           "name": "District Company- New Deal",
-          "days": 35,
+          "days": 36,
           "amount": 0,
           "ownerName": "Marita Chedid",
           "hubspotUrl": null
@@ -1174,7 +1181,16 @@
           "name": "IssaHolding - New Deal",
           "amount": 24836,
           "reasons": [
-            "No activity for 65 days"
+            "No activity for 66 days"
+          ],
+          "ownerName": "Marita Chedid",
+          "hubspotUrl": null
+        },
+        {
+          "name": " شركة الركيزة لخدمات التشغيل - New Deal",
+          "amount": 6000,
+          "reasons": [
+            "No activity for 15 days"
           ],
           "ownerName": "Marita Chedid",
           "hubspotUrl": null
@@ -1183,7 +1199,7 @@
           "name": "Tanmia- New Deal",
           "amount": 6900,
           "reasons": [
-            "No activity for 51 days"
+            "No activity for 52 days"
           ],
           "ownerName": "Marita Chedid",
           "hubspotUrl": null
@@ -1192,7 +1208,7 @@
           "name": "B D Holding - New Deal",
           "amount": 7600,
           "reasons": [
-            "No activity for 16 days"
+            "No activity for 17 days"
           ],
           "ownerName": "Marita Chedid",
           "hubspotUrl": null
@@ -1201,16 +1217,16 @@
           "name": "SHBC Mechanical Engineering - New Deal",
           "amount": 38850,
           "reasons": [
-            "No activity for 17 days"
+            "No activity for 18 days"
           ],
           "ownerName": "Marita Chedid",
           "hubspotUrl": null
         },
         {
-          "name": "Harb Electric - New Deal",
-          "amount": 10500,
+          "name": "Bikhazi Medical Group- New Deal",
+          "amount": 5225,
           "reasons": [
-            "No activity for 29 days"
+            "No activity for 15 days"
           ],
           "ownerName": "Marita Chedid",
           "hubspotUrl": null
@@ -1219,7 +1235,7 @@
           "name": "Bellevue Medical Center- New Deal",
           "amount": 10075,
           "reasons": [
-            "No activity for 35 days"
+            "No activity for 36 days"
           ],
           "ownerName": "Marita Chedid",
           "hubspotUrl": null
@@ -1228,26 +1244,26 @@
           "name": "District Company- New Deal",
           "amount": 0,
           "reasons": [
-            "No activity for 35 days"
+            "No activity for 36 days"
           ],
           "ownerName": "Marita Chedid",
           "hubspotUrl": null
         }
       ],
-      "leadsYest": 5,
-      "leadsYestInbound": 2,
-      "leadsYestOutbound": 3,
-      "leadsMTD": 0,
-      "leadsMTDInbound": 0,
+      "leadsYest": 1,
+      "leadsYestInbound": 1,
+      "leadsYestOutbound": 0,
+      "leadsMTD": 1,
+      "leadsMTDInbound": 1,
       "leadsMTDOutbound": 0,
-      "leadsYTD": 341,
-      "leadsYTDInbound": 18,
+      "leadsYTD": 342,
+      "leadsYTDInbound": 19,
       "leadsYTDOutbound": 323,
       "leadActivities": {
-        "callsYest": 35,
-        "callsMTD": 0,
-        "callsYTD": 2832,
-        "meetingsYest": 1,
+        "callsYest": 1,
+        "callsMTD": 1,
+        "callsYTD": 2833,
+        "meetingsYest": 0,
         "meetingsMTD": 0,
         "meetingsYTD": 150
       },
@@ -1257,14 +1273,14 @@
         "statusUnqualified": 0,
         "statusExistingClient": 1,
         "statusOther": 14,
-        "sourceInbound": 18,
+        "sourceInbound": 19,
         "sourceOutbound": 323,
         "sourceImport": 0
       },
       "leadFunnel": {
-        "created": 18,
+        "created": 19,
         "contacted": 0,
-        "converted": 18,
+        "converted": 19,
         "conversionRate": 100,
         "contactRate": 0
       },
@@ -1361,7 +1377,7 @@
           "stage": "Quotation Sent",
           "nextActivity": null,
           "isStuck": false,
-          "isCold": true
+          "isCold": false
         },
         {
           "id": "493969907904",
@@ -1380,14 +1396,14 @@
       "color": "#1d4ed8",
       "type": "acq",
       "calls": {
-        "yest": 1,
-        "yestConn": 1,
+        "yest": 0,
+        "yestConn": 0,
         "mtd": 0,
         "mtdConn": 0,
         "ytd": 195,
         "ytdConn": 133
       },
-      "connRateYest": 100,
+      "connRateYest": 0,
       "connRateMTD": 0,
       "connRateYTD": 68,
       "meetings": {
@@ -2457,546 +2473,553 @@
       "cold": [
         {
           "name": "Green building solutions company | Abdullah Alsughaier | ",
-          "days": 25,
+          "days": 26,
           "amount": 0,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "Saudi National Bank SNB - New Deal",
-          "days": 108,
+          "days": 109,
           "amount": 23069.55,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "Al-Qahtani Holding - New Deal",
-          "days": 196,
+          "days": 197,
           "amount": 0,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "Wadi Taiba Company - New Deal",
-          "days": 100,
+          "days": 101,
           "amount": 7733,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "D360 Bank - New Deal",
-          "days": 101,
+          "days": 102,
           "amount": 26670,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "almoosahospital.com.sa - New Deal",
-          "days": 193,
+          "days": 194,
           "amount": 20000,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "Al- Othman Holding - New Deal",
-          "days": 239,
+          "days": 240,
           "amount": 8667.75,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "MARCO - New Deal",
-          "days": 82,
+          "days": 83,
           "amount": 10401.3,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "Al-Qahtani Holding - New Deal",
-          "days": 18,
+          "days": 19,
           "amount": 17000,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "SAUDIA REAL ESTATE - New Deal",
-          "days": 308,
+          "days": 309,
           "amount": 14951.86875,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "Al Jazeera Paints Limited - New Deal",
-          "days": 95,
+          "days": 96,
           "amount": 15000,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "Coca Cola Bottling Co. Of Saudi Arabia - New Deal",
-          "days": 99,
+          "days": 100,
           "amount": 13335,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "MEMF Electrical Industries Co - New Deal",
-          "days": 214,
+          "days": 215,
           "amount": 9467.85,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "Herfy Food Services Co. Ltd. - New Deal",
-          "days": 53,
+          "days": 54,
           "amount": 12001.5,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "Dukan Retailing Company - New Deal",
-          "days": 203,
+          "days": 204,
           "amount": 7200.9,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "MGC - New Deal",
-          "days": 214,
+          "days": 215,
           "amount": 11121.39,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "IBN ROSHD Educational Holding Company - New Deal",
-          "days": 214,
+          "days": 215,
           "amount": 8321.04,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "Abdulla Fouad Group - New Deal",
-          "days": 221,
+          "days": 222,
           "amount": 13201.65,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "المركز الوطني للتنافسية - New Deal",
-          "days": 218,
+          "days": 219,
           "amount": 8133,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "Ninja - New Deal",
-          "days": 169,
+          "days": 170,
           "amount": 14000,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "ABSAL PAUL Contracting Co. - New Deal",
-          "days": 16,
+          "days": 17,
           "amount": 10668,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "fad international company - New Deal",
-          "days": 248,
+          "days": 249,
           "amount": 7200,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "SAFE National Security Services Company -Evalufy New Deal",
-          "days": 101,
+          "days": 102,
           "amount": 16000,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "Stom - Saudi Tabreed Co. - New Deal",
-          "days": 106,
+          "days": 107,
           "amount": 53333,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "Reach - New Deal",
-          "days": 24,
+          "days": 25,
           "amount": 20000,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "تالنت سكوير - New Deal",
-          "days": 239,
+          "days": 240,
           "amount": 0,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "Applus - New Deal",
-          "days": 114,
+          "days": 115,
           "amount": 23000,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "Umm Al-Qura University - New Deal",
-          "days": 121,
+          "days": 122,
           "amount": 30000,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "abc - New Deal",
-          "days": 206,
+          "days": 207,
           "amount": 5600.7,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "Hayat Hospitals - New Deal",
-          "days": 53,
+          "days": 54,
           "amount": 28000,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "General Authority of Civil Aviation (GACA) - New Deal",
-          "days": 178,
+          "days": 179,
           "amount": 58813.7508,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "tree - New Deal",
-          "days": 22,
+          "days": 23,
           "amount": 26000,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "King Saud University - New Deal",
-          "days": 196,
+          "days": 197,
           "amount": 23066,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "SSC Company",
-          "days": 149,
+          "days": 150,
           "amount": 12000,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "Alsalama Hospital - New Deal",
-          "days": 200,
+          "days": 201,
           "amount": 0,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "ITSC - New Deal",
-          "days": 203,
+          "days": 204,
           "amount": 20000,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "Front End Limited Company - New Deal",
-          "days": 57,
+          "days": 58,
           "amount": 16000,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "Humain AI - New Deal",
-          "days": 99,
+          "days": 100,
           "amount": 19469.1,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "Tamkeen Technologies - New Deal",
-          "days": 157,
+          "days": 158,
           "amount": 6007.1508,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "fives group - New Deal",
-          "days": 197,
+          "days": 198,
           "amount": 5000,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "Racing Force Group - New Deal",
-          "days": 178,
+          "days": 179,
           "amount": 17000,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "Bahrain Credit - New Deal",
-          "days": 203,
+          "days": 204,
           "amount": 10000,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "سارمكس,صروح المشاريع - New Deal",
-          "days": 200,
+          "days": 201,
           "amount": 20000,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "Al Nasser Group - New Deal",
-          "days": 198,
+          "days": 199,
           "amount": 2075.92,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "Sahara Net - New Deal",
-          "days": 108,
+          "days": 109,
           "amount": 2400.92,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "InPro - New Deal",
-          "days": 175,
+          "days": 176,
           "amount": 5075.92,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "Enayah Health Society ",
-          "days": 25,
+          "days": 26,
           "amount": 2293.62,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "Masar Engineer - New Deal",
-          "days": 175,
+          "days": 176,
           "amount": 6000.75,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "Innovative Solutions - New Deal",
-          "days": 169,
+          "days": 170,
           "amount": 13000,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "Sultan bin Abdulaziz Humanitarian City - New Deal",
-          "days": 107,
+          "days": 108,
           "amount": 23066,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "The HR Helpdesk - New Deal",
-          "days": 93,
+          "days": 94,
           "amount": 12000,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "Infinite pl - New Deal",
-          "days": 113,
+          "days": 114,
           "amount": 13333,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "6 Pence - New Deal",
-          "days": 108,
+          "days": 109,
           "amount": 10000,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "Kaza-meza",
-          "days": 154,
+          "days": 155,
           "amount": 2000,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "Ghanem - New Deal",
-          "days": 115,
+          "days": 116,
           "amount": 2000,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "Saudi Aramco Base Oil - Luberef - New Deal",
-          "days": 31,
+          "days": 32,
           "amount": 20000,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "AH - New Deal",
-          "days": 109,
+          "days": 110,
           "amount": 12001.5,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "الخليج - New Deal",
-          "days": 100,
+          "days": 101,
           "amount": 8000,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "MECL Sony - New Deal",
-          "days": 113,
+          "days": 114,
           "amount": 10666,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "Better Real Estate - New Deal",
-          "days": 97,
+          "days": 98,
           "amount": 8001,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "Stc Solutions - Samref Deal",
-          "days": 15,
+          "days": 16,
           "amount": 37333,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "American Academy - Talentera",
-          "days": 18,
+          "days": 19,
           "amount": 14000,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "Amal - New Deal",
-          "days": 74,
+          "days": 75,
           "amount": 0,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "AhmedDaoud - New Deal",
-          "days": 64,
+          "days": 65,
           "amount": 0,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "EmilyGrace - New Deal",
-          "days": 58,
+          "days": 59,
           "amount": 0,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "AlexanderLopez - New Deal",
-          "days": 15,
-          "amount": 0,
-          "ownerName": "Zein Fares",
-          "hubspotUrl": null
-        },
-        {
-          "name": "AhmedDAOUD - New Deal",
-          "days": 36,
-          "amount": 0,
-          "ownerName": "Zein Fares",
-          "hubspotUrl": null
-        },
-        {
-          "name": "BwaTech- New Deal",
-          "days": 35,
-          "amount": 0,
-          "ownerName": "Zein Fares",
-          "hubspotUrl": null
-        },
-        {
-          "name": "Bussma real estate- New Deal",
-          "days": 22,
-          "amount": 0,
-          "ownerName": "Zein Fares",
-          "hubspotUrl": null
-        },
-        {
-          "name": "Turbo United Trading Com- New Deal",
-          "days": 330,
-          "amount": 0,
-          "ownerName": "Zein Fares",
-          "hubspotUrl": null
-        },
-        {
-          "name": "Disty- New Deal",
-          "days": 30,
-          "amount": 0,
-          "ownerName": "Zein Fares",
-          "hubspotUrl": null
-        },
-        {
-          "name": "صرح- New Deal",
           "days": 16,
           "amount": 0,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
+          "name": "AhmedDAOUD - New Deal",
+          "days": 37,
+          "amount": 0,
+          "ownerName": "Zein Fares",
+          "hubspotUrl": null
+        },
+        {
+          "name": "BwaTech- New Deal",
+          "days": 36,
+          "amount": 0,
+          "ownerName": "Zein Fares",
+          "hubspotUrl": null
+        },
+        {
+          "name": "Bussma real estate- New Deal",
+          "days": 23,
+          "amount": 0,
+          "ownerName": "Zein Fares",
+          "hubspotUrl": null
+        },
+        {
+          "name": "Turbo United Trading Com- New Deal",
+          "days": 331,
+          "amount": 0,
+          "ownerName": "Zein Fares",
+          "hubspotUrl": null
+        },
+        {
+          "name": "Disty- New Deal",
+          "days": 31,
+          "amount": 0,
+          "ownerName": "Zein Fares",
+          "hubspotUrl": null
+        },
+        {
+          "name": "SAJA- New Deal",
+          "days": 15,
+          "amount": 0,
+          "ownerName": "Zein Fares",
+          "hubspotUrl": null
+        },
+        {
+          "name": "صرح- New Deal",
+          "days": 17,
+          "amount": 0,
+          "ownerName": "Zein Fares",
+          "hubspotUrl": null
+        },
+        {
           "name": "Bureau Veritas- New Deal",
-          "days": 22,
+          "days": 23,
           "amount": 0,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "Al Munajem Foods Company- New Deal",
-          "days": 22,
+          "days": 23,
           "amount": 0,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "Master Works- New Deal",
-          "days": 18,
+          "days": 19,
           "amount": 0,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "اصل البرجر - New Deal",
-          "days": 84,
+          "days": 85,
           "amount": 11000,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "CLA - New Deal",
-          "days": 87,
+          "days": 88,
           "amount": 3300,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "ZOMCO - Core ATS",
-          "days": 53,
+          "days": 54,
           "amount": 7734.3,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3007,7 +3030,7 @@
           "name": "Green building solutions company | Abdullah Alsughaier | ",
           "amount": 0,
           "reasons": [
-            "No activity for 25 days"
+            "No activity for 26 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3016,7 +3039,7 @@
           "name": "Saudi National Bank SNB - New Deal",
           "amount": 23069.55,
           "reasons": [
-            "No activity for 108 days"
+            "No activity for 109 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3025,7 +3048,7 @@
           "name": "Al-Qahtani Holding - New Deal",
           "amount": 0,
           "reasons": [
-            "No activity for 196 days"
+            "No activity for 197 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3034,7 +3057,7 @@
           "name": "Wadi Taiba Company - New Deal",
           "amount": 7733,
           "reasons": [
-            "No activity for 100 days"
+            "No activity for 101 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3043,7 +3066,7 @@
           "name": "D360 Bank - New Deal",
           "amount": 26670,
           "reasons": [
-            "No activity for 101 days"
+            "No activity for 102 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3052,7 +3075,7 @@
           "name": "almoosahospital.com.sa - New Deal",
           "amount": 20000,
           "reasons": [
-            "No activity for 193 days"
+            "No activity for 194 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3061,7 +3084,7 @@
           "name": "Al- Othman Holding - New Deal",
           "amount": 8667.75,
           "reasons": [
-            "No activity for 239 days"
+            "No activity for 240 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3070,7 +3093,7 @@
           "name": "MARCO - New Deal",
           "amount": 10401.3,
           "reasons": [
-            "No activity for 82 days"
+            "No activity for 83 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3079,7 +3102,7 @@
           "name": "Al-Qahtani Holding - New Deal",
           "amount": 17000,
           "reasons": [
-            "No activity for 18 days"
+            "No activity for 19 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3088,7 +3111,7 @@
           "name": "SAUDIA REAL ESTATE - New Deal",
           "amount": 14951.86875,
           "reasons": [
-            "No activity for 308 days"
+            "No activity for 309 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3097,7 +3120,7 @@
           "name": "Al Jazeera Paints Limited - New Deal",
           "amount": 15000,
           "reasons": [
-            "No activity for 95 days"
+            "No activity for 96 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3106,7 +3129,7 @@
           "name": "Coca Cola Bottling Co. Of Saudi Arabia - New Deal",
           "amount": 13335,
           "reasons": [
-            "No activity for 99 days"
+            "No activity for 100 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3115,7 +3138,7 @@
           "name": "MEMF Electrical Industries Co - New Deal",
           "amount": 9467.85,
           "reasons": [
-            "No activity for 214 days"
+            "No activity for 215 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3124,7 +3147,7 @@
           "name": "Herfy Food Services Co. Ltd. - New Deal",
           "amount": 12001.5,
           "reasons": [
-            "No activity for 53 days"
+            "No activity for 54 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3133,7 +3156,7 @@
           "name": "Dukan Retailing Company - New Deal",
           "amount": 7200.9,
           "reasons": [
-            "No activity for 203 days"
+            "No activity for 204 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3142,7 +3165,7 @@
           "name": "MGC - New Deal",
           "amount": 11121.39,
           "reasons": [
-            "No activity for 214 days"
+            "No activity for 215 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3151,7 +3174,7 @@
           "name": "IBN ROSHD Educational Holding Company - New Deal",
           "amount": 8321.04,
           "reasons": [
-            "No activity for 214 days"
+            "No activity for 215 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3160,7 +3183,7 @@
           "name": "Abdulla Fouad Group - New Deal",
           "amount": 13201.65,
           "reasons": [
-            "No activity for 221 days"
+            "No activity for 222 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3169,7 +3192,7 @@
           "name": "المركز الوطني للتنافسية - New Deal",
           "amount": 8133,
           "reasons": [
-            "No activity for 218 days"
+            "No activity for 219 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3178,7 +3201,7 @@
           "name": "Ninja - New Deal",
           "amount": 14000,
           "reasons": [
-            "No activity for 169 days"
+            "No activity for 170 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3187,7 +3210,7 @@
           "name": "ABSAL PAUL Contracting Co. - New Deal",
           "amount": 10668,
           "reasons": [
-            "No activity for 16 days"
+            "No activity for 17 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3196,7 +3219,7 @@
           "name": "fad international company - New Deal",
           "amount": 7200,
           "reasons": [
-            "No activity for 248 days"
+            "No activity for 249 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3205,7 +3228,7 @@
           "name": "SAFE National Security Services Company -Evalufy New Deal",
           "amount": 16000,
           "reasons": [
-            "No activity for 101 days"
+            "No activity for 102 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3214,7 +3237,7 @@
           "name": "Stom - Saudi Tabreed Co. - New Deal",
           "amount": 53333,
           "reasons": [
-            "No activity for 106 days"
+            "No activity for 107 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3223,7 +3246,7 @@
           "name": "Reach - New Deal",
           "amount": 20000,
           "reasons": [
-            "No activity for 24 days"
+            "No activity for 25 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3232,7 +3255,7 @@
           "name": "تالنت سكوير - New Deal",
           "amount": 0,
           "reasons": [
-            "No activity for 239 days"
+            "No activity for 240 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3241,7 +3264,7 @@
           "name": "Applus - New Deal",
           "amount": 23000,
           "reasons": [
-            "No activity for 114 days"
+            "No activity for 115 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3250,7 +3273,7 @@
           "name": "Umm Al-Qura University - New Deal",
           "amount": 30000,
           "reasons": [
-            "No activity for 121 days"
+            "No activity for 122 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3259,7 +3282,7 @@
           "name": "abc - New Deal",
           "amount": 5600.7,
           "reasons": [
-            "No activity for 206 days"
+            "No activity for 207 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3268,7 +3291,7 @@
           "name": "Hayat Hospitals - New Deal",
           "amount": 28000,
           "reasons": [
-            "No activity for 53 days"
+            "No activity for 54 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3277,7 +3300,7 @@
           "name": "General Authority of Civil Aviation (GACA) - New Deal",
           "amount": 58813.7508,
           "reasons": [
-            "No activity for 178 days"
+            "No activity for 179 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3286,7 +3309,7 @@
           "name": "tree - New Deal",
           "amount": 26000,
           "reasons": [
-            "No activity for 22 days"
+            "No activity for 23 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3295,7 +3318,7 @@
           "name": "King Saud University - New Deal",
           "amount": 23066,
           "reasons": [
-            "No activity for 196 days"
+            "No activity for 197 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3304,7 +3327,7 @@
           "name": "SSC Company",
           "amount": 12000,
           "reasons": [
-            "No activity for 149 days"
+            "No activity for 150 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3313,7 +3336,7 @@
           "name": "Alsalama Hospital - New Deal",
           "amount": 0,
           "reasons": [
-            "No activity for 200 days"
+            "No activity for 201 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3322,7 +3345,7 @@
           "name": "ITSC - New Deal",
           "amount": 20000,
           "reasons": [
-            "No activity for 203 days"
+            "No activity for 204 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3331,7 +3354,7 @@
           "name": "Front End Limited Company - New Deal",
           "amount": 16000,
           "reasons": [
-            "No activity for 57 days"
+            "No activity for 58 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3340,7 +3363,7 @@
           "name": "Humain AI - New Deal",
           "amount": 19469.1,
           "reasons": [
-            "No activity for 99 days"
+            "No activity for 100 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3349,7 +3372,7 @@
           "name": "Tamkeen Technologies - New Deal",
           "amount": 6007.1508,
           "reasons": [
-            "No activity for 157 days"
+            "No activity for 158 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3358,7 +3381,7 @@
           "name": "fives group - New Deal",
           "amount": 5000,
           "reasons": [
-            "No activity for 197 days"
+            "No activity for 198 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3367,7 +3390,7 @@
           "name": "Racing Force Group - New Deal",
           "amount": 17000,
           "reasons": [
-            "No activity for 178 days"
+            "No activity for 179 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3376,7 +3399,7 @@
           "name": "Bahrain Credit - New Deal",
           "amount": 10000,
           "reasons": [
-            "No activity for 203 days"
+            "No activity for 204 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3385,7 +3408,7 @@
           "name": "سارمكس,صروح المشاريع - New Deal",
           "amount": 20000,
           "reasons": [
-            "No activity for 200 days"
+            "No activity for 201 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3394,7 +3417,7 @@
           "name": "Al Nasser Group - New Deal",
           "amount": 2075.92,
           "reasons": [
-            "No activity for 198 days"
+            "No activity for 199 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3403,7 +3426,7 @@
           "name": "Sahara Net - New Deal",
           "amount": 2400.92,
           "reasons": [
-            "No activity for 108 days"
+            "No activity for 109 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3412,7 +3435,7 @@
           "name": "InPro - New Deal",
           "amount": 5075.92,
           "reasons": [
-            "No activity for 175 days"
+            "No activity for 176 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3421,7 +3444,7 @@
           "name": "Enayah Health Society ",
           "amount": 2293.62,
           "reasons": [
-            "No activity for 25 days"
+            "No activity for 26 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3430,7 +3453,7 @@
           "name": "Masar Engineer - New Deal",
           "amount": 6000.75,
           "reasons": [
-            "No activity for 175 days"
+            "No activity for 176 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3439,7 +3462,7 @@
           "name": "Innovative Solutions - New Deal",
           "amount": 13000,
           "reasons": [
-            "No activity for 169 days"
+            "No activity for 170 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3448,7 +3471,7 @@
           "name": "Sultan bin Abdulaziz Humanitarian City - New Deal",
           "amount": 23066,
           "reasons": [
-            "No activity for 107 days"
+            "No activity for 108 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3457,7 +3480,7 @@
           "name": "The HR Helpdesk - New Deal",
           "amount": 12000,
           "reasons": [
-            "No activity for 93 days"
+            "No activity for 94 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3466,7 +3489,7 @@
           "name": "Infinite pl - New Deal",
           "amount": 13333,
           "reasons": [
-            "No activity for 113 days"
+            "No activity for 114 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3475,7 +3498,7 @@
           "name": "6 Pence - New Deal",
           "amount": 10000,
           "reasons": [
-            "No activity for 108 days"
+            "No activity for 109 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3484,7 +3507,7 @@
           "name": "Kaza-meza",
           "amount": 2000,
           "reasons": [
-            "No activity for 154 days"
+            "No activity for 155 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3493,7 +3516,7 @@
           "name": "Ghanem - New Deal",
           "amount": 2000,
           "reasons": [
-            "No activity for 115 days"
+            "No activity for 116 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3502,7 +3525,7 @@
           "name": "Saudi Aramco Base Oil - Luberef - New Deal",
           "amount": 20000,
           "reasons": [
-            "No activity for 31 days"
+            "No activity for 32 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3511,7 +3534,7 @@
           "name": "AH - New Deal",
           "amount": 12001.5,
           "reasons": [
-            "No activity for 109 days"
+            "No activity for 110 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3520,7 +3543,7 @@
           "name": "الخليج - New Deal",
           "amount": 8000,
           "reasons": [
-            "No activity for 100 days"
+            "No activity for 101 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3529,7 +3552,7 @@
           "name": "MECL Sony - New Deal",
           "amount": 10666,
           "reasons": [
-            "No activity for 113 days"
+            "No activity for 114 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3538,7 +3561,7 @@
           "name": "Better Real Estate - New Deal",
           "amount": 8001,
           "reasons": [
-            "No activity for 97 days"
+            "No activity for 98 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3547,7 +3570,7 @@
           "name": "Stc Solutions - Samref Deal",
           "amount": 37333,
           "reasons": [
-            "No activity for 15 days"
+            "No activity for 16 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3556,7 +3579,7 @@
           "name": "American Academy - Talentera",
           "amount": 14000,
           "reasons": [
-            "No activity for 18 days"
+            "No activity for 19 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3565,7 +3588,7 @@
           "name": "Amal - New Deal",
           "amount": 0,
           "reasons": [
-            "No activity for 74 days"
+            "No activity for 75 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3574,7 +3597,7 @@
           "name": "AhmedDaoud - New Deal",
           "amount": 0,
           "reasons": [
-            "No activity for 64 days"
+            "No activity for 65 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3583,7 +3606,7 @@
           "name": "EmilyGrace - New Deal",
           "amount": 0,
           "reasons": [
-            "No activity for 58 days"
+            "No activity for 59 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3592,7 +3615,7 @@
           "name": "AlexanderLopez - New Deal",
           "amount": 0,
           "reasons": [
-            "No activity for 15 days"
+            "No activity for 16 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3601,7 +3624,7 @@
           "name": "AhmedDAOUD - New Deal",
           "amount": 0,
           "reasons": [
-            "No activity for 36 days"
+            "No activity for 37 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3610,7 +3633,7 @@
           "name": "BwaTech- New Deal",
           "amount": 0,
           "reasons": [
-            "No activity for 35 days"
+            "No activity for 36 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3619,7 +3642,7 @@
           "name": "Bussma real estate- New Deal",
           "amount": 0,
           "reasons": [
-            "No activity for 22 days"
+            "No activity for 23 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3628,7 +3651,7 @@
           "name": "Turbo United Trading Com- New Deal",
           "amount": 0,
           "reasons": [
-            "No activity for 330 days"
+            "No activity for 331 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3637,7 +3660,16 @@
           "name": "Disty- New Deal",
           "amount": 0,
           "reasons": [
-            "No activity for 30 days"
+            "No activity for 31 days"
+          ],
+          "ownerName": "Zein Fares",
+          "hubspotUrl": null
+        },
+        {
+          "name": "SAJA- New Deal",
+          "amount": 0,
+          "reasons": [
+            "No activity for 15 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3646,7 +3678,7 @@
           "name": "صرح- New Deal",
           "amount": 0,
           "reasons": [
-            "No activity for 16 days"
+            "No activity for 17 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3655,7 +3687,7 @@
           "name": "Bureau Veritas- New Deal",
           "amount": 0,
           "reasons": [
-            "No activity for 22 days"
+            "No activity for 23 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3664,7 +3696,7 @@
           "name": "Al Munajem Foods Company- New Deal",
           "amount": 0,
           "reasons": [
-            "No activity for 22 days"
+            "No activity for 23 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3673,7 +3705,7 @@
           "name": "Master Works- New Deal",
           "amount": 0,
           "reasons": [
-            "No activity for 18 days"
+            "No activity for 19 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3682,7 +3714,7 @@
           "name": "اصل البرجر - New Deal",
           "amount": 11000,
           "reasons": [
-            "No activity for 84 days"
+            "No activity for 85 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3691,7 +3723,7 @@
           "name": "CLA - New Deal",
           "amount": 3300,
           "reasons": [
-            "No activity for 87 days"
+            "No activity for 88 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3700,7 +3732,7 @@
           "name": "ZOMCO - Core ATS",
           "amount": 7734.3,
           "reasons": [
-            "No activity for 53 days"
+            "No activity for 54 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3716,7 +3748,7 @@
       "leadsYTDInbound": 52,
       "leadsYTDOutbound": 51,
       "leadActivities": {
-        "callsYest": 1,
+        "callsYest": 0,
         "callsMTD": 0,
         "callsYTD": 195,
         "meetingsYest": 0,
@@ -3852,18 +3884,18 @@
       "color": "#be185d",
       "type": "acq",
       "calls": {
-        "yest": 12,
-        "yestConn": 5,
+        "yest": 0,
+        "yestConn": 0,
         "mtd": 0,
         "mtdConn": 0,
         "ytd": 1185,
         "ytdConn": 497
       },
-      "connRateYest": 42,
+      "connRateYest": 0,
       "connRateMTD": 0,
       "connRateYTD": 42,
       "meetings": {
-        "yest": 4,
+        "yest": 0,
         "mtd": 0,
         "ytd": 288
       },
@@ -3877,7 +3909,7 @@
       "wonAmtYTD": 40205,
       "lost": 0,
       "lostAmt": 0,
-      "lostYest": 1,
+      "lostYest": 0,
       "lostAmtYest": 0,
       "lostYTD": 89,
       "lostAmtYTD": 1601727.72,
@@ -5000,133 +5032,147 @@
       "cold": [
         {
           "name": "Al Faisal Holding - New Deal",
-          "days": 28,
+          "days": 29,
           "amount": 41650,
           "ownerName": "Ursula Waked",
           "hubspotUrl": null
         },
         {
           "name": "Nass - New Deal",
-          "days": 17,
+          "days": 18,
           "amount": 10000,
           "ownerName": "Ursula Waked",
           "hubspotUrl": null
         },
         {
           "name": "MSI - Renewal",
-          "days": 302,
+          "days": 303,
           "amount": 4666,
           "ownerName": "Ursula Waked",
           "hubspotUrl": null
         },
         {
           "name": "Commercial Bank of Kuwait - Renewal",
-          "days": 284,
+          "days": 285,
           "amount": 9315,
           "ownerName": "Ursula Waked",
           "hubspotUrl": null
         },
         {
           "name": "Islamic International Arab Bank - New Deal",
-          "days": 18,
+          "days": 19,
           "amount": 3500,
           "ownerName": "Ursula Waked",
           "hubspotUrl": null
         },
         {
-          "name": "Al Hattab Holding - New Deal",
+          "name": "Khidmah / Aldar ",
           "days": 15,
+          "amount": 7624,
+          "ownerName": "Ursula Waked",
+          "hubspotUrl": null
+        },
+        {
+          "name": "Al Hattab Holding - New Deal",
+          "days": 16,
           "amount": 27000,
           "ownerName": "Ursula Waked",
           "hubspotUrl": null
         },
         {
           "name": "Midis Group - New Deal",
-          "days": 17,
+          "days": 18,
           "amount": 4000,
           "ownerName": "Ursula Waked",
           "hubspotUrl": null
         },
         {
+          "name": "Sanad - New Deal",
+          "days": 15,
+          "amount": 5000,
+          "ownerName": "Ursula Waked",
+          "hubspotUrl": null
+        },
+        {
           "name": "Americana Restaurants - New Deal",
-          "days": 16,
+          "days": 17,
           "amount": 12500,
           "ownerName": "Ursula Waked",
           "hubspotUrl": null
         },
         {
           "name": "Mannai Corporation - New Deal",
-          "days": 18,
+          "days": 19,
           "amount": 8000,
           "ownerName": "Ursula Waked",
           "hubspotUrl": null
         },
         {
           "name": "Dhow Holding - New Deal",
-          "days": 28,
+          "days": 29,
           "amount": 13500,
           "ownerName": "Ursula Waked",
           "hubspotUrl": null
         },
         {
           "name": "Al Ain Farms Group - New Deal",
-          "days": 15,
+          "days": 16,
           "amount": 37250,
           "ownerName": "Ursula Waked",
           "hubspotUrl": null
         },
         {
           "name": "Vibes events - New Deal",
-          "days": 17,
+          "days": 18,
           "amount": 7762.5,
           "ownerName": "Ursula Waked",
           "hubspotUrl": null
         },
         {
           "name": "3S Middle East - On Hold",
-          "days": 23,
+          "days": 24,
           "amount": 7762.5,
           "ownerName": "Ursula Waked",
           "hubspotUrl": null
         },
         {
           "name": "Zahrawi Group - New Deal",
-          "days": 18,
+          "days": 19,
           "amount": 14087.5,
           "ownerName": "Ursula Waked",
           "hubspotUrl": null
         },
         {
           "name": "Synergi BPO - Evalufy New Deal",
-          "days": 17,
+          "days": 18,
           "amount": 4000,
           "ownerName": "Ursula Waked",
           "hubspotUrl": null
         },
         {
           "name": "Life Pharmacy Group - New Deal",
-          "days": 16,
+          "days": 17,
           "amount": 15750,
           "ownerName": "Ursula Waked",
           "hubspotUrl": null
         },
         {
           "name": "Sedco - New Deal",
-          "days": 18,
+          "days": 19,
           "amount": 7425,
           "ownerName": "Ursula Waked",
           "hubspotUrl": null
         },
         {
           "name": "Human Impact - New Deal",
-          "days": 16,
+          "days": 17,
           "amount": 3685,
           "ownerName": "Ursula Waked",
           "hubspotUrl": null
         },
         {
           "name": "NESR - New Deal",
-          "days": 23,
+          "days": 24,
           "amount": 18112.5,
           "ownerName": "Ursula Waked",
           "hubspotUrl": null
@@ -5137,7 +5183,7 @@
           "name": "Al Faisal Holding - New Deal",
           "amount": 41650,
           "reasons": [
-            "No activity for 28 days"
+            "No activity for 29 days"
           ],
           "ownerName": "Ursula Waked",
           "hubspotUrl": null
@@ -5146,7 +5192,7 @@
           "name": "Nass - New Deal",
           "amount": 10000,
           "reasons": [
-            "No activity for 17 days"
+            "No activity for 18 days"
           ],
           "ownerName": "Ursula Waked",
           "hubspotUrl": null
@@ -5155,7 +5201,7 @@
           "name": "MSI - Renewal",
           "amount": 4666,
           "reasons": [
-            "No activity for 302 days"
+            "No activity for 303 days"
           ],
           "ownerName": "Ursula Waked",
           "hubspotUrl": null
@@ -5164,7 +5210,7 @@
           "name": "Commercial Bank of Kuwait - Renewal",
           "amount": 9315,
           "reasons": [
-            "No activity for 284 days"
+            "No activity for 285 days"
           ],
           "ownerName": "Ursula Waked",
           "hubspotUrl": null
@@ -5173,7 +5219,16 @@
           "name": "Islamic International Arab Bank - New Deal",
           "amount": 3500,
           "reasons": [
-            "No activity for 18 days"
+            "No activity for 19 days"
+          ],
+          "ownerName": "Ursula Waked",
+          "hubspotUrl": null
+        },
+        {
+          "name": "Khidmah / Aldar ",
+          "amount": 7624,
+          "reasons": [
+            "No activity for 15 days"
           ],
           "ownerName": "Ursula Waked",
           "hubspotUrl": null
@@ -5182,7 +5237,7 @@
           "name": "Al Hattab Holding - New Deal",
           "amount": 27000,
           "reasons": [
-            "No activity for 15 days"
+            "No activity for 16 days"
           ],
           "ownerName": "Ursula Waked",
           "hubspotUrl": null
@@ -5191,7 +5246,16 @@
           "name": "Midis Group - New Deal",
           "amount": 4000,
           "reasons": [
-            "No activity for 17 days"
+            "No activity for 18 days"
+          ],
+          "ownerName": "Ursula Waked",
+          "hubspotUrl": null
+        },
+        {
+          "name": "Sanad - New Deal",
+          "amount": 5000,
+          "reasons": [
+            "No activity for 15 days"
           ],
           "ownerName": "Ursula Waked",
           "hubspotUrl": null
@@ -5200,7 +5264,7 @@
           "name": "Americana Restaurants - New Deal",
           "amount": 12500,
           "reasons": [
-            "No activity for 16 days"
+            "No activity for 17 days"
           ],
           "ownerName": "Ursula Waked",
           "hubspotUrl": null
@@ -5209,7 +5273,7 @@
           "name": "Mannai Corporation - New Deal",
           "amount": 8000,
           "reasons": [
-            "No activity for 18 days"
+            "No activity for 19 days"
           ],
           "ownerName": "Ursula Waked",
           "hubspotUrl": null
@@ -5218,7 +5282,7 @@
           "name": "Dhow Holding - New Deal",
           "amount": 13500,
           "reasons": [
-            "No activity for 28 days"
+            "No activity for 29 days"
           ],
           "ownerName": "Ursula Waked",
           "hubspotUrl": null
@@ -5227,7 +5291,7 @@
           "name": "Al Ain Farms Group - New Deal",
           "amount": 37250,
           "reasons": [
-            "No activity for 15 days"
+            "No activity for 16 days"
           ],
           "ownerName": "Ursula Waked",
           "hubspotUrl": null
@@ -5236,7 +5300,7 @@
           "name": "Vibes events - New Deal",
           "amount": 7762.5,
           "reasons": [
-            "No activity for 17 days"
+            "No activity for 18 days"
           ],
           "ownerName": "Ursula Waked",
           "hubspotUrl": null
@@ -5245,7 +5309,7 @@
           "name": "3S Middle East - On Hold",
           "amount": 7762.5,
           "reasons": [
-            "No activity for 23 days"
+            "No activity for 24 days"
           ],
           "ownerName": "Ursula Waked",
           "hubspotUrl": null
@@ -5254,7 +5318,7 @@
           "name": "Zahrawi Group - New Deal",
           "amount": 14087.5,
           "reasons": [
-            "No activity for 18 days"
+            "No activity for 19 days"
           ],
           "ownerName": "Ursula Waked",
           "hubspotUrl": null
@@ -5263,7 +5327,7 @@
           "name": "Synergi BPO - Evalufy New Deal",
           "amount": 4000,
           "reasons": [
-            "No activity for 17 days"
+            "No activity for 18 days"
           ],
           "ownerName": "Ursula Waked",
           "hubspotUrl": null
@@ -5272,7 +5336,7 @@
           "name": "Life Pharmacy Group - New Deal",
           "amount": 15750,
           "reasons": [
-            "No activity for 16 days"
+            "No activity for 17 days"
           ],
           "ownerName": "Ursula Waked",
           "hubspotUrl": null
@@ -5281,7 +5345,7 @@
           "name": "Sedco - New Deal",
           "amount": 7425,
           "reasons": [
-            "No activity for 18 days"
+            "No activity for 19 days"
           ],
           "ownerName": "Ursula Waked",
           "hubspotUrl": null
@@ -5290,7 +5354,7 @@
           "name": "Human Impact - New Deal",
           "amount": 3685,
           "reasons": [
-            "No activity for 16 days"
+            "No activity for 17 days"
           ],
           "ownerName": "Ursula Waked",
           "hubspotUrl": null
@@ -5299,7 +5363,7 @@
           "name": "NESR - New Deal",
           "amount": 18112.5,
           "reasons": [
-            "No activity for 23 days"
+            "No activity for 24 days"
           ],
           "ownerName": "Ursula Waked",
           "hubspotUrl": null
@@ -5311,31 +5375,31 @@
       "leadsMTD": 0,
       "leadsMTDInbound": 0,
       "leadsMTDOutbound": 0,
-      "leadsYTD": 156,
-      "leadsYTDInbound": 36,
+      "leadsYTD": 157,
+      "leadsYTDInbound": 37,
       "leadsYTDOutbound": 120,
       "leadActivities": {
-        "callsYest": 12,
+        "callsYest": 0,
         "callsMTD": 0,
         "callsYTD": 1185,
-        "meetingsYest": 4,
+        "meetingsYest": 0,
         "meetingsMTD": 0,
         "meetingsYTD": 288
       },
       "leadQuality": {
-        "statusNew": 0,
+        "statusNew": 1,
         "statusQualified": 0,
         "statusUnqualified": 0,
         "statusExistingClient": 5,
         "statusOther": 84,
-        "sourceInbound": 36,
+        "sourceInbound": 37,
         "sourceOutbound": 120,
         "sourceImport": 0
       },
       "leadFunnel": {
-        "created": 36,
+        "created": 37,
         "contacted": 0,
-        "converted": 36,
+        "converted": 37,
         "conversionRate": 100,
         "contactRate": 0
       },
@@ -5451,14 +5515,14 @@
       "color": "#b45309",
       "type": "acq",
       "calls": {
-        "yest": 16,
-        "yestConn": 9,
+        "yest": 0,
+        "yestConn": 0,
         "mtd": 0,
         "mtdConn": 0,
         "ytd": 545,
         "ytdConn": 296
       },
-      "connRateYest": 56,
+      "connRateYest": 0,
       "connRateMTD": 0,
       "connRateYTD": 54,
       "meetings": {
@@ -5702,7 +5766,7 @@
       "leadsYTDInbound": 5,
       "leadsYTDOutbound": 80,
       "leadActivities": {
-        "callsYest": 16,
+        "callsYest": 0,
         "callsMTD": 0,
         "callsYTD": 545,
         "meetingsYest": 0,
@@ -6508,161 +6572,161 @@
       "cold": [
         {
           "name": "Nespresso - New Deal",
-          "days": 388,
+          "days": 389,
           "amount": 20000,
           "ownerName": "Jehad Al-Barqawi",
           "hubspotUrl": null
         },
         {
           "name": "Ministry of Hajj and Umra - New Deal",
-          "days": 29,
+          "days": 30,
           "amount": 20000,
           "ownerName": "Jehad Al-Barqawi",
           "hubspotUrl": null
         },
         {
           "name": "Red Sea Film Festival Foundation - New Deal",
-          "days": 91,
+          "days": 92,
           "amount": 180000,
           "ownerName": "Jehad Al-Barqawi",
           "hubspotUrl": null
         },
         {
           "name": "Global Environmental Management Services (GEMS) - New Deal",
-          "days": 21,
+          "days": 22,
           "amount": 50000,
           "ownerName": "Jehad Al-Barqawi",
           "hubspotUrl": null
         },
         {
           "name": "Al Majal Group - New Deal",
-          "days": 259,
+          "days": 260,
           "amount": 66930,
           "ownerName": "Jehad Al-Barqawi",
           "hubspotUrl": null
         },
         {
           "name": "الملاحة الجوية السعودية - New Deal-SANS",
-          "days": 91,
+          "days": 92,
           "amount": 251200,
           "ownerName": "Jehad Al-Barqawi",
           "hubspotUrl": null
         },
         {
           "name": "MBC Media Solutions - New Deal",
-          "days": 241,
+          "days": 242,
           "amount": 105013.1336425809,
           "ownerName": "Jehad Al-Barqawi",
           "hubspotUrl": null
         },
         {
           "name": "DP world ",
-          "days": 185,
+          "days": 186,
           "amount": 212026.5,
           "ownerName": "Jehad Al-Barqawi",
           "hubspotUrl": null
         },
         {
           "name": "KEY Car Rental  المفتاح لتأجير السيارات - New Deal",
-          "days": 154,
+          "days": 155,
           "amount": 67000,
           "ownerName": "Jehad Al-Barqawi",
           "hubspotUrl": null
         },
         {
           "name": "شركة القمة المتقدمة المحدودة - New Deal",
-          "days": 263,
+          "days": 264,
           "amount": 0,
           "ownerName": "Jehad Al-Barqawi",
           "hubspotUrl": null
         },
         {
           "name": "King faisal speciality hospital ",
-          "days": 107,
+          "days": 108,
           "amount": 208826.1,
           "ownerName": "Jehad Al-Barqawi",
           "hubspotUrl": null
         },
         {
           "name": "Batterjee Medical College - New Deal",
-          "days": 178,
+          "days": 179,
           "amount": 0,
           "ownerName": "Jehad Al-Barqawi",
           "hubspotUrl": null
         },
         {
           "name": "IMC - new deal",
-          "days": 30,
+          "days": 31,
           "amount": 160020,
           "ownerName": "Jehad Al-Barqawi",
           "hubspotUrl": null
         },
         {
           "name": "smsc",
-          "days": 185,
+          "days": 186,
           "amount": 60007.5,
           "ownerName": "Jehad Al-Barqawi",
           "hubspotUrl": null
         },
         {
           "name": "Mohamed Yousuf Naghi Group.",
-          "days": 178,
+          "days": 179,
           "amount": 8001,
           "ownerName": "Jehad Al-Barqawi",
           "hubspotUrl": null
         },
         {
           "name": "enjaz",
-          "days": 85,
+          "days": 86,
           "amount": 50006.25,
           "ownerName": "Jehad Al-Barqawi",
           "hubspotUrl": null
         },
         {
           "name": "ACWA Power - TALENTERA ENTERPEISE - ATS ",
-          "days": 52,
+          "days": 53,
           "amount": 368000,
           "ownerName": "Jehad Al-Barqawi",
           "hubspotUrl": null
         },
         {
           "name": "Naqua",
-          "days": 182,
+          "days": 183,
           "amount": 50006.25,
           "ownerName": "Jehad Al-Barqawi",
           "hubspotUrl": null
         },
         {
           "name": "TALENTERA - ATS",
-          "days": 58,
+          "days": 59,
           "amount": 74676,
           "ownerName": "Jehad Al-Barqawi",
           "hubspotUrl": null
         },
         {
           "name": "Umm Alqura",
-          "days": 58,
+          "days": 59,
           "amount": 24891.999111,
           "ownerName": "Jehad Al-Barqawi",
           "hubspotUrl": null
         },
         {
           "name": "Sukuk Capital ",
-          "days": 91,
+          "days": 92,
           "amount": 24869.775,
           "ownerName": "Jehad Al-Barqawi",
           "hubspotUrl": null
         },
         {
           "name": "Binzagr",
-          "days": 15,
+          "days": 16,
           "amount": 43472.1,
           "ownerName": "Jehad Al-Barqawi",
           "hubspotUrl": null
         },
         {
           "name": "Talentera Enterprise Plan: King Faisal Specialist Hospital & Research Center - Dara Hospital",
-          "days": 91,
+          "days": 92,
           "amount": 104013,
           "ownerName": "Jehad Al-Barqawi",
           "hubspotUrl": null
@@ -6673,7 +6737,7 @@
           "name": "Nespresso - New Deal",
           "amount": 20000,
           "reasons": [
-            "No activity for 388 days"
+            "No activity for 389 days"
           ],
           "ownerName": "Jehad Al-Barqawi",
           "hubspotUrl": null
@@ -6682,7 +6746,7 @@
           "name": "Ministry of Hajj and Umra - New Deal",
           "amount": 20000,
           "reasons": [
-            "No activity for 29 days"
+            "No activity for 30 days"
           ],
           "ownerName": "Jehad Al-Barqawi",
           "hubspotUrl": null
@@ -6691,7 +6755,7 @@
           "name": "Red Sea Film Festival Foundation - New Deal",
           "amount": 180000,
           "reasons": [
-            "No activity for 91 days"
+            "No activity for 92 days"
           ],
           "ownerName": "Jehad Al-Barqawi",
           "hubspotUrl": null
@@ -6700,7 +6764,7 @@
           "name": "Global Environmental Management Services (GEMS) - New Deal",
           "amount": 50000,
           "reasons": [
-            "No activity for 21 days"
+            "No activity for 22 days"
           ],
           "ownerName": "Jehad Al-Barqawi",
           "hubspotUrl": null
@@ -6709,7 +6773,7 @@
           "name": "Al Majal Group - New Deal",
           "amount": 66930,
           "reasons": [
-            "No activity for 259 days"
+            "No activity for 260 days"
           ],
           "ownerName": "Jehad Al-Barqawi",
           "hubspotUrl": null
@@ -6718,7 +6782,7 @@
           "name": "الملاحة الجوية السعودية - New Deal-SANS",
           "amount": 251200,
           "reasons": [
-            "No activity for 91 days"
+            "No activity for 92 days"
           ],
           "ownerName": "Jehad Al-Barqawi",
           "hubspotUrl": null
@@ -6727,7 +6791,7 @@
           "name": "MBC Media Solutions - New Deal",
           "amount": 105013.1336425809,
           "reasons": [
-            "No activity for 241 days"
+            "No activity for 242 days"
           ],
           "ownerName": "Jehad Al-Barqawi",
           "hubspotUrl": null
@@ -6736,7 +6800,7 @@
           "name": "DP world ",
           "amount": 212026.5,
           "reasons": [
-            "No activity for 185 days"
+            "No activity for 186 days"
           ],
           "ownerName": "Jehad Al-Barqawi",
           "hubspotUrl": null
@@ -6745,7 +6809,7 @@
           "name": "KEY Car Rental  المفتاح لتأجير السيارات - New Deal",
           "amount": 67000,
           "reasons": [
-            "No activity for 154 days"
+            "No activity for 155 days"
           ],
           "ownerName": "Jehad Al-Barqawi",
           "hubspotUrl": null
@@ -6754,7 +6818,7 @@
           "name": "شركة القمة المتقدمة المحدودة - New Deal",
           "amount": 0,
           "reasons": [
-            "No activity for 263 days"
+            "No activity for 264 days"
           ],
           "ownerName": "Jehad Al-Barqawi",
           "hubspotUrl": null
@@ -6763,7 +6827,7 @@
           "name": "King faisal speciality hospital ",
           "amount": 208826.1,
           "reasons": [
-            "No activity for 107 days"
+            "No activity for 108 days"
           ],
           "ownerName": "Jehad Al-Barqawi",
           "hubspotUrl": null
@@ -6772,7 +6836,7 @@
           "name": "Batterjee Medical College - New Deal",
           "amount": 0,
           "reasons": [
-            "No activity for 178 days"
+            "No activity for 179 days"
           ],
           "ownerName": "Jehad Al-Barqawi",
           "hubspotUrl": null
@@ -6781,7 +6845,7 @@
           "name": "IMC - new deal",
           "amount": 160020,
           "reasons": [
-            "No activity for 30 days"
+            "No activity for 31 days"
           ],
           "ownerName": "Jehad Al-Barqawi",
           "hubspotUrl": null
@@ -6790,7 +6854,7 @@
           "name": "smsc",
           "amount": 60007.5,
           "reasons": [
-            "No activity for 185 days"
+            "No activity for 186 days"
           ],
           "ownerName": "Jehad Al-Barqawi",
           "hubspotUrl": null
@@ -6799,7 +6863,7 @@
           "name": "Mohamed Yousuf Naghi Group.",
           "amount": 8001,
           "reasons": [
-            "No activity for 178 days"
+            "No activity for 179 days"
           ],
           "ownerName": "Jehad Al-Barqawi",
           "hubspotUrl": null
@@ -6808,7 +6872,7 @@
           "name": "enjaz",
           "amount": 50006.25,
           "reasons": [
-            "No activity for 85 days"
+            "No activity for 86 days"
           ],
           "ownerName": "Jehad Al-Barqawi",
           "hubspotUrl": null
@@ -6817,7 +6881,7 @@
           "name": "ACWA Power - TALENTERA ENTERPEISE - ATS ",
           "amount": 368000,
           "reasons": [
-            "No activity for 52 days"
+            "No activity for 53 days"
           ],
           "ownerName": "Jehad Al-Barqawi",
           "hubspotUrl": null
@@ -6826,7 +6890,7 @@
           "name": "Naqua",
           "amount": 50006.25,
           "reasons": [
-            "No activity for 182 days"
+            "No activity for 183 days"
           ],
           "ownerName": "Jehad Al-Barqawi",
           "hubspotUrl": null
@@ -6835,7 +6899,7 @@
           "name": "TALENTERA - ATS",
           "amount": 74676,
           "reasons": [
-            "No activity for 58 days"
+            "No activity for 59 days"
           ],
           "ownerName": "Jehad Al-Barqawi",
           "hubspotUrl": null
@@ -6844,7 +6908,7 @@
           "name": "Umm Alqura",
           "amount": 24891.999111,
           "reasons": [
-            "No activity for 58 days"
+            "No activity for 59 days"
           ],
           "ownerName": "Jehad Al-Barqawi",
           "hubspotUrl": null
@@ -6853,7 +6917,7 @@
           "name": "Sukuk Capital ",
           "amount": 24869.775,
           "reasons": [
-            "No activity for 91 days"
+            "No activity for 92 days"
           ],
           "ownerName": "Jehad Al-Barqawi",
           "hubspotUrl": null
@@ -6862,7 +6926,7 @@
           "name": "Binzagr",
           "amount": 43472.1,
           "reasons": [
-            "No activity for 15 days"
+            "No activity for 16 days"
           ],
           "ownerName": "Jehad Al-Barqawi",
           "hubspotUrl": null
@@ -6871,7 +6935,7 @@
           "name": "Talentera Enterprise Plan: King Faisal Specialist Hospital & Research Center - Dara Hospital",
           "amount": 104013,
           "reasons": [
-            "No activity for 91 days"
+            "No activity for 92 days"
           ],
           "ownerName": "Jehad Al-Barqawi",
           "hubspotUrl": null
@@ -7301,8 +7365,8 @@
   ],
   "autoRecs": [
     {
-      "type": "warn",
-      "text": "Connected rate 39% — approaching target. Keep the momentum."
+      "type": "red",
+      "text": "Connected rate 0% — below 30% target. Push for more live conversations."
     },
     {
       "type": "green",
@@ -7310,27 +7374,23 @@
     },
     {
       "type": "red",
-      "text": "127 cold deals (no activity 14+ days) — re-engage before they go dark."
+      "text": "131 cold deals (no activity 14+ days) — re-engage before they go dark."
     },
     {
       "type": "red",
-      "text": "127 deals have no next activity scheduled — reps must log next steps immediately."
+      "text": "131 deals have no next activity scheduled — reps must log next steps immediately."
     },
     {
-      "type": "green",
-      "text": "5 meetings logged yesterday ✓"
-    },
-    {
-      "type": "warn",
-      "text": "MTD call pace: 0/day avg — team should target 30+ calls/day."
+      "type": "red",
+      "text": "Zero meetings logged yesterday — focus on booking demos and discovery calls."
     },
     {
       "type": "warn",
-      "text": "1 deal(s) lost yesterday — review reasons with reps."
+      "text": "MTD call pace: 1/day avg — team should target 30+ calls/day."
     },
     {
       "type": "warn",
-      "text": "Marketing lead contact rate at 0% — 115 leads not yet reached out to."
+      "text": "Marketing lead contact rate at 0% — 117 leads not yet reached out to."
     }
   ],
   "rankTotals": {
@@ -7341,7 +7401,7 @@
     "BContacted": 216,
     "BNotContacted": 368,
     "AB": 850,
-    "total": 2535
+    "total": 2536
   },
   "topInactiveRankAccounts": [
     {
@@ -7351,8 +7411,8 @@
       "rank": "A",
       "rep": "Ursula Waked",
       "repColor": "#be185d",
-      "daysSinceActivity": 451,
-      "lastActivityLabel": "451d ago",
+      "daysSinceActivity": 452,
+      "lastActivityLabel": "452d ago",
       "employees": "210",
       "country": "Saudi Arabia",
       "contacted": false
@@ -7364,8 +7424,8 @@
       "rank": "A",
       "rep": "Zein Fares",
       "repColor": "#1d4ed8",
-      "daysSinceActivity": 450,
-      "lastActivityLabel": "450d ago",
+      "daysSinceActivity": 451,
+      "lastActivityLabel": "451d ago",
       "employees": "270",
       "country": "Saudi Arabia",
       "contacted": false
@@ -7377,8 +7437,8 @@
       "rank": "A",
       "rep": "Ursula Waked",
       "repColor": "#be185d",
-      "daysSinceActivity": 448,
-      "lastActivityLabel": "448d ago",
+      "daysSinceActivity": 449,
+      "lastActivityLabel": "449d ago",
       "employees": "500",
       "country": "Saudi Arabia",
       "contacted": false
@@ -7390,8 +7450,8 @@
       "rank": "B",
       "rep": "Zein Fares",
       "repColor": "#1d4ed8",
-      "daysSinceActivity": 445,
-      "lastActivityLabel": "445d ago",
+      "daysSinceActivity": 446,
+      "lastActivityLabel": "446d ago",
       "employees": "960",
       "country": "Saudi Arabia",
       "contacted": false
@@ -7403,8 +7463,8 @@
       "rank": "B",
       "rep": "Jehad Al-Barqawi",
       "repColor": "#0e7490",
-      "daysSinceActivity": 445,
-      "lastActivityLabel": "445d ago",
+      "daysSinceActivity": 446,
+      "lastActivityLabel": "446d ago",
       "employees": "900",
       "country": "Saudi Arabia",
       "contacted": false
@@ -7416,8 +7476,8 @@
       "rank": "A",
       "rep": "Ursula Waked",
       "repColor": "#be185d",
-      "daysSinceActivity": 445,
-      "lastActivityLabel": "445d ago",
+      "daysSinceActivity": 446,
+      "lastActivityLabel": "446d ago",
       "employees": "30",
       "country": "Saudi Arabia",
       "contacted": false
@@ -7429,8 +7489,8 @@
       "rank": "B",
       "rep": "Zein Fares",
       "repColor": "#1d4ed8",
-      "daysSinceActivity": 444,
-      "lastActivityLabel": "444d ago",
+      "daysSinceActivity": 445,
+      "lastActivityLabel": "445d ago",
       "employees": "150",
       "country": "Saudi Arabia",
       "contacted": false
@@ -7442,8 +7502,8 @@
       "rank": "A",
       "rep": "Ursula Waked",
       "repColor": "#be185d",
-      "daysSinceActivity": 442,
-      "lastActivityLabel": "442d ago",
+      "daysSinceActivity": 443,
+      "lastActivityLabel": "443d ago",
       "employees": "148",
       "country": "Saudi Arabia",
       "contacted": false
@@ -7455,8 +7515,8 @@
       "rank": "A",
       "rep": "Zein Fares",
       "repColor": "#1d4ed8",
-      "daysSinceActivity": 438,
-      "lastActivityLabel": "438d ago",
+      "daysSinceActivity": 439,
+      "lastActivityLabel": "439d ago",
       "employees": "120",
       "country": "Saudi Arabia",
       "contacted": false
@@ -7468,8 +7528,8 @@
       "rank": "B",
       "rep": "Mohammed Khalid",
       "repColor": "#065f46",
-      "daysSinceActivity": 438,
-      "lastActivityLabel": "438d ago",
+      "daysSinceActivity": 439,
+      "lastActivityLabel": "439d ago",
       "employees": "—",
       "country": "Saudi Arabia",
       "contacted": false
@@ -7480,9 +7540,9 @@
   "lostByReason": {},
   "outreachCoverage": {
     "contacts": {
-      "total": 514,
-      "contacted": 343,
-      "notContacted": 171,
+      "total": 516,
+      "contacted": 344,
+      "notContacted": 172,
       "contactedRate": 66.7,
       "contactedList": [
         {
@@ -10060,6 +10120,25 @@
           "hasCompletedMeeting": true,
           "companyIds": [
             "80990433492"
+          ]
+        },
+        {
+          "id": "722170361073",
+          "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/722170361073",
+          "name": "722170361073",
+          "email": null,
+          "ownerId": "76369997",
+          "ownerName": "Ursula Waked",
+          "ownerColor": "#be185d",
+          "leadStatus": "NEW",
+          "source": "OTHER_CAMPAIGNS",
+          "sourceBucket": "online",
+          "createdAt": "2026-03-03",
+          "lastActivityDate": "2026-03-26",
+          "hasConnectedCall": true,
+          "hasCompletedMeeting": true,
+          "companyIds": [
+            "412755317956"
           ]
         },
         {
@@ -13993,6 +14072,25 @@
         }
       ],
       "notContactedList": [
+        {
+          "id": "769160908993",
+          "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/769160908993",
+          "name": "769160908993",
+          "email": null,
+          "ownerId": "31644369",
+          "ownerName": "Marita Chedid",
+          "ownerColor": "#7c3aed",
+          "leadStatus": "ATTEMPTED_TO_CONTACT",
+          "source": "ORGANIC_SEARCH",
+          "sourceBucket": "online",
+          "createdAt": "2026-05-01",
+          "lastActivityDate": null,
+          "hasConnectedCall": false,
+          "hasCompletedMeeting": false,
+          "companyIds": [
+            "428694695105"
+          ]
+        },
         {
           "id": "768360623298",
           "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/768360623298",
@@ -28304,16 +28402,16 @@
       ]
     },
     "activities": {
-      "totalCalls": 5278,
+      "totalCalls": 5279,
       "callsLinkedToContacts": 1924,
       "totalMeetings": 694,
       "meetingsLinkedToContacts": 373
     },
     "sourceSplit": {
       "online": {
-        "total": 104,
-        "contacted": 87,
-        "notContacted": 17
+        "total": 106,
+        "contacted": 88,
+        "notContacted": 18
       },
       "offline": {
         "total": 410,
@@ -28327,10 +28425,10 @@
         "color": "#7c3aed",
         "type": "acq",
         "contacts": {
-          "total": 327,
+          "total": 328,
           "contacted": 210,
-          "notContacted": 117,
-          "rate": 64.2
+          "notContacted": 118,
+          "rate": 64
         },
         "companies": {
           "total": 193,
@@ -28361,10 +28459,10 @@
         "color": "#be185d",
         "type": "acq",
         "contacts": {
-          "total": 72,
-          "contacted": 58,
+          "total": 73,
+          "contacted": 59,
           "notContacted": 14,
-          "rate": 80.6
+          "rate": 80.8
         },
         "companies": {
           "total": 232,
@@ -28429,8 +28527,8 @@
   "managerActions": [
     {
       "key": "lead_outreach",
-      "title": "Contact 171 eligible leads",
-      "count": 171,
+      "title": "Contact 172 eligible leads",
+      "count": 172,
       "severity": "high",
       "description": "Prioritize online/inbound leads first, then older offline leads."
     },
@@ -28443,8 +28541,8 @@
     },
     {
       "key": "pipeline_risk",
-      "title": "Check 254 pipeline risk signals",
-      "count": 254,
+      "title": "Check 262 pipeline risk signals",
+      "count": 262,
       "severity": "high",
       "description": "Includes cold deals, stuck deals, and missing next activities."
     }
@@ -28469,17 +28567,17 @@
         "428614549748"
       ],
       "score": 102,
-      "ageDays": 0,
+      "ageDays": 1,
       "priority": "High",
       "priorityReasons": [
         "Online/inbound lead",
-        "Created 0 days ago",
+        "Created 1 day ago",
         "No qualified activity yet",
         "No connected call",
         "No completed meeting",
         "New lead"
       ],
-      "reason": "Online/inbound lead · Created 0 days ago · No qualified activity yet"
+      "reason": "Online/inbound lead · Created 1 day ago · No qualified activity yet"
     },
     {
       "id": "768850458867",
@@ -28500,6 +28598,37 @@
         "428638340343"
       ],
       "score": 102,
+      "ageDays": 1,
+      "priority": "High",
+      "priorityReasons": [
+        "Online/inbound lead",
+        "Created 1 day ago",
+        "No qualified activity yet",
+        "No connected call",
+        "No completed meeting",
+        "New lead"
+      ],
+      "reason": "Online/inbound lead · Created 1 day ago · No qualified activity yet"
+    },
+    {
+      "id": "769160908993",
+      "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/769160908993",
+      "name": "769160908993",
+      "email": null,
+      "ownerId": "31644369",
+      "ownerName": "Marita Chedid",
+      "ownerColor": "#7c3aed",
+      "leadStatus": "ATTEMPTED_TO_CONTACT",
+      "source": "ORGANIC_SEARCH",
+      "sourceBucket": "online",
+      "createdAt": "2026-05-01",
+      "lastActivityDate": null,
+      "hasConnectedCall": false,
+      "hasCompletedMeeting": false,
+      "companyIds": [
+        "428694695105"
+      ],
+      "score": 100,
       "ageDays": 0,
       "priority": "High",
       "priorityReasons": [
@@ -28508,40 +28637,9 @@
         "No qualified activity yet",
         "No connected call",
         "No completed meeting",
-        "New lead"
-      ],
-      "reason": "Online/inbound lead · Created 0 days ago · No qualified activity yet"
-    },
-    {
-      "id": "766091906286",
-      "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/766091906286",
-      "name": "766091906286",
-      "email": null,
-      "ownerId": "31644369",
-      "ownerName": "Marita Chedid",
-      "ownerColor": "#7c3aed",
-      "leadStatus": "ATTEMPTED_TO_CONTACT",
-      "source": "PAID_SEARCH",
-      "sourceBucket": "online",
-      "createdAt": "2026-04-27",
-      "lastActivityDate": null,
-      "hasConnectedCall": false,
-      "hasCompletedMeeting": false,
-      "companyIds": [
-        "427978466511"
-      ],
-      "score": 95,
-      "ageDays": 3,
-      "priority": "High",
-      "priorityReasons": [
-        "Online/inbound lead",
-        "Created 3 days ago",
-        "No qualified activity yet",
-        "No connected call",
-        "No completed meeting",
         "Attempted before but no qualified contact"
       ],
-      "reason": "Online/inbound lead · Created 3 days ago · No qualified activity yet"
+      "reason": "Online/inbound lead · Created 0 days ago · No qualified activity yet"
     },
     {
       "id": "699784910051",
@@ -28562,17 +28660,17 @@
         "398595689712"
       ],
       "score": 90,
-      "ageDays": 74,
+      "ageDays": 75,
       "priority": "High",
       "priorityReasons": [
         "Online/inbound lead",
-        "Created 74 days ago",
+        "Created 75 days ago",
         "No qualified activity yet",
         "No connected call",
         "No completed meeting",
         "Open deal status"
       ],
-      "reason": "Online/inbound lead · Created 74 days ago · No qualified activity yet"
+      "reason": "Online/inbound lead · Created 75 days ago · No qualified activity yet"
     },
     {
       "id": "710252170441",
@@ -28593,17 +28691,17 @@
         "403612147934"
       ],
       "score": 90,
-      "ageDays": 66,
+      "ageDays": 67,
       "priority": "High",
       "priorityReasons": [
         "Online/inbound lead",
-        "Created 66 days ago",
+        "Created 67 days ago",
         "No qualified activity yet",
         "No connected call",
         "No completed meeting",
         "Open deal status"
       ],
-      "reason": "Online/inbound lead · Created 66 days ago · No qualified activity yet"
+      "reason": "Online/inbound lead · Created 67 days ago · No qualified activity yet"
     },
     {
       "id": "710264128699",
@@ -28624,17 +28722,17 @@
         "415898799322"
       ],
       "score": 90,
-      "ageDays": 56,
+      "ageDays": 57,
       "priority": "High",
       "priorityReasons": [
         "Online/inbound lead",
-        "Created 56 days ago",
+        "Created 57 days ago",
         "No qualified activity yet",
         "No connected call",
         "No completed meeting",
         "Open deal status"
       ],
-      "reason": "Online/inbound lead · Created 56 days ago · No qualified activity yet"
+      "reason": "Online/inbound lead · Created 57 days ago · No qualified activity yet"
     },
     {
       "id": "745697520831",
@@ -28655,17 +28753,17 @@
         "423706804460"
       ],
       "score": 90,
-      "ageDays": 33,
+      "ageDays": 34,
       "priority": "High",
       "priorityReasons": [
         "Online/inbound lead",
-        "Created 33 days ago",
+        "Created 34 days ago",
         "No qualified activity yet",
         "No connected call",
         "No completed meeting",
         "Open deal status"
       ],
-      "reason": "Online/inbound lead · Created 33 days ago · No qualified activity yet"
+      "reason": "Online/inbound lead · Created 34 days ago · No qualified activity yet"
     },
     {
       "id": "764154532050",
@@ -28686,17 +28784,48 @@
         "380168669419"
       ],
       "score": 90,
-      "ageDays": 6,
+      "ageDays": 7,
       "priority": "High",
       "priorityReasons": [
         "Online/inbound lead",
-        "Created 6 days ago",
+        "Created 7 days ago",
         "No qualified activity yet",
         "No connected call",
         "No completed meeting",
         "New lead"
       ],
-      "reason": "Online/inbound lead · Created 6 days ago · No qualified activity yet"
+      "reason": "Online/inbound lead · Created 7 days ago · No qualified activity yet"
+    },
+    {
+      "id": "766091906286",
+      "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/766091906286",
+      "name": "766091906286",
+      "email": null,
+      "ownerId": "31644369",
+      "ownerName": "Marita Chedid",
+      "ownerColor": "#7c3aed",
+      "leadStatus": "ATTEMPTED_TO_CONTACT",
+      "source": "PAID_SEARCH",
+      "sourceBucket": "online",
+      "createdAt": "2026-04-27",
+      "lastActivityDate": null,
+      "hasConnectedCall": false,
+      "hasCompletedMeeting": false,
+      "companyIds": [
+        "427978466511"
+      ],
+      "score": 88,
+      "ageDays": 4,
+      "priority": "High",
+      "priorityReasons": [
+        "Online/inbound lead",
+        "Created 4 days ago",
+        "No qualified activity yet",
+        "No connected call",
+        "No completed meeting",
+        "Attempted before but no qualified contact"
+      ],
+      "reason": "Online/inbound lead · Created 4 days ago · No qualified activity yet"
     },
     {
       "id": "763016935638",
@@ -28716,18 +28845,18 @@
       "companyIds": [
         "427283280102"
       ],
-      "score": 88,
-      "ageDays": 7,
+      "score": 80,
+      "ageDays": 8,
       "priority": "High",
       "priorityReasons": [
         "Online/inbound lead",
-        "Created 7 days ago",
+        "Created 8 days ago",
         "No qualified activity yet",
         "No connected call",
         "No completed meeting",
         "Attempted before but no qualified contact"
       ],
-      "reason": "Online/inbound lead · Created 7 days ago · No qualified activity yet"
+      "reason": "Online/inbound lead · Created 8 days ago · No qualified activity yet"
     },
     {
       "id": "768360623298",
@@ -28748,17 +28877,17 @@
         "82416676067"
       ],
       "score": 80,
-      "ageDays": 0,
+      "ageDays": 1,
       "priority": "High",
       "priorityReasons": [
         "Offline/outbound lead",
-        "Created 0 days ago",
+        "Created 1 day ago",
         "No qualified activity yet",
         "No connected call",
         "No completed meeting",
         "Attempted before but no qualified contact"
       ],
-      "reason": "Offline/outbound lead · Created 0 days ago · No qualified activity yet"
+      "reason": "Offline/outbound lead · Created 1 day ago · No qualified activity yet"
     },
     {
       "id": "768366387413",
@@ -28779,17 +28908,17 @@
         "427978466511"
       ],
       "score": 80,
-      "ageDays": 0,
+      "ageDays": 1,
       "priority": "High",
       "priorityReasons": [
         "Offline/outbound lead",
-        "Created 0 days ago",
+        "Created 1 day ago",
         "No qualified activity yet",
         "No connected call",
         "No completed meeting",
         "Attempted before but no qualified contact"
       ],
-      "reason": "Offline/outbound lead · Created 0 days ago · No qualified activity yet"
+      "reason": "Offline/outbound lead · Created 1 day ago · No qualified activity yet"
     },
     {
       "id": "750439294186",
@@ -28808,17 +28937,17 @@
       "hasCompletedMeeting": false,
       "companyIds": [],
       "score": 77,
-      "ageDays": 27,
+      "ageDays": 28,
       "priority": "Medium",
       "priorityReasons": [
         "Online/inbound lead",
-        "Created 27 days ago",
+        "Created 28 days ago",
         "No qualified activity yet",
         "No connected call",
         "No completed meeting",
         "New lead"
       ],
-      "reason": "Online/inbound lead · Created 27 days ago · No qualified activity yet"
+      "reason": "Online/inbound lead · Created 28 days ago · No qualified activity yet"
     },
     {
       "id": "757574153425",
@@ -28839,17 +28968,17 @@
         "195801975005"
       ],
       "score": 77,
-      "ageDays": 16,
+      "ageDays": 17,
       "priority": "Medium",
       "priorityReasons": [
         "Online/inbound lead",
-        "Created 16 days ago",
+        "Created 17 days ago",
         "No qualified activity yet",
         "No connected call",
         "No completed meeting",
         "New lead"
       ],
-      "reason": "Online/inbound lead · Created 16 days ago · No qualified activity yet"
+      "reason": "Online/inbound lead · Created 17 days ago · No qualified activity yet"
     },
     {
       "id": "766739577048",
@@ -28871,17 +29000,17 @@
         "428199150840"
       ],
       "score": 77,
-      "ageDays": 2,
+      "ageDays": 3,
       "priority": "Medium",
       "priorityReasons": [
         "Offline/outbound lead",
-        "Created 2 days ago",
+        "Created 3 days ago",
         "No qualified activity yet",
         "No connected call",
         "No completed meeting",
         "New lead"
       ],
-      "reason": "Offline/outbound lead · Created 2 days ago · No qualified activity yet"
+      "reason": "Offline/outbound lead · Created 3 days ago · No qualified activity yet"
     },
     {
       "id": "626341997800",
@@ -28902,17 +29031,17 @@
         "352891946204"
       ],
       "score": 75,
-      "ageDays": 114,
+      "ageDays": 115,
       "priority": "Medium",
       "priorityReasons": [
         "Online/inbound lead",
-        "Created 114 days ago",
+        "Created 115 days ago",
         "No qualified activity yet",
         "No connected call",
         "No completed meeting",
         "Attempted before but no qualified contact"
       ],
-      "reason": "Online/inbound lead · Created 114 days ago · No qualified activity yet"
+      "reason": "Online/inbound lead · Created 115 days ago · No qualified activity yet"
     },
     {
       "id": "628292985025",
@@ -28933,17 +29062,17 @@
         "353826375872"
       ],
       "score": 75,
-      "ageDays": 113,
+      "ageDays": 114,
       "priority": "Medium",
       "priorityReasons": [
         "Online/inbound lead",
-        "Created 113 days ago",
+        "Created 114 days ago",
         "No qualified activity yet",
         "No connected call",
         "No completed meeting",
         "Attempted before but no qualified contact"
       ],
-      "reason": "Online/inbound lead · Created 113 days ago · No qualified activity yet"
+      "reason": "Online/inbound lead · Created 114 days ago · No qualified activity yet"
     },
     {
       "id": "632797540579",
@@ -28964,17 +29093,17 @@
         "356728594659"
       ],
       "score": 75,
-      "ageDays": 111,
+      "ageDays": 112,
       "priority": "Medium",
       "priorityReasons": [
         "Online/inbound lead",
-        "Created 111 days ago",
+        "Created 112 days ago",
         "No qualified activity yet",
         "No connected call",
         "No completed meeting",
         "Attempted before but no qualified contact"
       ],
-      "reason": "Online/inbound lead · Created 111 days ago · No qualified activity yet"
+      "reason": "Online/inbound lead · Created 112 days ago · No qualified activity yet"
     },
     {
       "id": "637355760855",
@@ -28995,17 +29124,17 @@
         "359806875883"
       ],
       "score": 75,
-      "ageDays": 108,
+      "ageDays": 109,
       "priority": "Medium",
       "priorityReasons": [
         "Online/inbound lead",
-        "Created 108 days ago",
+        "Created 109 days ago",
         "No qualified activity yet",
         "No connected call",
         "No completed meeting",
         "Attempted before but no qualified contact"
       ],
-      "reason": "Online/inbound lead · Created 108 days ago · No qualified activity yet"
+      "reason": "Online/inbound lead · Created 109 days ago · No qualified activity yet"
     },
     {
       "id": "667473457354",
@@ -29026,17 +29155,17 @@
         "379245513949"
       ],
       "score": 75,
-      "ageDays": 93,
+      "ageDays": 94,
       "priority": "Medium",
       "priorityReasons": [
         "Online/inbound lead",
-        "Created 93 days ago",
+        "Created 94 days ago",
         "No qualified activity yet",
         "No connected call",
         "No completed meeting",
         "Attempted before but no qualified contact"
       ],
-      "reason": "Online/inbound lead · Created 93 days ago · No qualified activity yet"
+      "reason": "Online/inbound lead · Created 94 days ago · No qualified activity yet"
     },
     {
       "id": "667857945825",
@@ -29057,17 +29186,17 @@
         "379473466577"
       ],
       "score": 75,
-      "ageDays": 93,
+      "ageDays": 94,
       "priority": "Medium",
       "priorityReasons": [
         "Online/inbound lead",
-        "Created 93 days ago",
+        "Created 94 days ago",
         "No qualified activity yet",
         "No connected call",
         "No completed meeting",
         "Attempted before but no qualified contact"
       ],
-      "reason": "Online/inbound lead · Created 93 days ago · No qualified activity yet"
+      "reason": "Online/inbound lead · Created 94 days ago · No qualified activity yet"
     },
     {
       "id": "759779346673",
@@ -29088,17 +29217,17 @@
         "426703073467"
       ],
       "score": 75,
-      "ageDays": 10,
+      "ageDays": 11,
       "priority": "Medium",
       "priorityReasons": [
         "Offline/outbound lead",
-        "Created 10 days ago",
+        "Created 11 days ago",
         "No qualified activity yet",
         "No connected call",
         "No completed meeting",
         "Open deal status"
       ],
-      "reason": "Offline/outbound lead · Created 10 days ago · No qualified activity yet"
+      "reason": "Offline/outbound lead · Created 11 days ago · No qualified activity yet"
     },
     {
       "id": "761340282043",
@@ -29119,17 +29248,17 @@
         "423073764538"
       ],
       "score": 75,
-      "ageDays": 9,
+      "ageDays": 10,
       "priority": "Medium",
       "priorityReasons": [
         "Offline/outbound lead",
-        "Created 9 days ago",
+        "Created 10 days ago",
         "No qualified activity yet",
         "No connected call",
         "No completed meeting",
         "Open deal status"
       ],
-      "reason": "Offline/outbound lead · Created 9 days ago · No qualified activity yet"
+      "reason": "Offline/outbound lead · Created 10 days ago · No qualified activity yet"
     },
     {
       "id": "764824396021",
@@ -29150,17 +29279,17 @@
         "81979336933"
       ],
       "score": 73,
-      "ageDays": 4,
+      "ageDays": 5,
       "priority": "Medium",
       "priorityReasons": [
         "Offline/outbound lead",
-        "Created 4 days ago",
+        "Created 5 days ago",
         "No qualified activity yet",
         "No connected call",
         "No completed meeting",
         "In progress"
       ],
-      "reason": "Offline/outbound lead · Created 4 days ago · No qualified activity yet"
+      "reason": "Offline/outbound lead · Created 5 days ago · No qualified activity yet"
     },
     {
       "id": "765074474212",
@@ -29181,17 +29310,17 @@
         "81917472959"
       ],
       "score": 73,
-      "ageDays": 4,
+      "ageDays": 5,
       "priority": "Medium",
       "priorityReasons": [
         "Offline/outbound lead",
-        "Created 4 days ago",
+        "Created 5 days ago",
         "No qualified activity yet",
         "No connected call",
         "No completed meeting",
         "In progress"
       ],
-      "reason": "Offline/outbound lead · Created 4 days ago · No qualified activity yet"
+      "reason": "Offline/outbound lead · Created 5 days ago · No qualified activity yet"
     },
     {
       "id": "645941193936",
@@ -29212,17 +29341,17 @@
         "364921487596"
       ],
       "score": 70,
-      "ageDays": 105,
+      "ageDays": 106,
       "priority": "Medium",
       "priorityReasons": [
         "Offline/outbound lead",
-        "Created 105 days ago",
+        "Created 106 days ago",
         "No qualified activity yet",
         "No connected call",
         "No completed meeting",
         "Open deal status"
       ],
-      "reason": "Offline/outbound lead · Created 105 days ago · No qualified activity yet"
+      "reason": "Offline/outbound lead · Created 106 days ago · No qualified activity yet"
     },
     {
       "id": "710247091413",
@@ -29243,17 +29372,17 @@
         "402413261043"
       ],
       "score": 70,
-      "ageDays": 66,
+      "ageDays": 67,
       "priority": "Medium",
       "priorityReasons": [
         "Offline/outbound lead",
-        "Created 66 days ago",
+        "Created 67 days ago",
         "No qualified activity yet",
         "No connected call",
         "No completed meeting",
         "Open deal status"
       ],
-      "reason": "Offline/outbound lead · Created 66 days ago · No qualified activity yet"
+      "reason": "Offline/outbound lead · Created 67 days ago · No qualified activity yet"
     },
     {
       "id": "739439282423",
@@ -29274,17 +29403,17 @@
         "422130163945"
       ],
       "score": 70,
-      "ageDays": 42,
+      "ageDays": 43,
       "priority": "Medium",
       "priorityReasons": [
         "Offline/outbound lead",
-        "Created 42 days ago",
+        "Created 43 days ago",
         "No qualified activity yet",
         "No connected call",
         "No completed meeting",
         "Open deal status"
       ],
-      "reason": "Offline/outbound lead · Created 42 days ago · No qualified activity yet"
+      "reason": "Offline/outbound lead · Created 43 days ago · No qualified activity yet"
     },
     {
       "id": "750915389680",
@@ -29305,17 +29434,17 @@
         "424175185116"
       ],
       "score": 70,
-      "ageDays": 26,
+      "ageDays": 27,
       "priority": "Medium",
       "priorityReasons": [
         "Offline/outbound lead",
-        "Created 26 days ago",
+        "Created 27 days ago",
         "No qualified activity yet",
         "No connected call",
         "No completed meeting",
         "Open deal status"
       ],
-      "reason": "Offline/outbound lead · Created 26 days ago · No qualified activity yet"
+      "reason": "Offline/outbound lead · Created 27 days ago · No qualified activity yet"
     },
     {
       "id": "751262510302",
@@ -29336,77 +29465,46 @@
         "128165963970"
       ],
       "score": 70,
-      "ageDays": 23,
+      "ageDays": 24,
       "priority": "Medium",
       "priorityReasons": [
         "Offline/outbound lead",
-        "Created 23 days ago",
+        "Created 24 days ago",
         "No qualified activity yet",
         "No connected call",
         "No completed meeting",
         "Open deal status"
       ],
-      "reason": "Offline/outbound lead · Created 23 days ago · No qualified activity yet"
-    },
-    {
-      "id": "751264144595",
-      "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/751264144595",
-      "name": "751264144595",
-      "email": null,
-      "ownerId": "31558980",
-      "ownerName": "Zein Fares",
-      "ownerColor": "#1d4ed8",
-      "leadStatus": "OPEN_DEAL",
-      "source": "OFFLINE",
-      "sourceBucket": "offline",
-      "createdAt": "2026-04-07",
-      "lastActivityDate": null,
-      "hasConnectedCall": false,
-      "hasCompletedMeeting": false,
-      "companyIds": [
-        "425262411981"
-      ],
-      "score": 70,
-      "ageDays": 23,
-      "priority": "Medium",
-      "priorityReasons": [
-        "Offline/outbound lead",
-        "Created 23 days ago",
-        "No qualified activity yet",
-        "No connected call",
-        "No completed meeting",
-        "Open deal status"
-      ],
-      "reason": "Offline/outbound lead · Created 23 days ago · No qualified activity yet"
+      "reason": "Offline/outbound lead · Created 24 days ago · No qualified activity yet"
     }
   ],
   "leadFunnel": {
-    "totalLeads": 1260,
-    "validLeads": 757,
-    "eligibleLeads": 514,
-    "contactedLeads": 343,
-    "notContactedLeads": 171,
+    "totalLeads": 1261,
+    "validLeads": 759,
+    "eligibleLeads": 516,
+    "contactedLeads": 344,
+    "notContactedLeads": 172,
     "openDeals": 473,
     "wonDealsMTD": 0,
     "wonDealsYTD": 8,
-    "conversionToOpenDealRate": 92,
+    "conversionToOpenDealRate": 91.7,
     "conversionToWonMtdRate": 0,
     "stages": [
       {
         "label": "Total Leads",
-        "value": 1260
+        "value": 1261
       },
       {
         "label": "Valid Leads",
-        "value": 757
+        "value": 759
       },
       {
         "label": "Eligible Outreach",
-        "value": 514
+        "value": 516
       },
       {
         "label": "Contacted",
-        "value": 343
+        "value": 344
       },
       {
         "label": "Open Deals",
@@ -29420,10 +29518,10 @@
   },
   "sourcePerformance": {
     "online": {
-      "total": 104,
-      "contacted": 87,
-      "notContacted": 17,
-      "rate": 83.7
+      "total": 106,
+      "contacted": 88,
+      "notContacted": 18,
+      "rate": 83
     },
     "offline": {
       "total": 410,
@@ -29434,10 +29532,10 @@
   },
   "slaBreaches": {
     "summary": {
-      "total": 946,
+      "total": 954,
       "onlineLeadBreaches": 15,
       "offlineLeadBreaches": 151,
-      "pipelineBreaches": 254,
+      "pipelineBreaches": 262,
       "rankBreaches": 526
     },
     "onlineLeadBreaches": [
@@ -29446,8 +29544,8 @@
         "severity": "high",
         "title": "766091906286",
         "ownerName": "Marita Chedid",
-        "ageDays": 3,
-        "message": "Online lead not contacted for 3 days",
+        "ageDays": 4,
+        "message": "Online lead not contacted for 4 days",
         "createdAt": "2026-04-27",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/766091906286"
       },
@@ -29456,8 +29554,8 @@
         "severity": "high",
         "title": "764154532050",
         "ownerName": "Zein Fares",
-        "ageDays": 6,
-        "message": "Online lead not contacted for 6 days",
+        "ageDays": 7,
+        "message": "Online lead not contacted for 7 days",
         "createdAt": "2026-04-24",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/764154532050"
       },
@@ -29466,8 +29564,8 @@
         "severity": "high",
         "title": "763016935638",
         "ownerName": "Ahmad Khawajah",
-        "ageDays": 7,
-        "message": "Online lead not contacted for 7 days",
+        "ageDays": 8,
+        "message": "Online lead not contacted for 8 days",
         "createdAt": "2026-04-23",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/763016935638"
       },
@@ -29476,8 +29574,8 @@
         "severity": "high",
         "title": "757574153425",
         "ownerName": "Jehad Al-Barqawi",
-        "ageDays": 16,
-        "message": "Online lead not contacted for 16 days",
+        "ageDays": 17,
+        "message": "Online lead not contacted for 17 days",
         "createdAt": "2026-04-14",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/757574153425"
       },
@@ -29486,8 +29584,8 @@
         "severity": "high",
         "title": "750439294186",
         "ownerName": "Ahmad Khawajah",
-        "ageDays": 27,
-        "message": "Online lead not contacted for 27 days",
+        "ageDays": 28,
+        "message": "Online lead not contacted for 28 days",
         "createdAt": "2026-04-03",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/750439294186"
       },
@@ -29496,8 +29594,8 @@
         "severity": "high",
         "title": "745697520831",
         "ownerName": "Zein Fares",
-        "ageDays": 33,
-        "message": "Online lead not contacted for 33 days",
+        "ageDays": 34,
+        "message": "Online lead not contacted for 34 days",
         "createdAt": "2026-03-28",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/745697520831"
       },
@@ -29506,8 +29604,8 @@
         "severity": "high",
         "title": "710264128699",
         "ownerName": "Zein Fares",
-        "ageDays": 56,
-        "message": "Online lead not contacted for 56 days",
+        "ageDays": 57,
+        "message": "Online lead not contacted for 57 days",
         "createdAt": "2026-03-05",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/710264128699"
       },
@@ -29516,8 +29614,8 @@
         "severity": "high",
         "title": "710252170441",
         "ownerName": "Zein Fares",
-        "ageDays": 66,
-        "message": "Online lead not contacted for 66 days",
+        "ageDays": 67,
+        "message": "Online lead not contacted for 67 days",
         "createdAt": "2026-02-23",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/710252170441"
       },
@@ -29526,8 +29624,8 @@
         "severity": "high",
         "title": "699784910051",
         "ownerName": "Zein Fares",
-        "ageDays": 74,
-        "message": "Online lead not contacted for 74 days",
+        "ageDays": 75,
+        "message": "Online lead not contacted for 75 days",
         "createdAt": "2026-02-15",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/699784910051"
       },
@@ -29536,8 +29634,8 @@
         "severity": "high",
         "title": "667473457354",
         "ownerName": "Zein Fares",
-        "ageDays": 93,
-        "message": "Online lead not contacted for 93 days",
+        "ageDays": 94,
+        "message": "Online lead not contacted for 94 days",
         "createdAt": "2026-01-27",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/667473457354"
       },
@@ -29546,8 +29644,8 @@
         "severity": "high",
         "title": "667857945825",
         "ownerName": "Zein Fares",
-        "ageDays": 93,
-        "message": "Online lead not contacted for 93 days",
+        "ageDays": 94,
+        "message": "Online lead not contacted for 94 days",
         "createdAt": "2026-01-27",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/667857945825"
       },
@@ -29556,8 +29654,8 @@
         "severity": "high",
         "title": "637355760855",
         "ownerName": "Zein Fares",
-        "ageDays": 108,
-        "message": "Online lead not contacted for 108 days",
+        "ageDays": 109,
+        "message": "Online lead not contacted for 109 days",
         "createdAt": "2026-01-12",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/637355760855"
       },
@@ -29566,8 +29664,8 @@
         "severity": "high",
         "title": "632797540579",
         "ownerName": "Zein Fares",
-        "ageDays": 111,
-        "message": "Online lead not contacted for 111 days",
+        "ageDays": 112,
+        "message": "Online lead not contacted for 112 days",
         "createdAt": "2026-01-09",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/632797540579"
       },
@@ -29576,8 +29674,8 @@
         "severity": "high",
         "title": "628292985025",
         "ownerName": "Zein Fares",
-        "ageDays": 113,
-        "message": "Online lead not contacted for 113 days",
+        "ageDays": 114,
+        "message": "Online lead not contacted for 114 days",
         "createdAt": "2026-01-07",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/628292985025"
       },
@@ -29586,8 +29684,8 @@
         "severity": "high",
         "title": "626341997800",
         "ownerName": "Zein Fares",
-        "ageDays": 114,
-        "message": "Online lead not contacted for 114 days",
+        "ageDays": 115,
+        "message": "Online lead not contacted for 115 days",
         "createdAt": "2026-01-06",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/626341997800"
       }
@@ -29598,8 +29696,8 @@
         "severity": "medium",
         "title": "765073026269",
         "ownerName": "Marita Chedid",
-        "ageDays": 4,
-        "message": "Offline lead not contacted for 4 days",
+        "ageDays": 5,
+        "message": "Offline lead not contacted for 5 days",
         "createdAt": "2026-04-26",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/765073026269"
       },
@@ -29608,8 +29706,8 @@
         "severity": "medium",
         "title": "764824396021",
         "ownerName": "Marita Chedid",
-        "ageDays": 4,
-        "message": "Offline lead not contacted for 4 days",
+        "ageDays": 5,
+        "message": "Offline lead not contacted for 5 days",
         "createdAt": "2026-04-26",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/764824396021"
       },
@@ -29618,8 +29716,8 @@
         "severity": "medium",
         "title": "765294266578",
         "ownerName": "Mohammed Khalid",
-        "ageDays": 4,
-        "message": "Offline lead not contacted for 4 days",
+        "ageDays": 5,
+        "message": "Offline lead not contacted for 5 days",
         "createdAt": "2026-04-26",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/765294266578"
       },
@@ -29628,8 +29726,8 @@
         "severity": "medium",
         "title": "765074474212",
         "ownerName": "Marita Chedid",
-        "ageDays": 4,
-        "message": "Offline lead not contacted for 4 days",
+        "ageDays": 5,
+        "message": "Offline lead not contacted for 5 days",
         "createdAt": "2026-04-26",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/765074474212"
       },
@@ -29638,8 +29736,8 @@
         "severity": "medium",
         "title": "762864047325",
         "ownerName": "Marita Chedid",
-        "ageDays": 7,
-        "message": "Offline lead not contacted for 7 days",
+        "ageDays": 8,
+        "message": "Offline lead not contacted for 8 days",
         "createdAt": "2026-04-23",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/762864047325"
       },
@@ -29648,8 +29746,8 @@
         "severity": "medium",
         "title": "762856072433",
         "ownerName": "Marita Chedid",
-        "ageDays": 7,
-        "message": "Offline lead not contacted for 7 days",
+        "ageDays": 8,
+        "message": "Offline lead not contacted for 8 days",
         "createdAt": "2026-04-23",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/762856072433"
       },
@@ -29658,8 +29756,8 @@
         "severity": "medium",
         "title": "761338396900",
         "ownerName": "Marita Chedid",
-        "ageDays": 8,
-        "message": "Offline lead not contacted for 8 days",
+        "ageDays": 9,
+        "message": "Offline lead not contacted for 9 days",
         "createdAt": "2026-04-22",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/761338396900"
       },
@@ -29668,8 +29766,8 @@
         "severity": "medium",
         "title": "761340721397",
         "ownerName": "Marita Chedid",
-        "ageDays": 8,
-        "message": "Offline lead not contacted for 8 days",
+        "ageDays": 9,
+        "message": "Offline lead not contacted for 9 days",
         "createdAt": "2026-04-22",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/761340721397"
       },
@@ -29678,8 +29776,8 @@
         "severity": "medium",
         "title": "761237623002",
         "ownerName": "Marita Chedid",
-        "ageDays": 9,
-        "message": "Offline lead not contacted for 9 days",
+        "ageDays": 10,
+        "message": "Offline lead not contacted for 10 days",
         "createdAt": "2026-04-21",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/761237623002"
       },
@@ -29688,8 +29786,8 @@
         "severity": "medium",
         "title": "761340282043",
         "ownerName": "Marita Chedid",
-        "ageDays": 9,
-        "message": "Offline lead not contacted for 9 days",
+        "ageDays": 10,
+        "message": "Offline lead not contacted for 10 days",
         "createdAt": "2026-04-21",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/761340282043"
       },
@@ -29698,8 +29796,8 @@
         "severity": "medium",
         "title": "761341076672",
         "ownerName": "Marita Chedid",
-        "ageDays": 9,
-        "message": "Offline lead not contacted for 9 days",
+        "ageDays": 10,
+        "message": "Offline lead not contacted for 10 days",
         "createdAt": "2026-04-21",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/761341076672"
       },
@@ -29708,8 +29806,8 @@
         "severity": "medium",
         "title": "759779346673",
         "ownerName": "Ursula Waked",
-        "ageDays": 10,
-        "message": "Offline lead not contacted for 10 days",
+        "ageDays": 11,
+        "message": "Offline lead not contacted for 11 days",
         "createdAt": "2026-04-20",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/759779346673"
       },
@@ -29718,8 +29816,8 @@
         "severity": "medium",
         "title": "758357233853",
         "ownerName": "Mohammed Khalid",
-        "ageDays": 14,
-        "message": "Offline lead not contacted for 14 days",
+        "ageDays": 15,
+        "message": "Offline lead not contacted for 15 days",
         "createdAt": "2026-04-16",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/758357233853"
       },
@@ -29728,8 +29826,8 @@
         "severity": "medium",
         "title": "758402790631",
         "ownerName": "Mohammed Khalid",
-        "ageDays": 14,
-        "message": "Offline lead not contacted for 14 days",
+        "ageDays": 15,
+        "message": "Offline lead not contacted for 15 days",
         "createdAt": "2026-04-16",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/758402790631"
       },
@@ -29738,8 +29836,8 @@
         "severity": "medium",
         "title": "758168389856",
         "ownerName": "Marita Chedid",
-        "ageDays": 15,
-        "message": "Offline lead not contacted for 15 days",
+        "ageDays": 16,
+        "message": "Offline lead not contacted for 16 days",
         "createdAt": "2026-04-15",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/758168389856"
       },
@@ -29748,8 +29846,8 @@
         "severity": "medium",
         "title": "758168549596",
         "ownerName": "Marita Chedid",
-        "ageDays": 15,
-        "message": "Offline lead not contacted for 15 days",
+        "ageDays": 16,
+        "message": "Offline lead not contacted for 16 days",
         "createdAt": "2026-04-15",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/758168549596"
       },
@@ -29758,8 +29856,8 @@
         "severity": "medium",
         "title": "758168698049",
         "ownerName": "Marita Chedid",
-        "ageDays": 15,
-        "message": "Offline lead not contacted for 15 days",
+        "ageDays": 16,
+        "message": "Offline lead not contacted for 16 days",
         "createdAt": "2026-04-15",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/758168698049"
       },
@@ -29768,8 +29866,8 @@
         "severity": "medium",
         "title": "758168616141",
         "ownerName": "Marita Chedid",
-        "ageDays": 15,
-        "message": "Offline lead not contacted for 15 days",
+        "ageDays": 16,
+        "message": "Offline lead not contacted for 16 days",
         "createdAt": "2026-04-15",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/758168616141"
       },
@@ -29778,8 +29876,8 @@
         "severity": "medium",
         "title": "758317002972",
         "ownerName": "Marita Chedid",
-        "ageDays": 15,
-        "message": "Offline lead not contacted for 15 days",
+        "ageDays": 16,
+        "message": "Offline lead not contacted for 16 days",
         "createdAt": "2026-04-15",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/758317002972"
       },
@@ -29788,8 +29886,8 @@
         "severity": "medium",
         "title": "757455426791",
         "ownerName": "Zein Fares",
-        "ageDays": 16,
-        "message": "Offline lead not contacted for 16 days",
+        "ageDays": 17,
+        "message": "Offline lead not contacted for 17 days",
         "createdAt": "2026-04-14",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/757455426791"
       },
@@ -29798,8 +29896,8 @@
         "severity": "medium",
         "title": "755173096693",
         "ownerName": "Marita Chedid",
-        "ageDays": 17,
-        "message": "Offline lead not contacted for 17 days",
+        "ageDays": 18,
+        "message": "Offline lead not contacted for 18 days",
         "createdAt": "2026-04-13",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/755173096693"
       },
@@ -29808,8 +29906,8 @@
         "severity": "medium",
         "title": "755172527336",
         "ownerName": "Mohammed Khalid",
-        "ageDays": 17,
-        "message": "Offline lead not contacted for 17 days",
+        "ageDays": 18,
+        "message": "Offline lead not contacted for 18 days",
         "createdAt": "2026-04-13",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/755172527336"
       },
@@ -29818,8 +29916,8 @@
         "severity": "medium",
         "title": "755174010087",
         "ownerName": "Ursula Waked",
-        "ageDays": 17,
-        "message": "Offline lead not contacted for 17 days",
+        "ageDays": 18,
+        "message": "Offline lead not contacted for 18 days",
         "createdAt": "2026-04-13",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/755174010087"
       },
@@ -29828,8 +29926,8 @@
         "severity": "medium",
         "title": "754769609977",
         "ownerName": "Ursula Waked",
-        "ageDays": 17,
-        "message": "Offline lead not contacted for 17 days",
+        "ageDays": 18,
+        "message": "Offline lead not contacted for 18 days",
         "createdAt": "2026-04-13",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/754769609977"
       },
@@ -29838,8 +29936,8 @@
         "severity": "medium",
         "title": "753361668311",
         "ownerName": "Marita Chedid",
-        "ageDays": 22,
-        "message": "Offline lead not contacted for 22 days",
+        "ageDays": 23,
+        "message": "Offline lead not contacted for 23 days",
         "createdAt": "2026-04-08",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/753361668311"
       },
@@ -29848,8 +29946,8 @@
         "severity": "medium",
         "title": "753225723106",
         "ownerName": "Marita Chedid",
-        "ageDays": 22,
-        "message": "Offline lead not contacted for 22 days",
+        "ageDays": 23,
+        "message": "Offline lead not contacted for 23 days",
         "createdAt": "2026-04-08",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/753225723106"
       },
@@ -29858,8 +29956,8 @@
         "severity": "medium",
         "title": "753226435829",
         "ownerName": "Marita Chedid",
-        "ageDays": 22,
-        "message": "Offline lead not contacted for 22 days",
+        "ageDays": 23,
+        "message": "Offline lead not contacted for 23 days",
         "createdAt": "2026-04-08",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/753226435829"
       },
@@ -29868,8 +29966,8 @@
         "severity": "medium",
         "title": "753727985904",
         "ownerName": "Marita Chedid",
-        "ageDays": 22,
-        "message": "Offline lead not contacted for 22 days",
+        "ageDays": 23,
+        "message": "Offline lead not contacted for 23 days",
         "createdAt": "2026-04-08",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/753727985904"
       },
@@ -29878,8 +29976,8 @@
         "severity": "medium",
         "title": "753293990113",
         "ownerName": "Marita Chedid",
-        "ageDays": 22,
-        "message": "Offline lead not contacted for 22 days",
+        "ageDays": 23,
+        "message": "Offline lead not contacted for 23 days",
         "createdAt": "2026-04-08",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/753293990113"
       },
@@ -29888,8 +29986,8 @@
         "severity": "medium",
         "title": "753759230186",
         "ownerName": "Marita Chedid",
-        "ageDays": 22,
-        "message": "Offline lead not contacted for 22 days",
+        "ageDays": 23,
+        "message": "Offline lead not contacted for 23 days",
         "createdAt": "2026-04-08",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/753759230186"
       },
@@ -29898,8 +29996,8 @@
         "severity": "medium",
         "title": "751262510302",
         "ownerName": "Zein Fares",
-        "ageDays": 23,
-        "message": "Offline lead not contacted for 23 days",
+        "ageDays": 24,
+        "message": "Offline lead not contacted for 24 days",
         "createdAt": "2026-04-07",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/751262510302"
       },
@@ -29908,8 +30006,8 @@
         "severity": "medium",
         "title": "751262642386",
         "ownerName": "Ahmad Khawajah",
-        "ageDays": 23,
-        "message": "Offline lead not contacted for 23 days",
+        "ageDays": 24,
+        "message": "Offline lead not contacted for 24 days",
         "createdAt": "2026-04-07",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/751262642386"
       },
@@ -29918,8 +30016,8 @@
         "severity": "medium",
         "title": "750915751098",
         "ownerName": "Ahmad Khawajah",
-        "ageDays": 23,
-        "message": "Offline lead not contacted for 23 days",
+        "ageDays": 24,
+        "message": "Offline lead not contacted for 24 days",
         "createdAt": "2026-04-07",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/750915751098"
       },
@@ -29928,8 +30026,8 @@
         "severity": "medium",
         "title": "751264144595",
         "ownerName": "Zein Fares",
-        "ageDays": 23,
-        "message": "Offline lead not contacted for 23 days",
+        "ageDays": 24,
+        "message": "Offline lead not contacted for 24 days",
         "createdAt": "2026-04-07",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/751264144595"
       },
@@ -29938,8 +30036,8 @@
         "severity": "medium",
         "title": "751261647062",
         "ownerName": "Marita Chedid",
-        "ageDays": 24,
-        "message": "Offline lead not contacted for 24 days",
+        "ageDays": 25,
+        "message": "Offline lead not contacted for 25 days",
         "createdAt": "2026-04-06",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/751261647062"
       },
@@ -29948,8 +30046,8 @@
         "severity": "medium",
         "title": "750915389680",
         "ownerName": "Zein Fares",
-        "ageDays": 26,
-        "message": "Offline lead not contacted for 26 days",
+        "ageDays": 27,
+        "message": "Offline lead not contacted for 27 days",
         "createdAt": "2026-04-04",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/750915389680"
       },
@@ -29958,8 +30056,8 @@
         "severity": "medium",
         "title": "748777512157",
         "ownerName": "Marita Chedid",
-        "ageDays": 29,
-        "message": "Offline lead not contacted for 29 days",
+        "ageDays": 30,
+        "message": "Offline lead not contacted for 30 days",
         "createdAt": "2026-04-01",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/748777512157"
       },
@@ -29968,8 +30066,8 @@
         "severity": "medium",
         "title": "745795502300",
         "ownerName": "Marita Chedid",
-        "ageDays": 32,
-        "message": "Offline lead not contacted for 32 days",
+        "ageDays": 33,
+        "message": "Offline lead not contacted for 33 days",
         "createdAt": "2026-03-29",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/745795502300"
       },
@@ -29978,8 +30076,8 @@
         "severity": "medium",
         "title": "745933363426",
         "ownerName": "Marita Chedid",
-        "ageDays": 32,
-        "message": "Offline lead not contacted for 32 days",
+        "ageDays": 33,
+        "message": "Offline lead not contacted for 33 days",
         "createdAt": "2026-03-29",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/745933363426"
       },
@@ -29988,8 +30086,8 @@
         "severity": "medium",
         "title": "745931204813",
         "ownerName": "Marita Chedid",
-        "ageDays": 32,
-        "message": "Offline lead not contacted for 32 days",
+        "ageDays": 33,
+        "message": "Offline lead not contacted for 33 days",
         "createdAt": "2026-03-29",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/745931204813"
       },
@@ -29998,8 +30096,8 @@
         "severity": "medium",
         "title": "745794793698",
         "ownerName": "Marita Chedid",
-        "ageDays": 32,
-        "message": "Offline lead not contacted for 32 days",
+        "ageDays": 33,
+        "message": "Offline lead not contacted for 33 days",
         "createdAt": "2026-03-29",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/745794793698"
       },
@@ -30008,8 +30106,8 @@
         "severity": "medium",
         "title": "745932650718",
         "ownerName": "Marita Chedid",
-        "ageDays": 32,
-        "message": "Offline lead not contacted for 32 days",
+        "ageDays": 33,
+        "message": "Offline lead not contacted for 33 days",
         "createdAt": "2026-03-29",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/745932650718"
       },
@@ -30018,8 +30116,8 @@
         "severity": "medium",
         "title": "745931213030",
         "ownerName": "Marita Chedid",
-        "ageDays": 32,
-        "message": "Offline lead not contacted for 32 days",
+        "ageDays": 33,
+        "message": "Offline lead not contacted for 33 days",
         "createdAt": "2026-03-29",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/745931213030"
       },
@@ -30028,8 +30126,8 @@
         "severity": "medium",
         "title": "744225668317",
         "ownerName": "Marita Chedid",
-        "ageDays": 35,
-        "message": "Offline lead not contacted for 35 days",
+        "ageDays": 36,
+        "message": "Offline lead not contacted for 36 days",
         "createdAt": "2026-03-26",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/744225668317"
       },
@@ -30038,8 +30136,8 @@
         "severity": "medium",
         "title": "743360089331",
         "ownerName": "Ahmad Khawajah",
-        "ageDays": 36,
-        "message": "Offline lead not contacted for 36 days",
+        "ageDays": 37,
+        "message": "Offline lead not contacted for 37 days",
         "createdAt": "2026-03-25",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/743360089331"
       },
@@ -30048,8 +30146,8 @@
         "severity": "medium",
         "title": "742660497656",
         "ownerName": "Marita Chedid",
-        "ageDays": 37,
-        "message": "Offline lead not contacted for 37 days",
+        "ageDays": 38,
+        "message": "Offline lead not contacted for 38 days",
         "createdAt": "2026-03-24",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/742660497656"
       },
@@ -30058,8 +30156,8 @@
         "severity": "medium",
         "title": "742661217475",
         "ownerName": "Ahmad Khawajah",
-        "ageDays": 37,
-        "message": "Offline lead not contacted for 37 days",
+        "ageDays": 38,
+        "message": "Offline lead not contacted for 38 days",
         "createdAt": "2026-03-24",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/742661217475"
       },
@@ -30068,8 +30166,8 @@
         "severity": "medium",
         "title": "742723898558",
         "ownerName": "Ahmad Khawajah",
-        "ageDays": 37,
-        "message": "Offline lead not contacted for 37 days",
+        "ageDays": 38,
+        "message": "Offline lead not contacted for 38 days",
         "createdAt": "2026-03-24",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/742723898558"
       },
@@ -30078,8 +30176,8 @@
         "severity": "medium",
         "title": "742723904720",
         "ownerName": "Ahmad Khawajah",
-        "ageDays": 37,
-        "message": "Offline lead not contacted for 37 days",
+        "ageDays": 38,
+        "message": "Offline lead not contacted for 38 days",
         "createdAt": "2026-03-24",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/742723904720"
       },
@@ -30088,8 +30186,8 @@
         "severity": "medium",
         "title": "739442046159",
         "ownerName": "Marita Chedid",
-        "ageDays": 42,
-        "message": "Offline lead not contacted for 42 days",
+        "ageDays": 43,
+        "message": "Offline lead not contacted for 43 days",
         "createdAt": "2026-03-19",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/739442046159"
       }
@@ -30100,9 +30198,19 @@
         "severity": "medium",
         "title": "IssaHolding - New Deal",
         "ownerName": "Marita Chedid",
-        "ageDays": 65,
+        "ageDays": 66,
         "amount": 24836,
-        "message": "Cold deal with no recent activity for 65 days",
+        "message": "Cold deal with no recent activity for 66 days",
+        "hubspotUrl": null
+      },
+      {
+        "type": "cold_deal",
+        "severity": "medium",
+        "title": " شركة الركيزة لخدمات التشغيل - New Deal",
+        "ownerName": "Marita Chedid",
+        "ageDays": 15,
+        "amount": 6000,
+        "message": "Cold deal with no recent activity for 15 days",
         "hubspotUrl": null
       },
       {
@@ -30110,9 +30218,9 @@
         "severity": "medium",
         "title": "Tanmia- New Deal",
         "ownerName": "Marita Chedid",
-        "ageDays": 51,
+        "ageDays": 52,
         "amount": 6900,
-        "message": "Cold deal with no recent activity for 51 days",
+        "message": "Cold deal with no recent activity for 52 days",
         "hubspotUrl": null
       },
       {
@@ -30120,9 +30228,9 @@
         "severity": "medium",
         "title": "B D Holding - New Deal",
         "ownerName": "Marita Chedid",
-        "ageDays": 16,
+        "ageDays": 17,
         "amount": 7600,
-        "message": "Cold deal with no recent activity for 16 days",
+        "message": "Cold deal with no recent activity for 17 days",
         "hubspotUrl": null
       },
       {
@@ -30130,19 +30238,19 @@
         "severity": "medium",
         "title": "SHBC Mechanical Engineering - New Deal",
         "ownerName": "Marita Chedid",
-        "ageDays": 17,
+        "ageDays": 18,
         "amount": 38850,
-        "message": "Cold deal with no recent activity for 17 days",
+        "message": "Cold deal with no recent activity for 18 days",
         "hubspotUrl": null
       },
       {
         "type": "cold_deal",
         "severity": "medium",
-        "title": "Harb Electric - New Deal",
+        "title": "Bikhazi Medical Group- New Deal",
         "ownerName": "Marita Chedid",
-        "ageDays": 29,
-        "amount": 10500,
-        "message": "Cold deal with no recent activity for 29 days",
+        "ageDays": 15,
+        "amount": 5225,
+        "message": "Cold deal with no recent activity for 15 days",
         "hubspotUrl": null
       },
       {
@@ -30150,9 +30258,9 @@
         "severity": "medium",
         "title": "Bellevue Medical Center- New Deal",
         "ownerName": "Marita Chedid",
-        "ageDays": 35,
+        "ageDays": 36,
         "amount": 10075,
-        "message": "Cold deal with no recent activity for 35 days",
+        "message": "Cold deal with no recent activity for 36 days",
         "hubspotUrl": null
       },
       {
@@ -30160,9 +30268,9 @@
         "severity": "medium",
         "title": "District Company- New Deal",
         "ownerName": "Marita Chedid",
-        "ageDays": 35,
+        "ageDays": 36,
         "amount": 0,
-        "message": "Cold deal with no recent activity for 35 days",
+        "message": "Cold deal with no recent activity for 36 days",
         "hubspotUrl": null
       },
       {
@@ -30177,6 +30285,15 @@
       {
         "type": "no_next_activity",
         "severity": "high",
+        "title": " شركة الركيزة لخدمات التشغيل - New Deal",
+        "ownerName": "Marita Chedid",
+        "amount": 6000,
+        "message": "Open deal has no next activity scheduled",
+        "hubspotUrl": null
+      },
+      {
+        "type": "no_next_activity",
+        "severity": "high",
         "title": "Tanmia- New Deal",
         "ownerName": "Marita Chedid",
         "amount": 6900,
@@ -30204,9 +30321,9 @@
       {
         "type": "no_next_activity",
         "severity": "high",
-        "title": "Harb Electric - New Deal",
+        "title": "Bikhazi Medical Group- New Deal",
         "ownerName": "Marita Chedid",
-        "amount": 10500,
+        "amount": 5225,
         "message": "Open deal has no next activity scheduled",
         "hubspotUrl": null
       },
@@ -30233,9 +30350,9 @@
         "severity": "medium",
         "title": "Green building solutions company | Abdullah Alsughaier | ",
         "ownerName": "Zein Fares",
-        "ageDays": 25,
+        "ageDays": 26,
         "amount": 0,
-        "message": "Cold deal with no recent activity for 25 days",
+        "message": "Cold deal with no recent activity for 26 days",
         "hubspotUrl": null
       },
       {
@@ -30243,9 +30360,9 @@
         "severity": "medium",
         "title": "Saudi National Bank SNB - New Deal",
         "ownerName": "Zein Fares",
-        "ageDays": 108,
+        "ageDays": 109,
         "amount": 23069.55,
-        "message": "Cold deal with no recent activity for 108 days",
+        "message": "Cold deal with no recent activity for 109 days",
         "hubspotUrl": null
       },
       {
@@ -30253,9 +30370,9 @@
         "severity": "medium",
         "title": "Al-Qahtani Holding - New Deal",
         "ownerName": "Zein Fares",
-        "ageDays": 196,
+        "ageDays": 197,
         "amount": 0,
-        "message": "Cold deal with no recent activity for 196 days",
+        "message": "Cold deal with no recent activity for 197 days",
         "hubspotUrl": null
       },
       {
@@ -30263,9 +30380,9 @@
         "severity": "medium",
         "title": "Wadi Taiba Company - New Deal",
         "ownerName": "Zein Fares",
-        "ageDays": 100,
+        "ageDays": 101,
         "amount": 7733,
-        "message": "Cold deal with no recent activity for 100 days",
+        "message": "Cold deal with no recent activity for 101 days",
         "hubspotUrl": null
       },
       {
@@ -30273,9 +30390,9 @@
         "severity": "medium",
         "title": "D360 Bank - New Deal",
         "ownerName": "Zein Fares",
-        "ageDays": 101,
+        "ageDays": 102,
         "amount": 26670,
-        "message": "Cold deal with no recent activity for 101 days",
+        "message": "Cold deal with no recent activity for 102 days",
         "hubspotUrl": null
       },
       {
@@ -30283,9 +30400,9 @@
         "severity": "medium",
         "title": "almoosahospital.com.sa - New Deal",
         "ownerName": "Zein Fares",
-        "ageDays": 193,
+        "ageDays": 194,
         "amount": 20000,
-        "message": "Cold deal with no recent activity for 193 days",
+        "message": "Cold deal with no recent activity for 194 days",
         "hubspotUrl": null
       },
       {
@@ -30293,9 +30410,9 @@
         "severity": "medium",
         "title": "Al- Othman Holding - New Deal",
         "ownerName": "Zein Fares",
-        "ageDays": 239,
+        "ageDays": 240,
         "amount": 8667.75,
-        "message": "Cold deal with no recent activity for 239 days",
+        "message": "Cold deal with no recent activity for 240 days",
         "hubspotUrl": null
       },
       {
@@ -30303,9 +30420,9 @@
         "severity": "medium",
         "title": "MARCO - New Deal",
         "ownerName": "Zein Fares",
-        "ageDays": 82,
+        "ageDays": 83,
         "amount": 10401.3,
-        "message": "Cold deal with no recent activity for 82 days",
+        "message": "Cold deal with no recent activity for 83 days",
         "hubspotUrl": null
       },
       {
@@ -30313,9 +30430,9 @@
         "severity": "medium",
         "title": "Al-Qahtani Holding - New Deal",
         "ownerName": "Zein Fares",
-        "ageDays": 18,
+        "ageDays": 19,
         "amount": 17000,
-        "message": "Cold deal with no recent activity for 18 days",
+        "message": "Cold deal with no recent activity for 19 days",
         "hubspotUrl": null
       },
       {
@@ -30323,9 +30440,9 @@
         "severity": "medium",
         "title": "SAUDIA REAL ESTATE - New Deal",
         "ownerName": "Zein Fares",
-        "ageDays": 308,
+        "ageDays": 309,
         "amount": 14951.86875,
-        "message": "Cold deal with no recent activity for 308 days",
+        "message": "Cold deal with no recent activity for 309 days",
         "hubspotUrl": null
       },
       {
@@ -30333,9 +30450,9 @@
         "severity": "medium",
         "title": "Al Jazeera Paints Limited - New Deal",
         "ownerName": "Zein Fares",
-        "ageDays": 95,
+        "ageDays": 96,
         "amount": 15000,
-        "message": "Cold deal with no recent activity for 95 days",
+        "message": "Cold deal with no recent activity for 96 days",
         "hubspotUrl": null
       },
       {
@@ -30343,9 +30460,9 @@
         "severity": "medium",
         "title": "Coca Cola Bottling Co. Of Saudi Arabia - New Deal",
         "ownerName": "Zein Fares",
-        "ageDays": 99,
+        "ageDays": 100,
         "amount": 13335,
-        "message": "Cold deal with no recent activity for 99 days",
+        "message": "Cold deal with no recent activity for 100 days",
         "hubspotUrl": null
       },
       {
@@ -30353,9 +30470,9 @@
         "severity": "medium",
         "title": "MEMF Electrical Industries Co - New Deal",
         "ownerName": "Zein Fares",
-        "ageDays": 214,
+        "ageDays": 215,
         "amount": 9467.85,
-        "message": "Cold deal with no recent activity for 214 days",
+        "message": "Cold deal with no recent activity for 215 days",
         "hubspotUrl": null
       },
       {
@@ -30363,9 +30480,9 @@
         "severity": "medium",
         "title": "Herfy Food Services Co. Ltd. - New Deal",
         "ownerName": "Zein Fares",
-        "ageDays": 53,
+        "ageDays": 54,
         "amount": 12001.5,
-        "message": "Cold deal with no recent activity for 53 days",
+        "message": "Cold deal with no recent activity for 54 days",
         "hubspotUrl": null
       },
       {
@@ -30373,9 +30490,9 @@
         "severity": "medium",
         "title": "Dukan Retailing Company - New Deal",
         "ownerName": "Zein Fares",
-        "ageDays": 203,
+        "ageDays": 204,
         "amount": 7200.9,
-        "message": "Cold deal with no recent activity for 203 days",
+        "message": "Cold deal with no recent activity for 204 days",
         "hubspotUrl": null
       },
       {
@@ -30383,9 +30500,9 @@
         "severity": "medium",
         "title": "MGC - New Deal",
         "ownerName": "Zein Fares",
-        "ageDays": 214,
+        "ageDays": 215,
         "amount": 11121.39,
-        "message": "Cold deal with no recent activity for 214 days",
+        "message": "Cold deal with no recent activity for 215 days",
         "hubspotUrl": null
       },
       {
@@ -30393,9 +30510,9 @@
         "severity": "medium",
         "title": "IBN ROSHD Educational Holding Company - New Deal",
         "ownerName": "Zein Fares",
-        "ageDays": 214,
+        "ageDays": 215,
         "amount": 8321.04,
-        "message": "Cold deal with no recent activity for 214 days",
+        "message": "Cold deal with no recent activity for 215 days",
         "hubspotUrl": null
       },
       {
@@ -30403,9 +30520,9 @@
         "severity": "medium",
         "title": "Abdulla Fouad Group - New Deal",
         "ownerName": "Zein Fares",
-        "ageDays": 221,
+        "ageDays": 222,
         "amount": 13201.65,
-        "message": "Cold deal with no recent activity for 221 days",
+        "message": "Cold deal with no recent activity for 222 days",
         "hubspotUrl": null
       },
       {
@@ -30413,9 +30530,9 @@
         "severity": "medium",
         "title": "المركز الوطني للتنافسية - New Deal",
         "ownerName": "Zein Fares",
-        "ageDays": 218,
+        "ageDays": 219,
         "amount": 8133,
-        "message": "Cold deal with no recent activity for 218 days",
+        "message": "Cold deal with no recent activity for 219 days",
         "hubspotUrl": null
       },
       {
@@ -30423,9 +30540,9 @@
         "severity": "medium",
         "title": "Ninja - New Deal",
         "ownerName": "Zein Fares",
-        "ageDays": 169,
+        "ageDays": 170,
         "amount": 14000,
-        "message": "Cold deal with no recent activity for 169 days",
+        "message": "Cold deal with no recent activity for 170 days",
         "hubspotUrl": null
       },
       {
@@ -30433,9 +30550,9 @@
         "severity": "medium",
         "title": "ABSAL PAUL Contracting Co. - New Deal",
         "ownerName": "Zein Fares",
-        "ageDays": 16,
+        "ageDays": 17,
         "amount": 10668,
-        "message": "Cold deal with no recent activity for 16 days",
+        "message": "Cold deal with no recent activity for 17 days",
         "hubspotUrl": null
       },
       {
@@ -30443,9 +30560,9 @@
         "severity": "medium",
         "title": "fad international company - New Deal",
         "ownerName": "Zein Fares",
-        "ageDays": 248,
+        "ageDays": 249,
         "amount": 7200,
-        "message": "Cold deal with no recent activity for 248 days",
+        "message": "Cold deal with no recent activity for 249 days",
         "hubspotUrl": null
       },
       {
@@ -30453,9 +30570,9 @@
         "severity": "medium",
         "title": "SAFE National Security Services Company -Evalufy New Deal",
         "ownerName": "Zein Fares",
-        "ageDays": 101,
+        "ageDays": 102,
         "amount": 16000,
-        "message": "Cold deal with no recent activity for 101 days",
+        "message": "Cold deal with no recent activity for 102 days",
         "hubspotUrl": null
       },
       {
@@ -30463,9 +30580,9 @@
         "severity": "medium",
         "title": "Stom - Saudi Tabreed Co. - New Deal",
         "ownerName": "Zein Fares",
-        "ageDays": 106,
+        "ageDays": 107,
         "amount": 53333,
-        "message": "Cold deal with no recent activity for 106 days",
+        "message": "Cold deal with no recent activity for 107 days",
         "hubspotUrl": null
       },
       {
@@ -30473,9 +30590,9 @@
         "severity": "medium",
         "title": "Reach - New Deal",
         "ownerName": "Zein Fares",
-        "ageDays": 24,
+        "ageDays": 25,
         "amount": 20000,
-        "message": "Cold deal with no recent activity for 24 days",
+        "message": "Cold deal with no recent activity for 25 days",
         "hubspotUrl": null
       },
       {
@@ -30483,9 +30600,9 @@
         "severity": "medium",
         "title": "تالنت سكوير - New Deal",
         "ownerName": "Zein Fares",
-        "ageDays": 239,
+        "ageDays": 240,
         "amount": 0,
-        "message": "Cold deal with no recent activity for 239 days",
+        "message": "Cold deal with no recent activity for 240 days",
         "hubspotUrl": null
       },
       {
@@ -30493,9 +30610,9 @@
         "severity": "medium",
         "title": "Applus - New Deal",
         "ownerName": "Zein Fares",
-        "ageDays": 114,
+        "ageDays": 115,
         "amount": 23000,
-        "message": "Cold deal with no recent activity for 114 days",
+        "message": "Cold deal with no recent activity for 115 days",
         "hubspotUrl": null
       },
       {
@@ -30503,9 +30620,9 @@
         "severity": "medium",
         "title": "Umm Al-Qura University - New Deal",
         "ownerName": "Zein Fares",
-        "ageDays": 121,
+        "ageDays": 122,
         "amount": 30000,
-        "message": "Cold deal with no recent activity for 121 days",
+        "message": "Cold deal with no recent activity for 122 days",
         "hubspotUrl": null
       },
       {
@@ -30513,9 +30630,9 @@
         "severity": "medium",
         "title": "abc - New Deal",
         "ownerName": "Zein Fares",
-        "ageDays": 206,
+        "ageDays": 207,
         "amount": 5600.7,
-        "message": "Cold deal with no recent activity for 206 days",
+        "message": "Cold deal with no recent activity for 207 days",
         "hubspotUrl": null
       },
       {
@@ -30523,9 +30640,9 @@
         "severity": "medium",
         "title": "Hayat Hospitals - New Deal",
         "ownerName": "Zein Fares",
-        "ageDays": 53,
+        "ageDays": 54,
         "amount": 28000,
-        "message": "Cold deal with no recent activity for 53 days",
+        "message": "Cold deal with no recent activity for 54 days",
         "hubspotUrl": null
       },
       {
@@ -30533,9 +30650,9 @@
         "severity": "medium",
         "title": "General Authority of Civil Aviation (GACA) - New Deal",
         "ownerName": "Zein Fares",
-        "ageDays": 178,
+        "ageDays": 179,
         "amount": 58813.7508,
-        "message": "Cold deal with no recent activity for 178 days",
+        "message": "Cold deal with no recent activity for 179 days",
         "hubspotUrl": null
       },
       {
@@ -30543,9 +30660,9 @@
         "severity": "medium",
         "title": "tree - New Deal",
         "ownerName": "Zein Fares",
-        "ageDays": 22,
+        "ageDays": 23,
         "amount": 26000,
-        "message": "Cold deal with no recent activity for 22 days",
+        "message": "Cold deal with no recent activity for 23 days",
         "hubspotUrl": null
       },
       {
@@ -30553,9 +30670,9 @@
         "severity": "medium",
         "title": "King Saud University - New Deal",
         "ownerName": "Zein Fares",
-        "ageDays": 196,
+        "ageDays": 197,
         "amount": 23066,
-        "message": "Cold deal with no recent activity for 196 days",
+        "message": "Cold deal with no recent activity for 197 days",
         "hubspotUrl": null
       },
       {
@@ -30563,29 +30680,9 @@
         "severity": "medium",
         "title": "SSC Company",
         "ownerName": "Zein Fares",
-        "ageDays": 149,
+        "ageDays": 150,
         "amount": 12000,
-        "message": "Cold deal with no recent activity for 149 days",
-        "hubspotUrl": null
-      },
-      {
-        "type": "cold_deal",
-        "severity": "medium",
-        "title": "Alsalama Hospital - New Deal",
-        "ownerName": "Zein Fares",
-        "ageDays": 200,
-        "amount": 0,
-        "message": "Cold deal with no recent activity for 200 days",
-        "hubspotUrl": null
-      },
-      {
-        "type": "cold_deal",
-        "severity": "medium",
-        "title": "ITSC - New Deal",
-        "ownerName": "Zein Fares",
-        "ageDays": 203,
-        "amount": 20000,
-        "message": "Cold deal with no recent activity for 203 days",
+        "message": "Cold deal with no recent activity for 150 days",
         "hubspotUrl": null
       }
     ],
@@ -31047,8 +31144,8 @@
         "severity": "high",
         "title": "626341997800",
         "ownerName": "Zein Fares",
-        "ageDays": 114,
-        "message": "Online lead not contacted for 114 days",
+        "ageDays": 115,
+        "message": "Online lead not contacted for 115 days",
         "createdAt": "2026-01-06",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/626341997800"
       },
@@ -31057,8 +31154,8 @@
         "severity": "high",
         "title": "628292985025",
         "ownerName": "Zein Fares",
-        "ageDays": 113,
-        "message": "Online lead not contacted for 113 days",
+        "ageDays": 114,
+        "message": "Online lead not contacted for 114 days",
         "createdAt": "2026-01-07",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/628292985025"
       },
@@ -31067,8 +31164,8 @@
         "severity": "high",
         "title": "632797540579",
         "ownerName": "Zein Fares",
-        "ageDays": 111,
-        "message": "Online lead not contacted for 111 days",
+        "ageDays": 112,
+        "message": "Online lead not contacted for 112 days",
         "createdAt": "2026-01-09",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/632797540579"
       },
@@ -31077,8 +31174,8 @@
         "severity": "high",
         "title": "637355760855",
         "ownerName": "Zein Fares",
-        "ageDays": 108,
-        "message": "Online lead not contacted for 108 days",
+        "ageDays": 109,
+        "message": "Online lead not contacted for 109 days",
         "createdAt": "2026-01-12",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/637355760855"
       },
@@ -31087,8 +31184,8 @@
         "severity": "high",
         "title": "667473457354",
         "ownerName": "Zein Fares",
-        "ageDays": 93,
-        "message": "Online lead not contacted for 93 days",
+        "ageDays": 94,
+        "message": "Online lead not contacted for 94 days",
         "createdAt": "2026-01-27",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/667473457354"
       },
@@ -31097,8 +31194,8 @@
         "severity": "high",
         "title": "667857945825",
         "ownerName": "Zein Fares",
-        "ageDays": 93,
-        "message": "Online lead not contacted for 93 days",
+        "ageDays": 94,
+        "message": "Online lead not contacted for 94 days",
         "createdAt": "2026-01-27",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/667857945825"
       },
@@ -31107,8 +31204,8 @@
         "severity": "high",
         "title": "699784910051",
         "ownerName": "Zein Fares",
-        "ageDays": 74,
-        "message": "Online lead not contacted for 74 days",
+        "ageDays": 75,
+        "message": "Online lead not contacted for 75 days",
         "createdAt": "2026-02-15",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/699784910051"
       },
@@ -31117,8 +31214,8 @@
         "severity": "high",
         "title": "710252170441",
         "ownerName": "Zein Fares",
-        "ageDays": 66,
-        "message": "Online lead not contacted for 66 days",
+        "ageDays": 67,
+        "message": "Online lead not contacted for 67 days",
         "createdAt": "2026-02-23",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/710252170441"
       },
@@ -31127,8 +31224,8 @@
         "severity": "high",
         "title": "710264128699",
         "ownerName": "Zein Fares",
-        "ageDays": 56,
-        "message": "Online lead not contacted for 56 days",
+        "ageDays": 57,
+        "message": "Online lead not contacted for 57 days",
         "createdAt": "2026-03-05",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/710264128699"
       },
@@ -31137,8 +31234,8 @@
         "severity": "high",
         "title": "745697520831",
         "ownerName": "Zein Fares",
-        "ageDays": 33,
-        "message": "Online lead not contacted for 33 days",
+        "ageDays": 34,
+        "message": "Online lead not contacted for 34 days",
         "createdAt": "2026-03-28",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/745697520831"
       },
@@ -31147,8 +31244,8 @@
         "severity": "high",
         "title": "750439294186",
         "ownerName": "Ahmad Khawajah",
-        "ageDays": 27,
-        "message": "Online lead not contacted for 27 days",
+        "ageDays": 28,
+        "message": "Online lead not contacted for 28 days",
         "createdAt": "2026-04-03",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/750439294186"
       },
@@ -31157,8 +31254,8 @@
         "severity": "high",
         "title": "757574153425",
         "ownerName": "Jehad Al-Barqawi",
-        "ageDays": 16,
-        "message": "Online lead not contacted for 16 days",
+        "ageDays": 17,
+        "message": "Online lead not contacted for 17 days",
         "createdAt": "2026-04-14",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/757574153425"
       },
@@ -31167,8 +31264,8 @@
         "severity": "high",
         "title": "763016935638",
         "ownerName": "Ahmad Khawajah",
-        "ageDays": 7,
-        "message": "Online lead not contacted for 7 days",
+        "ageDays": 8,
+        "message": "Online lead not contacted for 8 days",
         "createdAt": "2026-04-23",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/763016935638"
       },
@@ -31177,8 +31274,8 @@
         "severity": "high",
         "title": "764154532050",
         "ownerName": "Zein Fares",
-        "ageDays": 6,
-        "message": "Online lead not contacted for 6 days",
+        "ageDays": 7,
+        "message": "Online lead not contacted for 7 days",
         "createdAt": "2026-04-24",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/764154532050"
       },
@@ -31187,8 +31284,8 @@
         "severity": "high",
         "title": "766091906286",
         "ownerName": "Marita Chedid",
-        "ageDays": 3,
-        "message": "Online lead not contacted for 3 days",
+        "ageDays": 4,
+        "message": "Online lead not contacted for 4 days",
         "createdAt": "2026-04-27",
         "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/766091906286"
       },
@@ -31198,6 +31295,15 @@
         "title": "IssaHolding - New Deal",
         "ownerName": "Marita Chedid",
         "amount": 24836,
+        "message": "Open deal has no next activity scheduled",
+        "hubspotUrl": null
+      },
+      {
+        "type": "no_next_activity",
+        "severity": "high",
+        "title": " شركة الركيزة لخدمات التشغيل - New Deal",
+        "ownerName": "Marita Chedid",
+        "amount": 6000,
         "message": "Open deal has no next activity scheduled",
         "hubspotUrl": null
       },
@@ -31225,15 +31331,6 @@
         "title": "SHBC Mechanical Engineering - New Deal",
         "ownerName": "Marita Chedid",
         "amount": 38850,
-        "message": "Open deal has no next activity scheduled",
-        "hubspotUrl": null
-      },
-      {
-        "type": "no_next_activity",
-        "severity": "high",
-        "title": "Harb Electric - New Deal",
-        "ownerName": "Marita Chedid",
-        "amount": 10500,
         "message": "Open deal has no next activity scheduled",
         "hubspotUrl": null
       }
@@ -34500,10 +34597,10 @@
       "name": "Marita Chedid",
       "color": "#7c3aed",
       "contacts": {
-        "total": 327,
+        "total": 328,
         "contacted": 210,
-        "notContacted": 117,
-        "rate": 64.2
+        "notContacted": 118,
+        "rate": 64
       },
       "companies": {
         "total": 193,
@@ -34513,11 +34610,11 @@
       },
       "rankAUntouched": 42,
       "rankBUntouched": 64,
-      "pipelineRisks": 14,
+      "pipelineRisks": 16,
       "actions": [
         {
           "type": "lead_outreach",
-          "label": "Contact 117 eligible leads",
+          "label": "Contact 118 eligible leads",
           "priority": "high"
         },
         {
@@ -34532,7 +34629,7 @@
         },
         {
           "type": "pipeline_hygiene",
-          "label": "Schedule next activity for 7 deals",
+          "label": "Schedule next activity for 8 deals",
           "priority": "high"
         }
       ]
@@ -34554,7 +34651,7 @@
       },
       "rankAUntouched": 47,
       "rankBUntouched": 113,
-      "pipelineRisks": 156,
+      "pipelineRisks": 158,
       "actions": [
         {
           "type": "lead_outreach",
@@ -34573,7 +34670,7 @@
         },
         {
           "type": "pipeline_hygiene",
-          "label": "Schedule next activity for 78 deals",
+          "label": "Schedule next activity for 79 deals",
           "priority": "high"
         }
       ]
@@ -34582,10 +34679,10 @@
       "name": "Ursula Waked",
       "color": "#be185d",
       "contacts": {
-        "total": 72,
-        "contacted": 58,
+        "total": 73,
+        "contacted": 59,
         "notContacted": 14,
-        "rate": 80.6
+        "rate": 80.8
       },
       "companies": {
         "total": 232,
@@ -34595,7 +34692,7 @@
       },
       "rankAUntouched": 50,
       "rankBUntouched": 104,
-      "pipelineRisks": 38,
+      "pipelineRisks": 42,
       "actions": [
         {
           "type": "lead_outreach",
@@ -34614,7 +34711,7 @@
         },
         {
           "type": "pipeline_hygiene",
-          "label": "Schedule next activity for 19 deals",
+          "label": "Schedule next activity for 21 deals",
           "priority": "high"
         }
       ]
@@ -34736,24 +34833,24 @@
   "claudeInput": {
     "lostSummary": "",
     "repLostSummary": "",
-    "stuckColdSummary": "- Marita Chedid: 0 stuck, 7 cold deals\n- Zein Fares: 0 stuck, 78 cold deals\n- Ursula Waked: 0 stuck, 19 cold deals\n- Jehad Al-Barqawi: 0 stuck, 23 cold deals",
-    "leadActivitySummary": "Marketing Leads: 115 total, 0 contacted (0%), 115 converted (100%) | Unqualified: 0 | Existing Clients: 342",
-    "kpiLine": "MTD: 0 calls (0% connected), 0 meetings, 0 won ($0), 0 lost ($0), pipeline $4.7M"
+    "stuckColdSummary": "- Marita Chedid: 0 stuck, 8 cold deals\n- Zein Fares: 0 stuck, 79 cold deals\n- Ursula Waked: 0 stuck, 21 cold deals\n- Jehad Al-Barqawi: 0 stuck, 23 cold deals",
+    "leadActivitySummary": "Marketing Leads: 117 total, 0 contacted (0%), 117 converted (100%) | Unqualified: 0 | Existing Clients: 342",
+    "kpiLine": "MTD: 1 calls (0% connected), 0 meetings, 0 won ($0), 0 lost ($0), pipeline $4.7M"
   },
   "aiInsights": {
-    "summary": "Zero sales activity MTD with 127 cold deals across team threatens $4.7M pipeline and Q2 targets",
+    "summary": "Critical pipeline freeze: 0% call connection rate and 131 cold deals across team require immediate intervention",
     "patterns": [
-      "0% call connection rate MTD indicates complete sales activity freeze across all 4 reps",
-      "127 total cold deals (78 Zein, 23 Jehad, 19 Ursula, 7 Marita) show pipeline stagnation without engagement",
-      "Zero wins and zero losses MTD suggests deals are frozen rather than progressing through funnel"
+      "MTD shows complete sales activity stall: 1 call with 0% connection, zero meetings booked, no deal progression",
+      "Entire $4.7M pipeline at risk: 131 cold deals (8 Marita, 79 Zein, 21 Ursula, 23 Jehad) with no active engagement",
+      "Zero wins and zero losses indicate complete pipeline stagnation - no deal velocity or sales momentum this month"
     ],
     "quick_wins": [
-      "Zein: Immediately triage 78 cold deals - prioritize top 10 by value for reactivation calls by Wednesday",
-      "All reps: Launch coordinated call blitz targeting 50+ cold accounts with Vision 2030 compliance messaging this week"
+      "Zein: Prioritize top 10 of 79 cold deals by revenue potential - schedule reactivation calls by Wednesday EOD",
+      "All reps: Conduct emergency pipeline scrub meeting Tuesday to triage cold deals and assign 20 immediate outreach tasks"
     ],
     "risks": [
-      "$4.7M pipeline at risk of complete decay without immediate activity - cold deals typically convert at <15% after 30 days",
-      "Zero sales momentum creates compounding Q2 revenue gap - no early-stage deals entering pipeline for next quarter"
+      "Pipeline collapse imminent: 0% connection rate and 131 cold deals threaten entire $4.7M forecast with no active opportunities",
+      "Revenue target at severe risk: Zero meetings scheduled MTD means no near-term closures possible for current quarter"
     ]
   },
   "marketNews": [
@@ -34762,21 +34859,21 @@
       "tag": "Regulation",
       "color": "#D97706",
       "source": "HRSD Saudi",
-      "text": "Saudi Arabia mandates AI-powered recruitment compliance audits for Nitaqat tier upgrades starting Q3 2026"
+      "text": "Saudi Arabia mandates AI-driven recruitment reporting for Nitaqat compliance by Q3 2026, impacting 12,000+ private sector employers"
     },
     {
       "icon": "📊",
       "tag": "M&A",
       "color": "#7C3AED",
       "source": "Bloomberg",
-      "text": "Oracle acquires UAE-based Talentech for $180M, accelerating HCM Cloud expansion across GCC markets"
+      "text": "LinkedIn Talent Solutions acquires Dubai-based HR analytics startup for $47M, strengthening GCC enterprise footprint"
     },
     {
       "icon": "⚡",
       "tag": "Trend",
       "color": "#2563EB",
       "source": "Gartner",
-      "text": "67% of MENA enterprises now prioritize ATS integration with government portals for Emiratization tracking"
+      "text": "GCC HR tech spending up 34% YoY as 67% of enterprises prioritize integrated ATS-HRIS platforms for localization compliance"
     }
   ]
 }
