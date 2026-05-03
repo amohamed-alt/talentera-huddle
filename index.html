@@ -1227,7 +1227,7 @@ function switchRetentionFinancial(){
   $('panel-retention-financial')?.classList.add('active');
   renderRetentionSidebar('financial');
   if($('topbarTitle')) $('topbarTitle').textContent = 'Retention · Financial Details';
-  if($('topbarSub')) $('topbarSub').textContent = 'Date entered Booked/Cashed CY · Contract start CY · renewed value · delayed exposure';
+  if($('topbarSub')) $('topbarSub').textContent = 'Date entered Booked/Cashed CY · Contract start Dec 2025–2026 · renewed value · delayed exposure';
   renderRetentionFinancialDetails();
   window.scrollTo({top:0, behavior:'smooth'});
 }
@@ -2012,7 +2012,7 @@ function restoreCurrentView(options={}){
       $("panel-retention-financial")?.classList.add("active");
       renderRetentionSidebar("financial");
       if($("topbarTitle")) $("topbarTitle").textContent = "Retention · Financial Details";
-      if($("topbarSub")) $("topbarSub").textContent = "Date entered Booked/Cashed CY · Contract start CY · renewed value · delayed exposure";
+      if($("topbarSub")) $("topbarSub").textContent = "Date entered Booked/Cashed CY · Contract start Dec 2025–2026 · renewed value · delayed exposure";
       renderRetentionFinancialDetails();
     } else if(APP_RETENTION_VIEW === "owner" && APP_RETENTION_OWNER_ID){
       RET_SELECTED_OWNER_ID = String(APP_RETENTION_OWNER_ID);
@@ -4408,7 +4408,7 @@ function enhanceAcquisitionRepFollowupSections(){
     var title = q('topbarTitle');
     if(title) title.textContent = 'Retention · Financial Details';
     var sub = q('topbarSub');
-    if(sub) sub.textContent = 'Date entered Booked/Cashed CY · Contract start CY · renewed value · delayed exposure';
+    if(sub) sub.textContent = 'Date entered Booked/Cashed CY · Contract start Dec 2025–2026 · renewed value · delayed exposure';
     safeCall(window.renderRetentionFinancialDetails);
     if(!keepScroll) window.scrollTo({top:0, behavior:'smooth'});
   }
@@ -4556,6 +4556,25 @@ function enhanceAcquisitionRepFollowupSections(){
     return isNaN(parsed.getTime()) ? null : parsed.getFullYear();
   }
   function isCY(value){ return parseYear(value) === currentYear(); }
+  function yearMonthNumber(value){
+    if(value === undefined || value === null || String(value).trim() === '') return null;
+    var s = String(value).trim();
+    var m = s.match(/^(\d{4})-(\d{2})-\d{2}/);
+    if(m) return Number(m[1]) * 100 + Number(m[2]);
+    if(/^\d+$/.test(s)){
+      var n = Number(s);
+      var ms = n > 1e12 ? n : n > 1e9 ? n * 1000 : n;
+      var d = new Date(ms);
+      return isNaN(d.getTime()) ? null : d.getFullYear() * 100 + (d.getMonth() + 1);
+    }
+    var parsed = new Date(s);
+    return isNaN(parsed.getTime()) ? null : parsed.getFullYear() * 100 + (parsed.getMonth() + 1);
+  }
+  function isDateInYearMonthRange(value, startYear, startMonth, endYear, endMonth){
+    var ym = yearMonthNumber(value);
+    if(!ym) return false;
+    return ym >= (startYear * 100 + startMonth) && ym <= (endYear * 100 + endMonth);
+  }
   function dateText(value){
     if(value === undefined || value === null || String(value).trim() === '') return '—';
     var s = String(value).trim();
@@ -4633,6 +4652,10 @@ function enhanceAcquisitionRepFollowupSections(){
       'startDate'
     ]);
   }
+  function isContractStartAllowed(row){
+    // Manager rule: contract_start_date is allowed from December 2025 through any month in 2026.
+    return isDateInYearMonthRange(contractStartDate(row), 2025, 12, 2026, 12);
+  }
   function pipeline(row){ return String(first(row, ['pipeline','pipelineId']) || '').trim(); }
   function stage(row){ return String(first(row, ['dealstage','stageId','stage','stageType','renewalType']) || '').trim(); }
   function amount(row){
@@ -4657,7 +4680,7 @@ function enhanceAcquisitionRepFollowupSections(){
     return !p || p === RET_FIN_RETENTION_PIPELINE_ID;
   }
   function matchesRetentionFinancial(row, bucket){
-    return pipelineOk(row) && stageOk(row, bucket) && isCY(stageEnteredDate(row, bucket)) && isCY(contractStartDate(row));
+    return pipelineOk(row) && stageOk(row, bucket) && isCY(stageEnteredDate(row, bucket)) && isContractStartAllowed(row);
   }
   function filtered(rows, bucket){ return asArray(rows).filter(function(row){ return matchesRetentionFinancial(row, bucket); }); }
   function total(rows){ return asArray(rows).reduce(function(s,row){ return s + amount(row); }, 0); }
