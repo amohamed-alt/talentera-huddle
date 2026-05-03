@@ -4715,69 +4715,62 @@ function enhanceAcquisitionRepFollowupSections(){
   }
   function buildRetentionOwners(data){
     data = data || {};
-    var map = {};
-    var colors = ['#2563EB','#0891B2','#7C3AED','#16A34A','#D97706','#DC2626','#0E7490','#4F46E5','#be185d','#6B7280'];
-    function addOwner(id, name, role, extra){
-      role = normalizeRole(role);
-      name = String(name || '').trim();
-      id = String(id || '').trim();
-      if(!name && !id) return;
-      if(!name) name = id;
-      if(!id) id = role + ':' + name;
-      var key = role + ':' + id;
-      if(!map[key]){
-        map[key] = Object.assign({
-          id: id,
-          name: name,
-          role: role,
-          color: colors[Object.keys(map).length % colors.length],
-          accounts: 0,
-          activeAccounts: 0
-        }, extra || {});
-      } else {
-        map[key].name = map[key].name || name;
-        map[key].role = map[key].role || role;
-        map[key].accounts = Math.max(num(map[key].accounts), num(extra && extra.accounts));
-        map[key].activeAccounts = Math.max(num(map[key].activeAccounts), num(extra && extra.activeAccounts));
-      }
+
+    // IMPORTANT: do not invent owners from ownerDetails/accounts/deals.
+    // The retention JSON already has the correct official owner list in repData
+    // with the real role (RM or CSM). Building owners from account rows caused
+    // CSMs to appear again as RM and created duplicated sidebar rows.
+    var source = asArray(data.repData);
+
+    // Fallback only if repData is missing. Keep role-specific sources separated.
+    if(!source.length){
+      source = [].concat(
+        asArray(data.rmMatrix).map(function(r){ return Object.assign({}, r, { role: 'RM' }); }),
+        asArray(data.csmMatrix).map(function(r){ return Object.assign({}, r, { role: 'CSM' }); })
+      );
+    }
+    if(!source.length){
+      source = asArray(data.ownerMatrix);
     }
 
-    asArray(data.repData).forEach(function(r){ addOwner(r.id || r.ownerId, r.name || r.ownerName, r.role || r.type, r); });
-    asArray(data.ownerMatrix).forEach(function(r){ addOwner(r.id || r.ownerId, r.name || r.ownerName, r.role || r.type, r); });
-    asArray(data.rmMatrix).forEach(function(r){ addOwner(r.id || r.ownerId || r.rmOwnerId, r.name || r.ownerName || r.rmOwnerName, 'RM', r); });
-    asArray(data.csmMatrix).forEach(function(r){ addOwner(r.id || r.ownerId || r.csmOwnerId, r.name || r.ownerName || r.csmOwnerName, 'CSM', r); });
+    var map = {};
+    var colors = ['#2563EB','#0891B2','#7C3AED','#16A34A','#D97706','#DC2626','#0E7490','#4F46E5','#be185d','#6B7280'];
 
-    var ownerDetails = data.ownerDetails || {};
-    Object.keys(ownerDetails).forEach(function(id){
-      var d = ownerDetails[id] || {};
-      addOwner(id, d.name || d.ownerName || d.rmOwnerName || d.csmOwnerName, d.role || d.type || (d.csmOwnerName ? 'CSM' : 'RM'), { accounts: d.accounts || d.activeAccounts || d.metrics && d.metrics.accounts || 0 });
+    source.forEach(function(r){
+      var id = String(r.id || r.ownerId || r.rmOwnerId || r.csmOwnerId || r.name || r.ownerName || '').trim();
+      var name = String(r.name || r.ownerName || r.rmOwnerName || r.csmOwnerName || id || '').trim();
+      var role = normalizeRole(r.role || r.type);
+      if(!name && !id) return;
+      if(!role || role === 'Owner'){
+        if(asArray(data.rmMatrix).some(function(x){ return String(x.id || x.ownerId || x.rmOwnerId) === id; })) role = 'RM';
+        else if(asArray(data.csmMatrix).some(function(x){ return String(x.id || x.ownerId || x.csmOwnerId) === id; })) role = 'CSM';
+      }
+      var key = role + ':' + id;
+      if(map[key]) return;
+      map[key] = Object.assign({}, r, {
+        id: id,
+        name: name,
+        role: role || 'Owner',
+        color: r.color || colors[Object.keys(map).length % colors.length],
+        accounts: num(r.accounts || r.activeAccounts || 0),
+        activeAccounts: num(r.activeAccounts || r.accounts || 0)
+      });
     });
 
-    var split = data.dealsSplit || {};
-    var accounts = Array.isArray(data.accounts) ? data.accounts : [].concat(asArray(data.accounts && data.accounts.active), asArray(data.accounts && data.accounts.churned));
-    var rows = [].concat(
-      accounts,
-      asArray(split.booked), asArray(split.cashed), asArray(split.renewed), asArray(split.churn),
-      asArray(data.renewalPipeline), asArray(data.renewalDeals), asArray(data.renewalAttention),
-      asArray(data.delayedRenewals), asArray(data.accountsToRenew), asArray(data.activityDetails && data.activityDetails.calls), asArray(data.activityDetails && data.activityDetails.meetings)
-    );
-    rows.forEach(function(r){
-      addOwner(r.rmOwnerId || r.ownerId || r.hubspot_owner_id || first(r,['hubspot_owner_id']), r.rmOwnerName || r.ownerName, 'RM');
-      addOwner(r.csmOwnerId, r.csmOwnerName, 'CSM');
-    });
-
-    var result = Object.keys(map).map(function(k){ return map[k]; }).filter(function(r){ return String(r.name || '').trim() && !/^unknown|—|-$/i.test(String(r.name || '').trim()); });
-    result.sort(function(a,b){
+    return Object.keys(map).map(function(k){ return map[k]; }).filter(function(r){
+      return String(r.name || '').trim() && !/^unknown|—|-$/i.test(String(r.name || '').trim());
+    }).sort(function(a,b){
       var ar = a.role === 'RM' ? 0 : a.role === 'CSM' ? 1 : 2;
       var br = b.role === 'RM' ? 0 : b.role === 'CSM' ? 1 : 2;
       return ar - br || String(a.name).localeCompare(String(b.name));
     });
-    return result;
   }
   function normalizeRetentionData(){
     if(!window.R) return [];
     var owners = buildRetentionOwners(window.R);
-    if(owners.length){ window.R.repData = owners; }
+    // Keep a normalized display list for sidebar/financial owner rows,
+    // but do not mutate the original JSON role logic elsewhere.
+    window.R.__displayOwners = owners;
     return owners;
   }
   window.retGetOwnerList = function(){ return normalizeRetentionData(); };
