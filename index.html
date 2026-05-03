@@ -4661,14 +4661,49 @@ function enhanceAcquisitionRepFollowupSections(){
   }
   function filtered(rows, bucket){ return asArray(rows).filter(function(row){ return matchesRetentionFinancial(row, bucket); }); }
   function total(rows){ return asArray(rows).reduce(function(s,row){ return s + amount(row); }, 0); }
-  function filteredSplit(data){
+  function uniqueFinancialRows(rows){
+    var seen = {};
+    return asArray(rows).filter(function(row, i){
+      var key = String(first(row, ['id','hs_object_id','dealId']) || row.hubspotUrl || row.dealUrl || row.name || row.dealName || i) + '|' + String(stage(row)) + '|' + String(amount(row));
+      if(seen[key]) return false;
+      seen[key] = true;
+      return true;
+    });
+  }
+  function gatherFinancialRows(data, bucket){
     data = data || window.R || {};
     var split = data.dealsSplit || {};
+    var rows = [];
+    if(bucket === 'booked'){
+      rows = rows.concat(asArray(split.booked), asArray(data.bookedDeals), asArray(data.booked), asArray(data.financialBookedDeals));
+    }
+    if(bucket === 'cashed'){
+      rows = rows.concat(asArray(split.cashed), asArray(data.cashedDeals), asArray(data.cashed), asArray(data.financialCashedDeals));
+    }
+    // Some outputs put all deals in one array, so we also scan generic deal arrays and filter by stage.
+    rows = rows.concat(asArray(data.deals).filter(function(row){ return stageOk(row, bucket); }));
+    rows = rows.concat(asArray(data.renewedDeals).filter(function(row){ return stageOk(row, bucket); }));
+    rows = rows.concat(asArray(split.renewed).filter(function(row){ return stageOk(row, bucket); }));
+
+    var ownerDetails = data.ownerDetails || {};
+    Object.keys(ownerDetails).forEach(function(id){
+      var od = ownerDetails[id] || {};
+      if(bucket === 'booked') rows = rows.concat(asArray(od.bookedDeals), asArray(od.booked));
+      if(bucket === 'cashed') rows = rows.concat(asArray(od.cashedDeals), asArray(od.cashed));
+      rows = rows.concat(asArray(od.deals).filter(function(row){ return stageOk(row, bucket); }));
+      rows = rows.concat(asArray(od.renewedDeals).filter(function(row){ return stageOk(row, bucket); }));
+    });
+    return uniqueFinancialRows(rows);
+  }
+  function filteredSplit(data){
+    data = data || window.R || {};
+    var bookedSource = gatherFinancialRows(data, 'booked');
+    var cashedSource = gatherFinancialRows(data, 'cashed');
     return {
-      bookedSource: asArray(split.booked),
-      cashedSource: asArray(split.cashed),
-      booked: filtered(split.booked, 'booked'),
-      cashed: filtered(split.cashed, 'cashed')
+      bookedSource: bookedSource,
+      cashedSource: cashedSource,
+      booked: filtered(bookedSource, 'booked'),
+      cashed: filtered(cashedSource, 'cashed')
     };
   }
 
@@ -5034,6 +5069,86 @@ setInterval(loadData,5*60*1000);
     };
     window.switchTab.__managerOrderWrapped = true;
   }
+})();
+</script>
+
+
+
+<script>
+/* ROBUST RETENTION JSON READER — final guard
+   Scope: loading only. Acquisition data.json remains the primary source for Acquisition.
+   This makes the dashboard read data-retention.json safely and also tries common legacy file names.
+*/
+(function(){
+  if(window.__ROBUST_RETENTION_JSON_READER__) return;
+  window.__ROBUST_RETENTION_JSON_READER__ = true;
+
+  var RETENTION_JSON_PATHS = [
+    './data-retention.json',
+    './Data%20Retention.json',
+    './Data Retention.json',
+    './retention-data.json',
+    './data_retention.json',
+    './retention.json'
+  ];
+
+  async function readJson(path){
+    var url = path + (path.indexOf('?') >= 0 ? '&' : '?') + 't=' + Date.now();
+    var res = await fetch(url, { cache: 'no-store' });
+    if(!res.ok) throw new Error('HTTP ' + res.status + ' for ' + path);
+    var text = await res.text();
+    text = String(text || '').replace(/^\uFEFF/, '').trim();
+    if(!text) throw new Error('Empty JSON file: ' + path);
+    try{
+      return { data: JSON.parse(text), path: path };
+    }catch(err){
+      console.error('Invalid JSON in', path, err, text.slice(Math.max(0, text.length - 300)));
+      throw err;
+    }
+  }
+
+  async function readFirst(paths){
+    var errors = [];
+    for(var i=0;i<paths.length;i++){
+      try{ return await readJson(paths[i]); }
+      catch(e){ errors.push(paths[i] + ': ' + (e && e.message ? e.message : e)); }
+    }
+    console.warn('No JSON source loaded:', errors.join(' | '));
+    return null;
+  }
+
+  window.loadData = async function(){
+    var ri = document.getElementById('ri');
+    if(ri) ri.classList.add('spin');
+    var y = window.scrollY;
+    try{
+      var acq = await readFirst(['./data.json']);
+      if(!acq) throw new Error('data.json not loaded');
+      window.D = acq.data;
+
+      var ret = await readFirst(RETENTION_JSON_PATHS);
+      window.R = ret ? ret.data : null;
+      window.RETENTION_JSON_LOADED_FROM = ret ? ret.path : null;
+    }catch(e){
+      console.error('Dashboard data load failed:', e);
+      window.D = window.D || {meta:{yesterdayLabel:'No data',generatedAt:'--'},kpi:{yesterday:{},mtd:{},ytd:{}},team:{},repData:[],stageData:[],topInactiveRankAccounts:[],rankTotals:{},autoRecs:[],closedWon:[],closedLost:[],lostByReason:{},marketNews:[]};
+      window.R = window.R || null;
+    }
+
+    try{ if(typeof window.render === 'function') window.render(); }catch(e){ console.error('render failed', e); }
+    try{ if(typeof window.restoreCurrentView === 'function') window.restoreCurrentView({keepScroll:true}); }catch(e){ console.error('restore view failed', e); }
+    requestAnimationFrame(function(){ window.scrollTo(0, y); });
+
+    if(window.APP_MAIN_PANEL === 'retention'){
+      var sub = document.getElementById('topbarSub');
+      if(sub && !window.R) sub.textContent = 'Retention JSON was not loaded. Check filename and valid JSON.';
+      if(sub && window.R && window.RETENTION_JSON_LOADED_FROM) sub.textContent = 'Updated ' + (window.R.generatedAt || '') + ' · Loaded from ' + window.RETENTION_JSON_LOADED_FROM;
+    }
+    if(ri) ri.classList.remove('spin');
+  };
+
+  // Re-load once using the robust reader after all original scripts finish.
+  setTimeout(function(){ if(typeof window.loadData === 'function') window.loadData(); }, 50);
 })();
 </script>
 
