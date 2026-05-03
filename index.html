@@ -1185,143 +1185,13 @@ function setRetentionOwnerMode(isOwner){
 }
 
 
-
-/* RETENTION FINANCIAL RULE PATCH
-   Scope: Retention Financial Details only.
-   Rule: Booked/Cashed must have date-entered-current-stage in current year
-   AND contract_start_date in current year.
-*/
-const RET_FIN_RETENTION_PIPELINE_ID = '1026934003';
-const RET_FIN_BOOKED_STAGE_ID = '1435517125';
-const RET_FIN_CASHED_STAGE_ID = '1479506164';
-
-function retFinCurrentYear(){
-  return new Date().getFullYear();
-}
-
-function retFinProps(row){
-  return row?.properties || row?.json?.properties || {};
-}
-
-function retFinFirst(row, keys){
-  const p = retFinProps(row);
-  for(const k of keys){
-    const v = row?.[k] ?? p?.[k] ?? row?.json?.[k] ?? row?.json?.properties?.[k];
-    if(v !== undefined && v !== null && String(v).trim() !== '') return v;
-  }
-  return null;
-}
-
-function retFinDateYear(value){
-  if(value === undefined || value === null || String(value).trim() === '') return null;
-  if(typeof value === 'number'){
-    const ms = value > 1e12 ? value : value > 1e9 ? value * 1000 : value;
-    const d = new Date(ms);
-    return Number.isNaN(d.getTime()) ? null : d.getFullYear();
-  }
-  const s = String(value).trim();
-  const dateOnly = s.match(/^(\d{4})-\d{2}-\d{2}/);
-  if(dateOnly) return Number(dateOnly[1]);
-  if(/^\d+$/.test(s)){
-    const n = Number(s);
-    const ms = n > 1e12 ? n : n > 1e9 ? n * 1000 : n;
-    const d = new Date(ms);
-    return Number.isNaN(d.getTime()) ? null : d.getFullYear();
-  }
-  const d = new Date(s);
-  return Number.isNaN(d.getTime()) ? null : d.getFullYear();
-}
-
-function retFinIsThisYear(value){
-  return retFinDateYear(value) === retFinCurrentYear();
-}
-
-function retFinDateOnly(value){
-  if(value === undefined || value === null || String(value).trim() === '') return '—';
-  const s = String(value).trim();
-  const m = s.match(/^(\d{4}-\d{2}-\d{2})/);
-  if(m) return m[1];
-  if(/^\d+$/.test(s)){
-    const n = Number(s);
-    const ms = n > 1e12 ? n : n > 1e9 ? n * 1000 : n;
-    const d = new Date(ms);
-    return Number.isNaN(d.getTime()) ? '—' : d.toISOString().slice(0,10);
-  }
-  const d = new Date(s);
-  return Number.isNaN(d.getTime()) ? s : d.toISOString().slice(0,10);
-}
-
-function retFinStageDate(row){
-  return retFinFirst(row, [
-    'hs_v2_date_entered_current_stage',
-    'dateEnteredCurrentStage',
-    'stageDate',
-    'actionDate',
-    'bookedDate',
-    'cashedDate',
-    'bookedDateEntered',
-    'cashedDateEntered'
-  ]);
-}
-
-function retFinContractStart(row){
-  return retFinFirst(row, [
-    'contract_start_date',
-    'contractStartDate',
-    'startDate',
-    'contractStart'
-  ]);
-}
-
-function retFinPipeline(row){
-  return String(retFinFirst(row, ['pipeline', 'pipelineId']) || '').trim();
-}
-
-function retFinStage(row){
-  return String(retFinFirst(row, ['dealstage', 'stageId', 'stage', 'stageType', 'renewalType']) || '').trim();
-}
-
-function retFinAmount(row){
-  const raw = retFinFirst(row, ['amount_in_home_currency', 'amountInHomeCurrency', 'amount', 'renewalValue', 'value', 'revenue']);
-  const n = Number(String(raw ?? 0).replace(/[^0-9.-]/g,''));
-  return Number.isFinite(n) ? n : 0;
-}
-
-function retFinIsPipelineOk(row){
-  const pipeline = retFinPipeline(row);
-  return !pipeline || pipeline === RET_FIN_RETENTION_PIPELINE_ID;
-}
-
-function retFinIsStageOk(row, bucket){
-  const stage = retFinStage(row).toLowerCase();
-  if(bucket === 'booked'){
-    return !stage || stage === RET_FIN_BOOKED_STAGE_ID || /booked|booking/.test(stage);
-  }
-  if(bucket === 'cashed'){
-    return !stage || stage === RET_FIN_CASHED_STAGE_ID || /cashed|cash|closed won|closedwon/.test(stage);
-  }
-  return false;
-}
-
-function retFinMatchesCurrentYearRule(row, bucket){
-  return retFinIsPipelineOk(row)
-    && retFinIsStageOk(row, bucket)
-    && retFinIsThisYear(retFinStageDate(row))
-    && retFinIsThisYear(retFinContractStart(row));
-}
-
-function retFinFilteredRows(rows, bucket){
-  return (Array.isArray(rows) ? rows : [])
-    .filter(row => retFinMatchesCurrentYearRule(row, bucket));
-}
-
 function renderRetentionSidebar(activeMode="overview"){
   if(!$('sideRepLinks')) return;
   const data = R || {};
   const repData = data.repData || data.ownerMatrix || [];
   const dealsSplit = data.dealsSplit || {};
-  const bookedCount = retFinFilteredRows(dealsSplit.booked || [], 'booked').length;
-  const cashedCount = retFinFilteredRows(dealsSplit.cashed || [], 'cashed').length;
+  const bookedCount = (dealsSplit.booked || []).length;
+  const cashedCount = (dealsSplit.cashed || []).length;
   $('sideRepLinks').style.display = 'block';
   if($('repsSectionTitle')) { $('repsSectionTitle').style.display = 'block'; $('repsSectionTitle').textContent = 'Retention'; }
   const overviewActive = activeMode === 'overview' ? ' active' : '';
@@ -1357,7 +1227,7 @@ function switchRetentionFinancial(){
   $('panel-retention-financial')?.classList.add('active');
   renderRetentionSidebar('financial');
   if($('topbarTitle')) $('topbarTitle').textContent = 'Retention · Financial Details';
-  if($('topbarSub')) $('topbarSub').textContent = 'Booked/Cashed by stage-entered date + contract start date';
+  if($('topbarSub')) $('topbarSub').textContent = 'Booked CY · Cashed CY · renewed value · delayed renewal exposure';
   renderRetentionFinancialDetails();
   window.scrollTo({top:0, behavior:'smooth'});
 }
@@ -2142,7 +2012,7 @@ function restoreCurrentView(options={}){
       $("panel-retention-financial")?.classList.add("active");
       renderRetentionSidebar("financial");
       if($("topbarTitle")) $("topbarTitle").textContent = "Retention · Financial Details";
-      if($("topbarSub")) $("topbarSub").textContent = "Booked/Cashed by stage-entered date + contract start date";
+      if($("topbarSub")) $("topbarSub").textContent = "Booked CY · Cashed CY · renewed value · delayed renewal exposure";
       renderRetentionFinancialDetails();
     } else if(APP_RETENTION_VIEW === "owner" && APP_RETENTION_OWNER_ID){
       RET_SELECTED_OWNER_ID = String(APP_RETENTION_OWNER_ID);
@@ -2624,40 +2494,27 @@ function enhanceAcquisitionRepFollowupSections(){
 function renderRetentionFinancialDetails(){
   const data = R || {};
   const dealsSplit = data.dealsSplit || {};
-  const bookedSource = dealsSplit.booked || [];
-  const cashedSource = dealsSplit.cashed || [];
-
-  // Retention Financial is intentionally strict:
-  // 1) Retention pipeline only when pipeline is present.
-  // 2) Current stage must be Booked/Cashed.
-  // 3) hs_v2_date_entered_current_stage must be in the current year.
-  // 4) contract_start_date must be in the current year.
-  const booked = retFinFilteredRows(bookedSource, 'booked');
-  const cashed = retFinFilteredRows(cashedSource, 'cashed');
-
+  const booked = dealsSplit.booked || [];
+  const cashed = dealsSplit.cashed || [];
   const renewed = dealsSplit.renewed || [];
   const delayed = data.delayedRenewals || data.accountsToRenew || [];
   const churn = dealsSplit.churn || [];
   const repData = data.repData || data.ownerMatrix || [];
+  const ownerDetails = data.ownerDetails || {};
   const num = v => Number(v || 0);
-  const amountOf = rows => (rows || []).reduce((s,r)=>s + retFinAmount(r),0);
+  const amountOf = rows => (rows || []).reduce((s,r)=>s + num(r.amount ?? r.renewalValue ?? r.value ?? r.revenue),0);
   const money = v => fmt(v || 0);
   const safe = v => esc(v ?? '—');
-  const dateOnly = v => retFinDateOnly(v);
+  const dateOnly = v => String(v || '').split('T')[0] || '—';
   const ownerLabel = r => [r.ownerName, r.rmOwnerName, r.csmOwnerName].filter(Boolean).slice(0,2).join(' / ') || '—';
   const empty = (cols,msg)=>`<tr><td colspan="${cols}" class="ret-fin-empty">${msg}</td></tr>`;
   const set = (id,html)=>{ if($(id)) $(id).innerHTML = html; };
   const setText = (id,txt)=>{ if($(id)) $(id).textContent = txt; };
   const rowClass = (i, kind) => `${i>=5?'ret-hidden':''} ${kind==='risk'?'ret-row-critical':kind==='ok'?'ret-row-ok':'ret-row-warning'}`;
-  const currentYear = retFinCurrentYear();
-  const originalBookedCount = bookedSource.length;
-  const originalCashedCount = cashedSource.length;
-  const excludedBooked = Math.max(0, originalBookedCount - booked.length);
-  const excludedCashed = Math.max(0, originalCashedCount - cashed.length);
 
   set('retFinTopGrid', [
-    {v:money(amountOf(cashed)), l:'Cashed CY', s:`${cashed.length} deals · stage entered ${currentYear} · contract start ${currentYear}`, c:'var(--green)'},
-    {v:money(amountOf(booked)), l:'Booked CY', s:`${booked.length} deals · stage entered ${currentYear} · contract start ${currentYear}`, c:'var(--purple)'},
+    {v:money(amountOf(cashed)), l:'Cashed CY', s:`${cashed.length} deals already cashed`, c:'var(--green)'},
+    {v:money(amountOf(booked)), l:'Booked CY', s:`${booked.length} booked deals`, c:'var(--purple)'},
     {v:money(amountOf(renewed)), l:'Renewed Value', s:`${renewed.length} renewed companies`, c:'var(--cyan)'},
     {v:money(amountOf(delayed)), l:'Delayed Exposure', s:`${delayed.length} overdue renewals`, c:'var(--red)'},
     {v:money(amountOf(churn)), l:'Churn Value', s:`${churn.length} churn deals`, c:'var(--amber)'},
@@ -2667,16 +2524,12 @@ function renderRetentionFinancialDetails(){
   setText('retFinBookedBadge', `${booked.length} · ${money(amountOf(booked))}`);
   setText('retFinRenewedBadge', `${renewed.length} · ${money(amountOf(renewed))}`);
   setText('retFinDelayedBadge', `${delayed.length} · ${money(amountOf(delayed))}`);
-  setText('retFinOwnerBadge', `${repData.length} owners · ${currentYear} rule`);
+  setText('retFinOwnerBadge', `${repData.length} owners`);
 
-  const dealRow = (r,i,kind,status) => {
-    const stageDate = retFinStageDate(r);
-    const contractStart = retFinContractStart(r);
-    return `<tr class="${rowClass(i,kind)}"><td><div style="font-weight:900">${recordLink(r.name || r.dealName || r.dealname || 'Unnamed Deal', r.hubspotUrl || r.dealUrl)}</div><div style="font-size:10px;color:var(--muted)">${recordLink(r.companyName || 'Unknown Company', r.companyUrl)}</div></td><td>${safe(ownerLabel(r))}</td><td class="c" style="font-family:var(--mono);font-weight:900">${money(retFinAmount(r))}</td><td class="c">${safe(dateOnly(contractStart))}</td><td class="c">${safe(dateOnly(stageDate))}</td><td class="c"><span class="badge ${kind==='ok'?'bg':kind==='risk'?'br':'bp'}">${status}</span></td></tr>`;
-  };
+  const dealRow = (r,i,kind,status) => `<tr class="${rowClass(i,kind)}"><td><div style="font-weight:900">${recordLink(r.name || r.dealName || 'Unnamed Deal', r.hubspotUrl || r.dealUrl)}</div><div style="font-size:10px;color:var(--muted)">${recordLink(r.companyName || 'Unknown Company', r.companyUrl)}</div></td><td>${safe(ownerLabel(r))}</td><td class="c" style="font-family:var(--mono);font-weight:900">${money(r.amount ?? r.renewalValue)}</td><td class="c">${safe(dateOnly(r.createdAt || r.createdDate || r.hs_createdate))}</td><td class="c">${safe(dateOnly(r.actionDate || r.stageDate || r.cashedDate || r.bookedDate))}</td><td class="c"><span class="badge ${kind==='ok'?'bg':kind==='risk'?'br':'bp'}">${status}</span></td></tr>`;
 
-  set('retFinCashedBody', cashed.length ? cashed.map((r,i)=>dealRow(r,i,'ok','Cashed')).join('') : empty(6,`No cashed retention deals matched: stage entered ${currentYear} + contract_start_date ${currentYear}.`));
-  set('retFinBookedBody', booked.length ? booked.map((r,i)=>dealRow(r,i,'warn','Booked')).join('') : empty(6,`No booked retention deals matched: stage entered ${currentYear} + contract_start_date ${currentYear}.`));
+  set('retFinCashedBody', cashed.length ? cashed.map((r,i)=>dealRow(r,i,'ok','Cashed')).join('') : empty(6,'No current-year cashed retention deals found.'));
+  set('retFinBookedBody', booked.length ? booked.map((r,i)=>dealRow(r,i,'warn','Booked')).join('') : empty(6,'No current-year booked retention deals found.'));
   if($('retFinCashedToggle')) $('retFinCashedToggle').style.display = cashed.length > 5 ? 'block' : 'none';
   if($('retFinBookedToggle')) $('retFinBookedToggle').style.display = booked.length > 5 ? 'block' : 'none';
 
@@ -2685,42 +2538,23 @@ function renderRetentionFinancialDetails(){
   if($('retFinRenewedToggle')) $('retFinRenewedToggle').style.display = renewed.length > 5 ? 'block' : 'none';
   if($('retFinDelayedToggle')) $('retFinDelayedToggle').style.display = delayed.length > 5 ? 'block' : 'none';
 
-  const ownerStats = new Map();
-  repData.forEach(r=>ownerStats.set(String(r.id), { booked:0, cashed:0, renewed:0, delayed:0, cashValue:0 }));
-  const touchOwner = (row, bucket) => {
-    const ids = [row.ownerId, row.rmOwnerId, row.csmOwnerId, row.hubspot_owner_id, retFinFirst(row, ['hubspot_owner_id'])].filter(Boolean).map(String);
-    const names = [row.ownerName, row.rmOwnerName, row.csmOwnerName].filter(Boolean).map(String);
-    const matchedOwners = repData.filter(r => ids.includes(String(r.id)) || names.includes(String(r.name)));
-    matchedOwners.forEach(r => {
-      const st = ownerStats.get(String(r.id)) || { booked:0, cashed:0, renewed:0, delayed:0, cashValue:0 };
-      st[bucket] = num(st[bucket]) + 1;
-      if(bucket === 'cashed') st.cashValue += retFinAmount(row);
-      ownerStats.set(String(r.id), st);
-    });
-  };
-  booked.forEach(r=>touchOwner(r,'booked'));
-  cashed.forEach(r=>touchOwner(r,'cashed'));
-  renewed.forEach(r=>touchOwner(r,'renewed'));
-  delayed.forEach(r=>touchOwner(r,'delayed'));
-
-  const head = ['Owner','Booked','Cashed','Renewed','Delayed','Cash Value'];
-  const rows = repData.map(r=>{
-    const metrics = ownerStats.get(String(r.id)) || { booked:0, cashed:0, renewed:0, delayed:0, cashValue:0 };
-    return `<div class="ret-fin-owner-cell"><div class="ret-fin-owner-name"><span class="ret-fin-dot" style="--oc:${r.color||'var(--cyan)'}"></span>${safe(r.name)} <span class="ret">${safe(r.role||'')}</span></div></div><div class="ret-fin-owner-cell" style="font-family:var(--mono);font-weight:900">${num(metrics.booked)}</div><div class="ret-fin-owner-cell" style="font-family:var(--mono);font-weight:900;color:var(--green)">${num(metrics.cashed)}</div><div class="ret-fin-owner-cell" style="font-family:var(--mono);font-weight:900;color:var(--cyan)">${num(metrics.renewed)}</div><div class="ret-fin-owner-cell" style="font-family:var(--mono);font-weight:900;color:${num(metrics.delayed)>0?'var(--red)':'var(--green)'}">${num(metrics.delayed)}</div><div class="ret-fin-owner-cell" style="font-family:var(--mono);font-weight:900;color:var(--green)">${money(metrics.cashValue)}</div>`;
-  }).join('');
-  set('retFinOwnerGrid', head.map(h=>`<div class="ret-fin-owner-cell ret-fin-owner-head">${h}</div>`).join('') + (rows || `<div class="ret-fin-empty" style="grid-column:1/-1">No owner financial summary found.</div>`));
-
-  console.info('[Retention Financial Rule]', {
-    year: currentYear,
-    rule: 'pipeline=1026934003, stage=Booked/Cashed, hs_v2_date_entered_current_stage current year, contract_start_date current year',
-    bookedSource: originalBookedCount,
-    bookedMatched: booked.length,
-    bookedExcluded: excludedBooked,
-    cashedSource: originalCashedCount,
-    cashedMatched: cashed.length,
-    cashedExcluded: excludedCashed
+  const owners = repData.map(r=>{
+    const d = ownerDetails[String(r.id)] || {};
+    const m = d.metrics || r || {};
+    return { ...r, metrics:m };
   });
+  const head = ['Owner','Booked','Cashed','Renewed','Delayed','Cash Value'];
+  const rows = owners.map(r=>`<div class="ret-fin-owner-cell"><div class="ret-fin-owner-name"><span class="ret-fin-dot" style="--oc:${r.color||'var(--cyan)'}"></span>${safe(r.name)} <span class="ret">${safe(r.role||'')}</span></div></div><div class="ret-fin-owner-cell" style="font-family:var(--mono);font-weight:900">${num(r.metrics.booked)}</div><div class="ret-fin-owner-cell" style="font-family:var(--mono);font-weight:900;color:var(--green)">${num(r.metrics.cashed)}</div><div class="ret-fin-owner-cell" style="font-family:var(--mono);font-weight:900;color:var(--cyan)">${num(r.metrics.renewed)}</div><div class="ret-fin-owner-cell" style="font-family:var(--mono);font-weight:900;color:${num(r.metrics.delayed)>0?'var(--red)':'var(--green)'}">${num(r.metrics.delayed)}</div><div class="ret-fin-owner-cell" style="font-family:var(--mono);font-weight:900;color:var(--green)">${money(r.metrics.cashedAmt)}</div>`).join('');
+  set('retFinOwnerGrid', head.map(h=>`<div class="ret-fin-owner-cell ret-fin-owner-head">${h}</div>`).join('') + (rows || `<div class="ret-fin-empty" style="grid-column:1/-1">No owner financial summary found.</div>`));
 }
+
+
+/* RETENTION TIER FOLLOW-UP LOGIC — scoped to Retention only */
+const RET_TIER_RULES = {
+  A: { csm: 7, rm: 14, label: "Tier A" },
+  B: { csm: 14, rm: 30, label: "Tier B" },
+  C: { csm: 30, rm: 90, label: "Tier C" }
+};
 
 function retNormTier(v){
   const s = String(v || '').trim().toUpperCase().replace(/^TIER\s+/,'');
@@ -4574,7 +4408,7 @@ function enhanceAcquisitionRepFollowupSections(){
     var title = q('topbarTitle');
     if(title) title.textContent = 'Retention · Financial Details';
     var sub = q('topbarSub');
-    if(sub) sub.textContent = 'Booked/Cashed by stage-entered date + contract start date';
+    if(sub) sub.textContent = 'Booked CY · Cashed CY · renewed value · delayed renewal exposure';
     safeCall(window.renderRetentionFinancialDetails);
     if(!keepScroll) window.scrollTo({top:0, behavior:'smooth'});
   }
@@ -4670,6 +4504,243 @@ function updateClock(){
   if($("topbarSub")&&D && !$("panel-retention")?.classList.contains("active") && !$("panel-financial")?.classList.contains("active"))$("topbarSub").textContent=`${riy.toLocaleTimeString("en-US",{hour:"2-digit",minute:"2-digit"})} Riyadh · Auto-refresh 5min`;
 }
 setInterval(updateClock,60000);
+
+/* ═══════════════════════════════════════════════════════════════
+   SAFE PATCH — RETENTION FINANCIAL ONLY
+   Project rule from previous chats:
+   - Acquisition remains powered by data.json and is not touched here.
+   - Retention remains powered by data-retention.json.
+   - Only Retention Financial Details Booked/Cashed are recalculated.
+   - Booked/Cashed count only when:
+     pipeline = 1026934003 if the pipeline field exists,
+     dealstage = Booked/Cashed if the stage field exists,
+     hs_v2_date_entered_current_stage is in the current year,
+     contract_start_date is in the current year.
+   ═══════════════════════════════════════════════════════════════ */
+(function(){
+  var RET_FIN_RETENTION_PIPELINE_ID = '1026934003';
+  var RET_FIN_BOOKED_STAGE_ID = '1435517125';
+  var RET_FIN_CASHED_STAGE_ID = '1479506164';
+
+  function byId(id){ return document.getElementById(id); }
+  function asArray(v){ return Array.isArray(v) ? v : []; }
+  function yearNow(){ return new Date().getFullYear(); }
+  function props(row){ return (row && (row.properties || (row.json && row.json.properties))) || {}; }
+  function first(row, keys){
+    var p = props(row);
+    for(var i=0;i<keys.length;i++){
+      var k = keys[i];
+      var v = row && (row[k] !== undefined ? row[k] : undefined);
+      if(v === undefined && p) v = p[k];
+      if(v === undefined && row && row.json) v = row.json[k];
+      if(v === undefined && row && row.json && row.json.properties) v = row.json.properties[k];
+      if(v !== undefined && v !== null && String(v).trim() !== '') return v;
+    }
+    return null;
+  }
+  function parseYear(value){
+    if(value === undefined || value === null || String(value).trim() === '') return null;
+    if(typeof value === 'number'){
+      var msNum = value > 1e12 ? value : value > 1e9 ? value * 1000 : value;
+      var dNum = new Date(msNum);
+      return isNaN(dNum.getTime()) ? null : dNum.getFullYear();
+    }
+    var s = String(value).trim();
+    var m = s.match(/^(\d{4})-\d{2}-\d{2}/);
+    if(m) return Number(m[1]);
+    if(/^\d+$/.test(s)){
+      var n = Number(s);
+      var ms = n > 1e12 ? n : n > 1e9 ? n * 1000 : n;
+      var d = new Date(ms);
+      return isNaN(d.getTime()) ? null : d.getFullYear();
+    }
+    var parsed = new Date(s);
+    return isNaN(parsed.getTime()) ? null : parsed.getFullYear();
+  }
+  function isCY(value){ return parseYear(value) === yearNow(); }
+  function dateText(value){
+    if(value === undefined || value === null || String(value).trim() === '') return '—';
+    var s = String(value).trim();
+    var m = s.match(/^(\d{4}-\d{2}-\d{2})/);
+    if(m) return m[1];
+    if(/^\d+$/.test(s)){
+      var n = Number(s);
+      var ms = n > 1e12 ? n : n > 1e9 ? n * 1000 : n;
+      var d = new Date(ms);
+      return isNaN(d.getTime()) ? '—' : d.toISOString().slice(0,10);
+    }
+    var parsed = new Date(s);
+    return isNaN(parsed.getTime()) ? s : parsed.toISOString().slice(0,10);
+  }
+  function stageEnteredDate(row){
+    return first(row, [
+      'hs_v2_date_entered_current_stage',
+      'dateEnteredCurrentStage',
+      'date_entered_current_stage',
+      'stageDate',
+      'actionDate'
+    ]);
+  }
+  function contractStartDate(row){
+    return first(row, [
+      'contract_start_date',
+      'contractStartDate',
+      'contractStart',
+      'startDate'
+    ]);
+  }
+  function pipeline(row){ return String(first(row, ['pipeline','pipelineId']) || '').trim(); }
+  function stage(row){ return String(first(row, ['dealstage','stageId','stage','stageType','renewalType']) || '').trim(); }
+  function amount(row){
+    var raw = first(row, ['amount_in_home_currency','amountInHomeCurrency','amount','renewalValue','value','revenue']);
+    var n = Number(String(raw == null ? 0 : raw).replace(/[^0-9.-]/g,''));
+    return isFinite(n) ? n : 0;
+  }
+  function stageOk(row, bucket){
+    var stRaw = stage(row);
+    if(!stRaw) return true; // dealsSplit.booked/cashed is already bucketed by the workflow.
+    var st = stRaw.toLowerCase();
+    if(bucket === 'booked') return st === RET_FIN_BOOKED_STAGE_ID || /booked|booking/.test(st);
+    if(bucket === 'cashed') return st === RET_FIN_CASHED_STAGE_ID || /cashed|cash|closed won|closedwon/.test(st);
+    return false;
+  }
+  function pipelineOk(row){
+    var p = pipeline(row);
+    return !p || p === RET_FIN_RETENTION_PIPELINE_ID;
+  }
+  function matchesRetentionFinancial(row, bucket){
+    return pipelineOk(row) && stageOk(row, bucket) && isCY(stageEnteredDate(row)) && isCY(contractStartDate(row));
+  }
+  function filtered(rows, bucket){ return asArray(rows).filter(function(row){ return matchesRetentionFinancial(row, bucket); }); }
+  function total(rows){ return asArray(rows).reduce(function(s,row){ return s + amount(row); }, 0); }
+  function safe(v){ return (typeof esc === 'function') ? esc(v == null ? '—' : v) : String(v == null ? '—' : v); }
+  function money(v){ return (typeof fmt === 'function') ? fmt(v || 0) : ('$' + Math.round(Number(v || 0)).toLocaleString()); }
+  function num(v){ var n = Number(v || 0); return isFinite(n) ? n : 0; }
+  function ownerLabel(row){ return [row && row.ownerName, row && row.rmOwnerName, row && row.csmOwnerName].filter(Boolean).slice(0,2).join(' / ') || '—'; }
+  function link(label,url){ return (typeof recordLink === 'function') ? recordLink(label, url) : safe(label || 'Open record'); }
+  function set(id, html){ var el = byId(id); if(el) el.innerHTML = html; }
+  function setText(id, txt){ var el = byId(id); if(el) el.textContent = txt; }
+  function empty(cols,msg){ return '<tr><td colspan="' + cols + '" class="ret-fin-empty">' + safe(msg) + '</td></tr>'; }
+  function rowClass(i, kind){ return (i >= 5 ? 'ret-hidden ' : '') + (kind === 'risk' ? 'ret-row-critical' : kind === 'ok' ? 'ret-row-ok' : 'ret-row-warning'); }
+  function filteredSplit(){
+    var data = window.R || {};
+    var split = data.dealsSplit || {};
+    return {
+      bookedSource: asArray(split.booked),
+      cashedSource: asArray(split.cashed),
+      booked: filtered(split.booked, 'booked'),
+      cashed: filtered(split.cashed, 'cashed')
+    };
+  }
+
+  window.renderRetentionSidebar = renderRetentionSidebar = function(activeMode){
+    activeMode = activeMode || 'overview';
+    var side = byId('sideRepLinks');
+    if(!side) return;
+    var data = window.R || {};
+    var repData = data.repData || data.ownerMatrix || [];
+    var fin = filteredSplit();
+    side.style.display = 'block';
+    var title = byId('repsSectionTitle');
+    if(title){ title.style.display = 'block'; title.textContent = 'Retention'; }
+    var links = [
+      '<button class="nav-item' + (activeMode === 'overview' ? ' active' : '') + '" id="side-ret-overview" onclick="switchMainPanel(\'retention\')"><span class="nav-icon" style="color:var(--cyan)">🛡️</span>Team Overview<span class="view-tag">VIEW</span></button>',
+      '<button class="nav-item' + (activeMode === 'financial' ? ' active' : '') + '" id="side-ret-financial" onclick="switchRetentionFinancial()"><span class="nav-icon" style="color:var(--green)">💰</span>Financial Details<span class="nav-badge">' + fin.booked.length + '/' + fin.cashed.length + '</span></button>',
+      '<div class="sidebar-section" style="padding:12px 10px 5px;margin:0;font-size:8px">Retention Team</div>'
+    ];
+    repData.forEach(function(r){
+      var color = r.color || 'var(--cyan)';
+      var short = String(r.name || '').split(' ')[0] || 'Owner';
+      var active = activeMode === 'owner' && String(window.RET_SELECTED_OWNER_ID || '') === String(r.id) ? ' active' : '';
+      var badge = r.accounts || r.activeAccounts || 0;
+      links.push('<button class="nav-item' + active + '" id="side-ret-' + safe(r.id) + '" onclick="selectRetentionOwner(\'' + safe(r.id) + '\')"><span class="nav-icon" style="color:' + color + '">' + (r.role === 'RM' ? '◆' : '●') + '</span>' + safe(short) + ' <span class="ret">' + safe(r.role || '') + '</span><span class="nav-badge">' + badge + '</span></button>');
+    });
+    side.innerHTML = links.join('');
+  };
+
+  window.renderRetentionFinancialDetails = renderRetentionFinancialDetails = function(){
+    var data = window.R || {};
+    var split = data.dealsSplit || {};
+    var fin = filteredSplit();
+    var booked = fin.booked;
+    var cashed = fin.cashed;
+    var renewed = asArray(split.renewed);
+    var delayed = asArray(data.delayedRenewals || data.accountsToRenew);
+    var churn = asArray(split.churn);
+    var repData = data.repData || data.ownerMatrix || [];
+    var ownerDetails = data.ownerDetails || {};
+    var currentYear = yearNow();
+
+    set('retFinTopGrid', [
+      {v: money(total(cashed)), l:'Cashed CY', s: cashed.length + ' deals · stage entered ' + currentYear + ' · contract start ' + currentYear, c:'var(--green)'},
+      {v: money(total(booked)), l:'Booked CY', s: booked.length + ' deals · stage entered ' + currentYear + ' · contract start ' + currentYear, c:'var(--purple)'},
+      {v: money(total(renewed)), l:'Renewed Value', s: renewed.length + ' renewed companies', c:'var(--cyan)'},
+      {v: money(total(delayed)), l:'Delayed Exposure', s: delayed.length + ' overdue renewals', c:'var(--red)'},
+      {v: money(total(churn)), l:'Churn Value', s: churn.length + ' churn deals', c:'var(--amber)'}
+    ].map(function(x){ return '<div class="ret-fin-card" style="--fc:' + x.c + '"><div class="ret-fin-card-v">' + x.v + '</div><div class="ret-fin-card-l">' + x.l + '</div><div class="ret-fin-card-s">' + x.s + '</div></div>'; }).join(''));
+
+    setText('retFinCashedBadge', cashed.length + ' · ' + money(total(cashed)));
+    setText('retFinBookedBadge', booked.length + ' · ' + money(total(booked)));
+    setText('retFinRenewedBadge', renewed.length + ' · ' + money(total(renewed)));
+    setText('retFinDelayedBadge', delayed.length + ' · ' + money(total(delayed)));
+    setText('retFinOwnerBadge', repData.length + ' owners · CY rule');
+
+    function dealRow(row,i,kind,status){
+      var stageDate = stageEnteredDate(row);
+      var startDate = contractStartDate(row);
+      return '<tr class="' + rowClass(i, kind) + '"><td><div style="font-weight:900">' + link(row.name || row.dealName || row.dealname || 'Unnamed Deal', row.hubspotUrl || row.dealUrl) + '</div><div style="font-size:10px;color:var(--muted)">' + link(row.companyName || 'Unknown Company', row.companyUrl) + '</div></td><td>' + safe(ownerLabel(row)) + '</td><td class="c" style="font-family:var(--mono);font-weight:900">' + money(amount(row)) + '</td><td class="c">' + safe(dateText(startDate)) + '</td><td class="c">' + safe(dateText(stageDate)) + '</td><td class="c"><span class="badge ' + (kind === 'ok' ? 'bg' : kind === 'risk' ? 'br' : 'bp') + '">' + safe(status) + '</span></td></tr>';
+    }
+
+    set('retFinCashedBody', cashed.length ? cashed.map(function(r,i){ return dealRow(r,i,'ok','Cashed'); }).join('') : empty(6, 'No cashed retention deals matched: stage entered ' + currentYear + ' + contract_start_date ' + currentYear + '.'));
+    set('retFinBookedBody', booked.length ? booked.map(function(r,i){ return dealRow(r,i,'warn','Booked'); }).join('') : empty(6, 'No booked retention deals matched: stage entered ' + currentYear + ' + contract_start_date ' + currentYear + '.'));
+    var cT = byId('retFinCashedToggle'); if(cT) cT.style.display = cashed.length > 5 ? 'block' : 'none';
+    var bT = byId('retFinBookedToggle'); if(bT) bT.style.display = booked.length > 5 ? 'block' : 'none';
+
+    set('retFinRenewedBody', renewed.length ? renewed.map(function(r,i){ return '<tr class="' + rowClass(i,'ok') + '"><td><div style="font-weight:900">' + link(r.companyName || 'Unknown Company', r.companyUrl) + '</div><div style="font-size:10px;color:var(--muted)">' + safe(r.renewalSourceDealName || r.sourceDealName || '') + '</div></td><td>' + link(r.name || r.renewedDealName || 'Renewed deal', r.hubspotUrl || r.renewedDealUrl) + '</td><td class="c" style="font-family:var(--mono);font-weight:900">' + money(r.renewalValue == null ? r.amount : r.renewalValue) + '</td><td class="c">' + safe(r.originalContractRenewalDate || r.contractRenewalDate) + '</td><td class="c"><span class="badge ' + (/cash/i.test(String(r.renewalType || '')) ? 'bg' : 'bp') + '">' + safe(r.renewalType || 'Renewed') + '</span></td><td>' + safe([r.rmOwnerName,r.csmOwnerName].filter(Boolean).join(' / ')) + '</td></tr>'; }).join('') : empty(6,'No renewed companies found under the current-year renewal logic.'));
+    set('retFinDelayedBody', delayed.length ? delayed.map(function(r,i){ return '<tr class="' + rowClass(i,'risk') + '"><td><div style="font-weight:900">' + link(r.companyName || r.name || r.dealName || 'Renewal', r.companyUrl || r.hubspotUrl) + '</div><div style="font-size:10px;color:var(--muted)">' + safe(r.reason || r.alert || 'Delayed renewal') + '</div></td><td>' + safe([r.rmOwnerName,r.csmOwnerName].filter(Boolean).join(' / ') || r.ownerName) + '</td><td class="c" style="font-family:var(--mono);font-weight:900;color:var(--red)">' + money(r.renewalValue == null ? r.amount : r.renewalValue) + '</td><td class="c">' + safe(r.contractRenewalDate || r.renewalDate) + '</td><td class="c"><span class="badge br">' + num(r.daysOverdue) + 'd</span></td><td class="c"><span class="badge ba">Follow up</span></td></tr>'; }).join('') : empty(6,'No delayed renewal exposure found.'));
+    var rT = byId('retFinRenewedToggle'); if(rT) rT.style.display = renewed.length > 5 ? 'block' : 'none';
+    var dT = byId('retFinDelayedToggle'); if(dT) dT.style.display = delayed.length > 5 ? 'block' : 'none';
+
+    var filteredOwnerStats = {};
+    repData.forEach(function(r){ filteredOwnerStats[String(r.id)] = { booked:0, cashed:0, cashValue:0 }; });
+    function matchOwners(row){
+      var ids = [row && row.ownerId, row && row.rmOwnerId, row && row.csmOwnerId, row && row.hubspot_owner_id, first(row, ['hubspot_owner_id'])].filter(Boolean).map(String);
+      var names = [row && row.ownerName, row && row.rmOwnerName, row && row.csmOwnerName].filter(Boolean).map(String);
+      return repData.filter(function(r){ return ids.indexOf(String(r.id)) >= 0 || names.indexOf(String(r.name)) >= 0; });
+    }
+    booked.forEach(function(row){ matchOwners(row).forEach(function(r){ filteredOwnerStats[String(r.id)].booked += 1; }); });
+    cashed.forEach(function(row){ matchOwners(row).forEach(function(r){ filteredOwnerStats[String(r.id)].cashed += 1; filteredOwnerStats[String(r.id)].cashValue += amount(row); }); });
+
+    var head = ['Owner','Booked','Cashed','Renewed','Delayed','Cash Value'];
+    var rows = repData.map(function(r){
+      var original = (ownerDetails[String(r.id)] && ownerDetails[String(r.id)].metrics) || r || {};
+      var filteredMetrics = filteredOwnerStats[String(r.id)] || {booked:0,cashed:0,cashValue:0};
+      var renewedCount = num(original.renewed);
+      var delayedCount = num(original.delayed);
+      return '<div class="ret-fin-owner-cell"><div class="ret-fin-owner-name"><span class="ret-fin-dot" style="--oc:' + (r.color || 'var(--cyan)') + '"></span>' + safe(r.name) + ' <span class="ret">' + safe(r.role || '') + '</span></div></div>' +
+        '<div class="ret-fin-owner-cell" style="font-family:var(--mono);font-weight:900">' + num(filteredMetrics.booked) + '</div>' +
+        '<div class="ret-fin-owner-cell" style="font-family:var(--mono);font-weight:900;color:var(--green)">' + num(filteredMetrics.cashed) + '</div>' +
+        '<div class="ret-fin-owner-cell" style="font-family:var(--mono);font-weight:900;color:var(--cyan)">' + renewedCount + '</div>' +
+        '<div class="ret-fin-owner-cell" style="font-family:var(--mono);font-weight:900;color:' + (delayedCount > 0 ? 'var(--red)' : 'var(--green)') + '">' + delayedCount + '</div>' +
+        '<div class="ret-fin-owner-cell" style="font-family:var(--mono);font-weight:900;color:var(--green)">' + money(filteredMetrics.cashValue) + '</div>';
+    }).join('');
+    set('retFinOwnerGrid', head.map(function(h){ return '<div class="ret-fin-owner-cell ret-fin-owner-head">' + h + '</div>'; }).join('') + (rows || '<div class="ret-fin-empty" style="grid-column:1/-1">No owner financial summary found.</div>'));
+
+    if(window.console && console.info){
+      console.info('[Retention Financial Only Patch]', {
+        year: currentYear,
+        rule: 'Booked/Cashed only: hs_v2_date_entered_current_stage CY + contract_start_date CY; Acquisition untouched.',
+        bookedSource: fin.bookedSource.length,
+        bookedMatched: booked.length,
+        bookedExcluded: Math.max(0, fin.bookedSource.length - booked.length),
+        cashedSource: fin.cashedSource.length,
+        cashedMatched: cashed.length,
+        cashedExcluded: Math.max(0, fin.cashedSource.length - fin.cashed.length)
+      });
+    }
+  };
+})();
+
 loadData();
 setInterval(loadData,5*60*1000);
 </script>
