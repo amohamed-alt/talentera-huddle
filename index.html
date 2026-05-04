@@ -1227,7 +1227,7 @@ function switchRetentionFinancial(){
   $('panel-retention-financial')?.classList.add('active');
   renderRetentionSidebar('financial');
   if($('topbarTitle')) $('topbarTitle').textContent = 'Retention · Financial Details';
-  if($('topbarSub')) $('topbarSub').textContent = 'Date entered Booked/Cashed CY · Contract start 20 Dec 2025–2026 · renewed value · delayed exposure';
+  if($('topbarSub')) $('topbarSub').textContent = 'Date entered Booked/Cashed CY · Contract start 1 Dec 2025–2026 · renewed value · delayed exposure';
   renderRetentionFinancialDetails();
   window.scrollTo({top:0, behavior:'smooth'});
 }
@@ -4408,7 +4408,7 @@ function enhanceAcquisitionRepFollowupSections(){
     var title = q('topbarTitle');
     if(title) title.textContent = 'Retention · Financial Details';
     var sub = q('topbarSub');
-    if(sub) sub.textContent = 'Date entered Booked/Cashed CY · Contract start 20 Dec 2025–2026 · renewed value · delayed exposure';
+    if(sub) sub.textContent = 'Date entered Booked/Cashed CY · Contract start 1 Dec 2025–2026 · renewed value · delayed exposure';
     safeCall(window.renderRetentionFinancialDetails);
     if(!keepScroll) window.scrollTo({top:0, behavior:'smooth'});
   }
@@ -4655,7 +4655,7 @@ function enhanceAcquisitionRepFollowupSections(){
   function isContractStartAllowed(row){
     // Manager rule: contract_start_date is allowed from 2025-12-20 through 2026-12-31 inclusive.
     var d = dateText(contractStartDate(row));
-    return d !== '—' && d >= '2025-12-20' && d <= '2026-12-31';
+    return d !== '—' && d >= '2025-12-1' && d <= '2026-12-31';
   }
   function pipeline(row){ return String(first(row, ['pipeline','pipelineId']) || '').trim(); }
   function stage(row){ return String(first(row, ['dealstage','stageId','stage','stageType','renewalType']) || '').trim(); }
@@ -4842,8 +4842,8 @@ function enhanceAcquisitionRepFollowupSections(){
     var y = currentYear();
 
     set('retFinTopGrid', [
-      {v: money(total(cashed)), l:'Cashed CY', s: cashed.length + ' deals · date entered Cashed ' + y + ' · contract start 20 Dec 2025–' + y, c:'var(--green)'},
-      {v: money(total(booked)), l:'Booked CY', s: booked.length + ' deals · date entered Booked ' + y + ' · contract start 20 Dec 2025–' + y, c:'var(--purple)'},
+      {v: money(total(cashed)), l:'Cashed CY', s: cashed.length + ' deals · date entered Cashed ' + y + ' · contract start 1 Dec 2025–' + y, c:'var(--green)'},
+      {v: money(total(booked)), l:'Booked CY', s: booked.length + ' deals · date entered Booked ' + y + ' · contract start 1 Dec 2025–' + y, c:'var(--purple)'},
       {v: money(total(renewed)), l:'Renewed Value', s: renewed.length + ' renewed companies', c:'var(--cyan)'},
       {v: money(total(delayed)), l:'Delayed Exposure', s: delayed.length + ' overdue renewals', c:'var(--red)'},
       {v: money(total(churn)), l:'Churn Value', s: churn.length + ' churn deals', c:'var(--amber)'}
