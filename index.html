@@ -959,7 +959,7 @@ body{font-family:var(--font);background:var(--page-bg);color:var(--text);-webkit
             <div class="ret-fin-hero-icon">💰</div>
             <div>
               <div class="ret-fin-hero-title">Retention Financial Details</div>
-              <div class="ret-fin-hero-sub">A clean money view for Customer Success: current-year Booked/Cashed filtered only by deal stage and date entered current stage. Contract start date is not used.</div>
+              <div class="ret-fin-hero-sub">A clean money view for Customer Success: Booked/Cashed are filtered exactly by deal stage = Booked or Cashed and date entered current stage = current year. Contract start date is displayed only as info and is not used.</div>
             </div>
           </div>
 
@@ -977,13 +977,13 @@ body{font-family:var(--font);background:var(--page-bg);color:var(--text);-webkit
             <div class="ret-fin-subcard" style="--sc:var(--green)">
               <div class="ret-fin-subhd"><div class="ret-fin-subtitle" style="color:var(--green)">✅ Cashed This Year</div><span class="badge bg" id="retFinCashedBadge"></span></div>
               <div class="ret-fin-mini-note">Stage = Cashed and date entered current stage is in the current year. Contract start date is not used.</div>
-              <div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Deal / Company</th><th>Owner</th><th class="c">Amount</th><th class="c">Contract Start<br><span style="font-size:8px;font-weight:400;color:var(--muted)">Info only</span></th><th class="c">Date Entered Current Stage</th><th class="c">Status</th></tr></thead><tbody id="retFinCashedBody"></tbody></table></div>
+              <div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Deal / Company</th><th>Owner</th><th class="c">Amount</th><th class="c">Current Stage Date<br><span style="font-size:8px;font-weight:400;color:var(--muted)">Info only</span></th><th class="c">Date Entered Current Stage</th><th class="c">Status</th></tr></thead><tbody id="retFinCashedBody"></tbody></table></div>
               <button class="ret-show-btn" id="retFinCashedToggle" onclick="toggleRetMore('retFinCashedBody', this)">▼ Show more</button>
             </div>
             <div class="ret-fin-subcard" style="--sc:var(--purple)">
               <div class="ret-fin-subhd"><div class="ret-fin-subtitle" style="color:var(--purple)">📝 Booked This Year</div><span class="badge bp" id="retFinBookedBadge"></span></div>
               <div class="ret-fin-mini-note">Stage = Booked and date entered current stage is in the current year. Contract start date is not used.</div>
-              <div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Deal / Company</th><th>Owner</th><th class="c">Amount</th><th class="c">Contract Start<br><span style="font-size:8px;font-weight:400;color:var(--muted)">Info only</span></th><th class="c">Date Entered Current Stage</th><th class="c">Status</th></tr></thead><tbody id="retFinBookedBody"></tbody></table></div>
+              <div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Deal / Company</th><th>Owner</th><th class="c">Amount</th><th class="c">Current Stage Date<br><span style="font-size:8px;font-weight:400;color:var(--muted)">Info only</span></th><th class="c">Date Entered Current Stage</th><th class="c">Status</th></tr></thead><tbody id="retFinBookedBody"></tbody></table></div>
               <button class="ret-show-btn" id="retFinBookedToggle" onclick="toggleRetMore('retFinBookedBody', this)">▼ Show more</button>
             </div>
           </div>
@@ -1090,7 +1090,7 @@ body{font-family:var(--font);background:var(--page-bg);color:var(--text);-webkit
           <div class="card">
             <div class="card-hd"><div class="card-title"><div class="card-title-icon" style="background:var(--red-bg)">🔎</div>Renewal Deals Needing Attention</div><span class="badge br">Deal activity OR company activity</span></div>
             <div style="overflow-x:auto"><table class="tbl">
-              <thead><tr><th>Deal / Renewal</th><th>Company</th><th>RM</th><th>CSM</th><th class="c">Contract Start<br><span style="font-size:8px;font-weight:400;color:var(--muted)">Info only</span></th><th class="c">Renewal Date</th><th class="c">Renewed Created</th><th class="c">Renewal Type</th><th>Status</th></tr></thead>
+              <thead><tr><th>Deal / Renewal</th><th>Company</th><th>RM</th><th>CSM</th><th class="c">Current Stage Date<br><span style="font-size:8px;font-weight:400;color:var(--muted)">Info only</span></th><th class="c">Renewal Date</th><th class="c">Renewed Created</th><th class="c">Renewal Type</th><th>Status</th></tr></thead>
               <tbody id="retRenewalDealBody"></tbody>
             </table></div><button class="ret-show-btn" id="retRenewalDealToggle" onclick="toggleRetMore('retRenewalDealBody', this)">▼ Show more</button>
           </div>
@@ -1442,14 +1442,21 @@ function renderFinancialDetails(){
   function isCashingStage(d){
     const st = stageNorm(d);
     const raw = rawStageId(d);
-    return raw === "closedwon" || /(^|\s)(cash|cashing|cashed)(\s|$)|closed won|closedwon/.test(st);
+    return (
+      raw === "closedwon" ||
+      raw === "closed won" ||
+      /(^|\s)(cash|cashing|cashed)(\s|$)|closed won|closedwon/.test(st)
+    );
   }
 
   function isSignedStage(d){
     const st = stageNorm(d);
     const raw = rawStageId(d);
     if(isCashingStage(d) || isDemoOrNonFinancialStage(d)) return false;
-    return raw === "contractsent" || /signed contract|signed\/booking|contract\/booking|contractsent|booking/.test(st);
+    return (
+      raw === "contractsent" ||
+      /signed contract|signed\/booking|contract\/booking|contract sent|contractsent|booking|booked/.test(st)
+    );
   }
 
   function getAmount(d){
@@ -1560,12 +1567,24 @@ function renderFinancialDetails(){
   }
 
   const fd = D?.financialDetails || {};
+  const ds = D?.dealsSplit || {};
   const rawDealPools = [
     ...arr(D?.deals),
     ...arr(D?.allDeals),
     ...arr(D?.rawDeals),
     ...arr(D?.pipelineDeals),
-    ...arr(D?.openDeals)
+    ...arr(D?.openDeals),
+    ...arr(D?.closedWon),
+    ...arr(D?.closedWonDeals),
+    ...arr(D?.wonDeals),
+    ...arr(D?.signedDeals),
+    ...arr(D?.bookingDeals),
+    ...arr(ds.closedWon),
+    ...arr(ds.won),
+    ...arr(ds.cashing),
+    ...arr(ds.signed),
+    ...arr(ds.booking),
+    ...arr(ds.contractSent)
   ];
 
   const fdCashingStrict = arr(fd.cashing)
@@ -1580,9 +1599,29 @@ function renderFinancialDetails(){
     .map(d => normalizeDeal(d, "cashing"))
     .filter(d => isCurrentYearMs(d._cashMs));
 
-  const closedWonFallback = arr(D?.closedWon)
+  const closedWonFallback = [
+    ...arr(D?.closedWon),
+    ...arr(D?.closedWonDeals),
+    ...arr(D?.wonDeals),
+    ...arr(fd.closedWon),
+    ...arr(fd.cashingDeals),
+    ...arr(fd.cashingRevenue)
+  ]
     .filter(d => getAmount(d) > 0)
-    .map(d => normalizeDeal({...d, stage:"Cashing"}, "cashing"));
+    .map(d => normalizeDeal({...d, stage:first(d.stage,d.stageLabel,d.dealstage,d.properties?.dealstage_label,"Cashing")}, "cashing"));
+
+  const fdCashingLoose = [
+    ...arr(fd.cashing),
+    ...arr(fd.cashingDeals),
+    ...arr(fd.cashingRevenue),
+    ...arr(fd.closedWon),
+    ...arr(D?.closedWon),
+    ...arr(D?.closedWonDeals),
+    ...arr(D?.wonDeals)
+  ]
+    .filter(d => getAmount(d) > 0)
+    .map(d => normalizeDeal({...d, stage:first(d.stage,d.stageLabel,d.dealstage,d.properties?.dealstage_label,"Cashing")}, "cashing"))
+    .filter(d => isCurrentYearMs(d._cashMs || d._signedMs || d._createdMs));
 
   const fdSignedStrict = [
     ...arr(fd.signed),
@@ -1602,10 +1641,24 @@ function renderFinancialDetails(){
     .map(d => normalizeDeal(d, "signed"))
     .filter(d => isCurrentYearMs(d._signedMs));
 
-  const cashing = dedupeDeals([...fdCashingStrict, ...rawCashingStrict, ...closedWonFallback])
+  const fdSignedLoose = [
+    ...arr(fd.signed),
+    ...arr(fd.signedContract),
+    ...arr(fd.signedDeals),
+    ...arr(fd.financialSignedDeals),
+    ...arr(fd.booking),
+    ...arr(fd.contractSent),
+    ...arr(D?.signedDeals),
+    ...arr(D?.bookingDeals)
+  ]
+    .filter(d => getAmount(d) > 0)
+    .map(d => normalizeDeal({...d, stage:first(d.stage,d.stageLabel,d.dealstage,d.properties?.dealstage_label,"Signed Contract / Booking")}, "signed"))
+    .filter(d => isCurrentYearMs(d._signedMs || d._createdMs));
+
+  const cashing = dedupeDeals([...fdCashingStrict, ...rawCashingStrict, ...fdCashingLoose, ...closedWonFallback])
     .sort((a,b) => (b._cashMs || b._signedMs || 0) - (a._cashMs || a._signedMs || 0));
 
-  const signed = dedupeDeals([...fdSignedStrict, ...rawSignedStrict])
+  const signed = dedupeDeals([...fdSignedStrict, ...rawSignedStrict, ...fdSignedLoose])
     .filter(d => !cashing.some(c => String(c.id) === String(d.id)))
     .sort((a,b) => Number(b.daysWaiting || 0) - Number(a.daysWaiting || 0));
 
@@ -1682,14 +1735,14 @@ function renderFinancialDetails(){
     "financialCashingBody",
     cashing.length
       ? cashing.slice(0,10).map(cashingRow).join("")
-      : `<tr><td colspan="6"><div class="fin-empty">No true Cashing / Closed Won deals found in current financial data.</div></td></tr>`
+      : `<tr><td colspan="6"><div class="fin-empty">No Cashing / Closed Won deals found in the available acquisition financial data.</div></td></tr>`
   );
 
   setHTML(
     "financialSignedBody",
     signed.length
       ? signed.slice(0,10).map(signedRow).join("")
-      : `<tr><td colspan="6"><div class="fin-empty">No true Signed Contract / Booking deals waiting for Cashing.</div></td></tr>`
+      : `<tr><td colspan="6"><div class="fin-empty">No Signed Contract / Booking deals found in the available acquisition financial data.</div></td></tr>`
   );
 }
 function renderManagerAddons(){
@@ -2526,7 +2579,7 @@ function renderRetentionFinancialDetails(){
   setText('retFinDelayedBadge', `${delayed.length} · ${money(amountOf(delayed))}`);
   setText('retFinOwnerBadge', `${repData.length} owners`);
 
-  const dealRow = (r,i,kind,status) => `<tr class="${rowClass(i,kind)}"><td><div style="font-weight:900">${recordLink(r.name || r.dealName || 'Unnamed Deal', r.hubspotUrl || r.dealUrl)}</div><div style="font-size:10px;color:var(--muted)">${recordLink(r.companyName || 'Unknown Company', r.companyUrl)}</div></td><td>${safe(ownerLabel(r))}</td><td class="c" style="font-family:var(--mono);font-weight:900">${money(r.amount ?? r.renewalValue)}</td><td class="c">${safe(dateOnly(r.createdAt || r.createdDate || r.hs_createdate))}</td><td class="c">${safe(dateOnly(r.actionDate || r.stageDate || r.cashedDate || r.bookedDate))}</td><td class="c"><span class="badge ${kind==='ok'?'bg':kind==='risk'?'br':'bp'}">${status}</span></td></tr>`;
+  const dealRow = (r,i,kind,status) => `<tr class="${rowClass(i,kind)}"><td><div style="font-weight:900">${recordLink(r.name || r.dealName || 'Unnamed Deal', r.hubspotUrl || r.dealUrl)}</div><div style="font-size:10px;color:var(--muted)">${recordLink(r.companyName || 'Unknown Company', r.companyUrl)}</div></td><td>${safe(ownerLabel(r))}</td><td class="c" style="font-family:var(--mono);font-weight:900">${money(r.amount ?? r.renewalValue)}</td><td class="c">${safe(dateOnly(r.contractStartDate))}</td><td class="c">${safe(dateOnly(r.currentStageDateEntered || r.actionDate || r.stageDate || r.cashedDate || r.bookedDate))}</td><td class="c"><span class="badge ${kind==='ok'?'bg':kind==='risk'?'br':'bp'}">${status}</span></td></tr>`;
 
   set('retFinCashedBody', cashed.length ? cashed.map((r,i)=>dealRow(r,i,'ok','Cashed')).join('') : empty(6,'No current-year cashed retention deals found.'));
   set('retFinBookedBody', booked.length ? booked.map((r,i)=>dealRow(r,i,'warn','Booked')).join('') : empty(6,'No current-year booked retention deals found.'));
