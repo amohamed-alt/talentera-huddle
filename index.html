@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -959,7 +959,7 @@ body{font-family:var(--font);background:var(--page-bg);color:var(--text);-webkit
             <div class="ret-fin-hero-icon">💰</div>
             <div>
               <div class="ret-fin-hero-title">Retention Financial Details</div>
-              <div class="ret-fin-hero-sub">A clean money view for Customer Success: current-year Booked/Cashed using date entered Booked/Cashed plus contract start date, renewed value, delayed renewal exposure, and owner-level financial accountability.</div>
+              <div class="ret-fin-hero-sub">A clean money view for Customer Success: current-year Booked/Cashed using date entered Booked/Cashed only, renewed value, delayed renewal exposure, and owner-level financial accountability.</div>
             </div>
           </div>
 
@@ -976,14 +976,14 @@ body{font-family:var(--font);background:var(--page-bg);color:var(--text);-webkit
           <div class="ret-fin-split">
             <div class="ret-fin-subcard" style="--sc:var(--green)">
               <div class="ret-fin-subhd"><div class="ret-fin-subtitle" style="color:var(--green)">✅ Cashed This Year</div><span class="badge bg" id="retFinCashedBadge"></span></div>
-              <div class="ret-fin-mini-note">Stage = Cashed, date entered Cashed is in the current year, and contract_start_date is in the current year.</div>
-              <div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Deal / Company</th><th>Owner</th><th class="c">Amount</th><th class="c">Contract Start</th><th class="c">Date Entered Cashed</th><th class="c">Status</th></tr></thead><tbody id="retFinCashedBody"></tbody></table></div>
+              <div class="ret-fin-mini-note">Stage = Cashed and date entered Cashed is in the current year. Contract start date is displayed only as info.</div>
+              <div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Deal / Company</th><th>Owner</th><th class="c">Amount</th><th class="c">Contract Start<br><span style="font-size:8px;font-weight:400;color:var(--muted)">Info only</span></th><th class="c">Date Entered Cashed</th><th class="c">Status</th></tr></thead><tbody id="retFinCashedBody"></tbody></table></div>
               <button class="ret-show-btn" id="retFinCashedToggle" onclick="toggleRetMore('retFinCashedBody', this)">▼ Show more</button>
             </div>
             <div class="ret-fin-subcard" style="--sc:var(--purple)">
               <div class="ret-fin-subhd"><div class="ret-fin-subtitle" style="color:var(--purple)">📝 Booked This Year</div><span class="badge bp" id="retFinBookedBadge"></span></div>
-              <div class="ret-fin-mini-note">Stage = Booked, date entered Booked is in the current year, and contract_start_date is in the current year.</div>
-              <div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Deal / Company</th><th>Owner</th><th class="c">Amount</th><th class="c">Contract Start</th><th class="c">Date Entered Booked</th><th class="c">Status</th></tr></thead><tbody id="retFinBookedBody"></tbody></table></div>
+              <div class="ret-fin-mini-note">Stage = Booked and date entered Booked is in the current year. Contract start date is displayed only as info.</div>
+              <div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Deal / Company</th><th>Owner</th><th class="c">Amount</th><th class="c">Contract Start<br><span style="font-size:8px;font-weight:400;color:var(--muted)">Info only</span></th><th class="c">Date Entered Booked</th><th class="c">Status</th></tr></thead><tbody id="retFinBookedBody"></tbody></table></div>
               <button class="ret-show-btn" id="retFinBookedToggle" onclick="toggleRetMore('retFinBookedBody', this)">▼ Show more</button>
             </div>
           </div>
@@ -1039,8 +1039,8 @@ body{font-family:var(--font);background:var(--page-bg);color:var(--text);-webkit
               <div class="ret-kpi-compact" style="--rk:var(--blue)"><div class="ret-kpi-v" id="retYCalls">—</div><div class="ret-kpi-l">Calls</div><div class="ret-kpi-s">Connected</div></div>
               <div class="ret-kpi-compact" style="--rk:var(--purple)"><div class="ret-kpi-v" id="retYMeetings">—</div><div class="ret-kpi-l">Meetings</div><div class="ret-kpi-s">Completed</div></div>
               <div class="ret-kpi-compact" style="--rk:var(--green)"><div class="ret-kpi-v" id="retYRenewed">—</div><div class="ret-kpi-l">Renewed</div><div class="ret-kpi-s">After renewal</div></div>
-              <div class="ret-kpi-compact" style="--rk:var(--purple)"><div class="ret-kpi-v" id="retYBooked">—</div><div class="ret-kpi-l">Booked</div><div class="ret-kpi-s">Stage + Start CY</div></div>
-              <div class="ret-kpi-compact" style="--rk:var(--green)"><div class="ret-kpi-v" id="retYCashed">—</div><div class="ret-kpi-l">Cashed</div><div class="ret-kpi-s">Stage + Start CY</div></div>
+              <div class="ret-kpi-compact" style="--rk:var(--purple)"><div class="ret-kpi-v" id="retYBooked">—</div><div class="ret-kpi-l">Booked</div><div class="ret-kpi-s">Date entered CY</div></div>
+              <div class="ret-kpi-compact" style="--rk:var(--green)"><div class="ret-kpi-v" id="retYCashed">—</div><div class="ret-kpi-l">Cashed</div><div class="ret-kpi-s">Date entered CY</div></div>
               <div class="ret-kpi-compact" style="--rk:var(--red)"><div class="ret-kpi-v" id="retYChurn">—</div><div class="ret-kpi-l">Churn</div><div class="ret-kpi-s">Date entered</div></div>
               <div class="ret-kpi-compact" style="--rk:var(--amber)"><div class="ret-kpi-v" id="retYDelayed">—</div><div class="ret-kpi-l">Delayed</div><div class="ret-kpi-s">Overdue</div></div>
             </div>
@@ -1059,8 +1059,8 @@ body{font-family:var(--font);background:var(--page-bg);color:var(--text);-webkit
               <div class="ret-kpi-compact" style="--rk:var(--blue)"><div class="ret-kpi-v" id="retYtdCalls">—</div><div class="ret-kpi-l">Calls</div><div class="ret-kpi-s">Connected</div></div>
               <div class="ret-kpi-compact" style="--rk:var(--purple)"><div class="ret-kpi-v" id="retYtdMeetings">—</div><div class="ret-kpi-l">Meetings</div><div class="ret-kpi-s">Completed</div></div>
               <div class="ret-kpi-compact" style="--rk:var(--green)"><div class="ret-kpi-v" id="retYtdRenewed">—</div><div class="ret-kpi-l">Renewed</div><div class="ret-kpi-s">Renewals won</div></div>
-              <div class="ret-kpi-compact" style="--rk:var(--purple)"><div class="ret-kpi-v" id="retYtdBooked">—</div><div class="ret-kpi-l">Booked</div><div class="ret-kpi-s">Stage + Start CY</div></div>
-              <div class="ret-kpi-compact" style="--rk:var(--green)"><div class="ret-kpi-v" id="retYtdCashed">—</div><div class="ret-kpi-l">Cashed</div><div class="ret-kpi-s">Stage + Start CY</div></div>
+              <div class="ret-kpi-compact" style="--rk:var(--purple)"><div class="ret-kpi-v" id="retYtdBooked">—</div><div class="ret-kpi-l">Booked</div><div class="ret-kpi-s">Date entered CY</div></div>
+              <div class="ret-kpi-compact" style="--rk:var(--green)"><div class="ret-kpi-v" id="retYtdCashed">—</div><div class="ret-kpi-l">Cashed</div><div class="ret-kpi-s">Date entered CY</div></div>
               <div class="ret-kpi-compact" style="--rk:var(--red)"><div class="ret-kpi-v" id="retYtdChurn">—</div><div class="ret-kpi-l">Churn</div><div class="ret-kpi-s">Date entered</div></div>
               <div class="ret-kpi-compact" style="--rk:var(--amber)"><div class="ret-kpi-v" id="retYtdDelayed">—</div><div class="ret-kpi-l">Delayed</div><div class="ret-kpi-s">Overdue</div></div>
             </div>
@@ -1090,7 +1090,7 @@ body{font-family:var(--font);background:var(--page-bg);color:var(--text);-webkit
           <div class="card">
             <div class="card-hd"><div class="card-title"><div class="card-title-icon" style="background:var(--red-bg)">🔎</div>Renewal Deals Needing Attention</div><span class="badge br">Deal activity OR company activity</span></div>
             <div style="overflow-x:auto"><table class="tbl">
-              <thead><tr><th>Deal / Renewal</th><th>Company</th><th>RM</th><th>CSM</th><th class="c">Contract Start</th><th class="c">Renewal Date</th><th class="c">Renewed Created</th><th class="c">Renewal Type</th><th>Status</th></tr></thead>
+              <thead><tr><th>Deal / Renewal</th><th>Company</th><th>RM</th><th>CSM</th><th class="c">Contract Start<br><span style="font-size:8px;font-weight:400;color:var(--muted)">Info only</span></th><th class="c">Renewal Date</th><th class="c">Renewed Created</th><th class="c">Renewal Type</th><th>Status</th></tr></thead>
               <tbody id="retRenewalDealBody"></tbody>
             </table></div><button class="ret-show-btn" id="retRenewalDealToggle" onclick="toggleRetMore('retRenewalDealBody', this)">▼ Show more</button>
           </div>
@@ -1227,7 +1227,7 @@ function switchRetentionFinancial(){
   $('panel-retention-financial')?.classList.add('active');
   renderRetentionSidebar('financial');
   if($('topbarTitle')) $('topbarTitle').textContent = 'Retention · Financial Details';
-  if($('topbarSub')) $('topbarSub').textContent = 'Date entered Booked/Cashed CY · Contract start 15 Nov 2025–2026 · renewed value · delayed exposure';
+  if($('topbarSub')) $('topbarSub').textContent = 'Date entered Booked/Cashed CY · renewed value · delayed exposure';
   renderRetentionFinancialDetails();
   window.scrollTo({top:0, behavior:'smooth'});
 }
@@ -2012,7 +2012,7 @@ function restoreCurrentView(options={}){
       $("panel-retention-financial")?.classList.add("active");
       renderRetentionSidebar("financial");
       if($("topbarTitle")) $("topbarTitle").textContent = "Retention · Financial Details";
-      if($("topbarSub")) $("topbarSub").textContent = "Date entered Booked/Cashed CY · Contract start 15 Nov 2025–2026 · renewed value · delayed exposure";
+      if($("topbarSub")) $("topbarSub").textContent = "Date entered Booked/Cashed CY · renewed value · delayed exposure";
       renderRetentionFinancialDetails();
     } else if(APP_RETENTION_VIEW === "owner" && APP_RETENTION_OWNER_ID){
       RET_SELECTED_OWNER_ID = String(APP_RETENTION_OWNER_ID);
@@ -4408,7 +4408,7 @@ function enhanceAcquisitionRepFollowupSections(){
     var title = q('topbarTitle');
     if(title) title.textContent = 'Retention · Financial Details';
     var sub = q('topbarSub');
-    if(sub) sub.textContent = 'Date entered Booked/Cashed CY · Contract start 15 Nov 2025–2026 · renewed value · delayed exposure';
+    if(sub) sub.textContent = 'Date entered Booked/Cashed CY · renewed value · delayed exposure';
     safeCall(window.renderRetentionFinancialDetails);
     if(!keepScroll) window.scrollTo({top:0, behavior:'smooth'});
   }
@@ -4508,8 +4508,8 @@ function enhanceAcquisitionRepFollowupSections(){
    2) Retention Financial Booked/Cashed uses:
       - retention pipeline when available
       - Booked/Cashed stage
-      - Booked: date entered Booked = current year + contract_start_date = current year
-      - Cashed: date entered Cashed = current year + contract_start_date = current year
+      - Booked: date entered Booked = current year
+      - Cashed: date entered Cashed = current year
    ═══════════════════════════════════════════ */
 (function(){
   var RET_FIN_RETENTION_PIPELINE_ID = '1026934003';
@@ -4653,9 +4653,8 @@ function enhanceAcquisitionRepFollowupSections(){
     ]);
   }
   function isContractStartAllowed(row){
-    // Manager rule: contract_start_date is allowed from 2025-11-15through 2026-12-31 inclusive.
-    var d = dateText(contractStartDate(row));
-    return d !== '—' && d >= '2025-11-15' && d <= '2026-12-31';
+    // Informational only now. Retention Booked/Cashed financial matching no longer depends on contract_start_date.
+    return true;
   }
   function pipeline(row){ return String(first(row, ['pipeline','pipelineId']) || '').trim(); }
   function stage(row){ return String(first(row, ['dealstage','stageId','stage','stageType','renewalType']) || '').trim(); }
@@ -4681,7 +4680,7 @@ function enhanceAcquisitionRepFollowupSections(){
     return !p || p === RET_FIN_RETENTION_PIPELINE_ID;
   }
   function matchesRetentionFinancial(row, bucket){
-    return pipelineOk(row) && stageOk(row, bucket) && isCY(stageEnteredDate(row, bucket)) && isContractStartAllowed(row);
+    return pipelineOk(row) && stageOk(row, bucket) && isCY(stageEnteredDate(row, bucket));
   }
   function filtered(rows, bucket){ return asArray(rows).filter(function(row){ return matchesRetentionFinancial(row, bucket); }); }
   function total(rows){ return asArray(rows).reduce(function(s,row){ return s + amount(row); }, 0); }
@@ -4842,8 +4841,8 @@ function enhanceAcquisitionRepFollowupSections(){
     var y = currentYear();
 
     set('retFinTopGrid', [
-      {v: money(total(cashed)), l:'Cashed CY', s: cashed.length + ' deals · date entered Cashed ' + y + ' · contract start 15 Nov 2025–' + y, c:'var(--green)'},
-      {v: money(total(booked)), l:'Booked CY', s: booked.length + ' deals · date entered Booked ' + y + ' · contract start 15 Nov 2025–' + y, c:'var(--purple)'},
+      {v: money(total(cashed)), l:'Cashed CY', s: cashed.length + ' deals · date entered Cashed ' + y + ' · date entered ' + y, c:'var(--green)'},
+      {v: money(total(booked)), l:'Booked CY', s: booked.length + ' deals · date entered Booked ' + y + ' · date entered ' + y, c:'var(--purple)'},
       {v: money(total(renewed)), l:'Renewed Value', s: renewed.length + ' renewed companies', c:'var(--cyan)'},
       {v: money(total(delayed)), l:'Delayed Exposure', s: delayed.length + ' overdue renewals', c:'var(--red)'},
       {v: money(total(churn)), l:'Churn Value', s: churn.length + ' churn deals', c:'var(--amber)'}
@@ -4861,8 +4860,8 @@ function enhanceAcquisitionRepFollowupSections(){
       return '<tr class="' + rowClass(i, kind) + '"><td><div style="font-weight:900">' + link(row.name || row.dealName || row.dealname || 'Unnamed Deal', row.hubspotUrl || row.dealUrl) + '</div><div style="font-size:10px;color:var(--muted)">' + link(row.companyName || 'Unknown Company', row.companyUrl) + '</div></td><td>' + safe(ownerLabel(row)) + '</td><td class="c" style="font-family:var(--mono);font-weight:900">' + money(amount(row)) + '</td><td class="c">' + safe(dateText(startDate)) + '</td><td class="c">' + safe(dateText(stageDate)) + '</td><td class="c"><span class="badge ' + (kind === 'ok' ? 'bg' : kind === 'risk' ? 'br' : 'bp') + '">' + safe(status) + '</span></td></tr>';
     }
 
-    set('retFinCashedBody', cashed.length ? cashed.map(function(r,i){ return dealRow(r,i,'ok','Cashed'); }).join('') : empty(6, 'No cashed retention deals matched: date entered Cashed ' + y + ' + contract_start_date ' + y + '.'));
-    set('retFinBookedBody', booked.length ? booked.map(function(r,i){ return dealRow(r,i,'warn','Booked'); }).join('') : empty(6, 'No booked retention deals matched: date entered Booked ' + y + ' + contract_start_date ' + y + '.'));
+    set('retFinCashedBody', cashed.length ? cashed.map(function(r,i){ return dealRow(r,i,'ok','Cashed'); }).join('') : empty(6, 'No cashed retention deals matched: date entered Cashed ' + y + '.'));
+    set('retFinBookedBody', booked.length ? booked.map(function(r,i){ return dealRow(r,i,'warn','Booked'); }).join('') : empty(6, 'No booked retention deals matched: date entered Booked ' + y + '.'));
     var cT = byId('retFinCashedToggle'); if(cT) cT.style.display = cashed.length > 5 ? 'block' : 'none';
     var bT = byId('retFinBookedToggle'); if(bT) bT.style.display = booked.length > 5 ? 'block' : 'none';
 
@@ -4899,7 +4898,7 @@ function enhanceAcquisitionRepFollowupSections(){
     if(window.console && console.info){
       console.info('[Retention Financial Rule]', {
         year: y,
-        rule: 'Booked: date entered Booked current year + contract_start_date current year. Cashed: date entered Cashed current year + contract_start_date current year. Retention only; Acquisition untouched.',
+        rule: 'Booked: date entered Booked current year. Cashed: date entered Cashed current year. Retention only; Acquisition untouched.',
         owners: repData.length,
         bookedSource: fin.bookedSource.length,
         bookedMatched: booked.length,
