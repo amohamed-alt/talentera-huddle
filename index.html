@@ -5396,8 +5396,7 @@ setInterval(loadData,5*60*1000);
 <script>
 (function() {
   const AUTH_STORAGE_KEY = "talentera_dashboard_auth_v1";
-  const AUTH_HASH = "e6c009262eeb5eeb068a726c6592530ef52cb2cfa3f8c680eb2b2bbb1ed3b53c"; // SHA-256 of: Talantira + 26 exclamation marks
-
+  const AUTH_HASH = "e6c009262eeb5eeb068a726c6592530ef52cb2cfa3f8c680eb2b2bbb1ed3b53c"; // SHA-256 of: Acqret2026!
   async function sha256Hex(text) {
     const buffer = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
     return Array.from(new Uint8Array(buffer)).map(b => b.toString(16).padStart(2,"0")).join("");
