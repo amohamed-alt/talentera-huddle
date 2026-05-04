@@ -959,7 +959,7 @@ body{font-family:var(--font);background:var(--page-bg);color:var(--text);-webkit
             <div class="ret-fin-hero-icon">💰</div>
             <div>
               <div class="ret-fin-hero-title">Retention Financial Details</div>
-              <div class="ret-fin-hero-sub">A clean money view for Customer Success: current-year Booked/Cashed using date entered Booked/Cashed only, renewed value, delayed renewal exposure, and owner-level financial accountability.</div>
+              <div class="ret-fin-hero-sub">A clean money view for Customer Success: current-year Booked/Cashed filtered only by deal stage and date entered current stage. Contract start date is not used.</div>
             </div>
           </div>
 
@@ -976,14 +976,14 @@ body{font-family:var(--font);background:var(--page-bg);color:var(--text);-webkit
           <div class="ret-fin-split">
             <div class="ret-fin-subcard" style="--sc:var(--green)">
               <div class="ret-fin-subhd"><div class="ret-fin-subtitle" style="color:var(--green)">✅ Cashed This Year</div><span class="badge bg" id="retFinCashedBadge"></span></div>
-              <div class="ret-fin-mini-note">Stage = Cashed and date entered Cashed is in the current year. Contract start date is displayed only as info.</div>
-              <div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Deal / Company</th><th>Owner</th><th class="c">Amount</th><th class="c">Contract Start<br><span style="font-size:8px;font-weight:400;color:var(--muted)">Info only</span></th><th class="c">Date Entered Cashed</th><th class="c">Status</th></tr></thead><tbody id="retFinCashedBody"></tbody></table></div>
+              <div class="ret-fin-mini-note">Stage = Cashed and date entered current stage is in the current year. Contract start date is not used.</div>
+              <div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Deal / Company</th><th>Owner</th><th class="c">Amount</th><th class="c">Contract Start<br><span style="font-size:8px;font-weight:400;color:var(--muted)">Info only</span></th><th class="c">Date Entered Current Stage</th><th class="c">Status</th></tr></thead><tbody id="retFinCashedBody"></tbody></table></div>
               <button class="ret-show-btn" id="retFinCashedToggle" onclick="toggleRetMore('retFinCashedBody', this)">▼ Show more</button>
             </div>
             <div class="ret-fin-subcard" style="--sc:var(--purple)">
               <div class="ret-fin-subhd"><div class="ret-fin-subtitle" style="color:var(--purple)">📝 Booked This Year</div><span class="badge bp" id="retFinBookedBadge"></span></div>
-              <div class="ret-fin-mini-note">Stage = Booked and date entered Booked is in the current year. Contract start date is displayed only as info.</div>
-              <div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Deal / Company</th><th>Owner</th><th class="c">Amount</th><th class="c">Contract Start<br><span style="font-size:8px;font-weight:400;color:var(--muted)">Info only</span></th><th class="c">Date Entered Booked</th><th class="c">Status</th></tr></thead><tbody id="retFinBookedBody"></tbody></table></div>
+              <div class="ret-fin-mini-note">Stage = Booked and date entered current stage is in the current year. Contract start date is not used.</div>
+              <div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Deal / Company</th><th>Owner</th><th class="c">Amount</th><th class="c">Contract Start<br><span style="font-size:8px;font-weight:400;color:var(--muted)">Info only</span></th><th class="c">Date Entered Current Stage</th><th class="c">Status</th></tr></thead><tbody id="retFinBookedBody"></tbody></table></div>
               <button class="ret-show-btn" id="retFinBookedToggle" onclick="toggleRetMore('retFinBookedBody', this)">▼ Show more</button>
             </div>
           </div>
@@ -1227,7 +1227,7 @@ function switchRetentionFinancial(){
   $('panel-retention-financial')?.classList.add('active');
   renderRetentionSidebar('financial');
   if($('topbarTitle')) $('topbarTitle').textContent = 'Retention · Financial Details';
-  if($('topbarSub')) $('topbarSub').textContent = 'Date entered Booked/Cashed CY · renewed value · delayed exposure';
+  if($('topbarSub')) $('topbarSub').textContent = 'Deal stage Booked/Cashed · date entered current stage CY · renewed value · delayed exposure';
   renderRetentionFinancialDetails();
   window.scrollTo({top:0, behavior:'smooth'});
 }
@@ -2012,7 +2012,7 @@ function restoreCurrentView(options={}){
       $("panel-retention-financial")?.classList.add("active");
       renderRetentionSidebar("financial");
       if($("topbarTitle")) $("topbarTitle").textContent = "Retention · Financial Details";
-      if($("topbarSub")) $("topbarSub").textContent = "Date entered Booked/Cashed CY · renewed value · delayed exposure";
+      if($("topbarSub")) $("topbarSub").textContent = "Deal stage Booked/Cashed · date entered current stage CY · renewed value · delayed exposure";
       renderRetentionFinancialDetails();
     } else if(APP_RETENTION_VIEW === "owner" && APP_RETENTION_OWNER_ID){
       RET_SELECTED_OWNER_ID = String(APP_RETENTION_OWNER_ID);
@@ -4408,7 +4408,7 @@ function enhanceAcquisitionRepFollowupSections(){
     var title = q('topbarTitle');
     if(title) title.textContent = 'Retention · Financial Details';
     var sub = q('topbarSub');
-    if(sub) sub.textContent = 'Date entered Booked/Cashed CY · renewed value · delayed exposure';
+    if(sub) sub.textContent = 'Deal stage Booked/Cashed · date entered current stage CY · renewed value · delayed exposure';
     safeCall(window.renderRetentionFinancialDetails);
     if(!keepScroll) window.scrollTo({top:0, behavior:'smooth'});
   }
@@ -4508,8 +4508,8 @@ function enhanceAcquisitionRepFollowupSections(){
    2) Retention Financial Booked/Cashed uses:
       - retention pipeline when available
       - Booked/Cashed stage
-      - Booked: date entered Booked = current year
-      - Cashed: date entered Cashed = current year
+      - Booked: dealstage = Booked and date entered current stage = current year
+      - Cashed: dealstage = Cashed and date entered current stage = current year
    ═══════════════════════════════════════════ */
 (function(){
   var RET_FIN_RETENTION_PIPELINE_ID = '1026934003';
@@ -4590,50 +4590,9 @@ function enhanceAcquisitionRepFollowupSections(){
     return isNaN(parsed.getTime()) ? s : parsed.toISOString().slice(0,10);
   }
   function stageEnteredDate(row, bucket){
-    // IMPORTANT: Retention financial must use the specific stage-entered date, not deal created date.
-    // Booked deals => date entered Booked. Cashed deals => date entered Cashed.
-    // The current-stage date is only a safe fallback when the deal is currently in the same bucket.
-    if(bucket === 'booked'){
-      return first(row, [
-        'bookedDateEntered',
-        'dateEnteredBooked',
-        'booked_date_entered',
-        'hs_v2_date_entered_1435517125',
-        'hs_date_entered_1435517125',
-        'hs_v2_date_entered_booked',
-        'date_entered_booked',
-        'currentStageDateEntered',
-        'hs_v2_date_entered_current_stage',
-        'hs_date_entered_current_stage',
-        'dateEnteredCurrentStage',
-        'date_entered_current_stage',
-        'stageDate',
-        'actionDate'
-      ]);
-    }
-    if(bucket === 'cashed'){
-      return first(row, [
-        'cashedDateEntered',
-        'dateEnteredCashed',
-        'cachedDateEntered',
-        'dateEnteredCached',
-        'cashed_date_entered',
-        'cached_date_entered',
-        'hs_v2_date_entered_1479506164',
-        'hs_date_entered_1479506164',
-        'hs_v2_date_entered_cashed',
-        'hs_v2_date_entered_cached',
-        'date_entered_cashed',
-        'date_entered_cached',
-        'currentStageDateEntered',
-        'hs_v2_date_entered_current_stage',
-        'hs_date_entered_current_stage',
-        'dateEnteredCurrentStage',
-        'date_entered_current_stage',
-        'stageDate',
-        'actionDate'
-      ]);
-    }
+    // FINAL rule: Retention financial is filtered by deal stage + date entered current stage only.
+    // For current Booked deals, current-stage date = date entered Booked.
+    // For current Cashed deals, current-stage date = date entered Cashed.
     return first(row, [
       'currentStageDateEntered',
       'hs_v2_date_entered_current_stage',
@@ -4841,8 +4800,8 @@ function enhanceAcquisitionRepFollowupSections(){
     var y = currentYear();
 
     set('retFinTopGrid', [
-      {v: money(total(cashed)), l:'Cashed CY', s: cashed.length + ' deals · date entered Cashed ' + y + ' · date entered ' + y, c:'var(--green)'},
-      {v: money(total(booked)), l:'Booked CY', s: booked.length + ' deals · date entered Booked ' + y + ' · date entered ' + y, c:'var(--purple)'},
+      {v: money(total(cashed)), l:'Cashed CY', s: cashed.length + ' deals · current stage date ' + y, c:'var(--green)'},
+      {v: money(total(booked)), l:'Booked CY', s: booked.length + ' deals · current stage date ' + y, c:'var(--purple)'},
       {v: money(total(renewed)), l:'Renewed Value', s: renewed.length + ' renewed companies', c:'var(--cyan)'},
       {v: money(total(delayed)), l:'Delayed Exposure', s: delayed.length + ' overdue renewals', c:'var(--red)'},
       {v: money(total(churn)), l:'Churn Value', s: churn.length + ' churn deals', c:'var(--amber)'}
@@ -4860,8 +4819,8 @@ function enhanceAcquisitionRepFollowupSections(){
       return '<tr class="' + rowClass(i, kind) + '"><td><div style="font-weight:900">' + link(row.name || row.dealName || row.dealname || 'Unnamed Deal', row.hubspotUrl || row.dealUrl) + '</div><div style="font-size:10px;color:var(--muted)">' + link(row.companyName || 'Unknown Company', row.companyUrl) + '</div></td><td>' + safe(ownerLabel(row)) + '</td><td class="c" style="font-family:var(--mono);font-weight:900">' + money(amount(row)) + '</td><td class="c">' + safe(dateText(startDate)) + '</td><td class="c">' + safe(dateText(stageDate)) + '</td><td class="c"><span class="badge ' + (kind === 'ok' ? 'bg' : kind === 'risk' ? 'br' : 'bp') + '">' + safe(status) + '</span></td></tr>';
     }
 
-    set('retFinCashedBody', cashed.length ? cashed.map(function(r,i){ return dealRow(r,i,'ok','Cashed'); }).join('') : empty(6, 'No cashed retention deals matched: date entered Cashed ' + y + '.'));
-    set('retFinBookedBody', booked.length ? booked.map(function(r,i){ return dealRow(r,i,'warn','Booked'); }).join('') : empty(6, 'No booked retention deals matched: date entered Booked ' + y + '.'));
+    set('retFinCashedBody', cashed.length ? cashed.map(function(r,i){ return dealRow(r,i,'ok','Cashed'); }).join('') : empty(6, 'No cashed retention deals matched: current-stage date ' + y + '.'));
+    set('retFinBookedBody', booked.length ? booked.map(function(r,i){ return dealRow(r,i,'warn','Booked'); }).join('') : empty(6, 'No booked retention deals matched: current-stage date ' + y + '.'));
     var cT = byId('retFinCashedToggle'); if(cT) cT.style.display = cashed.length > 5 ? 'block' : 'none';
     var bT = byId('retFinBookedToggle'); if(bT) bT.style.display = booked.length > 5 ? 'block' : 'none';
 
@@ -4898,7 +4857,7 @@ function enhanceAcquisitionRepFollowupSections(){
     if(window.console && console.info){
       console.info('[Retention Financial Rule]', {
         year: y,
-        rule: 'Booked: date entered Booked current year. Cashed: date entered Cashed current year. Retention only; Acquisition untouched.',
+        rule: 'Booked/Cashed: deal stage is Booked or Cashed and date entered current stage is current year. Retention only; Acquisition untouched.',
         owners: repData.length,
         bookedSource: fin.bookedSource.length,
         bookedMatched: booked.length,
