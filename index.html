@@ -583,9 +583,221 @@ body{font-family:var(--font);background:var(--page-bg);color:var(--text);-webkit
 @media(max-width:1200px){.ret-kpi-period-row{grid-template-columns:1fr repeat(4,1fr)}.ret-kpi-period-label{grid-column:1/-1}}
 @media(max-width:800px){.ret-kpi-period-row{grid-template-columns:repeat(2,1fr)}.ret-kpi-period-label{grid-column:1/-1}}
 
+
+
+/* ═══════════════════════════════════════════
+   SIMPLE CLIENT-SIDE PASSWORD GATE
+   Password: Talantira + 26 exclamation marks
+   ═══════════════════════════════════════════ */
+body.auth-locked {
+  overflow:hidden;
+}
+body.auth-locked .app {
+  filter: blur(8px);
+  pointer-events:none;
+  user-select:none;
+}
+.auth-gate {
+  position:fixed;
+  inset:0;
+  z-index:999999;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(61,214,140,.18), transparent 32%),
+    radial-gradient(circle at 80% 70%, rgba(8,145,178,.18), transparent 35%),
+    linear-gradient(135deg,#07110c 0%,#0f1a14 55%,#10281b 100%);
+}
+.auth-gate.auth-hidden {
+  display:none !important;
+}
+.auth-card {
+  width:min(430px,100%);
+  background:rgba(255,255,255,.96);
+  border:1px solid rgba(255,255,255,.22);
+  border-radius:22px;
+  box-shadow:0 28px 90px rgba(0,0,0,.42);
+  overflow:hidden;
+  font-family:var(--font);
+}
+.auth-card-top {
+  padding:24px 24px 16px;
+  background:linear-gradient(135deg,#ffffff 0%,#f7faf8 100%);
+  border-bottom:1px solid var(--border);
+}
+.auth-logo-row {
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:16px;
+}
+.auth-logo-mark {
+  width:42px;
+  height:42px;
+  border-radius:14px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#fff;
+  font-size:21px;
+  font-weight:900;
+  background:linear-gradient(135deg,var(--green),var(--cyan));
+  box-shadow:0 10px 26px rgba(22,163,74,.24);
+}
+.auth-brand {
+  font-size:15px;
+  font-weight:900;
+  color:var(--text);
+  letter-spacing:-.02em;
+}
+.auth-subbrand {
+  font-size:10px;
+  color:var(--muted);
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.09em;
+  margin-top:2px;
+}
+.auth-title {
+  font-size:22px;
+  line-height:1.2;
+  font-weight:900;
+  color:var(--text);
+  letter-spacing:-.04em;
+}
+.auth-copy {
+  margin-top:8px;
+  font-size:12px;
+  line-height:1.65;
+  color:var(--muted);
+  font-weight:600;
+}
+.auth-card-body {
+  padding:20px 24px 24px;
+}
+.auth-label {
+  display:block;
+  font-size:10px;
+  font-weight:900;
+  color:var(--text2);
+  text-transform:uppercase;
+  letter-spacing:.1em;
+  margin-bottom:8px;
+}
+.auth-input-wrap {
+  position:relative;
+}
+.auth-input {
+  width:100%;
+  height:46px;
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:0 46px 0 14px;
+  font-size:14px;
+  font-weight:700;
+  color:var(--text);
+  background:#fff;
+  outline:none;
+  font-family:var(--font);
+  transition:.16s border-color,.16s box-shadow;
+}
+.auth-input:focus {
+  border-color:rgba(22,163,74,.42);
+  box-shadow:0 0 0 4px rgba(22,163,74,.10);
+}
+.auth-eye {
+  position:absolute;
+  right:9px;
+  top:7px;
+  width:32px;
+  height:32px;
+  border:0;
+  border-radius:9px;
+  background:var(--surface2);
+  cursor:pointer;
+  font-size:14px;
+}
+.auth-btn {
+  width:100%;
+  height:46px;
+  margin-top:12px;
+  border:0;
+  border-radius:12px;
+  cursor:pointer;
+  color:#fff;
+  background:linear-gradient(135deg,var(--green),var(--primary-dk));
+  box-shadow:0 12px 26px rgba(22,163,74,.26);
+  font-family:var(--font);
+  font-size:13px;
+  font-weight:900;
+  letter-spacing:.02em;
+  transition:.16s transform,.16s box-shadow,.16s filter;
+}
+.auth-btn:hover {
+  transform:translateY(-1px);
+  box-shadow:0 16px 32px rgba(22,163,74,.32);
+}
+.auth-btn:active {
+  transform:translateY(0);
+  filter:brightness(.96);
+}
+.auth-error {
+  display:none;
+  margin-top:10px;
+  padding:9px 11px;
+  border-radius:10px;
+  background:var(--red-bg);
+  color:var(--red);
+  border:1px solid var(--red-bd);
+  font-size:11px;
+  font-weight:800;
+}
+.auth-error.show {
+  display:block;
+}
+.auth-note {
+  margin-top:12px;
+  font-size:10px;
+  color:var(--muted);
+  line-height:1.5;
+  font-weight:700;
+  text-align:center;
+}
+
 </style>
 </head>
-<body>
+<body class="auth-locked">
+
+<div id="authGate" class="auth-gate" aria-label="Dashboard password login">
+  <div class="auth-card">
+    <div class="auth-card-top">
+      <div class="auth-logo-row">
+        <div class="auth-logo-mark">T</div>
+        <div>
+          <div class="auth-brand">Talentera</div>
+          <div class="auth-subbrand">Sales Command Center</div>
+        </div>
+      </div>
+      <div class="auth-title">Dashboard Login</div>
+      <div class="auth-copy">Enter the dashboard password to continue.</div>
+    </div>
+    <div class="auth-card-body">
+      <form id="authForm" autocomplete="off">
+        <label class="auth-label" for="authPassword">Password</label>
+        <div class="auth-input-wrap">
+          <input id="authPassword" class="auth-input" type="password" placeholder="Enter password" autocomplete="current-password">
+          <button type="button" class="auth-eye" id="authToggle" aria-label="Show password">👁️</button>
+        </div>
+        <button type="submit" class="auth-btn">Login</button>
+        <div id="authError" class="auth-error">Wrong password. Please try again.</div>
+        <div class="auth-note">Protected by a lightweight client-side gate.</div>
+      </form>
+    </div>
+  </div>
+</div>
+
 <div class="app">
   <aside class="sidebar">
     <div class="sidebar-logo">
@@ -5177,6 +5389,69 @@ setInterval(loadData,5*60*1000);
 
   // Re-load once using the robust reader after all original scripts finish.
   setTimeout(function(){ if(typeof window.loadData === 'function') window.loadData(); }, 50);
+})();
+</script>
+
+
+<script>
+(function() {
+  const AUTH_STORAGE_KEY = "talentera_dashboard_auth_v1";
+  const AUTH_HASH = "e6c009262eeb5eeb068a726c6592530ef52cb2cfa3f8c680eb2b2bbb1ed3b53c"; // SHA-256 of: Talantira + 26 exclamation marks
+
+  async function sha256Hex(text) {
+    const buffer = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
+    return Array.from(new Uint8Array(buffer)).map(b => b.toString(16).padStart(2,"0")).join("");
+  }
+
+  function unlockDashboard() {
+    document.body.classList.remove("auth-locked");
+    const gate = document.getElementById("authGate");
+    if (gate) gate.classList.add("auth-hidden");
+  }
+
+  function showAuthError(message) {
+    const error = document.getElementById("authError");
+    if (!error) return;
+    error.textContent = message || "Wrong password. Please try again.";
+    error.classList.add("show");
+  }
+
+  document.addEventListener("DOMContentLoaded", function() {
+    if (localStorage.getItem(AUTH_STORAGE_KEY) === "ok") {
+      unlockDashboard();
+      return;
+    }
+
+    const form = document.getElementById("authForm");
+    const input = document.getElementById("authPassword");
+    const toggle = document.getElementById("authToggle");
+
+    setTimeout(() => input && input.focus(), 120);
+
+    if (toggle && input) {
+      toggle.addEventListener("click", function() {
+        input.type = input.type === "password" ? "text" : "password";
+        toggle.textContent = input.type === "password" ? "👁️" : "🙈";
+        input.focus();
+      });
+    }
+
+    if (form && input) {
+      form.addEventListener("submit", async function(event) {
+        event.preventDefault();
+        const typed = input.value || "";
+        const typedHash = await sha256Hex(typed);
+        if (typedHash === AUTH_HASH) {
+          localStorage.setItem(AUTH_STORAGE_KEY, "ok");
+          unlockDashboard();
+        } else {
+          input.value = "";
+          input.focus();
+          showAuthError("Wrong password. Check capital T and the exclamation marks.");
+        }
+      });
+    }
+  });
 })();
 </script>
 
