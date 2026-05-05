@@ -5364,6 +5364,12 @@ setInterval(loadData,5*60*1000);
       .ret-upsell-not{background:var(--red-bg);color:var(--red);border-color:var(--red-bd)}
       .ret-upsell-empty{padding:24px;text-align:center;color:var(--muted);font-size:13px;font-style:italic}
       .ret-upsell-note{font-size:10px;color:var(--muted);font-weight:700;line-height:1.45;background:linear-gradient(135deg,#fff 0%,#f7faf8 100%);border-bottom:1px solid var(--border);padding:10px 14px}
+      .ret-upsell-client-cell{background:linear-gradient(135deg,#fff 0%,#f7faf8 100%);border-right:1px solid var(--border);vertical-align:top}
+      .ret-upsell-client-name{font-size:12px;font-weight:900;color:var(--text);line-height:1.25}
+      .ret-upsell-client-product{font-size:9px;color:var(--muted);font-weight:800;margin-top:4px}
+      .ret-upsell-client-count{display:inline-flex;margin-top:8px;font-size:8px;font-weight:900;border-radius:999px;padding:3px 7px;background:var(--purple-bg);color:var(--purple);border:1px solid var(--purple-bd)}
+      .ret-upsell-group-start td{border-top:2px solid color-mix(in srgb,var(--purple) 18%,var(--border))}
+      .ret-upsell-subtle{font-size:9px;color:var(--muted);font-weight:700;margin-top:4px}
       @media(max-width:1200px){.ret-upsell-kpis{grid-template-columns:repeat(3,1fr)}}
       @media(max-width:700px){.ret-upsell-kpis{grid-template-columns:1fr}.ret-upsell-hero{align-items:flex-start;flex-direction:column}.ret-upsell-tools{align-items:stretch}.ret-upsell-select,.ret-upsell-search{width:100%;min-width:0}}
     `;
@@ -5477,6 +5483,39 @@ setInterval(loadData,5*60*1000);
     return panel;
   }
   function unique(arr){ return Array.from(new Set(arr.filter(function(v){ return String(v||'').trim(); }))).sort(); }
+  function clientKey(v){ return String(v || '').trim().toLowerCase().replace(/\s+/g,' '); }
+  function groupRowsByClient(rows){
+    var map = {};
+    rows.forEach(function(r){
+      var key = clientKey(r.clientName || 'Unknown Client');
+      if(!map[key]){
+        map[key] = {
+          key:key,
+          clientName:r.clientName || 'Unknown Client',
+          product:r.product || '',
+          csm:r.csm || '',
+          rm:r.rm || '',
+          renewalMonth:r.renewalMonth || '',
+          renewalValue:0,
+          upsellValue:0,
+          rows:[]
+        };
+      }
+      var g = map[key];
+      if(!g.product && r.product) g.product = r.product;
+      if(!g.csm && r.csm) g.csm = r.csm;
+      if(!g.rm && r.rm) g.rm = r.rm;
+      if(!g.renewalMonth && r.renewalMonth) g.renewalMonth = r.renewalMonth;
+      if(num(r.renewalValue) > 0) g.renewalValue = num(r.renewalValue);
+      if(num(r.upsellValue) > 0) g.upsellValue = num(r.upsellValue);
+      g.rows.push(r);
+    });
+    return Object.keys(map).sort(function(a,b){ return map[a].clientName.localeCompare(map[b].clientName); }).map(function(k){
+      var g = map[k];
+      g.clientValue = num(g.renewalValue) || num(g.upsellValue);
+      return g;
+    });
+  }
   function fillSelect(id, allLabel, values, current){
     var el = byId(id); if(!el) return;
     var old = current !== undefined ? current : el.value;
@@ -5486,19 +5525,20 @@ setInterval(loadData,5*60*1000);
   window.renderRetentionUpsellingFeaturesPlan = function(){
     ensurePanel();
     var rows = getRows();
-    var clients = unique(rows.map(function(r){ return r.clientName; }));
+    var groupedAll = groupRowsByClient(rows);
+    var clients = groupedAll.map(function(g){ return g.clientName; });
     var proposalSent = rows.filter(function(r){ return /proposal\s*sent|proposal/i.test(r.status || ''); }).length;
     var interested = rows.filter(function(r){ return /interested|interest/i.test(r.status || '') && !/not\s*interested/i.test(r.status || ''); }).length;
     var notInterested = rows.filter(function(r){ return /not\s*interested|not interested/i.test(r.status || ''); }).length;
-    var upsellTotal = rows.reduce(function(s,r){ return s + num(r.upsellValue); },0);
+    var upsellTotal = groupedAll.reduce(function(s,g){ return s + num(g.clientValue); },0);
     var kpis = byId('retUpsellKpis');
     if(kpis) kpis.innerHTML = [
-      {v: clients.length, l:'Clients', s:'Unique accounts', c:'var(--cyan)'},
-      {v: proposalSent, l:'Proposal Sent', s:'Current status count', c:'var(--blue)'},
-      {v: interested, l:'Interested', s:'Current status count', c:'var(--green)'},
-      {v: notInterested, l:'Not Interested', s:'Current status count', c:'var(--red)'},
-      {v: money(upsellTotal), l:'Upsell Value', s:'Sum of all upsell values', c:'var(--amber)'}
-    ].map(function(x){ return '<div class="ret-upsell-kpi" style="--kc:' + x.c + '"><div class="ret-upsell-kpi-v">' + escLocal(x.v) + '</div><div class="ret-upsell-kpi-l">' + escLocal(x.l) + '</div><div class="ret-upsell-kpi-s">' + escLocal(x.s) + '</div></div>'; }).join('');
+      {v: clients.length, l:'Clients', c:'var(--cyan)'},
+      {v: proposalSent, l:'Proposal Sent', c:'var(--blue)'},
+      {v: interested, l:'Interested', c:'var(--green)'},
+      {v: notInterested, l:'Not Interested', c:'var(--red)'},
+      {v: money(upsellTotal), l:'Upsell Value', c:'var(--amber)'}
+    ].map(function(x){ return '<div class="ret-upsell-kpi" style="--kc:' + x.c + '"><div class="ret-upsell-kpi-v">' + escLocal(x.v) + '</div><div class="ret-upsell-kpi-l">' + escLocal(x.l) + '</div></div>'; }).join('');
 
     fillSelect('retUpsellStatus','All statuses', unique(rows.map(function(r){return r.status;})));
     fillSelect('retUpsellMonth','All months', unique(rows.map(function(r){return r.renewalMonth;})));
@@ -5516,8 +5556,9 @@ setInterval(loadData,5*60*1000);
       var text = [r.clientName,r.product,r.csm,r.rm,r.renewalMonth,r.feature,r.ownership,r.status,r.timeline,r.notes].join(' ').toLowerCase();
       return (!q || text.indexOf(q) >= 0) && (!fs || r.status === fs) && (!fm || r.renewalMonth === fm) && (!fp || r.product === fp) && (!frm || r.rm === frm) && (!fcsm || r.csm === fcsm);
     });
+    var groupedFiltered = groupRowsByClient(filtered);
     var badge = byId('retUpsellRowsBadge');
-    if(badge) badge.textContent = filtered.length + ' / ' + rows.length + ' rows';
+    if(badge) badge.textContent = groupedFiltered.length + ' / ' + groupedAll.length + ' clients';
     var body = byId('retUpsellBody');
     if(!body) return;
     if(!rows.length){
@@ -5525,24 +5566,30 @@ setInterval(loadData,5*60*1000);
       return;
     }
     if(!filtered.length){
-      body.innerHTML = '<tr><td colspan="11"><div class="ret-upsell-empty">No rows match the selected filters.</div></td></tr>';
+      body.innerHTML = '<tr><td colspan="11"><div class="ret-upsell-empty">No clients match the selected filters.</div></td></tr>';
       return;
     }
-    body.innerHTML = filtered.map(function(r){
-      var status = r.status || '—';
-      return '<tr>' +
-        '<td><div style="font-weight:900;color:var(--text)">' + escLocal(r.clientName || '—') + '</div><div style="font-size:9px;color:var(--muted);font-weight:700">' + escLocal(r.product || '—') + '</div></td>' +
-        '<td>' + escLocal(r.csm || '—') + '</td>' +
-        '<td>' + escLocal(r.rm || '—') + '</td>' +
-        '<td class="c">' + escLocal(r.renewalMonth || '—') + '</td>' +
-        '<td class="c" style="font-family:var(--mono);font-weight:900;color:var(--amber)">' + money(r.renewalValue) + '</td>' +
-        '<td style="font-weight:800">' + escLocal(r.feature || '—') + '</td>' +
-        '<td class="c"><span class="badge bp">' + escLocal(r.ownership || '—') + '</span></td>' +
-        '<td class="c"><span class="ret-upsell-status ' + statusClass(status) + '">' + escLocal(status) + '</span></td>' +
-        '<td class="c">' + escLocal(r.timeline || '—') + '</td>' +
-        '<td class="c" style="font-family:var(--mono);font-weight:900;color:var(--green)">' + (num(r.upsellValue) ? money(r.upsellValue) : '—') + '</td>' +
-        '<td style="max-width:260px;white-space:normal;line-height:1.45">' + escLocal(r.notes || '—') + '</td>' +
-      '</tr>';
+    body.innerHTML = groupedFiltered.map(function(g){
+      var span = Math.max(1, g.rows.length);
+      return g.rows.map(function(r, idx){
+        var status = r.status || '—';
+        var clientCells = idx === 0 ?
+          '<td class="ret-upsell-client-cell" rowspan="' + span + '"><div class="ret-upsell-client-name">' + escLocal(g.clientName || '—') + '</div><div class="ret-upsell-client-product">' + escLocal(g.product || '—') + '</div><span class="ret-upsell-client-count">' + span + ' features</span></td>' +
+          '<td rowspan="' + span + '">' + escLocal(g.csm || '—') + '</td>' +
+          '<td rowspan="' + span + '">' + escLocal(g.rm || '—') + '</td>' +
+          '<td class="c" rowspan="' + span + '">' + escLocal(g.renewalMonth || '—') + '</td>' +
+          '<td class="c" rowspan="' + span + '" style="font-family:var(--mono);font-weight:900;color:var(--amber)">' + (num(g.clientValue) ? money(g.clientValue) : '—') + '</td>' : '';
+        var upsellCell = idx === 0 ? '<td class="c" rowspan="' + span + '" style="font-family:var(--mono);font-weight:900;color:var(--green)">' + (num(g.clientValue) ? money(g.clientValue) : '—') + '<div class="ret-upsell-subtle">client value</div></td>' : '';
+        return '<tr class="' + (idx === 0 ? 'ret-upsell-group-start' : '') + '">' +
+          clientCells +
+          '<td style="font-weight:800">' + escLocal(r.feature || '—') + '</td>' +
+          '<td class="c"><span class="badge bp">' + escLocal(r.ownership || '—') + '</span></td>' +
+          '<td class="c"><span class="ret-upsell-status ' + statusClass(status) + '">' + escLocal(status) + '</span></td>' +
+          '<td class="c">' + escLocal(r.timeline || '—') + '</td>' +
+          upsellCell +
+          '<td style="max-width:260px;white-space:normal;line-height:1.45">' + escLocal(r.notes || '—') + '</td>' +
+        '</tr>';
+      }).join('');
     }).join('');
   };
 
@@ -5575,8 +5622,9 @@ setInterval(loadData,5*60*1000);
       var holder = byId('sideRepLinks');
       if(holder && !byId('side-ret-upselling')){
         var rows = getRows();
+        var grouped = groupRowsByClient(rows);
         var active = activeMode === 'upselling' ? ' active' : '';
-        var html = '<button class="nav-item' + active + '" id="side-ret-upselling" onclick="switchRetentionUpsellingFeaturesPlan()"><span class="nav-icon" style="color:var(--purple)">🚀</span>Features Plan<span class="view-tag">SHEET</span><span class="nav-badge">' + rows.length + '</span></button>';
+        var html = '<button class="nav-item' + active + '" id="side-ret-upselling" onclick="switchRetentionUpsellingFeaturesPlan()"><span class="nav-icon" style="color:var(--purple)">🚀</span>Features Plan<span class="view-tag">SHEET</span><span class="nav-badge">' + grouped.length + '</span></button>';
         var financial = byId('side-ret-financial');
         if(financial) financial.insertAdjacentHTML('afterend', html);
         else holder.insertAdjacentHTML('afterbegin', html);
