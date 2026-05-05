@@ -5560,7 +5560,6 @@ setInterval(loadData,5*60*1000);
       {v: proposalSent, l:'Proposal Sent', c:'var(--blue)'},
       {v: interested, l:'Interested', c:'var(--green)'},
       {v: notInterested, l:'Not Interested', c:'var(--red)'},
-      {v: money(renewalTotal), l:'Renewal Value', c:'var(--amber)'},
       {v: money(upsellTotal), l:'Upsell Value', c:'var(--green)'}
     ].map(function(x){ return '<div class="ret-upsell-kpi" style="--kc:' + x.c + '"><div class="ret-upsell-kpi-v">' + escLocal(x.v) + '</div><div class="ret-upsell-kpi-l">' + escLocal(x.l) + '</div></div>'; }).join('');
 
