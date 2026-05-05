@@ -5529,12 +5529,12 @@ setInterval(loadData,5*60*1000);
       if(!g.rm && r.rm) g.rm = r.rm;
       if(!g.renewalMonth && r.renewalMonth) g.renewalMonth = r.renewalMonth;
       if(num(r.renewalValue) > 0) g.renewalValue = num(r.renewalValue);
-      if(num(r.upsellValue) > 0) g.upsellValue = num(r.upsellValue);
+      if(num(r.upsellValue) > 0) g.upsellValue += num(r.upsellValue);
       g.rows.push(r);
     });
     return order.map(function(k){
       var g = map[k];
-      g.clientValue = num(g.renewalValue) || num(g.upsellValue);
+      g.clientValue = num(g.renewalValue);
       return g;
     });
   }
@@ -5552,14 +5552,16 @@ setInterval(loadData,5*60*1000);
     var proposalSent = rows.filter(function(r){ return /proposal\s*sent|proposal/i.test(r.status || ''); }).length;
     var interested = rows.filter(function(r){ return /interested|interest/i.test(r.status || '') && !/not\s*interested/i.test(r.status || ''); }).length;
     var notInterested = rows.filter(function(r){ return /not\s*interested|not interested/i.test(r.status || ''); }).length;
-    var upsellTotal = groupedAll.reduce(function(s,g){ return s + num(g.clientValue); },0);
+    var renewalTotal = groupedAll.reduce(function(s,g){ return s + num(g.renewalValue); },0);
+    var upsellTotal = groupedAll.reduce(function(s,g){ return s + num(g.upsellValue); },0);
     var kpis = byId('retUpsellKpis');
     if(kpis) kpis.innerHTML = [
       {v: clients.length, l:'Clients', c:'var(--cyan)'},
       {v: proposalSent, l:'Proposal Sent', c:'var(--blue)'},
       {v: interested, l:'Interested', c:'var(--green)'},
       {v: notInterested, l:'Not Interested', c:'var(--red)'},
-      {v: money(upsellTotal), l:'Upsell Value', c:'var(--amber)'}
+      {v: money(renewalTotal), l:'Renewal Value', c:'var(--amber)'},
+      {v: money(upsellTotal), l:'Upsell Value', c:'var(--green)'}
     ].map(function(x){ return '<div class="ret-upsell-kpi" style="--kc:' + x.c + '"><div class="ret-upsell-kpi-v">' + escLocal(x.v) + '</div><div class="ret-upsell-kpi-l">' + escLocal(x.l) + '</div></div>'; }).join('');
 
     fillSelect('retUpsellStatus','All statuses', unique(rows.map(function(r){return r.status;})));
@@ -5600,8 +5602,8 @@ setInterval(loadData,5*60*1000);
           '<td rowspan="' + span + '">' + escLocal(g.csm || '—') + '</td>' +
           '<td rowspan="' + span + '">' + escLocal(g.rm || '—') + '</td>' +
           '<td class="c" rowspan="' + span + '">' + escLocal(g.renewalMonth || '—') + '</td>' +
-          '<td class="c" rowspan="' + span + '" style="font-family:var(--mono);font-weight:900;color:var(--amber)">' + (num(g.clientValue) ? money(g.clientValue) : '—') + '</td>' : '';
-        var upsellCell = idx === 0 ? '<td class="c" rowspan="' + span + '" style="font-family:var(--mono);font-weight:900;color:var(--green)">' + (num(g.clientValue) ? money(g.clientValue) : '—') + '<div class="ret-upsell-subtle">sheet block value</div></td>' : '';
+          '<td class="c" rowspan="' + span + '" style="font-family:var(--mono);font-weight:900;color:var(--amber)">' + (num(g.renewalValue) ? money(g.renewalValue) : '—') + '</td>' : '';
+        var upsellCell = idx === 0 ? '<td class="c" rowspan="' + span + '" style="font-family:var(--mono);font-weight:900;color:var(--green)">' + (num(g.upsellValue) ? money(g.upsellValue) : '—') + '</td>' : '';
         return '<tr class="' + (idx === 0 ? 'ret-upsell-group-start' : '') + '">' +
           clientCells +
           '<td style="font-weight:800">' + escLocal(r.feature || '—') + '</td>' +
