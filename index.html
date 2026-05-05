@@ -5364,23 +5364,8 @@ setInterval(loadData,5*60*1000);
       .ret-upsell-not{background:var(--red-bg);color:var(--red);border-color:var(--red-bd)}
       .ret-upsell-empty{padding:24px;text-align:center;color:var(--muted);font-size:13px;font-style:italic}
       .ret-upsell-note{font-size:10px;color:var(--muted);font-weight:700;line-height:1.45;background:linear-gradient(135deg,#fff 0%,#f7faf8 100%);border-bottom:1px solid var(--border);padding:10px 14px}
-      .ret-upsell-company-list{display:grid;gap:12px;padding:14px;background:var(--surface2)}
-      .ret-upsell-company-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;box-shadow:var(--sh-xs);overflow:hidden;border-left:4px solid var(--purple)}
-      .ret-upsell-company-head{display:grid;grid-template-columns:minmax(280px,1.45fr) repeat(4,minmax(110px,.55fr));gap:1px;background:var(--border);border-bottom:1px solid var(--border)}
-      .ret-upsell-company-cell{background:#fff;padding:13px 14px;min-width:0}
-      .ret-upsell-company-label{font-size:8px;font-weight:900;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:5px}
-      .ret-upsell-company-name{font-size:14px;font-weight:950;color:var(--text);line-height:1.25}
-      .ret-upsell-company-product{font-size:10px;color:var(--muted);font-weight:800;margin-top:4px}
-      .ret-upsell-company-value{font-family:var(--mono);font-size:14px;font-weight:900;color:var(--amber)}
-      .ret-upsell-feature-wrap{padding:12px 14px;background:#fff}
-      .ret-upsell-feature-head{display:grid;grid-template-columns:minmax(190px,1.15fr) 120px 170px 105px 110px minmax(180px,1fr);gap:8px;padding:0 0 8px;border-bottom:1px solid var(--border);font-size:8px;font-weight:900;color:var(--muted);text-transform:uppercase;letter-spacing:.09em}
-      .ret-upsell-feature-row{display:grid;grid-template-columns:minmax(190px,1.15fr) 120px 170px 105px 110px minmax(180px,1fr);gap:8px;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)}
-      .ret-upsell-feature-row:last-child{border-bottom:0;padding-bottom:0}
-      .ret-upsell-feature-name{font-size:12px;font-weight:900;color:var(--text);line-height:1.35}
-      .ret-upsell-feature-note{font-size:10px;color:var(--text2);line-height:1.45;white-space:normal}
-      .ret-upsell-mini{font-size:11px;font-weight:800;color:var(--text2)}
-      @media(max-width:1200px){.ret-upsell-kpis{grid-template-columns:repeat(3,1fr)}.ret-upsell-company-head{grid-template-columns:1fr 1fr}.ret-upsell-company-cell:first-child{grid-column:1/-1}.ret-upsell-feature-head{display:none}.ret-upsell-feature-row{grid-template-columns:1fr 1fr}.ret-upsell-feature-note{grid-column:1/-1}}
-      @media(max-width:700px){.ret-upsell-kpis{grid-template-columns:1fr}.ret-upsell-hero{align-items:flex-start;flex-direction:column}.ret-upsell-tools{align-items:stretch}.ret-upsell-select,.ret-upsell-search{width:100%;min-width:0}.ret-upsell-company-head,.ret-upsell-feature-row{grid-template-columns:1fr}.ret-upsell-company-cell:first-child,.ret-upsell-feature-note{grid-column:auto}}
+      @media(max-width:1200px){.ret-upsell-kpis{grid-template-columns:repeat(3,1fr)}}
+      @media(max-width:700px){.ret-upsell-kpis{grid-template-columns:1fr}.ret-upsell-hero{align-items:flex-start;flex-direction:column}.ret-upsell-tools{align-items:stretch}.ret-upsell-select,.ret-upsell-search{width:100%;min-width:0}}
     `;
     document.head.appendChild(st);
   }
@@ -5476,14 +5461,15 @@ setInterval(loadData,5*60*1000);
           <div class="card-title"><div class="card-title-icon" style="background:var(--purple-bg)">📋</div>Features Plan for Upselling</div>
           <span class="badge bp" id="retUpsellRowsBadge">Google Sheet</span>
         </div>
-        <div class="ret-upsell-note">Expected sheet columns: Product, Client name, CSM, RM, Renewal Month, Renewal Value, Feature, Ownership, Status, Timeline, Upsell Value, Notes.</div>
         <div class="ret-upsell-tools">
           <input class="ret-upsell-search" id="retUpsellSearch" placeholder="Search client, feature, RM, CSM..." oninput="renderRetentionUpsellingFeaturesPlan()">
           <select class="ret-upsell-select" id="retUpsellStatus" onchange="renderRetentionUpsellingFeaturesPlan()"></select>
+          <select class="ret-upsell-select" id="retUpsellMonth" onchange="renderRetentionUpsellingFeaturesPlan()"></select>
+          <select class="ret-upsell-select" id="retUpsellProduct" onchange="renderRetentionUpsellingFeaturesPlan()"></select>
           <select class="ret-upsell-select" id="retUpsellRM" onchange="renderRetentionUpsellingFeaturesPlan()"></select>
           <select class="ret-upsell-select" id="retUpsellCSM" onchange="renderRetentionUpsellingFeaturesPlan()"></select>
         </div>
-        <div class="ret-upsell-company-list" id="retUpsellBody"></div>
+        <div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Client / Product</th><th>CSM</th><th>RM</th><th class="c">Renewal Month</th><th class="c">Renewal Value</th><th>Feature</th><th class="c">Ownership</th><th class="c">Status</th><th class="c">Timeline</th><th class="c">Upsell Value</th><th>Notes</th></tr></thead><tbody id="retUpsellBody"></tbody></table></div>
       </div>`;
     var retFinancial = byId('panel-retention-financial');
     if(retFinancial && retFinancial.parentNode) retFinancial.parentNode.insertBefore(panel, retFinancial.nextSibling);
@@ -5497,99 +5483,66 @@ setInterval(loadData,5*60*1000);
     el.innerHTML = '<option value="">' + allLabel + '</option>' + values.map(function(v){ return '<option value="' + escLocal(v) + '">' + escLocal(v) + '</option>'; }).join('');
     if(values.indexOf(old) >= 0) el.value = old;
   }
-  function groupRows(rows){
-    var map = new Map();
-    rows.forEach(function(r){
-      var key = [r.clientName, r.product, r.csm, r.rm, r.renewalMonth, r.renewalValue].map(function(v){return String(v||'').trim().toLowerCase();}).join('||');
-      if(!map.has(key)){
-        map.set(key, {
-          clientName:r.clientName,
-          product:r.product,
-          csm:r.csm,
-          rm:r.rm,
-          renewalMonth:r.renewalMonth,
-          renewalValue:r.renewalValue,
-          features:[],
-          _rows:[]
-        });
-      }
-      var g = map.get(key);
-      g._rows.push(r);
-      if(r.feature || r.ownership || r.status || r.timeline || r.upsellValue || r.notes){
-        g.features.push(r);
-      }
-    });
-    return Array.from(map.values());
-  }
   window.renderRetentionUpsellingFeaturesPlan = function(){
     ensurePanel();
     var rows = getRows();
-    var allGroups = groupRows(rows);
     var clients = unique(rows.map(function(r){ return r.clientName; }));
-    var interested = rows.filter(function(r){ return /interest/i.test(r.status || ''); }).length;
-    var proposals = rows.filter(function(r){ return /proposal/i.test(r.status || ''); }).length;
-    var renewalTotal = allGroups.reduce(function(s,g){ return s + num(g.renewalValue); },0);
+    var proposalSent = rows.filter(function(r){ return /proposal\s*sent|proposal/i.test(r.status || ''); }).length;
+    var interested = rows.filter(function(r){ return /interested|interest/i.test(r.status || '') && !/not\s*interested/i.test(r.status || ''); }).length;
+    var notInterested = rows.filter(function(r){ return /not\s*interested|not interested/i.test(r.status || ''); }).length;
     var upsellTotal = rows.reduce(function(s,r){ return s + num(r.upsellValue); },0);
     var kpis = byId('retUpsellKpis');
     if(kpis) kpis.innerHTML = [
-      {v: clients.length, l:'Clients', s:'Unique company cards', c:'var(--cyan)'},
-      {v: rows.length, l:'Feature Rows', s:'Grouped under clients', c:'var(--purple)'},
-      {v: proposals, l:'Proposal Sent', s:'Upsell motion active', c:'var(--blue)'},
-      {v: interested, l:'Interested', s:'Need follow-up', c:'var(--green)'},
-      {v: money(upsellTotal || renewalTotal), l:'Upsell Value', s: upsellTotal ? 'From Upsell Value column' : 'Fallback: renewal value', c:'var(--amber)'}
+      {v: clients.length, l:'Clients', s:'Unique accounts', c:'var(--cyan)'},
+      {v: proposalSent, l:'Proposal Sent', s:'Current status count', c:'var(--blue)'},
+      {v: interested, l:'Interested', s:'Current status count', c:'var(--green)'},
+      {v: notInterested, l:'Not Interested', s:'Current status count', c:'var(--red)'},
+      {v: money(upsellTotal), l:'Upsell Value', s:'Sum of all upsell values', c:'var(--amber)'}
     ].map(function(x){ return '<div class="ret-upsell-kpi" style="--kc:' + x.c + '"><div class="ret-upsell-kpi-v">' + escLocal(x.v) + '</div><div class="ret-upsell-kpi-l">' + escLocal(x.l) + '</div><div class="ret-upsell-kpi-s">' + escLocal(x.s) + '</div></div>'; }).join('');
 
     fillSelect('retUpsellStatus','All statuses', unique(rows.map(function(r){return r.status;})));
+    fillSelect('retUpsellMonth','All months', unique(rows.map(function(r){return r.renewalMonth;})));
+    fillSelect('retUpsellProduct','All products', unique(rows.map(function(r){return r.product;})));
     fillSelect('retUpsellRM','All RMs', unique(rows.map(function(r){return r.rm;})));
     fillSelect('retUpsellCSM','All CSMs', unique(rows.map(function(r){return r.csm;})));
 
     var q = String((byId('retUpsellSearch')||{}).value || '').toLowerCase().trim();
     var fs = String((byId('retUpsellStatus')||{}).value || '');
+    var fm = String((byId('retUpsellMonth')||{}).value || '');
+    var fp = String((byId('retUpsellProduct')||{}).value || '');
     var frm = String((byId('retUpsellRM')||{}).value || '');
     var fcsm = String((byId('retUpsellCSM')||{}).value || '');
     var filtered = rows.filter(function(r){
-      var text = [r.clientName,r.product,r.csm,r.rm,r.renewalMonth,r.renewalValue,r.feature,r.ownership,r.status,r.timeline,r.upsellValue,r.notes].join(' ').toLowerCase();
-      return (!q || text.indexOf(q) >= 0) && (!fs || r.status === fs) && (!frm || r.rm === frm) && (!fcsm || r.csm === fcsm);
+      var text = [r.clientName,r.product,r.csm,r.rm,r.renewalMonth,r.feature,r.ownership,r.status,r.timeline,r.notes].join(' ').toLowerCase();
+      return (!q || text.indexOf(q) >= 0) && (!fs || r.status === fs) && (!fm || r.renewalMonth === fm) && (!fp || r.product === fp) && (!frm || r.rm === frm) && (!fcsm || r.csm === fcsm);
     });
-    var groups = groupRows(filtered);
     var badge = byId('retUpsellRowsBadge');
-    if(badge) badge.textContent = groups.length + ' clients · ' + filtered.length + ' / ' + rows.length + ' rows';
+    if(badge) badge.textContent = filtered.length + ' / ' + rows.length + ' rows';
     var body = byId('retUpsellBody');
     if(!body) return;
     if(!rows.length){
-      body.innerHTML = '<div class="ret-upsell-empty">No Google Sheet rows found yet. Add featuresPlanForUpselling to the Retention JSON from n8n.</div>';
+      body.innerHTML = '<tr><td colspan="11"><div class="ret-upsell-empty">No Google Sheet rows found yet. Add featuresPlanForUpselling to the Retention JSON from n8n.</div></td></tr>';
       return;
     }
     if(!filtered.length){
-      body.innerHTML = '<div class="ret-upsell-empty">No rows match the selected filters.</div>';
+      body.innerHTML = '<tr><td colspan="11"><div class="ret-upsell-empty">No rows match the selected filters.</div></td></tr>';
       return;
     }
-    body.innerHTML = groups.map(function(g){
-      var features = g.features.length ? g.features : g._rows;
-      var featureHtml = features.map(function(r){
-        var status = r.status || '—';
-        return '<div class="ret-upsell-feature-row">' +
-          '<div><div class="ret-upsell-feature-name">' + escLocal(r.feature || '—') + '</div></div>' +
-          '<div><span class="badge bp">' + escLocal(r.ownership || '—') + '</span></div>' +
-          '<div><span class="ret-upsell-status ' + statusClass(status) + '">' + escLocal(status) + '</span></div>' +
-          '<div class="ret-upsell-mini">' + escLocal(r.timeline || '—') + '</div>' +
-          '<div class="ret-upsell-mini" style="font-family:var(--mono);font-weight:900;color:var(--green)">' + (num(r.upsellValue) ? money(r.upsellValue) : '—') + '</div>' +
-          '<div class="ret-upsell-feature-note">' + escLocal(r.notes || '—') + '</div>' +
-        '</div>';
-      }).join('');
-      return '<div class="ret-upsell-company-card">' +
-        '<div class="ret-upsell-company-head">' +
-          '<div class="ret-upsell-company-cell"><div class="ret-upsell-company-label">Client / Product</div><div class="ret-upsell-company-name">' + escLocal(g.clientName || '—') + '</div><div class="ret-upsell-company-product">' + escLocal(g.product || '—') + ' · ' + features.length + ' feature' + (features.length === 1 ? '' : 's') + '</div></div>' +
-          '<div class="ret-upsell-company-cell"><div class="ret-upsell-company-label">CSM</div><div class="ret-upsell-mini">' + escLocal(g.csm || '—') + '</div></div>' +
-          '<div class="ret-upsell-company-cell"><div class="ret-upsell-company-label">RM</div><div class="ret-upsell-mini">' + escLocal(g.rm || '—') + '</div></div>' +
-          '<div class="ret-upsell-company-cell"><div class="ret-upsell-company-label">Renewal Month</div><div class="ret-upsell-mini">' + escLocal(g.renewalMonth || '—') + '</div></div>' +
-          '<div class="ret-upsell-company-cell"><div class="ret-upsell-company-label">Renewal Value</div><div class="ret-upsell-company-value">' + money(g.renewalValue) + '</div></div>' +
-        '</div>' +
-        '<div class="ret-upsell-feature-wrap">' +
-          '<div class="ret-upsell-feature-head"><div>Feature</div><div>Ownership</div><div>Status</div><div>Timeline</div><div>Upsell Value</div><div>Notes</div></div>' +
-          featureHtml +
-        '</div>' +
-      '</div>';
+    body.innerHTML = filtered.map(function(r){
+      var status = r.status || '—';
+      return '<tr>' +
+        '<td><div style="font-weight:900;color:var(--text)">' + escLocal(r.clientName || '—') + '</div><div style="font-size:9px;color:var(--muted);font-weight:700">' + escLocal(r.product || '—') + '</div></td>' +
+        '<td>' + escLocal(r.csm || '—') + '</td>' +
+        '<td>' + escLocal(r.rm || '—') + '</td>' +
+        '<td class="c">' + escLocal(r.renewalMonth || '—') + '</td>' +
+        '<td class="c" style="font-family:var(--mono);font-weight:900;color:var(--amber)">' + money(r.renewalValue) + '</td>' +
+        '<td style="font-weight:800">' + escLocal(r.feature || '—') + '</td>' +
+        '<td class="c"><span class="badge bp">' + escLocal(r.ownership || '—') + '</span></td>' +
+        '<td class="c"><span class="ret-upsell-status ' + statusClass(status) + '">' + escLocal(status) + '</span></td>' +
+        '<td class="c">' + escLocal(r.timeline || '—') + '</td>' +
+        '<td class="c" style="font-family:var(--mono);font-weight:900;color:var(--green)">' + (num(r.upsellValue) ? money(r.upsellValue) : '—') + '</td>' +
+        '<td style="max-width:260px;white-space:normal;line-height:1.45">' + escLocal(r.notes || '—') + '</td>' +
+      '</tr>';
     }).join('');
   };
 
