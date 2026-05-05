@@ -5484,10 +5484,30 @@ setInterval(loadData,5*60*1000);
   }
   function unique(arr){ return Array.from(new Set(arr.filter(function(v){ return String(v||'').trim(); }))).sort(); }
   function clientKey(v){ return String(v || '').trim().toLowerCase().replace(/\s+/g,' '); }
+  function sheetBlockKey(r){
+    /*
+      Mirror the Google Sheet, not only the client name.
+      A company can appear more than once when it has multiple products
+      such as Talentera / Evalufy / AfterHire. Each client + product + renewal
+      block is counted once, while the feature rows under that block stay visible.
+    */
+    return [
+      r.clientName || 'Unknown Client',
+      r.product || '',
+      r.csm || '',
+      r.rm || '',
+      r.renewalMonth || '',
+      num(r.renewalValue) || num(r.upsellValue) || 0
+    ].map(clientKey).join('|');
+  }
+  function uniqueClientsFromRows(rows){
+    return Array.from(new Set(rows.map(function(r){ return clientKey(r.clientName); }).filter(Boolean)));
+  }
   function groupRowsByClient(rows){
     var map = {};
+    var order = [];
     rows.forEach(function(r){
-      var key = clientKey(r.clientName || 'Unknown Client');
+      var key = sheetBlockKey(r);
       if(!map[key]){
         map[key] = {
           key:key,
@@ -5498,8 +5518,10 @@ setInterval(loadData,5*60*1000);
           renewalMonth:r.renewalMonth || '',
           renewalValue:0,
           upsellValue:0,
-          rows:[]
+          rows:[],
+          firstRow:r._row || 0
         };
+        order.push(key);
       }
       var g = map[key];
       if(!g.product && r.product) g.product = r.product;
@@ -5510,7 +5532,7 @@ setInterval(loadData,5*60*1000);
       if(num(r.upsellValue) > 0) g.upsellValue = num(r.upsellValue);
       g.rows.push(r);
     });
-    return Object.keys(map).sort(function(a,b){ return map[a].clientName.localeCompare(map[b].clientName); }).map(function(k){
+    return order.map(function(k){
       var g = map[k];
       g.clientValue = num(g.renewalValue) || num(g.upsellValue);
       return g;
@@ -5526,7 +5548,7 @@ setInterval(loadData,5*60*1000);
     ensurePanel();
     var rows = getRows();
     var groupedAll = groupRowsByClient(rows);
-    var clients = groupedAll.map(function(g){ return g.clientName; });
+    var clients = uniqueClientsFromRows(rows);
     var proposalSent = rows.filter(function(r){ return /proposal\s*sent|proposal/i.test(r.status || ''); }).length;
     var interested = rows.filter(function(r){ return /interested|interest/i.test(r.status || '') && !/not\s*interested/i.test(r.status || ''); }).length;
     var notInterested = rows.filter(function(r){ return /not\s*interested|not interested/i.test(r.status || ''); }).length;
@@ -5558,7 +5580,7 @@ setInterval(loadData,5*60*1000);
     });
     var groupedFiltered = groupRowsByClient(filtered);
     var badge = byId('retUpsellRowsBadge');
-    if(badge) badge.textContent = groupedFiltered.length + ' / ' + groupedAll.length + ' clients';
+    if(badge) badge.textContent = groupedFiltered.length + ' / ' + groupedAll.length + ' sheet blocks · ' + uniqueClientsFromRows(filtered).length + ' clients';
     var body = byId('retUpsellBody');
     if(!body) return;
     if(!rows.length){
@@ -5579,7 +5601,7 @@ setInterval(loadData,5*60*1000);
           '<td rowspan="' + span + '">' + escLocal(g.rm || '—') + '</td>' +
           '<td class="c" rowspan="' + span + '">' + escLocal(g.renewalMonth || '—') + '</td>' +
           '<td class="c" rowspan="' + span + '" style="font-family:var(--mono);font-weight:900;color:var(--amber)">' + (num(g.clientValue) ? money(g.clientValue) : '—') + '</td>' : '';
-        var upsellCell = idx === 0 ? '<td class="c" rowspan="' + span + '" style="font-family:var(--mono);font-weight:900;color:var(--green)">' + (num(g.clientValue) ? money(g.clientValue) : '—') + '<div class="ret-upsell-subtle">client value</div></td>' : '';
+        var upsellCell = idx === 0 ? '<td class="c" rowspan="' + span + '" style="font-family:var(--mono);font-weight:900;color:var(--green)">' + (num(g.clientValue) ? money(g.clientValue) : '—') + '<div class="ret-upsell-subtle">sheet block value</div></td>' : '';
         return '<tr class="' + (idx === 0 ? 'ret-upsell-group-start' : '') + '">' +
           clientCells +
           '<td style="font-weight:800">' + escLocal(r.feature || '—') + '</td>' +
@@ -5624,7 +5646,7 @@ setInterval(loadData,5*60*1000);
         var rows = getRows();
         var grouped = groupRowsByClient(rows);
         var active = activeMode === 'upselling' ? ' active' : '';
-        var html = '<button class="nav-item' + active + '" id="side-ret-upselling" onclick="switchRetentionUpsellingFeaturesPlan()"><span class="nav-icon" style="color:var(--purple)">🚀</span>Features Plan<span class="view-tag">SHEET</span><span class="nav-badge">' + grouped.length + '</span></button>';
+        var html = '<button class="nav-item' + active + '" id="side-ret-upselling" onclick="switchRetentionUpsellingFeaturesPlan()"><span class="nav-icon" style="color:var(--purple)">🚀</span>Features Plan<span class="view-tag">SHEET</span><span class="nav-badge">' + uniqueClientsFromRows(rows).length + '</span></button>';
         var financial = byId('side-ret-financial');
         if(financial) financial.insertAdjacentHTML('afterend', html);
         else holder.insertAdjacentHTML('afterbegin', html);
