@@ -3232,6 +3232,33 @@ function renderRetention(){
   }).join('') : empty(8,'No monthly renewal pipeline rows found.');
   if($('retRenewalMonthToggle')) $('retRenewalMonthToggle').style.display = monthRows.length>5?'block':'none';
 
+  // Coverage Quality — restored after Renewal Action Center merge
+  // Uses JSON coverageDetails when available, otherwise calculates from active retention accounts.
+  (function renderRetentionCoverageQuality(){
+    const pct = (hit,total) => total ? Math.round((hit / total) * 100) : 0;
+    const totalAccounts = accounts.length || num(coverage.totalAccounts) || num(summary.activeAccounts) || accountsAll.length || 0;
+    const hasAny = v => v !== undefined && v !== null && String(v).trim() !== '' && String(v).trim() !== '—';
+    const getRate = (keys, fallbackHitFn) => {
+      for(const k of keys){
+        if(coverage && coverage[k] !== undefined && coverage[k] !== null && coverage[k] !== '') return num(coverage[k]);
+      }
+      return pct(accounts.filter(fallbackHitFn).length, totalAccounts);
+    };
+    const callCoverage = getRate(['callCoverage','callsCoverage','callCoverageRate'], a => hasAny(a.lastCallDate) || hasAny(a.rmLastCall) || hasAny(a.csmLastCall) || hasAny(a.lastConnectedCall));
+    const meetingCoverage = getRate(['meetingCoverage','meetingsCoverage','meetingCoverageRate'], a => hasAny(a.lastMeetingDate) || hasAny(a.rmLastMeeting) || hasAny(a.csmLastMeeting) || hasAny(a.lastCompletedMeeting));
+    const rmAssigned = accounts.filter(a => hasAny(a.rmOwnerId) || hasAny(a.rmOwnerName) || hasAny(a.rmOwner)).length;
+    const csmAssigned = accounts.filter(a => hasAny(a.csmOwnerId) || hasAny(a.csmOwnerName) || hasAny(a.csmOwner)).length;
+    let rmTouchCoverage = coverage.rmTouchCoverage !== undefined ? num(coverage.rmTouchCoverage) : (rmAssigned ? pct(accounts.filter(a => (hasAny(a.rmOwnerId)||hasAny(a.rmOwnerName)||hasAny(a.rmOwner)) && (hasAny(a.rmLastTouch)||hasAny(a.rmLastCall)||hasAny(a.rmLastMeeting)||hasAny(a.lastActivityDate)||hasAny(a.lastActivity))).length, rmAssigned) : 0);
+    let csmTouchCoverage = coverage.csmTouchCoverage !== undefined ? num(coverage.csmTouchCoverage) : (csmAssigned ? pct(accounts.filter(a => (hasAny(a.csmOwnerId)||hasAny(a.csmOwnerName)||hasAny(a.csmOwner)) && (hasAny(a.csmLastTouch)||hasAny(a.csmLastCall)||hasAny(a.csmLastMeeting)||hasAny(a.lastActivityDate)||hasAny(a.lastActivity))).length, csmAssigned) : 0);
+    const lines = [
+      ['Call Coverage', callCoverage, 'var(--blue)'],
+      ['Meeting Coverage', meetingCoverage, 'var(--purple)'],
+      ['RM Touch Coverage', rmTouchCoverage, 'var(--cyan)'],
+      ['CSM Touch Coverage', csmTouchCoverage, 'var(--green)']
+    ];
+    if($('retCoverageBody')) $('retCoverageBody').innerHTML = `<div class="ret-explain"><b>Coverage definitions:</b><br>Call Coverage = accounts with connected call ÷ active retention accounts. Meeting Coverage = accounts with completed meeting ÷ active retention accounts. RM/CSM Touch = assigned accounts where that owner has connected call or completed meeting on the company or an associated renewal deal.</div>` + lines.map(([label,rate,color])=>`<div class="ret-coverage-line"><div class="ret-coverage-label">${label}</div><div class="ret-bar"><div class="ret-fill" style="--rc:${color};width:${Math.max(0,Math.min(100,num(rate)))}%"></div></div><div style="font-family:var(--mono);font-weight:800">${num(rate)}%</div></div>`).join('');
+  })();
+
   window.__retentionMetricStore = {
     accounts, renewedDeals, bookedDeals, cashedDeals, churnDeals, delayedRenewals, renewalPipeline, renewalAttention, monthRows, tierRows: tierFollowupRows, calls: activityCalls, meetings: activityMeetings
   };
