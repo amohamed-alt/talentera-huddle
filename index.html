@@ -1298,26 +1298,18 @@ body.auth-locked .app {
             </table></div><button class="ret-show-btn" id="retRenewalMonthToggle" onclick="toggleRetMore('retRenewalMonthBody', this)">▼ Show more</button>
           </div>
 
-          <div class="manager-section-label">Renewal Action Center</div>
+          <div class="manager-section-label">Renewal Management</div>
           <div class="ret-merged-grid">
             <div class="card ret-merged-action-card">
               <div class="card-hd">
-                <div class="card-title"><div class="card-title-icon" style="background:var(--red-bg)">🚨</div>Renewal Action Center</div>
-                <span class="badge br">Merged view</span>
+                <div class="card-title"><div class="card-title-icon" style="background:var(--red-bg)">🔁</div>Unified Renewal Table</div>
+                <span class="badge br">No duplicates</span>
               </div>
-              <div class="ret-merged-note">Smart alerts, delayed renewal deals, and accounts to renew are now grouped in one place to avoid repeated renewal sections.</div>
-
-              <div class="ret-merged-subhd"><span>⚡ Smart Contact Alerts</span><span class="badge br">Action needed</span></div>
-              <div id="retAlertList"></div>
-
-              <div class="ret-merged-subhd"><span>🔎 Renewal Deals Needing Attention</span><span class="badge br">Deal activity OR company activity</span></div>
+              <div class="ret-merged-note">One row per company. Delayed renewals, upcoming renewals, and renewal attention are merged together so tier, value, owners, activity, renewal dates, and status appear in one complete table.</div>
               <div style="overflow-x:auto"><table class="tbl">
-                <thead><tr><th>Deal / Renewal</th><th>Company</th><th>RM</th><th>CSM</th><th class="c">Current Stage Date<br><span style="font-size:8px;font-weight:400;color:var(--muted)">Info only</span></th><th class="c">Renewal Date</th><th class="c">Renewed Created</th><th class="c">Renewal Type</th><th>Status</th></tr></thead>
-                <tbody id="retRenewalDealBody"></tbody>
-              </table></div><button class="ret-show-btn" id="retRenewalDealToggle" onclick="toggleRetMore('retRenewalDealBody', this)">▼ Show more</button>
-
-              <div class="ret-merged-subhd"><span>🔁 Accounts To Renew</span><span class="badge ba">Name · Value · Month</span></div>
-              <div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Account Name</th><th class="c">Tier</th><th class="c">Value</th><th class="c">Month</th><th class="c">Days Left</th><th>Owner</th></tr></thead><tbody id="retAccountsToRenewBody"></tbody></table></div><button class="ret-show-btn" id="retAccountsToRenewToggle" onclick="toggleRetMore('retAccountsToRenewBody', this)">▼ Show more</button>
+                <thead><tr><th>Account</th><th class="c">Tier</th><th class="c">Renewal Value</th><th class="c">Month</th><th class="c">Renewal Date</th><th class="c">Overdue / Left</th><th>RM Owner</th><th>CSM Owner</th><th class="c">RM Touch</th><th class="c">CSM Touch</th><th class="c">Status</th></tr></thead>
+                <tbody id="retRenewalUnifiedBody"></tbody>
+              </table></div><button class="ret-show-btn" id="retRenewalUnifiedToggle" onclick="toggleRetMore('retRenewalUnifiedBody', this)">▼ Show more</button>
             </div>
 
             <div class="ret-merged-side">
@@ -3249,48 +3241,92 @@ function renderRetention(){
   retMakeClickable('retFocusRm','focus-rm',{},'Open RM follow-up due accounts');
   [['retYCalls','yesterday','calls'],['retYMeetings','yesterday','meetings'],['retYRenewed','yesterday','renewed'],['retYBooked','yesterday','booked'],['retYCashed','yesterday','cashed'],['retYChurn','yesterday','churn'],['retYDelayed','yesterday','delayed'],['retMCalls','mtd','calls'],['retMMeetings','mtd','meetings'],['retMRenewed','mtd','renewed'],['retMBooked','mtd','booked'],['retMCashed','mtd','cashed'],['retMChurn','mtd','churn'],['retMDelayed','mtd','delayed'],['retYtdCalls','ytd','calls'],['retYtdMeetings','ytd','meetings'],['retYtdRenewed','ytd','renewed'],['retYtdBooked','ytd','booked'],['retYtdCashed','ytd','cashed'],['retYtdChurn','ytd','churn'],['retYtdDelayed','ytd','delayed']].forEach(function(x){ retMakeClickable(x[0],'period',{period:x[1],metric:x[2],label:x[1].toUpperCase() + ' · ' + x[2]},'Open KPI details'); });
 
-  // Smart alerts
-  if($('retAlertList')) $('retAlertList').innerHTML = allAlerts.length ? allAlerts.slice(0,24).map((a,i)=>{
-    const title=a.alert||a.title||a.type||'Action needed';
-    const desc=a.message||a.reason||a.description||[a.rmOwnerName,a.csmOwnerName].filter(Boolean).join(' · ');
-    const critical=/critical|red|delayed|no activity|no meeting/i.test(String(a.severity||title||desc));
-    return `<div class="ret-alert-row ${i>=5?'ret-hidden':''}"><div class="ret-alert-dot" style="background:${critical?'var(--red-bg);color:var(--red)':'var(--amber-bg);color:var(--amber)'}">!</div><div class="ret-alert-text"><div class="ret-alert-title">${recordLink(a.companyName||title,a.companyUrl||a.hubspotUrl)}</div><div class="ret-alert-desc">${textSafe(desc)}</div></div><span class="badge ${critical?'br':'ba'}">${textSafe(title)}</span></div>`;
-  }).join('') + (allAlerts.length>5?`<button class="ret-show-btn" onclick="toggleInlineHidden(this)">▼ Show more</button>`:'') : `<div class="ret-alert-row"><div class="ret-alert-dot" style="background:var(--green-bg);color:var(--green)">✓</div><div class="ret-alert-text"><div class="ret-alert-title">No critical alerts</div><div class="ret-alert-desc">No delayed renewals, no-touch, or no-meeting alerts in the current filter.</div></div><span class="badge bg">Healthy</span></div>`;
+  // Unified Renewal Table — one row per company, no duplicate renewal sections
+  const accountByKey = new Map();
+  const makeCompanyKey = r => String(r.companyId || r.accountId || r.hs_object_id || r.companyName || r.accountName || r.name || r.dealName || '').trim().toLowerCase();
+  accounts.forEach(a => {
+    const key = makeCompanyKey(a);
+    if(key) accountByKey.set(key, a);
+  });
 
-  // Coverage Quality with explanation
-  const totalActive = accounts.filter(a=>String(a.accountStatus||'').toLowerCase()==='active').length || accounts.length;
-  const callCoverage = totalActive ? Math.round(accounts.filter(a=>a.lastCallDate).length/totalActive*100) : (coverage.callCoverage||0);
-  const meetingCoverage = totalActive ? Math.round(accounts.filter(a=>a.lastMeetingDate).length/totalActive*100) : (coverage.meetingCoverage||0);
-  const rmAssigned = accounts.filter(a=>a.rmOwnerId).length;
-  const csmAssigned = accounts.filter(a=>a.csmOwnerId).length;
-  const rmTouchCoverage = rmAssigned ? Math.round(accounts.filter(a=>a.rmOwnerId && (a.rmLastTouch||a.rmLastCall||a.rmLastMeeting)).length/rmAssigned*100) : (coverage.rmTouchCoverage||0);
-  const csmTouchCoverage = csmAssigned ? Math.round(accounts.filter(a=>a.csmOwnerId && (a.csmLastTouch||a.csmLastCall||a.csmLastMeeting)).length/csmAssigned*100) : (coverage.csmTouchCoverage||0);
-  if($('retCoverageBody')) $('retCoverageBody').innerHTML = `<div class="ret-explain"><b>Coverage definitions:</b><br>Call Coverage = accounts with connected call ÷ active retention accounts. Meeting Coverage = accounts with completed meeting ÷ active retention accounts. RM/CSM Touch = assigned accounts where that owner has connected call or completed meeting on the company or an associated renewal deal.</div>` + [['Call Coverage',callCoverage,'var(--blue)'],['Meeting Coverage',meetingCoverage,'var(--purple)'],['RM Touch Coverage',rmTouchCoverage,'var(--cyan)'],['CSM Touch Coverage',csmTouchCoverage,'var(--green)']].map(([label,rate,color])=>`<div class="ret-coverage-line"><div class="ret-coverage-label">${label}</div><div class="ret-bar"><div class="ret-fill" style="--rc:${color};width:${Math.max(0,Math.min(100,num(rate)))}%"></div></div><div style="font-family:var(--mono);font-weight:800">${num(rate)}%</div></div>`).join('');
+  function pickFilled(...values){
+    return values.find(v => v !== undefined && v !== null && String(v).trim() !== '') || '';
+  }
+  function mergeValue(oldVal,newVal){
+    return oldVal !== undefined && oldVal !== null && String(oldVal).trim() !== '' && String(oldVal).trim() !== '—' ? oldVal : newVal;
+  }
+  function normalizeUnifiedRenewalRow(r, sourceLabel){
+    const key = makeCompanyKey(r);
+    const acc = accountByKey.get(key) || {};
+    const renewalDate = pickFilled(r.contractRenewalDate, r.renewalDate, r.renewal_date, acc.contractRenewalDate, acc.renewalDate);
+    const daysOverdue = num(pickFilled(r.daysOverdue, acc.daysOverdue, 0));
+    const daysLeftRaw = pickFilled(r.daysLeft, acc.daysLeft, '');
+    const status = pickFilled(r.status, r.alert, daysOverdue > 0 ? 'Delayed Renewal' : sourceLabel === 'attention' ? 'Needs Attention' : 'Upcoming');
+    return {
+      key,
+      companyName: pickFilled(r.companyName, r.accountName, r.name, r.dealName, acc.companyName, acc.name, '—'),
+      companyUrl: pickFilled(r.companyUrl, r.hubspotUrl, r.dealUrl, acc.companyUrl, acc.hubspotUrl),
+      dealName: pickFilled(r.dealName, r.name, r.renewalDealName),
+      dealUrl: pickFilled(r.dealUrl, r.hubspotUrl),
+      tier: pickFilled(r.company_tier, r.companyTier, r.tier, acc.company_tier, acc.companyTier, acc.tier),
+      renewalValue: num(pickFilled(r.renewalValue, r.amount, r.value, r.revenue, acc.renewalValue, acc.amount, acc.value, 0)),
+      month: retMonthLabel(pickFilled(r.renewalMonth, renewalDate)),
+      renewalDate,
+      daysOverdue,
+      daysLeft: daysLeftRaw,
+      rmOwnerName: pickFilled(r.rmOwnerName, r.rmOwner, r.ownerName, acc.rmOwnerName, acc.rmOwner, acc.ownerName),
+      csmOwnerName: pickFilled(r.csmOwnerName, r.csmOwner, acc.csmOwnerName, acc.csmOwner),
+      rmTouch: pickFilled(r.rmLastTouch, r.rmLastCall, r.rmLastMeeting, r.lastRmActivity, acc.rmLastTouch, acc.rmLastCall, acc.rmLastMeeting),
+      csmTouch: pickFilled(r.csmLastTouch, r.csmLastCall, r.csmLastMeeting, r.lastCsmActivity, acc.csmLastTouch, acc.csmLastCall, acc.csmLastMeeting),
+      status,
+      sourceLabel
+    };
+  }
 
-  const rowClass = r => num(r.daysOverdue)>0 || /delayed|critical|no/i.test(String(r.status||r.alert||'')) ? 'ret-redline' : String(r.status||'').toLowerCase()==='renewed' ? 'ret-greenline' : 'ret-amberline';
+  const unifiedMap = new Map();
+  [...delayedRenewals.map(r=>({...r,_src:'delayed'})), ...upcomingRenewals.map(r=>({...r,_src:'upcoming'})), ...renewalAttention.map(r=>({...r,_src:'attention'}))].forEach(raw => {
+    const row = normalizeUnifiedRenewalRow(raw, raw._src);
+    if(!row.key) return;
+    if(!unifiedMap.has(row.key)){
+      unifiedMap.set(row.key, row);
+      return;
+    }
+    const old = unifiedMap.get(row.key);
+    unifiedMap.set(row.key, {
+      ...old,
+      companyName: mergeValue(old.companyName, row.companyName),
+      companyUrl: mergeValue(old.companyUrl, row.companyUrl),
+      dealName: mergeValue(old.dealName, row.dealName),
+      dealUrl: mergeValue(old.dealUrl, row.dealUrl),
+      tier: mergeValue(old.tier, row.tier),
+      renewalValue: old.renewalValue || row.renewalValue,
+      month: mergeValue(old.month, row.month),
+      renewalDate: mergeValue(old.renewalDate, row.renewalDate),
+      daysOverdue: Math.max(num(old.daysOverdue), num(row.daysOverdue)),
+      daysLeft: mergeValue(old.daysLeft, row.daysLeft),
+      rmOwnerName: mergeValue(old.rmOwnerName, row.rmOwnerName),
+      csmOwnerName: mergeValue(old.csmOwnerName, row.csmOwnerName),
+      rmTouch: mergeValue(old.rmTouch, row.rmTouch),
+      csmTouch: mergeValue(old.csmTouch, row.csmTouch),
+      status: /delayed|overdue/i.test(String(old.status)) ? old.status : (/delayed|overdue/i.test(String(row.status)) ? row.status : mergeValue(old.status, row.status)),
+      sourceLabel: old.sourceLabel === 'delayed' || row.sourceLabel === 'delayed' ? 'delayed' : old.sourceLabel
+    });
+  });
 
-  // Renewal Deals Needing Attention — sorted current year to next year, overdue first
-  const dealRows = renewalAttention.length ? renewalAttention : renewalPipeline;
-  if($('retRenewalDealBody')) $('retRenewalDealBody').innerHTML = dealRows.length ? dealRows.map((d,i)=>{
-    const status=d.status||d.alert||(d.renewedDealId?'Renewed':num(d.daysOverdue)>0?'Delayed':'Upcoming');
-    return `<tr class="${rowClass(d)} ${i>=5?'ret-hidden':''}"><td><div style="font-weight:800">${recordLink(d.name||d.dealName||d.companyName||'Renewal deal',d.hubspotUrl||d.dealUrl||d.companyUrl)}</div><div style="font-size:10px;color:var(--muted)">${textSafe(d.product||d.stage||'Retention deal')}</div></td><td>${recordLink(d.companyName||'—',d.companyUrl)}</td><td>${textSafe(d.rmOwnerName||d.rmOwner||d.ownerName)}</td><td>${textSafe(d.csmOwnerName||d.csmOwner)}</td><td class="c">${textSafe(d.contractStartDate||d.startDate)}</td><td class="c ${num(d.daysOverdue)>0?'ret-status-red':''}">${textSafe(d.contractRenewalDate||d.renewalDate)}</td><td class="c">${textSafe(d.renewedDealCreatedAt||'—')}</td><td class="c">${textSafe(d.renewalType||'—')}</td><td><span class="badge ${/renewed/i.test(status)?'bg':/delayed|overdue/i.test(status)?'br':'ba'}">${textSafe(status)}</span></td></tr>`;
-  }).join('') : empty(9,'No renewal attention rows found.');
-  if($('retRenewalDealToggle')) $('retRenewalDealToggle').style.display = dealRows.length>5?'block':'none';
+  const unifiedRenewalRows = Array.from(unifiedMap.values()).sort((a,b)=>{
+    const overdueDiff = num(b.daysOverdue) - num(a.daysOverdue);
+    if(overdueDiff) return overdueDiff;
+    return String(a.renewalDate || a.month || '').localeCompare(String(b.renewalDate || b.month || ''));
+  });
 
-  // Financial summary
-  setText('retBookingsValue', money(val(m,'bookedAmt') || valueOf(bookedDeals,'amount')));
-  setText('retBookingsCount', `${bookedDeals.length} booked deals`);
-  setText('retCashingValueBox', money(val(m,'cashedAmt') || valueOf(cashedDeals,'amount')));
-  setText('retCashingCount', `${cashedDeals.length} cashed deals`);
-  setText('retRenewalPipelineValueBox', money(valueOf(renewalPipeline,'renewalValue')));
-  setText('retRenewalPipelineCount', `${renewalPipeline.length} renewal rows`);
-  setText('retUpsellPipelineValue', money(valueOf(churnDeals,'amount')));
-  setText('retUpsellPipelineCount', `${churnDeals.length} churn deals`);
-
-  // Accounts to renew
-  const renewRows = [...delayedRenewals, ...upcomingRenewals].sort((a,b)=>num(b.daysOverdue)-num(a.daysOverdue) || String(a.contractRenewalDate).localeCompare(String(b.contractRenewalDate)));
-  if($('retAccountsToRenewBody')) $('retAccountsToRenewBody').innerHTML = renewRows.length ? renewRows.map((a,i)=>`<tr class="${rowClass(a)} ${i>=5?'ret-hidden':''}"><td><div style="font-weight:800">${recordLink(a.companyName||a.accountName||a.name||a.dealName,a.hubspotUrl||a.companyUrl)}</div><div style="font-size:10px;color:var(--muted)">${textSafe(a.reason||a.alert||a.status||'Renewal')}</div></td><td class="c">${retTierBadge(a.company_tier||a.companyTier||a.tier)}</td><td class="c" style="font-family:var(--mono);font-weight:700">${money(a.renewalValue||a.amount||a.value||a.revenue)}</td><td class="c">${textSafe(retMonthLabel(a.renewalMonth||a.contractRenewalDate||a.renewalDate))}</td><td class="c ${num(a.daysOverdue)>0?'ret-status-red':num(a.daysLeft)<=30?'ret-status-red':num(a.daysLeft)<=60?'ret-status-amber':'ret-status-green'}">${a.daysOverdue ? `${a.daysOverdue} overdue` : textSafe(a.daysLeft??'—')}</td><td>${textSafe([a.rmOwnerName,a.csmOwnerName].filter(Boolean).join(' / '))}</td></tr>`).join('') : empty(6,'No delayed or upcoming renewal accounts found.');
-  if($('retAccountsToRenewToggle')) $('retAccountsToRenewToggle').style.display = renewRows.length>5?'block':'none';
+  if($('retRenewalUnifiedBody')) $('retRenewalUnifiedBody').innerHTML = unifiedRenewalRows.length ? unifiedRenewalRows.map((r,i)=>{
+    const isDelayed = num(r.daysOverdue) > 0 || /delayed|overdue/i.test(String(r.status));
+    const isRenewed = /renewed/i.test(String(r.status));
+    const overdueText = num(r.daysOverdue) > 0 ? `${num(r.daysOverdue)} overdue` : textSafe(r.daysLeft !== '' ? r.daysLeft : '—');
+    const statusClass = isRenewed ? 'bg' : isDelayed ? 'br' : /attention|needed|action/i.test(String(r.status)) ? 'ba' : 'bb';
+    return `<tr class="${isDelayed?'ret-redline':isRenewed?'ret-greenline':'ret-amberline'} ${i>=5?'ret-hidden':''}"><td><div style="font-weight:900">${recordLink(r.companyName,r.companyUrl)}</div>${r.dealName ? `<div style="font-size:10px;color:var(--muted)">${recordLink(r.dealName,r.dealUrl)}</div>` : `<div style="font-size:10px;color:var(--muted)">Renewal account</div>`}</td><td class="c">${retTierBadge(r.tier)}</td><td class="c" style="font-family:var(--mono);font-weight:800">${money(r.renewalValue)}</td><td class="c">${textSafe(r.month)}</td><td class="c ${isDelayed?'ret-status-red':''}">${textSafe(r.renewalDate)}</td><td class="c ${isDelayed?'ret-status-red':''}">${overdueText}</td><td>${textSafe(r.rmOwnerName || '—')}</td><td>${textSafe(r.csmOwnerName || '—')}</td><td class="c">${textSafe(r.rmTouch || '—')}</td><td class="c">${textSafe(r.csmTouch || '—')}</td><td class="c"><span class="badge ${statusClass}">${textSafe(r.status || 'Upcoming')}</span></td></tr>`;
+  }).join('') : empty(11,'No renewal rows found.');
+  if($('retRenewalUnifiedToggle')) $('retRenewalUnifiedToggle').style.display = unifiedRenewalRows.length>5?'block':'none';
 
   // Churn reasons
   if($('retUpsellCoverageBody')) $('retUpsellCoverageBody').innerHTML = churnReasons.length ? churnReasons.map((r,i)=>`<tr class="${i>=5?'ret-hidden':''}"><td><div style="font-weight:800">${textSafe(r.reason||'Not specified')}</div></td><td class="c">${num(r.count)}</td><td class="c" style="font-family:var(--mono);font-weight:700">${money(r.amount)}</td><td class="c">${recordLink(r.deals?.[0]?.companyName||r.deals?.[0]?.name||'—',r.deals?.[0]?.companyUrl||r.deals?.[0]?.hubspotUrl)}</td><td class="c"><span class="badge br">Churn</span></td></tr>`).join('') : empty(5,'No churn reason data in the current retention JSON.');
