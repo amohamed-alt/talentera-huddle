@@ -6092,6 +6092,97 @@ setInterval(loadData,5*60*1000);
   }
   if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', schedule); else schedule();
 })();
+
+
+/* ═══════════════════════════════════════════
+   ACQUISITION STABLE TABLES FIX
+   Keeps the clean Financial Details logic and normal clickable popups,
+   but stops the extra generated Acquisition follow-up tables from being injected multiple times.
+   Retention untouched.
+   ═══════════════════════════════════════════ */
+(function(){
+  if(window.__acqStableTablesFix) return;
+  window.__acqStableTablesFix = true;
+
+  function cleanupAcqGeneratedTables(){
+    try{
+      document.querySelectorAll(
+        '[data-acq5-followup],'+
+        '[data-acq-final-followup],'+
+        '[data-acq-v3-followup],'+
+        '[data-acq-enhanced-followup],'+
+        '.acq-rep-followup'
+      ).forEach(function(node){ node.remove(); });
+    }catch(e){}
+  }
+
+  window.enhanceAcquisitionRepFollowupSections = function(){
+    cleanupAcqGeneratedTables();
+  };
+
+  window.enhanceAcquisitionInteractiveViews = function(){
+    try{
+      if(typeof window.enhanceAcqOverviewClickables === 'function'){
+        window.enhanceAcqOverviewClickables();
+      }
+      if(typeof window.scheduleAcqClickableNumbers === 'function'){
+        window.scheduleAcqClickableNumbers();
+      }
+    }catch(e){}
+    cleanupAcqGeneratedTables();
+  };
+
+  if(typeof window.render === 'function' && !window.render.__acqStableTablesWrapped){
+    var oldRender = window.render;
+    window.render = function(){
+      var result = oldRender.apply(this, arguments);
+      setTimeout(cleanupAcqGeneratedTables, 0);
+      setTimeout(cleanupAcqGeneratedTables, 250);
+      return result;
+    };
+    window.render.__acqStableTablesWrapped = true;
+    try { render = window.render; } catch(e) {}
+  }
+
+  if(typeof window.loadData === 'function' && !window.loadData.__acqStableTablesWrapped){
+    var oldLoadData = window.loadData;
+    window.loadData = function(){
+      var result = oldLoadData.apply(this, arguments);
+      try{
+        if(result && typeof result.then === 'function'){
+          result.then(function(){ setTimeout(cleanupAcqGeneratedTables,0); setTimeout(cleanupAcqGeneratedTables,250); });
+        }else{
+          setTimeout(cleanupAcqGeneratedTables,0);
+          setTimeout(cleanupAcqGeneratedTables,250);
+        }
+      }catch(e){}
+      return result;
+    };
+    window.loadData.__acqStableTablesWrapped = true;
+    try { loadData = window.loadData; } catch(e) {}
+  }
+
+  if(typeof window.switchTab === 'function' && !window.switchTab.__acqStableTablesWrapped){
+    var oldSwitchTab = window.switchTab;
+    window.switchTab = function(){
+      var result = oldSwitchTab.apply(this, arguments);
+      setTimeout(cleanupAcqGeneratedTables, 0);
+      setTimeout(cleanupAcqGeneratedTables, 250);
+      return result;
+    };
+    window.switchTab.__acqStableTablesWrapped = true;
+    try { switchTab = window.switchTab; } catch(e) {}
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', cleanupAcqGeneratedTables);
+  }else{
+    cleanupAcqGeneratedTables();
+  }
+  setTimeout(cleanupAcqGeneratedTables, 100);
+  setTimeout(cleanupAcqGeneratedTables, 800);
+})();
+
 </script>
 
 </body>
