@@ -777,6 +777,34 @@ body.auth-locked .app {
   text-align:center;
 }
 
+
+
+/* ACQUISITION LEADS OVERVIEW — ONLY IN/OUT SPLIT CLICKABLE */
+.lead-split-click{
+  border:0;
+  background:transparent;
+  padding:1px 3px;
+  margin:0;
+  font:inherit;
+  font-size:10px;
+  font-weight:800;
+  border-radius:7px;
+  cursor:pointer;
+  transition:background .15s, box-shadow .15s, transform .15s, text-decoration-color .15s;
+}
+.lead-split-click.inbound{color:var(--blue)}
+.lead-split-click.outbound{color:var(--amber)}
+.lead-split-click:hover{
+  background:rgba(22,163,74,.08);
+  box-shadow:0 0 0 1px rgba(22,163,74,.16) inset;
+  transform:translateY(-1px);
+  text-decoration:underline;
+}
+.lead-split-click:focus-visible{
+  outline:2px solid rgba(37,99,235,.45);
+  outline-offset:2px;
+}
+
 </style>
 </head>
 <body class="auth-locked">
@@ -1571,6 +1599,91 @@ function openDealsTable(show,rest,did){
 
 
 
+
+
+/* ACQUISITION LEADS OVERVIEW — TOP INBOUND / OUTBOUND CLICKABLE ONLY */
+function normalizeAcqLeadSource(row){
+  const bucket = String(row?.sourceBucket || row?.source_bucket || row?.bucket || '').trim().toLowerCase();
+  if(bucket === 'inbound' || bucket === 'online') return 'inbound';
+  if(bucket === 'outbound' || bucket === 'offline') return 'outbound';
+  if(bucket === 'import') return 'import';
+
+  const raw = String(row?.source || row?.hs_analytics_source || row?.properties?.hs_analytics_source || '').trim().toUpperCase();
+  if(raw === 'IMPORT') return 'import';
+  if(raw === '' || raw === 'OFFLINE') return 'outbound';
+  return 'inbound';
+}
+
+function getAcqLeadSplitRows(period, source){
+  const leads = D?.acquisitionDetails?.leads || {};
+  const periodKey = String(period || '').toLowerCase();
+  const sourceKey = String(source || '').toLowerCase();
+  const raw = leads[periodKey];
+
+  if(Array.isArray(raw)){
+    return raw.filter(row => normalizeAcqLeadSource(row) === sourceKey);
+  }
+
+  if(raw && typeof raw === 'object'){
+    const nested = raw[sourceKey] || raw[sourceKey === 'inbound' ? 'online' : 'offline'];
+    if(Array.isArray(nested)) return nested;
+  }
+
+  return [];
+}
+
+function acqLeadSplitPeriodLabel(period){
+  return ({ yesterday:'Yesterday', mtd:'Month to Date', ytd:'Year to Date' }[String(period || '').toLowerCase()] || period || 'Leads');
+}
+
+function renderLeadPeriodCards(team){
+  const cards = [
+    { key:'yesterday', p:'Yesterday',     t:team.leadsYest || 0, i:team.leadsYestInbound || 0, o:team.leadsYestOutbound || 0, c:'var(--blue)' },
+    { key:'mtd',       p:'Month to Date', t:team.leadsMTD || 0,  i:team.leadsMTDInbound || 0,  o:team.leadsMTDOutbound || 0,  c:'var(--green)' },
+    { key:'ytd',       p:'Year to Date',  t:team.leadsYTD || 0,  i:team.leadsYTDInbound || 0,  o:team.leadsYTDOutbound || 0,  c:'var(--purple)' }
+  ];
+
+  return cards.map(x => `
+    <div class="lperiod">
+      <div class="lperiod-label">${x.p}</div>
+      <div class="lperiod-val" style="color:${x.c}">${Number(x.t || 0).toLocaleString()}</div>
+      <div class="lperiod-row">
+        <button type="button" class="lead-split-click inbound" onclick="openAcqLeadSplit('${x.key}','inbound',${Number(x.i || 0)})" title="Open ${x.p} inbound lead rows">&darr; ${Number(x.i || 0).toLocaleString()} Inbound</button>
+        <button type="button" class="lead-split-click outbound" onclick="openAcqLeadSplit('${x.key}','outbound',${Number(x.o || 0)})" title="Open ${x.p} outbound lead rows">&uarr; ${Number(x.o || 0).toLocaleString()} Outbound</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function openAcqLeadSplit(period, source, expectedCount){
+  const rows = getAcqLeadSplitRows(period, source);
+  const periodLabel = acqLeadSplitPeriodLabel(period);
+  const sourceLabel = String(source || '').toLowerCase() === 'inbound' ? 'Inbound' : 'Outbound';
+  const existing = document.getElementById('acqLeadSplitBackdrop');
+  if(existing) existing.remove();
+
+  const rowHtml = rows.length ? rows.slice(0,120).map(row => {
+    const name = row.name || row.fullName || row.email || row.phone || row.id || 'Unknown lead';
+    const url = row.hubspotUrl || row.url || (row.id ? hubspotRecordUrl('contact', row.id) : null);
+    const owner = row.ownerName || row.rep || row.hubspot_owner_id || row.ownerId || '—';
+    const status = row.leadStatus || row.status || row.hs_lead_status || 'Lead';
+    const created = row.createdAt || row.date || row.hs_createdate || row.createdate || '—';
+    const email = row.email ? ` · ${row.email}` : '';
+    const src = row.source || row.sourceBucket || row.hs_analytics_source || sourceLabel;
+    return `<div class="acq-detail-row"><div class="acq-detail-name">${recordLink(name,url)}<div class="acq-detail-meta">${esc(String(created).slice(0,10))}${esc(email)} · ${esc(src)}</div></div><div>${esc(owner)}</div><div><span class="acq-detail-pill">${esc(status)}</span></div><div style="font-family:var(--mono);font-weight:900;text-align:right">${esc(sourceLabel)}</div></div>`;
+  }).join('') : `<div class="acq-detail-empty">No rows available for ${esc(periodLabel)} ${esc(sourceLabel)} in current data.json. Make sure the n8n output includes acquisitionDetails.leads.${esc(period)}.</div>`;
+
+  const more = rows.length > 120 ? `<div class="acq-detail-empty" style="padding:12px">Showing first 120 of ${rows.length.toLocaleString()} rows.</div>` : '';
+  const countText = `${rows.length.toLocaleString()} rows${Number(expectedCount || 0) !== rows.length ? ` · counter shows ${Number(expectedCount || 0).toLocaleString()}` : ''}`;
+
+  const node = document.createElement('div');
+  node.id = 'acqLeadSplitBackdrop';
+  node.className = 'acq-detail-backdrop';
+  node.onclick = function(e){ if(e.target === node) node.remove(); };
+  node.innerHTML = `<div class="acq-detail-card"><div class="acq-detail-hd"><div><div class="acq-detail-title">${esc(periodLabel)} ${esc(sourceLabel)} Leads <span class="badge bb" style="margin-left:8px">${esc(countText)}</span></div><div class="acq-detail-sub">Lead/contact rows created in this period. Names open directly in HubSpot when a link is available.</div></div><button class="acq-detail-close" onclick="document.getElementById('acqLeadSplitBackdrop')?.remove()">×</button></div><div class="acq-detail-body">${rowHtml}${more}</div></div>`;
+  document.body.appendChild(node);
+}
+
 function renderFinancialDetails(){
   const card = $("financialDetailsCard");
   if(!card) return;
@@ -2220,7 +2333,7 @@ renderManagerAddons();
   }).join("");
 
   $("leadsBadgeRow").innerHTML=`<span class="badge bb">Yest: ${team.leadsYest||0}</span><span class="badge bg">MTD: ${team.leadsMTD||0}</span><span class="badge bp">YTD: ${team.leadsYTD||0}</span>`;
-  $("leadsPeriods").innerHTML=[{p:"Yesterday",t:team.leadsYest||0,i:team.leadsYestInbound||0,o:team.leadsYestOutbound||0,c:"var(--blue)"},{p:"Month to Date",t:team.leadsMTD||0,i:team.leadsMTDInbound||0,o:team.leadsMTDOutbound||0,c:"var(--green)"},{p:"Year to Date",t:team.leadsYTD||0,i:team.leadsYTDInbound||0,o:team.leadsYTDOutbound||0,c:"var(--purple)"}].map(x=>`<div class="lperiod"><div class="lperiod-label">${x.p}</div><div class="lperiod-val" style="color:${x.c}">${x.t}</div><div class="lperiod-row"><span class="lperiod-in" style="color:var(--blue)">&darr; ${x.i} Inbound</span><span class="lperiod-out" style="color:var(--amber)">&uarr; ${x.o} Outbound</span></div></div>`).join("");
+  $("leadsPeriods").innerHTML=renderLeadPeriodCards(team);
   $("leadsRepBody").innerHTML=activeReps.map(r=>`<tr><td><div style="display:flex;align-items:center;gap:8px"><div class="av" style="background:${r.color}20;color:${r.color};border:1px solid ${r.color}30">${r.name[0]}</div><span style="font-weight:600">${r.name}</span></div></td><td class="c"><div style="font-family:var(--mono);font-weight:600">${r.leadsYest||0}</div><div style="font-size:9px;color:var(--muted)">&darr;${r.leadsYestInbound||0} &uarr;${r.leadsYestOutbound||0}</div></td><td class="c"><div style="font-family:var(--mono);font-weight:600;color:var(--green)">${r.leadsMTD||0}</div><div style="font-size:9px;color:var(--muted)">&darr;${r.leadsMTDInbound||0} &uarr;${r.leadsMTDOutbound||0}</div></td><td class="c"><div style="font-family:var(--mono);font-weight:600;color:var(--purple)">${r.leadsYTD||0}</div><div style="font-size:9px;color:var(--muted)">&darr;${r.leadsYTDInbound||0} &uarr;${r.leadsYTDOutbound||0}</div></td></tr>`).join("");
 
   const rd=D.topInactiveRankAccounts||[],rt=D.rankTotals||{};
