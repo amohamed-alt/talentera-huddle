@@ -1672,7 +1672,7 @@ function renderFinancialDetails(){
     if(isCashingStage(d) || isDemoOrNonFinancialStage(d)) return false;
     return (
       raw === "contractsent" ||
-      /signed contract|signed\/booking|contract\/booking|contract sent|contractsent|booking|booked/.test(st)
+      /signed contract|signed\/booking|contract\/booking|contract sent|contractsent|booking|booked|binding to cash/.test(st)
     );
   }
 
@@ -1702,6 +1702,8 @@ function renderFinancialDetails(){
       d.signedDate,
       d.signedContractDate,
       d.contractSignedDate,
+      d.bookingDate,
+      d.actionDate,
       d.dateEnteredContractsent,
       p.hs_v2_date_entered_contractsent,
       p.hs_date_entered_contractsent,
@@ -1715,7 +1717,9 @@ function renderFinancialDetails(){
     const p = d?.properties || {};
     return first(
       d.cashingDate,
+      d.cashedDate,
       d.closedWonDate,
+      d.actionDate,
       d.closedate,
       p.hs_v2_date_entered_closedwon,
       p.hs_date_entered_closedwon,
@@ -4628,6 +4632,127 @@ function enhanceAcquisitionRepFollowupSections(){
   var prevOverviewClick=window.enhanceAcqOverviewClickables;
   window.enhanceAcquisitionInteractiveViews=function(){ if(typeof prevOverviewClick==='function') prevOverviewClick(); renderAll(); };
   window.enhanceAcquisitionRepFollowupSections=function(){ renderAll(); };
+})();
+
+
+
+/* ═══════════════════════════════════════════
+   ACQUISITION REP PERIOD SUMMARY PATCH
+   Adds Yesterday / MTD / YTD summary on each acquisition owner tab.
+   Retention panels and retention data are not touched.
+   ═══════════════════════════════════════════ */
+(function(){
+  if(window.__acqRepPeriodSummaryPatch) return;
+  window.__acqRepPeriodSummaryPatch = true;
+
+  function q(id){ return document.getElementById(id); }
+  function slug(name){ return String(name||'').toLowerCase().replace(/\s/g,'-'); }
+  function safe(v){ return String(v ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+  function money(v){ try { return typeof fmt === 'function' ? fmt(v||0) : ('$' + Math.round(Number(v||0)).toLocaleString()); } catch(e){ return '$0'; } }
+  function rateColor(v){ try { return typeof rcColor === 'function' ? rcColor(Number(v||0)) : (Number(v||0)>=50?'var(--green)':Number(v||0)>=30?'var(--amber)':'var(--red)'); } catch(e){ return 'var(--muted)'; } }
+
+  function statCell(value,label,color,sub){
+    return '<div class="ret-kpi-compact" style="--rk:'+color+';min-height:78px">'+
+      '<div class="ret-kpi-v">'+safe(value)+'</div>'+
+      '<div class="ret-kpi-l">'+safe(label)+'</div>'+
+      (sub ? '<div class="ret-kpi-s">'+safe(sub)+'</div>' : '')+
+    '</div>';
+  }
+
+  function periodRow(title, subtitle, color, stats){
+    return '<div class="ret-kpi-period-row" style="--pc:'+color+';grid-template-columns:125px repeat(6,1fr)">'+
+      '<div class="ret-kpi-period-label"><div class="ret-kpi-period-name">'+safe(title)+'</div><div class="ret-kpi-period-sub">'+safe(subtitle)+'</div></div>'+
+      statCell(stats.calls, 'Calls', 'var(--blue)', 'Total logged')+
+      statCell(stats.connected, 'Connected', 'var(--green)', stats.rate + '% rate')+
+      statCell(stats.rate + '%', 'Connection Rate', rateColor(stats.rate), 'Call quality')+
+      statCell(stats.meetings, 'Meetings', 'var(--purple)', 'Completed only')+
+      statCell(stats.won, 'Won', 'var(--green)', money(stats.wonAmt))+
+      statCell(stats.lost, 'Lost', 'var(--red)', money(stats.lostAmt))+
+    '</div>';
+  }
+
+  function repPeriodHtml(rep){
+    var y = {
+      calls: rep.calls?.yest || 0,
+      connected: rep.calls?.yestConn || 0,
+      rate: rep.connRateYest || 0,
+      meetings: rep.meetings?.yest || 0,
+      won: rep.wonYest || 0,
+      wonAmt: rep.wonAmtYest || 0,
+      lost: rep.lostYest || 0,
+      lostAmt: rep.lostAmtYest || 0
+    };
+    var m = {
+      calls: rep.calls?.mtd || 0,
+      connected: rep.calls?.mtdConn || 0,
+      rate: rep.connRateMTD || 0,
+      meetings: rep.meetings?.mtd || 0,
+      won: rep.won || 0,
+      wonAmt: rep.wonAmt || 0,
+      lost: rep.lost || 0,
+      lostAmt: rep.lostAmt || 0
+    };
+    var t = {
+      calls: rep.calls?.ytd || 0,
+      connected: rep.calls?.ytdConn || 0,
+      rate: rep.connRateYTD || 0,
+      meetings: rep.meetings?.ytd || 0,
+      won: rep.wonYTD || 0,
+      wonAmt: rep.wonAmtYTD || 0,
+      lost: rep.lostYTD || 0,
+      lostAmt: rep.lostAmtYTD || 0
+    };
+
+    return '<div class="ret-kpi-master-card" data-acq-period-summary="'+safe(rep.id)+'" style="border-top-color:'+safe(rep.color || 'var(--green)')+'">'+
+      '<div class="ret-kpi-master-hd">'+
+        '<div class="ret-kpi-master-title">📌 '+safe(rep.name)+' · Yesterday / MTD / YTD</div>'+
+        '<span class="badge bp">Completed meetings only</span>'+
+      '</div>'+
+      periodRow('Yesterday', ((D&&D.meta&&D.meta.yesterdayLabel) || 'daily'), 'var(--blue)', y)+
+      periodRow('MTD', 'current month', 'var(--amber)', m)+
+      periodRow('YTD', 'current year', 'var(--green)', t)+
+    '</div>';
+  }
+
+  function isRequiredAcqRep(rep){
+    if(!rep || rep.type === 'view') return false;
+    var n = String(rep.name || '').toLowerCase();
+    return /marita|zein|ursula|ahmad|mohammed khalid|jehad/.test(n);
+  }
+
+  function renderRepPeriod(rep){
+    var panel = q('panel-' + slug(rep.name));
+    if(!panel) return;
+    panel.querySelectorAll('[data-acq-period-summary]').forEach(function(n){ n.remove(); });
+    var holder = document.createElement('div');
+    holder.innerHTML = repPeriodHtml(rep);
+    var hero = panel.querySelector('.rep-hero');
+    if(hero) hero.insertAdjacentElement('afterend', holder.firstChild);
+    else panel.insertAdjacentElement('afterbegin', holder.firstChild);
+  }
+
+  function renderAllRepPeriods(){
+    if(!D || !Array.isArray(D.repData)) return;
+    D.repData.filter(isRequiredAcqRep).forEach(renderRepPeriod);
+  }
+
+  window.enhanceAcquisitionRepPeriodSummaries = renderAllRepPeriods;
+
+  var prevInteractive = window.enhanceAcquisitionInteractiveViews;
+  window.enhanceAcquisitionInteractiveViews = function(){
+    var result;
+    if(typeof prevInteractive === 'function') result = prevInteractive.apply(this, arguments);
+    renderAllRepPeriods();
+    return result;
+  };
+
+  var prevFollowups = window.enhanceAcquisitionRepFollowupSections;
+  window.enhanceAcquisitionRepFollowupSections = function(){
+    var result;
+    if(typeof prevFollowups === 'function') result = prevFollowups.apply(this, arguments);
+    renderAllRepPeriods();
+    return result;
+  };
 })();
 
 
