@@ -777,34 +777,6 @@ body.auth-locked .app {
   text-align:center;
 }
 
-
-
-/* ACQUISITION LEADS OVERVIEW — ONLY IN/OUT SPLIT CLICKABLE */
-.lead-split-click{
-  border:0;
-  background:transparent;
-  padding:1px 3px;
-  margin:0;
-  font:inherit;
-  font-size:10px;
-  font-weight:800;
-  border-radius:7px;
-  cursor:pointer;
-  transition:background .15s, box-shadow .15s, transform .15s, text-decoration-color .15s;
-}
-.lead-split-click.inbound{color:var(--blue)}
-.lead-split-click.outbound{color:var(--amber)}
-.lead-split-click:hover{
-  background:rgba(22,163,74,.08);
-  box-shadow:0 0 0 1px rgba(22,163,74,.16) inset;
-  transform:translateY(-1px);
-  text-decoration:underline;
-}
-.lead-split-click:focus-visible{
-  outline:2px solid rgba(37,99,235,.45);
-  outline-offset:2px;
-}
-
 </style>
 </head>
 <body class="auth-locked">
@@ -1599,91 +1571,6 @@ function openDealsTable(show,rest,did){
 
 
 
-
-
-/* ACQUISITION LEADS OVERVIEW — TOP INBOUND / OUTBOUND CLICKABLE ONLY */
-function normalizeAcqLeadSource(row){
-  const bucket = String(row?.sourceBucket || row?.source_bucket || row?.bucket || '').trim().toLowerCase();
-  if(bucket === 'inbound' || bucket === 'online') return 'inbound';
-  if(bucket === 'outbound' || bucket === 'offline') return 'outbound';
-  if(bucket === 'import') return 'import';
-
-  const raw = String(row?.source || row?.hs_analytics_source || row?.properties?.hs_analytics_source || '').trim().toUpperCase();
-  if(raw === 'IMPORT') return 'import';
-  if(raw === '' || raw === 'OFFLINE') return 'outbound';
-  return 'inbound';
-}
-
-function getAcqLeadSplitRows(period, source){
-  const leads = D?.acquisitionDetails?.leads || {};
-  const periodKey = String(period || '').toLowerCase();
-  const sourceKey = String(source || '').toLowerCase();
-  const raw = leads[periodKey];
-
-  if(Array.isArray(raw)){
-    return raw.filter(row => normalizeAcqLeadSource(row) === sourceKey);
-  }
-
-  if(raw && typeof raw === 'object'){
-    const nested = raw[sourceKey] || raw[sourceKey === 'inbound' ? 'online' : 'offline'];
-    if(Array.isArray(nested)) return nested;
-  }
-
-  return [];
-}
-
-function acqLeadSplitPeriodLabel(period){
-  return ({ yesterday:'Yesterday', mtd:'Month to Date', ytd:'Year to Date' }[String(period || '').toLowerCase()] || period || 'Leads');
-}
-
-function renderLeadPeriodCards(team){
-  const cards = [
-    { key:'yesterday', p:'Yesterday',     t:team.leadsYest || 0, i:team.leadsYestInbound || 0, o:team.leadsYestOutbound || 0, c:'var(--blue)' },
-    { key:'mtd',       p:'Month to Date', t:team.leadsMTD || 0,  i:team.leadsMTDInbound || 0,  o:team.leadsMTDOutbound || 0,  c:'var(--green)' },
-    { key:'ytd',       p:'Year to Date',  t:team.leadsYTD || 0,  i:team.leadsYTDInbound || 0,  o:team.leadsYTDOutbound || 0,  c:'var(--purple)' }
-  ];
-
-  return cards.map(x => `
-    <div class="lperiod">
-      <div class="lperiod-label">${x.p}</div>
-      <div class="lperiod-val" style="color:${x.c}">${Number(x.t || 0).toLocaleString()}</div>
-      <div class="lperiod-row">
-        <button type="button" class="lead-split-click inbound" onclick="openAcqLeadSplit('${x.key}','inbound',${Number(x.i || 0)})" title="Open ${x.p} inbound lead rows">&darr; ${Number(x.i || 0).toLocaleString()} Inbound</button>
-        <button type="button" class="lead-split-click outbound" onclick="openAcqLeadSplit('${x.key}','outbound',${Number(x.o || 0)})" title="Open ${x.p} outbound lead rows">&uarr; ${Number(x.o || 0).toLocaleString()} Outbound</button>
-      </div>
-    </div>
-  `).join('');
-}
-
-function openAcqLeadSplit(period, source, expectedCount){
-  const rows = getAcqLeadSplitRows(period, source);
-  const periodLabel = acqLeadSplitPeriodLabel(period);
-  const sourceLabel = String(source || '').toLowerCase() === 'inbound' ? 'Inbound' : 'Outbound';
-  const existing = document.getElementById('acqLeadSplitBackdrop');
-  if(existing) existing.remove();
-
-  const rowHtml = rows.length ? rows.slice(0,120).map(row => {
-    const name = row.name || row.fullName || row.email || row.phone || row.id || 'Unknown lead';
-    const url = row.hubspotUrl || row.url || (row.id ? hubspotRecordUrl('contact', row.id) : null);
-    const owner = row.ownerName || row.rep || row.hubspot_owner_id || row.ownerId || '—';
-    const status = row.leadStatus || row.status || row.hs_lead_status || 'Lead';
-    const created = row.createdAt || row.date || row.hs_createdate || row.createdate || '—';
-    const email = row.email ? ` · ${row.email}` : '';
-    const src = row.source || row.sourceBucket || row.hs_analytics_source || sourceLabel;
-    return `<div class="acq-detail-row"><div class="acq-detail-name">${recordLink(name,url)}<div class="acq-detail-meta">${esc(String(created).slice(0,10))}${esc(email)} · ${esc(src)}</div></div><div>${esc(owner)}</div><div><span class="acq-detail-pill">${esc(status)}</span></div><div style="font-family:var(--mono);font-weight:900;text-align:right">${esc(sourceLabel)}</div></div>`;
-  }).join('') : `<div class="acq-detail-empty">No rows available for ${esc(periodLabel)} ${esc(sourceLabel)} in current data.json. Make sure the n8n output includes acquisitionDetails.leads.${esc(period)}.</div>`;
-
-  const more = rows.length > 120 ? `<div class="acq-detail-empty" style="padding:12px">Showing first 120 of ${rows.length.toLocaleString()} rows.</div>` : '';
-  const countText = `${rows.length.toLocaleString()} rows${Number(expectedCount || 0) !== rows.length ? ` · counter shows ${Number(expectedCount || 0).toLocaleString()}` : ''}`;
-
-  const node = document.createElement('div');
-  node.id = 'acqLeadSplitBackdrop';
-  node.className = 'acq-detail-backdrop';
-  node.onclick = function(e){ if(e.target === node) node.remove(); };
-  node.innerHTML = `<div class="acq-detail-card"><div class="acq-detail-hd"><div><div class="acq-detail-title">${esc(periodLabel)} ${esc(sourceLabel)} Leads <span class="badge bb" style="margin-left:8px">${esc(countText)}</span></div><div class="acq-detail-sub">Lead/contact rows created in this period. Names open directly in HubSpot when a link is available.</div></div><button class="acq-detail-close" onclick="document.getElementById('acqLeadSplitBackdrop')?.remove()">×</button></div><div class="acq-detail-body">${rowHtml}${more}</div></div>`;
-  document.body.appendChild(node);
-}
-
 function renderFinancialDetails(){
   const card = $("financialDetailsCard");
   if(!card) return;
@@ -2333,7 +2220,7 @@ renderManagerAddons();
   }).join("");
 
   $("leadsBadgeRow").innerHTML=`<span class="badge bb">Yest: ${team.leadsYest||0}</span><span class="badge bg">MTD: ${team.leadsMTD||0}</span><span class="badge bp">YTD: ${team.leadsYTD||0}</span>`;
-  $("leadsPeriods").innerHTML=renderLeadPeriodCards(team);
+  $("leadsPeriods").innerHTML=[{p:"Yesterday",t:team.leadsYest||0,i:team.leadsYestInbound||0,o:team.leadsYestOutbound||0,c:"var(--blue)"},{p:"Month to Date",t:team.leadsMTD||0,i:team.leadsMTDInbound||0,o:team.leadsMTDOutbound||0,c:"var(--green)"},{p:"Year to Date",t:team.leadsYTD||0,i:team.leadsYTDInbound||0,o:team.leadsYTDOutbound||0,c:"var(--purple)"}].map(x=>`<div class="lperiod"><div class="lperiod-label">${x.p}</div><div class="lperiod-val" style="color:${x.c}">${x.t}</div><div class="lperiod-row"><span class="lperiod-in" style="color:var(--blue)">&darr; ${x.i} Inbound</span><span class="lperiod-out" style="color:var(--amber)">&uarr; ${x.o} Outbound</span></div></div>`).join("");
   $("leadsRepBody").innerHTML=activeReps.map(r=>`<tr><td><div style="display:flex;align-items:center;gap:8px"><div class="av" style="background:${r.color}20;color:${r.color};border:1px solid ${r.color}30">${r.name[0]}</div><span style="font-weight:600">${r.name}</span></div></td><td class="c"><div style="font-family:var(--mono);font-weight:600">${r.leadsYest||0}</div><div style="font-size:9px;color:var(--muted)">&darr;${r.leadsYestInbound||0} &uarr;${r.leadsYestOutbound||0}</div></td><td class="c"><div style="font-family:var(--mono);font-weight:600;color:var(--green)">${r.leadsMTD||0}</div><div style="font-size:9px;color:var(--muted)">&darr;${r.leadsMTDInbound||0} &uarr;${r.leadsMTDOutbound||0}</div></td><td class="c"><div style="font-family:var(--mono);font-weight:600;color:var(--purple)">${r.leadsYTD||0}</div><div style="font-size:9px;color:var(--muted)">&darr;${r.leadsYTDInbound||0} &uarr;${r.leadsYTDOutbound||0}</div></td></tr>`).join("");
 
   const rd=D.topInactiveRankAccounts||[],rt=D.rankTotals||{};
@@ -3810,6 +3697,158 @@ function updateClock(){
 setInterval(updateClock,60000);
 loadData();
 setInterval(loadData,5*60*1000);
+
+
+/* ═══════════════════════════════════════════
+   ACQUISITION REP TABS — RESTORE YEST / MTD / YTD SUMMARY
+   Scoped to Acquisition owner tabs only. Does not touch Retention or tables.
+   ═══════════════════════════════════════════ */
+(function(){
+  if(window.__acqRepTabsPeriodSummaryRestored) return;
+  window.__acqRepTabsPeriodSummaryRestored = true;
+
+  function q(id){ return document.getElementById(id); }
+  function slug(name){ return String(name || '').toLowerCase().replace(/\s/g,'-'); }
+  function safe(v){
+    return String(v ?? '')
+      .replace(/&/g,'&amp;')
+      .replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;')
+      .replace(/'/g,'&#39;');
+  }
+  function money(v){
+    try { return typeof fmt === 'function' ? fmt(Number(v || 0)) : ('$' + Math.round(Number(v || 0)).toLocaleString()); }
+    catch(e){ return '$0'; }
+  }
+  function rateColor(v){
+    var n = Number(v || 0);
+    try { return typeof rcColor === 'function' ? rcColor(n) : (n >= 50 ? 'var(--green)' : n >= 30 ? 'var(--amber)' : 'var(--red)'); }
+    catch(e){ return 'var(--muted)'; }
+  }
+  function shouldShowRep(rep){
+    if(!rep || rep.type === 'view') return false;
+    var n = String(rep.name || '').toLowerCase();
+    return /marita|zein|ursula|ahmad|mohammed khalid|jehad/.test(n);
+  }
+  function cell(value,label,color,sub){
+    return '<div class="ret-kpi-compact" style="--rk:'+color+';min-height:78px">' +
+      '<div class="ret-kpi-v">'+safe(value)+'</div>' +
+      '<div class="ret-kpi-l">'+safe(label)+'</div>' +
+      (sub ? '<div class="ret-kpi-s">'+safe(sub)+'</div>' : '') +
+    '</div>';
+  }
+  function periodRow(title, subtitle, color, stats){
+    return '<div class="ret-kpi-period-row" style="--pc:'+color+';grid-template-columns:125px repeat(6,1fr)">' +
+      '<div class="ret-kpi-period-label"><div class="ret-kpi-period-name">'+safe(title)+'</div><div class="ret-kpi-period-sub">'+safe(subtitle)+'</div></div>' +
+      cell(stats.calls, 'Calls', 'var(--blue)', stats.connected + ' connected') +
+      cell(stats.rate + '%', 'Conn. Rate', rateColor(stats.rate), stats.connected + '/' + stats.calls) +
+      cell(stats.meetings, 'Meetings', 'var(--purple)', 'Completed only') +
+      cell(stats.leads, 'Leads', '#0E7490', '↓' + stats.inbound + ' · ↑' + stats.outbound) +
+      cell(stats.won, 'Won', 'var(--green)', money(stats.wonAmt)) +
+      cell(stats.lost, 'Lost', 'var(--red)', money(stats.lostAmt)) +
+    '</div>';
+  }
+  function summaryHtml(rep){
+    var calls = rep.calls || {};
+    var meetings = rep.meetings || {};
+    var y = {
+      calls: Number(calls.yest || 0),
+      connected: Number(calls.yestConn || 0),
+      rate: Number(rep.connRateYest || 0),
+      meetings: Number(meetings.yest || 0),
+      leads: Number(rep.leadsYest || 0),
+      inbound: Number(rep.leadsYestInbound || 0),
+      outbound: Number(rep.leadsYestOutbound || 0),
+      won: Number(rep.wonYest || 0),
+      wonAmt: Number(rep.wonAmtYest || 0),
+      lost: Number(rep.lostYest || 0),
+      lostAmt: Number(rep.lostAmtYest || 0)
+    };
+    var m = {
+      calls: Number(calls.mtd || 0),
+      connected: Number(calls.mtdConn || 0),
+      rate: Number(rep.connRateMTD || 0),
+      meetings: Number(meetings.mtd || 0),
+      leads: Number(rep.leadsMTD || 0),
+      inbound: Number(rep.leadsMTDInbound || 0),
+      outbound: Number(rep.leadsMTDOutbound || 0),
+      won: Number(rep.won || 0),
+      wonAmt: Number(rep.wonAmt || 0),
+      lost: Number(rep.lost || 0),
+      lostAmt: Number(rep.lostAmt || 0)
+    };
+    var t = {
+      calls: Number(calls.ytd || 0),
+      connected: Number(calls.ytdConn || 0),
+      rate: Number(rep.connRateYTD || 0),
+      meetings: Number(meetings.ytd || 0),
+      leads: Number(rep.leadsYTD || 0),
+      inbound: Number(rep.leadsYTDInbound || 0),
+      outbound: Number(rep.leadsYTDOutbound || 0),
+      won: Number(rep.wonYTD || 0),
+      wonAmt: Number(rep.wonAmtYTD || 0),
+      lost: Number(rep.lostYTD || 0),
+      lostAmt: Number(rep.lostAmtYTD || 0)
+    };
+    return '<div class="ret-kpi-master-card acq-rep-period-summary" data-acq-period-summary style="margin-bottom:14px;border-top-color:'+safe(rep.color || 'var(--green)')+'">' +
+      '<div class="ret-kpi-master-hd"><div class="ret-kpi-master-title">📌 Yesterday · MTD · YTD Summary</div><span class="badge bb">'+safe(rep.name || 'Rep')+'</span></div>' +
+      periodRow('Yesterday', 'daily execution', 'var(--blue)', y) +
+      periodRow('MTD', 'month to date', 'var(--amber)', m) +
+      periodRow('YTD', 'year to date', 'var(--green)', t) +
+    '</div>';
+  }
+  function renderRepPeriod(rep){
+    var panel = q('panel-' + slug(rep.name));
+    if(!panel) return;
+    panel.querySelectorAll('[data-acq-period-summary]').forEach(function(n){ n.remove(); });
+    var hero = panel.querySelector('.rep-hero');
+    if(hero) hero.insertAdjacentHTML('afterend', summaryHtml(rep));
+    else panel.insertAdjacentHTML('afterbegin', summaryHtml(rep));
+  }
+  function renderAllRepPeriods(){
+    if(!window.D || !Array.isArray(D.repData)) return;
+    D.repData.filter(shouldShowRep).forEach(renderRepPeriod);
+  }
+
+  window.enhanceAcquisitionRepPeriodSummaries = renderAllRepPeriods;
+
+  var prevInteractive = window.enhanceAcquisitionInteractiveViews;
+  window.enhanceAcquisitionInteractiveViews = function(){
+    var result;
+    if(typeof prevInteractive === 'function') result = prevInteractive.apply(this, arguments);
+    renderAllRepPeriods();
+    return result;
+  };
+  try { enhanceAcquisitionInteractiveViews = window.enhanceAcquisitionInteractiveViews; } catch(e) {}
+
+  var prevRender = window.render;
+  if(typeof prevRender === 'function' && !prevRender.__acqRepPeriodsWrapped){
+    window.render = function(){
+      var res = prevRender.apply(this, arguments);
+      setTimeout(renderAllRepPeriods, 0);
+      setTimeout(renderAllRepPeriods, 200);
+      return res;
+    };
+    window.render.__acqRepPeriodsWrapped = true;
+    try { render = window.render; } catch(e) {}
+  }
+
+  var prevSwitchTab = window.switchTab;
+  if(typeof prevSwitchTab === 'function' && !prevSwitchTab.__acqRepPeriodsWrapped){
+    window.switchTab = function(){
+      var res = prevSwitchTab.apply(this, arguments);
+      setTimeout(renderAllRepPeriods, 0);
+      return res;
+    };
+    window.switchTab.__acqRepPeriodsWrapped = true;
+    try { switchTab = window.switchTab; } catch(e) {}
+  }
+
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function(){ setTimeout(renderAllRepPeriods, 0); });
+  else setTimeout(renderAllRepPeriods, 0);
+})();
+
 </script>
 
 
