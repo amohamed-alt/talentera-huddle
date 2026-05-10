@@ -287,13 +287,6 @@ body{font-family:var(--font);background:var(--page-bg);color:var(--text);-webkit
 .fin-status.warn{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-bd)}
 .fin-status.risk{background:var(--red-bg);color:var(--red);border:1px solid var(--red-bd)}
 .fin-empty{padding:20px;text-align:center;color:var(--muted);font-size:12px;font-style:italic}
-
-.financial-click-box{cursor:pointer;transition:transform .15s,box-shadow .15s,border-color .15s;background:var(--surface2)}
-.financial-click-box:hover{transform:translateY(-1px);box-shadow:var(--sh);border-color:rgba(22,163,74,.35)}
-.financial-click-box .financial-v,.financial-click-num{cursor:pointer}
-.financial-click-num{border-radius:8px;padding:2px 6px;display:inline-block;transition:background .15s,box-shadow .15s,transform .15s}
-.financial-click-num:hover{background:rgba(22,163,74,.08);box-shadow:0 0 0 1px rgba(22,163,74,.18) inset;transform:translateY(-1px)}
-.financial-period-chip{display:inline-flex;align-items:center;gap:4px;font-size:8px;font-weight:900;padding:3px 8px;border-radius:999px;background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue-bd);text-transform:uppercase;letter-spacing:.08em}
 @media(max-width:1100px){.financial-summary-grid,.financial-split{grid-template-columns:1fr}}
 
 .financial-hero{display:flex;align-items:center;gap:18px;padding:20px 24px;margin-bottom:14px;background:linear-gradient(135deg,#ffffff 0%,#f7faf8 100%);border:1px solid var(--border);border-left:4px solid var(--green);border-radius:var(--r-lg);box-shadow:var(--sh)}
@@ -1164,7 +1157,7 @@ body.auth-locked .app {
             <div class="financial-hero-icon">&#128176;</div>
             <div>
               <div class="financial-hero-title">Financial Details</div>
-              <div class="financial-hero-sub">A dedicated YTD view for answering the manager's money questions: what has already cashed this year, what is signed but not cashed yet, and which signed deals need follow-up before they become real revenue.</div>
+              <div class="financial-hero-sub">A dedicated view for answering the manager's money questions: what has already cashed, what is signed but not cashed yet, and which signed deals need follow-up before they become real revenue.</div>
             </div>
           </div>
           <div class="financial-guide-grid">
@@ -1175,7 +1168,7 @@ body.auth-locked .app {
             <div class="financial-guide-card" style="--fc:var(--red)"><div class="financial-guide-title">Follow-up Status</div><div class="financial-guide-desc">Highlights delayed signed deals and keeps financial risk separate from the main dashboard.</div></div>
           </div>
           <div class="card financial-card" id="financialDetailsCard">
-            <div class="card-hd"><div class="card-title"><div class="card-title-icon" style="background:var(--green-bg)">&#128176;</div>Financial Details — YTD Cashing / Signed</div><div style="display:flex;gap:5px;flex-wrap:wrap"><span class="badge bg" id="finCashingBadge"></span><span class="badge ba" id="finSignedBadge"></span></div></div>
+            <div class="card-hd"><div class="card-title"><div class="card-title-icon" style="background:var(--green-bg)">&#128176;</div>Financial Details — Cashing / Signed</div><div style="display:flex;gap:5px;flex-wrap:wrap"><span class="badge bg" id="finCashingBadge"></span><span class="badge ba" id="finSignedBadge"></span></div></div>
             <div class="financial-summary-grid" id="financialSummaryGrid"></div>
             <div class="financial-split">
               <div class="financial-subcard"><div class="financial-subhd"><div class="financial-subtitle" style="color:var(--green)">&#9989; Cashing</div><span class="fin-status ok" id="finCashingMini"></span></div><div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Deal / Company</th><th>Rep</th><th class="c">Amount</th><th class="c">Signed Date</th><th class="c">Cashing Date</th><th class="c">Days</th></tr></thead><tbody id="financialCashingBody"></tbody></table></div></div>
@@ -1514,7 +1507,7 @@ function switchTab(id){
   const title = id === "team" ? "Acquisition · Team Overview" : id === "financial" ? "Acquisition · Financial Details" : `Acquisition · ${repName || id}`;
   if($("topbarTitle")) $("topbarTitle").textContent = title;
   if($("topbarSub")){
-    $("topbarSub").textContent = id === "financial" ? "YTD cashing revenue · signed contracts · pending to cash" : D ? `Updated ${D.meta?.generatedAt||""} · Auto-refresh 5min` : "Loading...";
+    $("topbarSub").textContent = id === "financial" ? "Cashing revenue · Signed contracts · Pending to cash" : D ? `Updated ${D.meta?.generatedAt||""} · Auto-refresh 5min` : "Loading...";
   }
 }
 
@@ -1590,7 +1583,9 @@ function renderFinancialDetails(){
   const nowMsLocal = today.getTime();
   const currentYear = today.getFullYear();
 
-  function arr(v){ return Array.isArray(v) ? v : []; }
+  function arr(v){
+    return Array.isArray(v) ? v : [];
+  }
 
   function first(...vals){
     return vals.find(v => v !== undefined && v !== null && String(v).trim() !== "") ?? null;
@@ -1631,14 +1626,6 @@ function renderFinancialDetails(){
     return Math.max(0, Math.floor((nowMsLocal - ms) / 86400000));
   }
 
-  function normStage(v){
-    return String(v || "")
-      .trim()
-      .toLowerCase()
-      .replace(/[_-]+/g," ")
-      .replace(/\s+/g," ");
-  }
-
   function stageText(d){
     const p = d?.properties || {};
     return String(first(
@@ -1653,10 +1640,12 @@ function renderFinancialDetails(){
 
   function rawStageId(d){
     const p = d?.properties || {};
-    return normStage(first(d.dealstage, p.dealstage) || "");
+    return String(first(d.dealstage, p.dealstage) || "").trim().toLowerCase();
   }
 
-  function stageNorm(d){ return normStage(stageText(d)); }
+  function stageNorm(d){
+    return stageText(d).toLowerCase().replace(/[_-]+/g," ").replace(/\s+/g," ").trim();
+  }
 
   function isDemoOrNonFinancialStage(d){
     const st = stageNorm(d);
@@ -1673,8 +1662,7 @@ function renderFinancialDetails(){
     return (
       raw === "closedwon" ||
       raw === "closed won" ||
-      /closed\s*won|closedwon|(^|\s)(cashing|cashed|cached)(\s|$)|cash\s*received|payment\s*received/.test(st) ||
-      /cashing|cashed|cached/.test(raw)
+      /(^|\s)(cash|cashing|cashed)(\s|$)|closed won|closedwon/.test(st)
     );
   }
 
@@ -1684,8 +1672,7 @@ function renderFinancialDetails(){
     if(isCashingStage(d) || isDemoOrNonFinancialStage(d)) return false;
     return (
       raw === "contractsent" ||
-      /contractsent|contract\s*sent|signed\s*contract|signed\s*\/\s*booking|signed\s*booking|contract\s*\/\s*booking|booking|booked|binding\s*to\s*cash|binding\s*cash|pending\s*to\s*cash/.test(st) ||
-      /contractsent|contract\s*sent|booked|booking|binding\s*to\s*cash|pending\s*to\s*cash/.test(raw)
+      /signed contract|signed\/booking|contract\/booking|contract sent|contractsent|booking|booked/.test(st)
     );
   }
 
@@ -1715,27 +1702,11 @@ function renderFinancialDetails(){
       d.signedDate,
       d.signedContractDate,
       d.contractSignedDate,
-      d.bookingDate,
-      d.bookedDate,
-      d.bindingToCashDate,
-      d.actionDate,
       d.dateEnteredContractsent,
-      d.dateEnteredSignedContract,
-      d.dateEnteredBooked,
-      d.dateEnteredBooking,
-      d.dateEnteredBindingToCash,
       p.hs_v2_date_entered_contractsent,
       p.hs_date_entered_contractsent,
-      p.hs_v2_date_entered_signed_contract,
-      p.hs_date_entered_signed_contract,
-      p.hs_v2_date_entered_booking,
-      p.hs_date_entered_booking,
-      p.hs_v2_date_entered_booked,
-      p.hs_date_entered_booked,
-      p.hs_v2_date_entered_binding_to_cash,
-      p.hs_date_entered_binding_to_cash,
-      isSignedStage(d) ? p.hs_v2_date_entered_current_stage : null,
-      isSignedStage(d) ? p.hs_date_entered_current_stage : null,
+      p.hs_v2_date_entered_current_stage,
+      p.hs_date_entered_current_stage,
       p.closedate
     );
   }
@@ -1744,26 +1715,13 @@ function renderFinancialDetails(){
     const p = d?.properties || {};
     return first(
       d.cashingDate,
-      d.cashedDate,
-      d.cachedDate,
       d.closedWonDate,
-      d.actionDate,
       d.closedate,
-      d.dateEnteredCashing,
-      d.dateEnteredCashed,
-      d.dateEnteredCached,
-      d.dateEnteredClosedWon,
       p.hs_v2_date_entered_closedwon,
       p.hs_date_entered_closedwon,
-      p.hs_v2_date_entered_cashing,
-      p.hs_date_entered_cashing,
-      p.hs_v2_date_entered_cashed,
-      p.hs_date_entered_cashed,
-      p.hs_v2_date_entered_cached,
-      p.hs_date_entered_cached,
-      isCashingStage(d) ? p.hs_v2_date_entered_current_stage : null,
-      isCashingStage(d) ? p.hs_date_entered_current_stage : null,
-      p.closedate
+      p.closedate,
+      p.hs_v2_date_entered_current_stage,
+      p.hs_date_entered_current_stage
     );
   }
 
@@ -1788,11 +1746,10 @@ function renderFinancialDetails(){
     const cashingDate = getCashingDate(d);
     const amount = getAmount(d);
     const createdDate = first(d.createdAt, d.createdate, d.hs_createdate, d.properties?.createdate, d.properties?.hs_createdate);
-    const actionDate = bucket === "cashing" ? cashingDate : signedDate;
     const name = getName(d);
 
     return {
-      id: d.id || `${bucket}-${name}-${amount}-${actionDate || createdDate || ""}`,
+      id: d.id || `${bucket}-${name}-${amount}-${signedDate || cashingDate || createdDate || ""}`,
       hubspotUrl: getHubSpotUrl(d),
       name,
       rep: getOwnerName(d),
@@ -1801,15 +1758,13 @@ function renderFinancialDetails(){
       stage: bucket === "cashing" ? "Cashing" : "Signed Contract / Booking",
       signedDate: dateTxt(signedDate),
       cashingDate: dateTxt(cashingDate),
-      actionDate: dateTxt(actionDate),
       daysFromSignedToCashing: daysBetween(signedDate, cashingDate),
       daysWaiting: daysSinceLocal(signedDate),
       followUpStatus: d.followUpStatus || d.riskLabel || null,
       _sourceStage: stageText(d),
       _createdMs: parseDateMs(createdDate),
       _signedMs: parseDateMs(signedDate),
-      _cashMs: parseDateMs(cashingDate),
-      _actionMs: parseDateMs(actionDate)
+      _cashMs: parseDateMs(cashingDate)
     };
   }
 
@@ -1823,10 +1778,9 @@ function renderFinancialDetails(){
     });
   }
 
-  function isYtdMs(ms){
-    if(!ms) return false;
-    const dt = new Date(ms);
-    return dt.getFullYear() === currentYear && ms <= nowMsLocal;
+  function isCurrentYearMs(ms){
+    if(!ms) return true;
+    return new Date(ms).getFullYear() === currentYear;
   }
 
   const fd = D?.financialDetails || {};
@@ -1854,13 +1808,13 @@ function renderFinancialDetails(){
     .filter(d => isCashingStage(d))
     .filter(d => getAmount(d) > 0)
     .map(d => normalizeDeal(d, "cashing"))
-    .filter(d => isYtdMs(d._cashMs || d._actionMs));
+    .filter(d => isCurrentYearMs(d._cashMs));
 
   const rawCashingStrict = rawDealPools
     .filter(d => isCashingStage(d))
     .filter(d => getAmount(d) > 0)
     .map(d => normalizeDeal(d, "cashing"))
-    .filter(d => isYtdMs(d._cashMs || d._actionMs));
+    .filter(d => isCurrentYearMs(d._cashMs));
 
   const closedWonFallback = [
     ...arr(D?.closedWon),
@@ -1871,8 +1825,7 @@ function renderFinancialDetails(){
     ...arr(fd.cashingRevenue)
   ]
     .filter(d => getAmount(d) > 0)
-    .map(d => normalizeDeal({...d, stage:first(d.stage,d.stageLabel,d.dealstage,d.properties?.dealstage_label,"Cashing")}, "cashing"))
-    .filter(d => isYtdMs(d._cashMs || d._actionMs || d._createdMs));
+    .map(d => normalizeDeal({...d, stage:first(d.stage,d.stageLabel,d.dealstage,d.properties?.dealstage_label,"Cashing")}, "cashing"));
 
   const fdCashingLoose = [
     ...arr(fd.cashing),
@@ -1885,7 +1838,7 @@ function renderFinancialDetails(){
   ]
     .filter(d => getAmount(d) > 0)
     .map(d => normalizeDeal({...d, stage:first(d.stage,d.stageLabel,d.dealstage,d.properties?.dealstage_label,"Cashing")}, "cashing"))
-    .filter(d => isYtdMs(d._cashMs || d._actionMs || d._createdMs));
+    .filter(d => isCurrentYearMs(d._cashMs || d._signedMs || d._createdMs));
 
   const fdSignedStrict = [
     ...arr(fd.signed),
@@ -1897,13 +1850,13 @@ function renderFinancialDetails(){
     .filter(d => isSignedStage(d))
     .filter(d => getAmount(d) > 0)
     .map(d => normalizeDeal(d, "signed"))
-    .filter(d => isYtdMs(d._signedMs || d._actionMs));
+    .filter(d => isCurrentYearMs(d._signedMs));
 
   const rawSignedStrict = rawDealPools
     .filter(d => isSignedStage(d))
     .filter(d => getAmount(d) > 0)
     .map(d => normalizeDeal(d, "signed"))
-    .filter(d => isYtdMs(d._signedMs || d._actionMs));
+    .filter(d => isCurrentYearMs(d._signedMs));
 
   const fdSignedLoose = [
     ...arr(fd.signed),
@@ -1917,95 +1870,32 @@ function renderFinancialDetails(){
   ]
     .filter(d => getAmount(d) > 0)
     .map(d => normalizeDeal({...d, stage:first(d.stage,d.stageLabel,d.dealstage,d.properties?.dealstage_label,"Signed Contract / Booking")}, "signed"))
-    .filter(d => isYtdMs(d._signedMs || d._actionMs || d._createdMs));
+    .filter(d => isCurrentYearMs(d._signedMs || d._createdMs));
 
   const cashing = dedupeDeals([...fdCashingStrict, ...rawCashingStrict, ...fdCashingLoose, ...closedWonFallback])
-    .sort((a,b) => (b._cashMs || b._actionMs || b._signedMs || 0) - (a._cashMs || a._actionMs || a._signedMs || 0));
+    .sort((a,b) => (b._cashMs || b._signedMs || 0) - (a._cashMs || a._signedMs || 0));
 
   const signed = dedupeDeals([...fdSignedStrict, ...rawSignedStrict, ...fdSignedLoose])
     .filter(d => !cashing.some(c => String(c.id) === String(d.id)))
     .sort((a,b) => Number(b.daysWaiting || 0) - Number(a.daysWaiting || 0));
 
-  const delayedSigned = signed.filter(d => Number(d.daysWaiting || 0) >= 7);
   const cashingAmount = cashing.reduce((s,d)=>s+Number(d.amount||0),0);
   const signedAmount = signed.reduce((s,d)=>s+Number(d.amount||0),0);
   const pendingAmount = signedAmount;
   const cashingCount = cashing.length;
   const signedCount = signed.length;
-  const periodLabel = `YTD ${currentYear}`;
-
-  window.__acqFinancialMetricRows = {
-    cashing,
-    signed,
-    pending: signed,
-    delayed: delayedSigned,
-    all: [...cashing, ...signed]
-  };
-
-  window.openAcqFinancialRows = function(title, desc, rows){
-    const existing = document.getElementById('acqFinancialBackdrop');
-    if(existing) existing.remove();
-    const safeRows = Array.isArray(rows) ? rows : [];
-    const rowHtml = safeRows.length ? safeRows.slice(0,100).map(row => {
-      const url = row.hubspotUrl || (row.id && typeof hubspotRecordUrl === 'function' ? hubspotRecordUrl('deal', row.id) : null);
-      const name = row.name || 'Unnamed deal';
-      const meta = `${row.stage || ''}${row.actionDate && row.actionDate !== '—' ? ' · Action: ' + row.actionDate : ''}${row.signedDate && row.signedDate !== '—' ? ' · Signed: ' + row.signedDate : ''}${row.cashingDate && row.cashingDate !== '—' ? ' · Cashing: ' + row.cashingDate : ''}`;
-      const status = row.followUpStatus || row.status || row.stage || 'Deal';
-      return `<div class="acq-detail-row"><div class="acq-detail-name">${recordLink(esc(name),url)}<div class="acq-detail-meta">${esc(meta)}</div></div><div>${esc(row.rep || '—')}</div><div><span class="acq-detail-pill">${esc(status)}</span></div><div style="font-family:var(--mono);font-weight:900;text-align:right">${esc(money(row.amount || 0))}</div></div>`;
-    }).join('') : `<div class="acq-detail-empty">No YTD deals available for this number in the current data.json.</div>`;
-    const more = safeRows.length > 100 ? `<div class="acq-detail-empty" style="padding:12px">Showing first 100 of ${safeRows.length.toLocaleString()} rows.</div>` : '';
-    const node = document.createElement('div');
-    node.id = 'acqFinancialBackdrop';
-    node.className = 'acq-detail-backdrop';
-    node.onclick = function(e){ if(e.target === node) node.remove(); };
-    node.innerHTML = `<div class="acq-detail-card"><div class="acq-detail-hd"><div><div class="acq-detail-title">${esc(title)} <span class="badge bb" style="margin-left:8px">${safeRows.length.toLocaleString()} rows</span></div><div class="acq-detail-sub">${esc(desc)} · Period: ${esc(periodLabel)} · Names open directly in HubSpot when a link is available.</div></div><button class="acq-detail-close" onclick="document.getElementById('acqFinancialBackdrop')?.remove()">×</button></div><div class="acq-detail-body">${rowHtml}${more}</div></div>`;
-    document.body.appendChild(node);
-  };
-
-  window.openAcqFinancialMetric = function(kind){
-    const rowsMap = window.__acqFinancialMetricRows || {};
-    const labels = {
-      cashing: ['Cashing Revenue', 'Closed-won / cashing deals counted in YTD cashing revenue'],
-      signed: ['Signed Contract', 'Signed / booking / binding-to-cash deals counted in YTD signed value'],
-      pending: ['Pending to Cash', 'Signed YTD value still waiting to move into cashing'],
-      delayed: ['Delayed Signed Deals', 'Signed YTD deals that need cashing follow-up'],
-      all: ['Financial Details', 'All YTD acquisition financial deals']
-    };
-    const item = labels[kind] || labels.all;
-    window.openAcqFinancialRows(item[0], item[1], rowsMap[kind] || []);
-  };
-
-  window.openAcqFinancialDeal = function(id, bucket){
-    const rows = (window.__acqFinancialMetricRows?.[bucket] || []).filter(r => String(r.id) === String(id));
-    const row = rows[0];
-    window.openAcqFinancialRows(row ? row.name : 'Deal details', 'Single YTD financial deal behind the clicked number', rows);
-  };
-
-  function bindFinancialClick(id, kind){
-    const el = $(id);
-    if(!el) return;
-    el.classList.add('financial-click-num');
-    el.style.cursor = 'pointer';
-    el.title = `Click to see ${periodLabel} records`;
-    el.onclick = function(ev){ ev.stopPropagation(); window.openAcqFinancialMetric(kind); };
-  }
 
   setText("finCashingBadge", `${cashingCount} Cashing · ${money(cashingAmount)}`);
   setText("finSignedBadge", `${signedCount} Signed · ${money(signedAmount)}`);
-  setText("finCashingMini", `${cashingCount} YTD deals`);
-  setText("finSignedMini", `${signedCount} YTD deals`);
-
-  bindFinancialClick("finCashingBadge", "cashing");
-  bindFinancialClick("finSignedBadge", "signed");
-  bindFinancialClick("finCashingMini", "cashing");
-  bindFinancialClick("finSignedMini", "signed");
+  setText("finCashingMini", `${cashingCount} deals`);
+  setText("finSignedMini", `${signedCount} deals`);
 
   setHTML("financialSummaryGrid", [
-    { k:'cashing', v: money(cashingAmount), l: "Cashing Revenue", s: `${periodLabel} · ${cashingCount} closed-won/cashing deals`, c: "var(--green)" },
-    { k:'signed', v: money(signedAmount), l: "Signed Contract", s: `${periodLabel} · ${signedCount} signed deals waiting for Cashing`, c: "var(--amber)" },
-    { k:'pending', v: money(pendingAmount), l: "Pending to Cash", s: `${periodLabel} · Signed value still before Cashing`, c: "var(--blue)" }
+    { v: money(cashingAmount), l: "Cashing Revenue", s: `${cashingCount} closed-won/cashing deals`, c: "var(--green)" },
+    { v: money(signedAmount), l: "Signed Contract", s: `${signedCount} signed deals waiting for Cashing`, c: "var(--amber)" },
+    { v: money(pendingAmount), l: "Pending to Cash", s: "Signed value still before Cashing", c: "var(--blue)" }
   ].map(x => `
-    <div class="financial-box financial-click-box" onclick="openAcqFinancialMetric('${x.k}')" title="Click to see ${periodLabel} records">
+    <div class="financial-box">
       <div class="financial-v" style="color:${x.c}">${x.v}</div>
       <div class="financial-l">${x.l}</div>
       <div class="financial-s">${x.s}</div>
@@ -2018,21 +1908,19 @@ function renderFinancialDetails(){
     </span>
   `;
 
-  const qstr = v => JSON.stringify(String(v || ""));
-
   const cashingRow = d => {
     const days = d.daysFromSignedToCashing;
     return `
       <tr>
         <td>
           <div style="font-weight:700">${recordLink(d.name || "Unnamed deal", d.hubspotUrl)}</div>
-          <div style="font-size:9px;color:var(--muted)">Cashing / Closed Won · ${periodLabel}</div>
+          <div style="font-size:9px;color:var(--muted)">Cashing / Closed Won</div>
         </td>
         <td>${repBadge(d)}</td>
-        <td class="c"><span class="financial-click-num" onclick='event.stopPropagation(); openAcqFinancialDeal(${qstr(d.id)},"cashing")' style="font-family:var(--mono);font-weight:800;color:var(--green)">${money(d.amount)}</span></td>
+        <td class="c" style="font-family:var(--mono);font-weight:800;color:var(--green)">${money(d.amount)}</td>
         <td class="c" style="font-family:var(--mono);font-size:10px">${d.signedDate || "—"}</td>
-        <td class="c" style="font-family:var(--mono);font-size:10px">${d.cashingDate || d.actionDate || "—"}</td>
-        <td class="c"><span class="fin-status ok financial-click-num" onclick='event.stopPropagation(); openAcqFinancialDeal(${qstr(d.id)},"cashing")'>${days !== null && days !== undefined ? days + "d" : "—"}</span></td>
+        <td class="c" style="font-family:var(--mono);font-size:10px">${d.cashingDate || "—"}</td>
+        <td class="c"><span class="fin-status ok">${days !== null && days !== undefined ? days + "d" : "—"}</span></td>
       </tr>
     `;
   };
@@ -2049,13 +1937,13 @@ function renderFinancialDetails(){
       <tr>
         <td>
           <div style="font-weight:700">${recordLink(d.name || "Unnamed deal", d.hubspotUrl)}</div>
-          <div style="font-size:9px;color:var(--muted)">Signed Contract / Booking / Binding to Cash · ${periodLabel}</div>
+          <div style="font-size:9px;color:var(--muted)">Signed Contract / Booking</div>
         </td>
         <td>${repBadge(d)}</td>
-        <td class="c"><span class="financial-click-num" onclick='event.stopPropagation(); openAcqFinancialDeal(${qstr(d.id)},"signed")' style="font-family:var(--mono);font-weight:800;color:var(--amber)">${money(d.amount)}</span></td>
-        <td class="c" style="font-family:var(--mono);font-size:10px">${d.signedDate || d.actionDate || "—"}</td>
-        <td class="c"><span class="financial-click-num" onclick='event.stopPropagation(); openAcqFinancialDeal(${qstr(d.id)},"signed")' style="font-family:var(--mono);font-size:10px">${days !== null && days !== undefined ? days + "d" : "—"}</span></td>
-        <td class="c"><span class="fin-status ${cls} financial-click-num" onclick='event.stopPropagation(); openAcqFinancialDeal(${qstr(d.id)},"signed")'>${esc(st)}</span></td>
+        <td class="c" style="font-family:var(--mono);font-weight:800;color:var(--amber)">${money(d.amount)}</td>
+        <td class="c" style="font-family:var(--mono);font-size:10px">${d.signedDate || "—"}</td>
+        <td class="c" style="font-family:var(--mono);font-size:10px">${days !== null && days !== undefined ? days + "d" : "—"}</td>
+        <td class="c"><span class="fin-status ${cls}">${esc(st)}</span></td>
       </tr>
     `;
   };
@@ -2064,14 +1952,14 @@ function renderFinancialDetails(){
     "financialCashingBody",
     cashing.length
       ? cashing.slice(0,10).map(cashingRow).join("")
-      : `<tr><td colspan="6"><div class="fin-empty">No YTD Cashing / Closed Won deals found in the available acquisition financial data.</div></td></tr>`
+      : `<tr><td colspan="6"><div class="fin-empty">No Cashing / Closed Won deals found in the available acquisition financial data.</div></td></tr>`
   );
 
   setHTML(
     "financialSignedBody",
     signed.length
       ? signed.slice(0,10).map(signedRow).join("")
-      : `<tr><td colspan="6"><div class="fin-empty">No YTD Signed Contract / Booking / Binding to Cash deals found in the available acquisition financial data.</div></td></tr>`
+      : `<tr><td colspan="6"><div class="fin-empty">No Signed Contract / Booking deals found in the available acquisition financial data.</div></td></tr>`
   );
 }
 function renderManagerAddons(){
@@ -2440,7 +2328,7 @@ function restoreCurrentView(options={}){
     const repName = D ? (D.repData||[]).find(r=>r.name.toLowerCase().replace(/\s/g,"-")===id)?.name : null;
     if($("topbarTitle")) $("topbarTitle").textContent = id === "team" ? "Acquisition · Team Overview" : id === "financial" ? "Acquisition · Financial Details" : "Acquisition · " + (repName || id);
     if($("topbarSub")){
-      $("topbarSub").textContent = id === "financial" ? "YTD cashing revenue · signed contracts · pending to cash" : D ? "Updated " + (D.meta?.generatedAt||"") + " · Auto-refresh 5min" : "Loading...";
+      $("topbarSub").textContent = id === "financial" ? "Cashing revenue · Signed contracts · Pending to cash" : D ? "Updated " + (D.meta?.generatedAt||"") + " · Auto-refresh 5min" : "Loading...";
     }
   }
 
@@ -4744,127 +4632,6 @@ function enhanceAcquisitionRepFollowupSections(){
 
 
 
-/* ═══════════════════════════════════════════
-   ACQUISITION REP PERIOD SUMMARY PATCH
-   Adds Yesterday / MTD / YTD summary on each acquisition owner tab.
-   Retention panels and retention data are not touched.
-   ═══════════════════════════════════════════ */
-(function(){
-  if(window.__acqRepPeriodSummaryPatch) return;
-  window.__acqRepPeriodSummaryPatch = true;
-
-  function q(id){ return document.getElementById(id); }
-  function slug(name){ return String(name||'').toLowerCase().replace(/\s/g,'-'); }
-  function safe(v){ return String(v ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
-  function money(v){ try { return typeof fmt === 'function' ? fmt(v||0) : ('$' + Math.round(Number(v||0)).toLocaleString()); } catch(e){ return '$0'; } }
-  function rateColor(v){ try { return typeof rcColor === 'function' ? rcColor(Number(v||0)) : (Number(v||0)>=50?'var(--green)':Number(v||0)>=30?'var(--amber)':'var(--red)'); } catch(e){ return 'var(--muted)'; } }
-
-  function statCell(value,label,color,sub){
-    return '<div class="ret-kpi-compact" style="--rk:'+color+';min-height:78px">'+
-      '<div class="ret-kpi-v">'+safe(value)+'</div>'+
-      '<div class="ret-kpi-l">'+safe(label)+'</div>'+
-      (sub ? '<div class="ret-kpi-s">'+safe(sub)+'</div>' : '')+
-    '</div>';
-  }
-
-  function periodRow(title, subtitle, color, stats){
-    return '<div class="ret-kpi-period-row" style="--pc:'+color+';grid-template-columns:125px repeat(6,1fr)">'+
-      '<div class="ret-kpi-period-label"><div class="ret-kpi-period-name">'+safe(title)+'</div><div class="ret-kpi-period-sub">'+safe(subtitle)+'</div></div>'+
-      statCell(stats.calls, 'Calls', 'var(--blue)', 'Total logged')+
-      statCell(stats.connected, 'Connected', 'var(--green)', stats.rate + '% rate')+
-      statCell(stats.rate + '%', 'Connection Rate', rateColor(stats.rate), 'Call quality')+
-      statCell(stats.meetings, 'Meetings', 'var(--purple)', 'Completed only')+
-      statCell(stats.won, 'Won', 'var(--green)', money(stats.wonAmt))+
-      statCell(stats.lost, 'Lost', 'var(--red)', money(stats.lostAmt))+
-    '</div>';
-  }
-
-  function repPeriodHtml(rep){
-    var y = {
-      calls: rep.calls?.yest || 0,
-      connected: rep.calls?.yestConn || 0,
-      rate: rep.connRateYest || 0,
-      meetings: rep.meetings?.yest || 0,
-      won: rep.wonYest || 0,
-      wonAmt: rep.wonAmtYest || 0,
-      lost: rep.lostYest || 0,
-      lostAmt: rep.lostAmtYest || 0
-    };
-    var m = {
-      calls: rep.calls?.mtd || 0,
-      connected: rep.calls?.mtdConn || 0,
-      rate: rep.connRateMTD || 0,
-      meetings: rep.meetings?.mtd || 0,
-      won: rep.won || 0,
-      wonAmt: rep.wonAmt || 0,
-      lost: rep.lost || 0,
-      lostAmt: rep.lostAmt || 0
-    };
-    var t = {
-      calls: rep.calls?.ytd || 0,
-      connected: rep.calls?.ytdConn || 0,
-      rate: rep.connRateYTD || 0,
-      meetings: rep.meetings?.ytd || 0,
-      won: rep.wonYTD || 0,
-      wonAmt: rep.wonAmtYTD || 0,
-      lost: rep.lostYTD || 0,
-      lostAmt: rep.lostAmtYTD || 0
-    };
-
-    return '<div class="ret-kpi-master-card" data-acq-period-summary="'+safe(rep.id)+'" style="border-top-color:'+safe(rep.color || 'var(--green)')+'">'+
-      '<div class="ret-kpi-master-hd">'+
-        '<div class="ret-kpi-master-title">📌 '+safe(rep.name)+' · Yesterday / MTD / YTD</div>'+
-        '<span class="badge bp">Completed meetings only</span>'+
-      '</div>'+
-      periodRow('Yesterday', ((D&&D.meta&&D.meta.yesterdayLabel) || 'daily'), 'var(--blue)', y)+
-      periodRow('MTD', 'current month', 'var(--amber)', m)+
-      periodRow('YTD', 'current year', 'var(--green)', t)+
-    '</div>';
-  }
-
-  function isRequiredAcqRep(rep){
-    if(!rep || rep.type === 'view') return false;
-    var n = String(rep.name || '').toLowerCase();
-    return /marita|zein|ursula|ahmad|mohammed khalid|jehad/.test(n);
-  }
-
-  function renderRepPeriod(rep){
-    var panel = q('panel-' + slug(rep.name));
-    if(!panel) return;
-    panel.querySelectorAll('[data-acq-period-summary]').forEach(function(n){ n.remove(); });
-    var holder = document.createElement('div');
-    holder.innerHTML = repPeriodHtml(rep);
-    var hero = panel.querySelector('.rep-hero');
-    if(hero) hero.insertAdjacentElement('afterend', holder.firstChild);
-    else panel.insertAdjacentElement('afterbegin', holder.firstChild);
-  }
-
-  function renderAllRepPeriods(){
-    if(!D || !Array.isArray(D.repData)) return;
-    D.repData.filter(isRequiredAcqRep).forEach(renderRepPeriod);
-  }
-
-  window.enhanceAcquisitionRepPeriodSummaries = renderAllRepPeriods;
-
-  var prevInteractive = window.enhanceAcquisitionInteractiveViews;
-  window.enhanceAcquisitionInteractiveViews = function(){
-    var result;
-    if(typeof prevInteractive === 'function') result = prevInteractive.apply(this, arguments);
-    renderAllRepPeriods();
-    return result;
-  };
-
-  var prevFollowups = window.enhanceAcquisitionRepFollowupSections;
-  window.enhanceAcquisitionRepFollowupSections = function(){
-    var result;
-    if(typeof prevFollowups === 'function') result = prevFollowups.apply(this, arguments);
-    renderAllRepPeriods();
-    return result;
-  };
-})();
-
-
-
 
 
 /* ═══════════════════════════════════════════
@@ -4928,7 +4695,7 @@ function enhanceAcquisitionRepFollowupSections(){
     var sub = q('topbarSub');
     if(sub){
       sub.textContent = id === 'financial'
-        ? 'YTD cashing revenue · signed contracts · pending to cash'
+        ? 'Cashing revenue · Signed contracts · Pending to cash'
         : (window.D ? ('Updated ' + ((D.meta && D.meta.generatedAt) || '') + ' · Auto-refresh 5min') : 'Loading...');
     }
     if(id === 'financial') safeCall(window.renderFinancialDetails);
@@ -6201,6 +5968,369 @@ setInterval(loadData,5*60*1000);
       });
     }
   });
+})();
+</script>
+
+<script>
+/* ═══════════════════════════════════════════
+   ACQUISITION UNIVERSAL CLICKABLE NUMBERS
+   Scope: Acquisition only. Retention is not touched.
+   Requires the updated n8n node to export D.acquisitionDetails for full drill-down rows.
+   ═══════════════════════════════════════════ */
+(function(){
+  if(window.__acqUniversalClickableNumbersV2) return;
+  window.__acqUniversalClickableNumbersV2 = true;
+
+  function byId(id){ return document.getElementById(id); }
+  function asArray(v){ return Array.isArray(v) ? v : []; }
+  function cleanText(v){ return String(v || '').replace(/\s+/g,' ').trim(); }
+  function ownerMatch(row, rep){
+    if(!rep) return true;
+    var rid = String(rep.id || '');
+    var rn = String(rep.name || '');
+    return String(row.ownerId || row.hubspot_owner_id || row.owner || '') === rid ||
+           String(row.repId || '') === rid ||
+           String(row.ownerName || row.rep || '') === rn;
+  }
+  function getRepById(repId){
+    var x = String(repId || '');
+    return asArray(window.D && D.repData).find(function(r){
+      return String(r.id) === x || String(r.name) === x || String(r.name || '').toLowerCase() === x.toLowerCase();
+    }) || null;
+  }
+  function getRepFromRow(tr){
+    if(!tr || !window.D) return null;
+    var name = cleanText((tr.cells && tr.cells[0] ? tr.cells[0].textContent : '')).replace(/RET|VIEW/g,'').trim();
+    return asArray(D.repData).find(function(r){ return name.indexOf(r.name) >= 0 || r.name.indexOf(name) >= 0; }) || null;
+  }
+  function rowName(row){ return row.name || row.companyName || row.dealname || row.title || row.email || row.id || 'Unknown'; }
+  function rowType(row){
+    if(row.type) return row.type;
+    if(row.email || row.leadStatus || row.sourceBucket) return 'lead';
+    if(row.amount !== undefined || row.stage || row.stageLabel || row.dealstage || row.reasons) return 'deal';
+    if(row.activityType || row.outcome || row.disposition) return 'activity';
+    return 'company';
+  }
+  function rowUrl(row, type){
+    if(row.hubspotUrl || row.url) return row.hubspotUrl || row.url;
+    if(typeof window.hubspotRecordUrl === 'function'){
+      if(type === 'lead') return hubspotRecordUrl('contact', row.id);
+      if(type === 'deal') return hubspotRecordUrl('deal', row.id);
+      if(type === 'activity' && row.activityType === 'call') return hubspotRecordUrl('call', row.id);
+      if(type === 'activity' && row.activityType === 'meeting') return hubspotRecordUrl('meeting', row.id);
+      return hubspotRecordUrl('company', row.id);
+    }
+    return null;
+  }
+  function filterRep(rows, opts){
+    var rep = opts && opts.repId ? getRepById(opts.repId) : null;
+    return rep ? rows.filter(function(row){ return ownerMatch(row, rep); }) : rows;
+  }
+  function rowsFromRepField(kind, opts){
+    var rep = opts && opts.repId ? getRepById(opts.repId) : null;
+    var reps = rep ? [rep] : asArray(window.D && D.repData);
+    if(kind === 'open_deals' || kind === 'pipeline') return reps.flatMap(function(r){ return asArray(r.topDeals).map(function(x){ return Object.assign({}, x, {ownerId:r.id, ownerName:r.name, rep:r.name}); }); });
+    if(kind === 'deals_at_risk') return reps.flatMap(function(r){ return [].concat(
+      asArray(r.needsAttention).map(function(x){ return Object.assign({riskType:'No next activity'}, x, {ownerId:r.id, ownerName:r.name, rep:r.name}); }),
+      asArray(r.cold).map(function(x){ return Object.assign({riskType:'Cold deal'}, x, {ownerId:r.id, ownerName:r.name, rep:r.name}); }),
+      asArray(r.stuck).map(function(x){ return Object.assign({riskType:'Stuck deal'}, x, {ownerId:r.id, ownerName:r.name, rep:r.name}); })
+    ); });
+    if(kind === 'rank_a_untouched') return reps.flatMap(function(r){ return asArray(r.rankAUntouched).map(function(x){ return Object.assign({rank:'A'}, x, {ownerId:r.id, ownerName:r.name}); }); });
+    if(kind === 'rank_b_untouched') return reps.flatMap(function(r){ return asArray(r.rankBUntouched).map(function(x){ return Object.assign({rank:'B'}, x, {ownerId:r.id, ownerName:r.name}); }); });
+    if(kind === 'rank_ab_untouched') return rowsFromRepField('rank_a_untouched', opts).concat(rowsFromRepField('rank_b_untouched', opts));
+    return [];
+  }
+
+  var oldRowsFn = window.acqRowsForMetric;
+  var oldLabelFn = window.acqLabel;
+
+  function details(){ return (window.D && D.acquisitionDetails) || {}; }
+  function periodBucket(period){
+    return period === 'mtd' ? 'mtd' : period === 'ytd' ? 'ytd' : 'yesterday';
+  }
+  function universalRows(kind, opts){
+    opts = opts || {};
+    var ad = details();
+    var rows = [];
+
+    var map = {
+      calls_yesterday: ['calls','yesterday'], calls_mtd: ['calls','mtd'], calls_ytd: ['calls','ytd'],
+      connected_yesterday: ['calls','connectedYesterday'], connected_mtd: ['calls','connectedMTD'], connected_ytd: ['calls','connectedYTD'],
+      missed_yesterday: ['calls','missedYesterday'], missed_mtd: ['calls','missedMTD'], missed_ytd: ['calls','missedYTD'],
+      meetings_yesterday: ['meetings','yesterday'], meetings_mtd: ['meetings','mtd'], meetings_ytd: ['meetings','ytd'],
+      new_deals_yesterday: ['deals','createdYesterday'], new_deals_mtd: ['deals','createdMTD'], new_deals_ytd: ['deals','createdYTD'],
+      won_yesterday: ['deals','wonYesterday'], won_mtd: ['deals','wonMTD'], won_ytd: ['deals','wonYTD'],
+      lost_yesterday: ['deals','lostYesterday'], lost_mtd: ['deals','lostMTD'], lost_ytd: ['deals','lostYTD'],
+      leads_yesterday: ['leads','yesterday'], leads_mtd: ['leads','mtd'], leads_ytd: ['leads','ytd']
+    };
+    if(map[kind]) rows = asArray((ad[map[kind][0]] || {})[map[kind][1]]);
+    else if(kind === 'open_deals' || kind === 'pipeline') rows = asArray(ad.deals && ad.deals.open);
+    else if(kind === 'pipeline_stage'){
+      var stage = String(opts.stage || '').toLowerCase();
+      rows = asArray(ad.deals && ad.deals.open).filter(function(r){ return String(r.stage || r.stageLabel || r.dealstage || '').toLowerCase() === stage; });
+    }
+    else if(kind === 'financial_cashing') rows = asArray(ad.financial && ad.financial.cashing);
+    else if(kind === 'financial_signed') rows = asArray(ad.financial && ad.financial.signed);
+    else if(kind === 'financial_pending') rows = asArray(ad.financial && ad.financial.signed);
+    else if(kind === 'rank_a_untouched' || kind === 'rank_b_untouched' || kind === 'rank_ab_untouched' || kind === 'deals_at_risk') rows = rowsFromRepField(kind, opts);
+    else if(typeof oldRowsFn === 'function') rows = oldRowsFn(kind, opts) || [];
+
+    if(!rows.length){
+      if(kind === 'open_deals' || kind === 'pipeline') rows = rowsFromRepField('open_deals', opts);
+      if((kind === 'rank_a_untouched' || kind === 'rank_b_untouched' || kind === 'rank_ab_untouched' || kind === 'deals_at_risk')) rows = rowsFromRepField(kind, opts);
+    }
+    return filterRep(rows, opts);
+  }
+
+  function universalLabel(kind){
+    var labels = {
+      calls_yesterday:['Yesterday calls','Call records created yesterday.'],
+      calls_mtd:['MTD calls','Call records created this month.'],
+      calls_ytd:['YTD calls','Call records created this year.'],
+      connected_yesterday:['Yesterday connected calls','Calls with the connected disposition yesterday.'],
+      connected_mtd:['MTD connected calls','Calls with the connected disposition this month.'],
+      connected_ytd:['YTD connected calls','Calls with the connected disposition this year.'],
+      missed_yesterday:['Yesterday missed calls','Calls not marked as connected yesterday.'],
+      missed_mtd:['MTD missed calls','Calls not marked as connected this month.'],
+      missed_ytd:['YTD missed calls','Calls not marked as connected this year.'],
+      meetings_yesterday:['Yesterday completed meetings','Meetings with hs_meeting_outcome = COMPLETED yesterday.'],
+      meetings_mtd:['MTD completed meetings','Meetings with hs_meeting_outcome = COMPLETED this month.'],
+      meetings_ytd:['YTD completed meetings','Meetings with hs_meeting_outcome = COMPLETED this year.'],
+      open_deals:['Open deals','Open acquisition pipeline deals.'],
+      pipeline:['Pipeline value','Open deals behind the pipeline value.'],
+      pipeline_stage:['Pipeline stage details','Open deals inside the selected stage.'],
+      new_deals_yesterday:['New deals yesterday','Deals created yesterday.'],
+      new_deals_mtd:['New deals MTD','Deals created this month.'],
+      new_deals_ytd:['New deals YTD','Deals created this year.'],
+      won_yesterday:['Closed Won yesterday','Closed won / cashing deals yesterday.'],
+      won_mtd:['Closed Won MTD','Closed won / cashing deals this month.'],
+      won_ytd:['Closed Won YTD','Closed won / cashing deals this year.'],
+      lost_yesterday:['Closed Lost yesterday','Closed lost deals yesterday.'],
+      lost_mtd:['Closed Lost MTD','Closed lost deals this month.'],
+      lost_ytd:['Closed Lost YTD','Closed lost deals this year.'],
+      leads_yesterday:['New leads yesterday','Lead/contact rows created yesterday.'],
+      leads_mtd:['Leads MTD','Lead/contact rows created this month.'],
+      leads_ytd:['Leads YTD','Lead/contact rows created this year.'],
+      financial_cashing:['YTD cashing details','Cashing / closed-won financial deals this year.'],
+      financial_signed:['YTD signed contract details','Signed / booking deals this year.'],
+      financial_pending:['YTD pending to cash','Signed value still pending to cash.']
+    };
+    return labels[kind] || (typeof oldLabelFn === 'function' ? oldLabelFn(kind) : ['Details','Rows available for this number.']);
+  }
+
+  window.acqRowsForMetric = universalRows;
+  window.acqLabel = universalLabel;
+  try { acqRowsForMetric = universalRows; } catch(e) {}
+  try { acqLabel = universalLabel; } catch(e) {}
+
+  function openUniversal(kind, opts){
+    opts = opts || {};
+    if(typeof window.openAcqMetricCard === 'function'){
+      window.openAcqMetricCard(kind, opts);
+      return;
+    }
+    var rows = universalRows(kind, opts);
+    var label = universalLabel(kind);
+    var existing = byId('acqMetricBackdrop');
+    if(existing) existing.remove();
+    var html = rows.length ? rows.slice(0,100).map(function(row){
+      var type = rowType(row), name = rowName(row), url = rowUrl(row,type);
+      var meta = row.date || row.createdAt || row.activityDate || row.stage || row.stageLabel || row.country || '';
+      var status = row.status || row.outcome || row.leadStatus || row.disposition || row.riskType || type;
+      var value = row.amount !== undefined ? (typeof fmt === 'function' ? fmt(row.amount) : row.amount) : (row.value || row.ageDays || '');
+      return '<div class="acq-detail-row"><div class="acq-detail-name">'+recordLink(esc(name),url)+'<div class="acq-detail-meta">'+esc(meta)+'</div></div><div>'+esc(row.ownerName || row.rep || '—')+'</div><div><span class="acq-detail-pill">'+esc(status || '—')+'</span></div><div style="font-family:var(--mono);font-weight:900;text-align:right">'+esc(value || '—')+'</div></div>';
+    }).join('') : '<div class="acq-detail-empty">No detail rows available in current data.json for this number. Run the updated n8n node once to export acquisitionDetails.</div>';
+    var node = document.createElement('div');
+    node.id = 'acqMetricBackdrop';
+    node.className = 'acq-detail-backdrop';
+    node.onclick = function(e){ if(e.target === node) node.remove(); };
+    node.innerHTML = '<div class="acq-detail-card"><div class="acq-detail-hd"><div><div class="acq-detail-title">'+esc(label[0])+' <span class="badge bb" style="margin-left:8px">'+rows.length.toLocaleString()+' rows</span></div><div class="acq-detail-sub">'+esc(label[1])+'</div></div><button class="acq-detail-close" onclick="document.getElementById(\'acqMetricBackdrop\')?.remove()">×</button></div><div class="acq-detail-body">'+html+'</div></div>';
+    document.body.appendChild(node);
+  }
+  window.openAcqUniversalMetric = openUniversal;
+
+  function makeClickable(el, kind, opts){
+    if(!el || el.dataset.acqClickReady === '1') return;
+    el.dataset.acqClickReady = '1';
+    el.classList.add('metric-clickable');
+    el.style.cursor = 'pointer';
+    el.title = 'Click to open details';
+    el.addEventListener('click', function(ev){ ev.stopPropagation(); openUniversal(kind, opts || {}); });
+  }
+
+  function metricFromLabel(label){
+    label = String(label || '').toLowerCase();
+    var period = label.indexOf('ytd') >= 0 || label.indexOf('year') >= 0 ? 'ytd' : label.indexOf('mtd') >= 0 || label.indexOf('month') >= 0 ? 'mtd' : 'yesterday';
+    if(label.indexOf('connected') >= 0) return 'connected_' + period;
+    if(label.indexOf('meeting') >= 0) return 'meetings_' + period;
+    if(label.indexOf('new deal') >= 0) return 'new_deals_' + period;
+    if(label.indexOf('open deal') >= 0) return 'open_deals';
+    if(label.indexOf('pipeline') >= 0) return 'pipeline';
+    if(label.indexOf('won') >= 0 || label.indexOf('cashing') >= 0) return 'won_' + period;
+    if(label.indexOf('lost') >= 0) return 'lost_' + period;
+    if(label.indexOf('lead') >= 0) return 'leads_' + period;
+    if(label.indexOf('call') >= 0) return 'calls_' + period;
+    return 'open_deals';
+  }
+
+  function bindPerformanceTable(){
+    var tbody = byId('perfBody');
+    if(!tbody) return;
+    Array.prototype.forEach.call(tbody.querySelectorAll('tr'), function(tr){
+      var rep = getRepFromRow(tr);
+      var opts = rep ? { repId: rep.id } : {};
+      var map = {1:'calls_yesterday',2:'connected_yesterday',3:'missed_yesterday',4:'connected_yesterday',5:'meetings_yesterday',6:'open_deals',7:'pipeline'};
+      Object.keys(map).forEach(function(i){
+        var cell = tr.cells && tr.cells[Number(i)];
+        if(cell) makeClickable(cell, map[i], opts);
+      });
+    });
+  }
+
+  function bindKpiCards(){
+    var sec = byId('kpiSection');
+    if(!sec) return;
+    Array.prototype.forEach.call(sec.querySelectorAll('.sum-card'), function(card){
+      var label = cleanText(card.querySelector('.sum-lbl') && card.querySelector('.sum-lbl').textContent);
+      var kind = metricFromLabel(label);
+      makeClickable(card, kind, {});
+      var val = card.querySelector('.sum-val');
+      if(val) makeClickable(val, kind, {});
+    });
+  }
+
+  function bindCommandPreview(){
+    [['cpNotLeads','leads_not_contacted'],['cpUntouched','rank_ab_untouched'],['cpAtRisk','deals_at_risk'],['cpContactRate','leads_contacted'],['cpPipeline','pipeline'],['cpWonMTD','won_mtd'],['cpLostMTD','lost_mtd'],['cpOutreachRate','leads_contacted'],['cpContactedLeads','leads_contacted'],['cpNotContactedLeads','leads_not_contacted'],['cpCallsMTD','calls_mtd'],['cpConnMTD','connected_mtd'],['cpMtgsMTD','meetings_mtd']].forEach(function(x){ makeClickable(byId(x[0]), x[1], {}); });
+  }
+
+  function bindOutreach(){
+    var grid = byId('outreachKpiGrid');
+    if(grid){
+      Array.prototype.forEach.call(grid.querySelectorAll('.outreach-kpi-box'), function(box){
+        var label = cleanText(box.querySelector('.outreach-kpi-lbl') && box.querySelector('.outreach-kpi-lbl').textContent).toLowerCase();
+        var kind = label.indexOf('not contacted') >= 0 && label.indexOf('compan') >= 0 ? 'companies_not_contacted' :
+          label.indexOf('not contacted') >= 0 ? 'leads_not_contacted' :
+          label.indexOf('contacted') >= 0 ? 'leads_contacted' :
+          label.indexOf('compan') >= 0 ? 'companies_not_contacted' : 'leads_ytd';
+        makeClickable(box, kind, {});
+      });
+    }
+    [['outreachLeadRateVal','leads_contacted'],['outreachCoRateVal','companies_not_contacted'],['outreachActCalls','connected_ytd'],['outreachActMeetings','meetings_ytd'],['outreachOnlineSplit','online_not_contacted'],['outreachOfflineSplit','offline_not_contacted'],['outreachLeadBadge','leads_contacted'],['outreachCoBadge','companies_not_contacted'],['outreachLeadNotBadge','leads_not_contacted'],['outreachCoNotBadge','companies_not_contacted']].forEach(function(x){ makeClickable(byId(x[0]), x[1], {}); });
+  }
+
+  function bindRankTable(){
+    var tbody = byId('rankRepBody');
+    if(!tbody) return;
+    Array.prototype.forEach.call(tbody.querySelectorAll('tr'), function(tr){
+      var rep = getRepFromRow(tr);
+      var opts = rep ? {repId:rep.id} : {};
+      var map = {1:'rank_a_untouched',2:'leads_contacted',3:'rank_a_untouched',4:'rank_b_untouched',5:'leads_contacted',6:'rank_b_untouched',7:'deals_at_risk'};
+      Object.keys(map).forEach(function(i){ var cell = tr.cells && tr.cells[Number(i)]; if(cell) makeClickable(cell, map[i], opts); });
+    });
+  }
+
+  function bindPipeline(){
+    [['pipeTotal','open_deals'],['pipeTotalBadge','open_deals'],['pipeTotalAmt','pipeline']].forEach(function(x){ makeClickable(byId(x[0]), x[1], {}); });
+    Array.prototype.forEach.call(document.querySelectorAll('#pipeHorizContainer .pipe-stage'), function(stage){
+      var label = cleanText(stage.querySelector('.ps-name') && stage.querySelector('.ps-name').textContent);
+      makeClickable(stage, 'pipeline_stage', {stage: label});
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('#pipeCards .pcard'), function(card){
+      var name = cleanText(card.querySelector('.pcard-top span') && card.querySelector('.pcard-top span').textContent).replace(/RET|VIEW/g,'').trim();
+      var rep = asArray(window.D && D.repData).find(function(r){ return r.name.indexOf(name) === 0 || name.indexOf((r.name||'').split(' ')[0]) >= 0; });
+      var opts = rep ? {repId:rep.id} : {};
+      makeClickable(card.querySelector('.pcard-top'), 'open_deals', opts);
+      Array.prototype.forEach.call(card.querySelectorAll('.pdeal-amt'), function(v){ makeClickable(v, 'open_deals', opts); });
+    });
+  }
+
+  function bindLeads(){
+    [['leadsBadgeRow','leads_ytd']].forEach(function(x){ makeClickable(byId(x[0]), x[1], {}); });
+    Array.prototype.forEach.call(document.querySelectorAll('#leadsPeriods .lperiod'), function(periodBox){
+      var label = cleanText(periodBox.querySelector('.lperiod-label') && periodBox.querySelector('.lperiod-label').textContent).toLowerCase();
+      var kind = label.indexOf('month') >= 0 ? 'leads_mtd' : label.indexOf('year') >= 0 ? 'leads_ytd' : 'leads_yesterday';
+      makeClickable(periodBox, kind, {});
+    });
+    var body = byId('leadsRepBody');
+    if(body){
+      Array.prototype.forEach.call(body.querySelectorAll('tr'), function(tr){
+        var rep = getRepFromRow(tr);
+        var opts = rep ? {repId:rep.id} : {};
+        [1,2,3].forEach(function(i){ var cell = tr.cells && tr.cells[i]; if(cell) makeClickable(cell, i===1?'leads_yesterday':i===2?'leads_mtd':'leads_ytd', opts); });
+      });
+    }
+  }
+
+  function bindWonLost(){
+    [['wonBadge','won_mtd'],['lostBadge','lost_mtd']].forEach(function(x){ makeClickable(byId(x[0]), x[1], {}); });
+    Array.prototype.forEach.call(document.querySelectorAll('#wonContainer .deal-amt'), function(el){ makeClickable(el, 'won_mtd', {}); });
+    Array.prototype.forEach.call(document.querySelectorAll('#lostContainer .deal-amt'), function(el){ makeClickable(el, 'lost_mtd', {}); });
+  }
+
+  function bindRepPages(){
+    Array.prototype.forEach.call(document.querySelectorAll('#repPanels .panel'), function(panel){
+      var slug = String(panel.id || '').replace(/^panel-/,'');
+      var rep = asArray(window.D && D.repData).find(function(r){ return String(r.name || '').toLowerCase().replace(/\s/g,'-') === slug; });
+      var opts = rep ? {repId:rep.id} : {};
+      Array.prototype.forEach.call(panel.querySelectorAll('.schip,.hstat-v,.hstat-l,.badge,.deal-amt,.pdeal-amt,.citem-amt'), function(el){
+        var text = cleanText(el.textContent).toLowerCase();
+        var kind = text.indexOf('lost')>=0 ? 'lost_mtd' : text.indexOf('won')>=0 ? 'won_mtd' : text.indexOf('meeting')>=0 ? 'meetings_yesterday' : text.indexOf('connected')>=0 ? 'connected_yesterday' : text.indexOf('call')>=0 ? 'calls_yesterday' : text.indexOf('lead')>=0 ? 'leads_yesterday' : 'open_deals';
+        makeClickable(el, kind, opts);
+      });
+    });
+  }
+
+  function bindFinancialFallback(){
+    [['finCashingBadge','financial_cashing'],['finSignedBadge','financial_signed'],['finCashingMini','financial_cashing'],['finSignedMini','financial_signed']].forEach(function(x){ makeClickable(byId(x[0]), x[1], {}); });
+  }
+
+  function addCompletedMeetingNote(){
+    var head = byId('perfDate');
+    if(head && !head.dataset.completedNote){
+      head.dataset.completedNote = '1';
+      head.title = 'Meetings column is COMPLETED only after using the updated n8n Code node.';
+      if(!/Completed/i.test(head.textContent || '')) head.textContent = (head.textContent || '') + ' · Completed meetings only';
+    }
+  }
+
+  function enhanceAllAcqNumbers(){
+    if(!window.D) return;
+    bindPerformanceTable();
+    bindKpiCards();
+    bindCommandPreview();
+    bindOutreach();
+    bindRankTable();
+    bindPipeline();
+    bindLeads();
+    bindWonLost();
+    bindRepPages();
+    bindFinancialFallback();
+    addCompletedMeetingNote();
+  }
+  window.enhanceAllAcqNumbers = enhanceAllAcqNumbers;
+
+  function schedule(){ setTimeout(enhanceAllAcqNumbers,0); setTimeout(enhanceAllAcqNumbers,250); setTimeout(enhanceAllAcqNumbers,900); }
+  window.scheduleAcqClickableNumbers = schedule;
+
+  if(typeof window.render === 'function' && !window.render.__acqClickableWrapped){
+    var oldRender = window.render;
+    window.render = function(){ var res = oldRender.apply(this, arguments); schedule(); return res; };
+    window.render.__acqClickableWrapped = true;
+    try { render = window.render; } catch(e) {}
+  }
+  if(typeof window.loadData === 'function' && !window.loadData.__acqClickableWrapped){
+    var oldLoad = window.loadData;
+    window.loadData = function(){ var res = oldLoad.apply(this, arguments); try{ if(res && typeof res.then === 'function') res.then(schedule).catch(schedule); else schedule(); }catch(e){ schedule(); } return res; };
+    window.loadData.__acqClickableWrapped = true;
+    try { loadData = window.loadData; } catch(e) {}
+  }
+  if(typeof window.switchTab === 'function' && !window.switchTab.__acqClickableWrapped){
+    var oldSwitch = window.switchTab;
+    window.switchTab = function(){ var res = oldSwitch.apply(this, arguments); schedule(); return res; };
+    window.switchTab.__acqClickableWrapped = true;
+    try { switchTab = window.switchTab; } catch(e) {}
+  }
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', schedule); else schedule();
 })();
 </script>
 
