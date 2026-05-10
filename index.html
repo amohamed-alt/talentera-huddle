@@ -287,6 +287,13 @@ body{font-family:var(--font);background:var(--page-bg);color:var(--text);-webkit
 .fin-status.warn{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-bd)}
 .fin-status.risk{background:var(--red-bg);color:var(--red);border:1px solid var(--red-bd)}
 .fin-empty{padding:20px;text-align:center;color:var(--muted);font-size:12px;font-style:italic}
+
+.financial-click-box{cursor:pointer;transition:transform .15s,box-shadow .15s,border-color .15s;background:var(--surface2)}
+.financial-click-box:hover{transform:translateY(-1px);box-shadow:var(--sh);border-color:rgba(22,163,74,.35)}
+.financial-click-box .financial-v,.financial-click-num{cursor:pointer}
+.financial-click-num{border-radius:8px;padding:2px 6px;display:inline-block;transition:background .15s,box-shadow .15s,transform .15s}
+.financial-click-num:hover{background:rgba(22,163,74,.08);box-shadow:0 0 0 1px rgba(22,163,74,.18) inset;transform:translateY(-1px)}
+.financial-period-chip{display:inline-flex;align-items:center;gap:4px;font-size:8px;font-weight:900;padding:3px 8px;border-radius:999px;background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue-bd);text-transform:uppercase;letter-spacing:.08em}
 @media(max-width:1100px){.financial-summary-grid,.financial-split{grid-template-columns:1fr}}
 
 .financial-hero{display:flex;align-items:center;gap:18px;padding:20px 24px;margin-bottom:14px;background:linear-gradient(135deg,#ffffff 0%,#f7faf8 100%);border:1px solid var(--border);border-left:4px solid var(--green);border-radius:var(--r-lg);box-shadow:var(--sh)}
@@ -1157,7 +1164,7 @@ body.auth-locked .app {
             <div class="financial-hero-icon">&#128176;</div>
             <div>
               <div class="financial-hero-title">Financial Details</div>
-              <div class="financial-hero-sub">A dedicated view for answering the manager's money questions: what has already cashed, what is signed but not cashed yet, and which signed deals need follow-up before they become real revenue.</div>
+              <div class="financial-hero-sub">A dedicated YTD view for answering the manager's money questions: what has already cashed this year, what is signed but not cashed yet, and which signed deals need follow-up before they become real revenue.</div>
             </div>
           </div>
           <div class="financial-guide-grid">
@@ -1168,7 +1175,7 @@ body.auth-locked .app {
             <div class="financial-guide-card" style="--fc:var(--red)"><div class="financial-guide-title">Follow-up Status</div><div class="financial-guide-desc">Highlights delayed signed deals and keeps financial risk separate from the main dashboard.</div></div>
           </div>
           <div class="card financial-card" id="financialDetailsCard">
-            <div class="card-hd"><div class="card-title"><div class="card-title-icon" style="background:var(--green-bg)">&#128176;</div>Financial Details — Cashing / Signed</div><div style="display:flex;gap:5px;flex-wrap:wrap"><span class="badge bg" id="finCashingBadge"></span><span class="badge ba" id="finSignedBadge"></span></div></div>
+            <div class="card-hd"><div class="card-title"><div class="card-title-icon" style="background:var(--green-bg)">&#128176;</div>Financial Details — YTD Cashing / Signed</div><div style="display:flex;gap:5px;flex-wrap:wrap"><span class="badge bg" id="finCashingBadge"></span><span class="badge ba" id="finSignedBadge"></span></div></div>
             <div class="financial-summary-grid" id="financialSummaryGrid"></div>
             <div class="financial-split">
               <div class="financial-subcard"><div class="financial-subhd"><div class="financial-subtitle" style="color:var(--green)">&#9989; Cashing</div><span class="fin-status ok" id="finCashingMini"></span></div><div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Deal / Company</th><th>Rep</th><th class="c">Amount</th><th class="c">Signed Date</th><th class="c">Cashing Date</th><th class="c">Days</th></tr></thead><tbody id="financialCashingBody"></tbody></table></div></div>
@@ -1507,7 +1514,7 @@ function switchTab(id){
   const title = id === "team" ? "Acquisition · Team Overview" : id === "financial" ? "Acquisition · Financial Details" : `Acquisition · ${repName || id}`;
   if($("topbarTitle")) $("topbarTitle").textContent = title;
   if($("topbarSub")){
-    $("topbarSub").textContent = id === "financial" ? "Cashing revenue · Signed contracts · Pending to cash" : D ? `Updated ${D.meta?.generatedAt||""} · Auto-refresh 5min` : "Loading...";
+    $("topbarSub").textContent = id === "financial" ? "YTD cashing revenue · signed contracts · pending to cash" : D ? `Updated ${D.meta?.generatedAt||""} · Auto-refresh 5min` : "Loading...";
   }
 }
 
@@ -1583,9 +1590,7 @@ function renderFinancialDetails(){
   const nowMsLocal = today.getTime();
   const currentYear = today.getFullYear();
 
-  function arr(v){
-    return Array.isArray(v) ? v : [];
-  }
+  function arr(v){ return Array.isArray(v) ? v : []; }
 
   function first(...vals){
     return vals.find(v => v !== undefined && v !== null && String(v).trim() !== "") ?? null;
@@ -1626,6 +1631,14 @@ function renderFinancialDetails(){
     return Math.max(0, Math.floor((nowMsLocal - ms) / 86400000));
   }
 
+  function normStage(v){
+    return String(v || "")
+      .trim()
+      .toLowerCase()
+      .replace(/[_-]+/g," ")
+      .replace(/\s+/g," ");
+  }
+
   function stageText(d){
     const p = d?.properties || {};
     return String(first(
@@ -1640,12 +1653,10 @@ function renderFinancialDetails(){
 
   function rawStageId(d){
     const p = d?.properties || {};
-    return String(first(d.dealstage, p.dealstage) || "").trim().toLowerCase();
+    return normStage(first(d.dealstage, p.dealstage) || "");
   }
 
-  function stageNorm(d){
-    return stageText(d).toLowerCase().replace(/[_-]+/g," ").replace(/\s+/g," ").trim();
-  }
+  function stageNorm(d){ return normStage(stageText(d)); }
 
   function isDemoOrNonFinancialStage(d){
     const st = stageNorm(d);
@@ -1662,7 +1673,8 @@ function renderFinancialDetails(){
     return (
       raw === "closedwon" ||
       raw === "closed won" ||
-      /(^|\s)(cash|cashing|cashed)(\s|$)|closed won|closedwon/.test(st)
+      /closed\s*won|closedwon|(^|\s)(cashing|cashed|cached)(\s|$)|cash\s*received|payment\s*received/.test(st) ||
+      /cashing|cashed|cached/.test(raw)
     );
   }
 
@@ -1672,7 +1684,8 @@ function renderFinancialDetails(){
     if(isCashingStage(d) || isDemoOrNonFinancialStage(d)) return false;
     return (
       raw === "contractsent" ||
-      /signed contract|signed\/booking|contract\/booking|contract sent|contractsent|booking|booked|binding to cash/.test(st)
+      /contractsent|contract\s*sent|signed\s*contract|signed\s*\/\s*booking|signed\s*booking|contract\s*\/\s*booking|booking|booked|binding\s*to\s*cash|binding\s*cash|pending\s*to\s*cash/.test(st) ||
+      /contractsent|contract\s*sent|booked|booking|binding\s*to\s*cash|pending\s*to\s*cash/.test(raw)
     );
   }
 
@@ -1703,12 +1716,26 @@ function renderFinancialDetails(){
       d.signedContractDate,
       d.contractSignedDate,
       d.bookingDate,
+      d.bookedDate,
+      d.bindingToCashDate,
       d.actionDate,
       d.dateEnteredContractsent,
+      d.dateEnteredSignedContract,
+      d.dateEnteredBooked,
+      d.dateEnteredBooking,
+      d.dateEnteredBindingToCash,
       p.hs_v2_date_entered_contractsent,
       p.hs_date_entered_contractsent,
-      p.hs_v2_date_entered_current_stage,
-      p.hs_date_entered_current_stage,
+      p.hs_v2_date_entered_signed_contract,
+      p.hs_date_entered_signed_contract,
+      p.hs_v2_date_entered_booking,
+      p.hs_date_entered_booking,
+      p.hs_v2_date_entered_booked,
+      p.hs_date_entered_booked,
+      p.hs_v2_date_entered_binding_to_cash,
+      p.hs_date_entered_binding_to_cash,
+      isSignedStage(d) ? p.hs_v2_date_entered_current_stage : null,
+      isSignedStage(d) ? p.hs_date_entered_current_stage : null,
       p.closedate
     );
   }
@@ -1718,14 +1745,25 @@ function renderFinancialDetails(){
     return first(
       d.cashingDate,
       d.cashedDate,
+      d.cachedDate,
       d.closedWonDate,
       d.actionDate,
       d.closedate,
+      d.dateEnteredCashing,
+      d.dateEnteredCashed,
+      d.dateEnteredCached,
+      d.dateEnteredClosedWon,
       p.hs_v2_date_entered_closedwon,
       p.hs_date_entered_closedwon,
-      p.closedate,
-      p.hs_v2_date_entered_current_stage,
-      p.hs_date_entered_current_stage
+      p.hs_v2_date_entered_cashing,
+      p.hs_date_entered_cashing,
+      p.hs_v2_date_entered_cashed,
+      p.hs_date_entered_cashed,
+      p.hs_v2_date_entered_cached,
+      p.hs_date_entered_cached,
+      isCashingStage(d) ? p.hs_v2_date_entered_current_stage : null,
+      isCashingStage(d) ? p.hs_date_entered_current_stage : null,
+      p.closedate
     );
   }
 
@@ -1750,10 +1788,11 @@ function renderFinancialDetails(){
     const cashingDate = getCashingDate(d);
     const amount = getAmount(d);
     const createdDate = first(d.createdAt, d.createdate, d.hs_createdate, d.properties?.createdate, d.properties?.hs_createdate);
+    const actionDate = bucket === "cashing" ? cashingDate : signedDate;
     const name = getName(d);
 
     return {
-      id: d.id || `${bucket}-${name}-${amount}-${signedDate || cashingDate || createdDate || ""}`,
+      id: d.id || `${bucket}-${name}-${amount}-${actionDate || createdDate || ""}`,
       hubspotUrl: getHubSpotUrl(d),
       name,
       rep: getOwnerName(d),
@@ -1762,13 +1801,15 @@ function renderFinancialDetails(){
       stage: bucket === "cashing" ? "Cashing" : "Signed Contract / Booking",
       signedDate: dateTxt(signedDate),
       cashingDate: dateTxt(cashingDate),
+      actionDate: dateTxt(actionDate),
       daysFromSignedToCashing: daysBetween(signedDate, cashingDate),
       daysWaiting: daysSinceLocal(signedDate),
       followUpStatus: d.followUpStatus || d.riskLabel || null,
       _sourceStage: stageText(d),
       _createdMs: parseDateMs(createdDate),
       _signedMs: parseDateMs(signedDate),
-      _cashMs: parseDateMs(cashingDate)
+      _cashMs: parseDateMs(cashingDate),
+      _actionMs: parseDateMs(actionDate)
     };
   }
 
@@ -1782,9 +1823,10 @@ function renderFinancialDetails(){
     });
   }
 
-  function isCurrentYearMs(ms){
-    if(!ms) return true;
-    return new Date(ms).getFullYear() === currentYear;
+  function isYtdMs(ms){
+    if(!ms) return false;
+    const dt = new Date(ms);
+    return dt.getFullYear() === currentYear && ms <= nowMsLocal;
   }
 
   const fd = D?.financialDetails || {};
@@ -1812,13 +1854,13 @@ function renderFinancialDetails(){
     .filter(d => isCashingStage(d))
     .filter(d => getAmount(d) > 0)
     .map(d => normalizeDeal(d, "cashing"))
-    .filter(d => isCurrentYearMs(d._cashMs));
+    .filter(d => isYtdMs(d._cashMs || d._actionMs));
 
   const rawCashingStrict = rawDealPools
     .filter(d => isCashingStage(d))
     .filter(d => getAmount(d) > 0)
     .map(d => normalizeDeal(d, "cashing"))
-    .filter(d => isCurrentYearMs(d._cashMs));
+    .filter(d => isYtdMs(d._cashMs || d._actionMs));
 
   const closedWonFallback = [
     ...arr(D?.closedWon),
@@ -1829,7 +1871,8 @@ function renderFinancialDetails(){
     ...arr(fd.cashingRevenue)
   ]
     .filter(d => getAmount(d) > 0)
-    .map(d => normalizeDeal({...d, stage:first(d.stage,d.stageLabel,d.dealstage,d.properties?.dealstage_label,"Cashing")}, "cashing"));
+    .map(d => normalizeDeal({...d, stage:first(d.stage,d.stageLabel,d.dealstage,d.properties?.dealstage_label,"Cashing")}, "cashing"))
+    .filter(d => isYtdMs(d._cashMs || d._actionMs || d._createdMs));
 
   const fdCashingLoose = [
     ...arr(fd.cashing),
@@ -1842,7 +1885,7 @@ function renderFinancialDetails(){
   ]
     .filter(d => getAmount(d) > 0)
     .map(d => normalizeDeal({...d, stage:first(d.stage,d.stageLabel,d.dealstage,d.properties?.dealstage_label,"Cashing")}, "cashing"))
-    .filter(d => isCurrentYearMs(d._cashMs || d._signedMs || d._createdMs));
+    .filter(d => isYtdMs(d._cashMs || d._actionMs || d._createdMs));
 
   const fdSignedStrict = [
     ...arr(fd.signed),
@@ -1854,13 +1897,13 @@ function renderFinancialDetails(){
     .filter(d => isSignedStage(d))
     .filter(d => getAmount(d) > 0)
     .map(d => normalizeDeal(d, "signed"))
-    .filter(d => isCurrentYearMs(d._signedMs));
+    .filter(d => isYtdMs(d._signedMs || d._actionMs));
 
   const rawSignedStrict = rawDealPools
     .filter(d => isSignedStage(d))
     .filter(d => getAmount(d) > 0)
     .map(d => normalizeDeal(d, "signed"))
-    .filter(d => isCurrentYearMs(d._signedMs));
+    .filter(d => isYtdMs(d._signedMs || d._actionMs));
 
   const fdSignedLoose = [
     ...arr(fd.signed),
@@ -1874,32 +1917,95 @@ function renderFinancialDetails(){
   ]
     .filter(d => getAmount(d) > 0)
     .map(d => normalizeDeal({...d, stage:first(d.stage,d.stageLabel,d.dealstage,d.properties?.dealstage_label,"Signed Contract / Booking")}, "signed"))
-    .filter(d => isCurrentYearMs(d._signedMs || d._createdMs));
+    .filter(d => isYtdMs(d._signedMs || d._actionMs || d._createdMs));
 
   const cashing = dedupeDeals([...fdCashingStrict, ...rawCashingStrict, ...fdCashingLoose, ...closedWonFallback])
-    .sort((a,b) => (b._cashMs || b._signedMs || 0) - (a._cashMs || a._signedMs || 0));
+    .sort((a,b) => (b._cashMs || b._actionMs || b._signedMs || 0) - (a._cashMs || a._actionMs || a._signedMs || 0));
 
   const signed = dedupeDeals([...fdSignedStrict, ...rawSignedStrict, ...fdSignedLoose])
     .filter(d => !cashing.some(c => String(c.id) === String(d.id)))
     .sort((a,b) => Number(b.daysWaiting || 0) - Number(a.daysWaiting || 0));
 
+  const delayedSigned = signed.filter(d => Number(d.daysWaiting || 0) >= 7);
   const cashingAmount = cashing.reduce((s,d)=>s+Number(d.amount||0),0);
   const signedAmount = signed.reduce((s,d)=>s+Number(d.amount||0),0);
   const pendingAmount = signedAmount;
   const cashingCount = cashing.length;
   const signedCount = signed.length;
+  const periodLabel = `YTD ${currentYear}`;
+
+  window.__acqFinancialMetricRows = {
+    cashing,
+    signed,
+    pending: signed,
+    delayed: delayedSigned,
+    all: [...cashing, ...signed]
+  };
+
+  window.openAcqFinancialRows = function(title, desc, rows){
+    const existing = document.getElementById('acqFinancialBackdrop');
+    if(existing) existing.remove();
+    const safeRows = Array.isArray(rows) ? rows : [];
+    const rowHtml = safeRows.length ? safeRows.slice(0,100).map(row => {
+      const url = row.hubspotUrl || (row.id && typeof hubspotRecordUrl === 'function' ? hubspotRecordUrl('deal', row.id) : null);
+      const name = row.name || 'Unnamed deal';
+      const meta = `${row.stage || ''}${row.actionDate && row.actionDate !== '—' ? ' · Action: ' + row.actionDate : ''}${row.signedDate && row.signedDate !== '—' ? ' · Signed: ' + row.signedDate : ''}${row.cashingDate && row.cashingDate !== '—' ? ' · Cashing: ' + row.cashingDate : ''}`;
+      const status = row.followUpStatus || row.status || row.stage || 'Deal';
+      return `<div class="acq-detail-row"><div class="acq-detail-name">${recordLink(esc(name),url)}<div class="acq-detail-meta">${esc(meta)}</div></div><div>${esc(row.rep || '—')}</div><div><span class="acq-detail-pill">${esc(status)}</span></div><div style="font-family:var(--mono);font-weight:900;text-align:right">${esc(money(row.amount || 0))}</div></div>`;
+    }).join('') : `<div class="acq-detail-empty">No YTD deals available for this number in the current data.json.</div>`;
+    const more = safeRows.length > 100 ? `<div class="acq-detail-empty" style="padding:12px">Showing first 100 of ${safeRows.length.toLocaleString()} rows.</div>` : '';
+    const node = document.createElement('div');
+    node.id = 'acqFinancialBackdrop';
+    node.className = 'acq-detail-backdrop';
+    node.onclick = function(e){ if(e.target === node) node.remove(); };
+    node.innerHTML = `<div class="acq-detail-card"><div class="acq-detail-hd"><div><div class="acq-detail-title">${esc(title)} <span class="badge bb" style="margin-left:8px">${safeRows.length.toLocaleString()} rows</span></div><div class="acq-detail-sub">${esc(desc)} · Period: ${esc(periodLabel)} · Names open directly in HubSpot when a link is available.</div></div><button class="acq-detail-close" onclick="document.getElementById('acqFinancialBackdrop')?.remove()">×</button></div><div class="acq-detail-body">${rowHtml}${more}</div></div>`;
+    document.body.appendChild(node);
+  };
+
+  window.openAcqFinancialMetric = function(kind){
+    const rowsMap = window.__acqFinancialMetricRows || {};
+    const labels = {
+      cashing: ['Cashing Revenue', 'Closed-won / cashing deals counted in YTD cashing revenue'],
+      signed: ['Signed Contract', 'Signed / booking / binding-to-cash deals counted in YTD signed value'],
+      pending: ['Pending to Cash', 'Signed YTD value still waiting to move into cashing'],
+      delayed: ['Delayed Signed Deals', 'Signed YTD deals that need cashing follow-up'],
+      all: ['Financial Details', 'All YTD acquisition financial deals']
+    };
+    const item = labels[kind] || labels.all;
+    window.openAcqFinancialRows(item[0], item[1], rowsMap[kind] || []);
+  };
+
+  window.openAcqFinancialDeal = function(id, bucket){
+    const rows = (window.__acqFinancialMetricRows?.[bucket] || []).filter(r => String(r.id) === String(id));
+    const row = rows[0];
+    window.openAcqFinancialRows(row ? row.name : 'Deal details', 'Single YTD financial deal behind the clicked number', rows);
+  };
+
+  function bindFinancialClick(id, kind){
+    const el = $(id);
+    if(!el) return;
+    el.classList.add('financial-click-num');
+    el.style.cursor = 'pointer';
+    el.title = `Click to see ${periodLabel} records`;
+    el.onclick = function(ev){ ev.stopPropagation(); window.openAcqFinancialMetric(kind); };
+  }
 
   setText("finCashingBadge", `${cashingCount} Cashing · ${money(cashingAmount)}`);
   setText("finSignedBadge", `${signedCount} Signed · ${money(signedAmount)}`);
-  setText("finCashingMini", `${cashingCount} deals`);
-  setText("finSignedMini", `${signedCount} deals`);
+  setText("finCashingMini", `${cashingCount} YTD deals`);
+  setText("finSignedMini", `${signedCount} YTD deals`);
+
+  bindFinancialClick("finCashingBadge", "cashing");
+  bindFinancialClick("finSignedBadge", "signed");
+  bindFinancialClick("finCashingMini", "cashing");
+  bindFinancialClick("finSignedMini", "signed");
 
   setHTML("financialSummaryGrid", [
-    { v: money(cashingAmount), l: "Cashing Revenue", s: `${cashingCount} closed-won/cashing deals`, c: "var(--green)" },
-    { v: money(signedAmount), l: "Signed Contract", s: `${signedCount} signed deals waiting for Cashing`, c: "var(--amber)" },
-    { v: money(pendingAmount), l: "Pending to Cash", s: "Signed value still before Cashing", c: "var(--blue)" }
+    { k:'cashing', v: money(cashingAmount), l: "Cashing Revenue", s: `${periodLabel} · ${cashingCount} closed-won/cashing deals`, c: "var(--green)" },
+    { k:'signed', v: money(signedAmount), l: "Signed Contract", s: `${periodLabel} · ${signedCount} signed deals waiting for Cashing`, c: "var(--amber)" },
+    { k:'pending', v: money(pendingAmount), l: "Pending to Cash", s: `${periodLabel} · Signed value still before Cashing`, c: "var(--blue)" }
   ].map(x => `
-    <div class="financial-box">
+    <div class="financial-box financial-click-box" onclick="openAcqFinancialMetric('${x.k}')" title="Click to see ${periodLabel} records">
       <div class="financial-v" style="color:${x.c}">${x.v}</div>
       <div class="financial-l">${x.l}</div>
       <div class="financial-s">${x.s}</div>
@@ -1912,19 +2018,21 @@ function renderFinancialDetails(){
     </span>
   `;
 
+  const qstr = v => JSON.stringify(String(v || ""));
+
   const cashingRow = d => {
     const days = d.daysFromSignedToCashing;
     return `
       <tr>
         <td>
           <div style="font-weight:700">${recordLink(d.name || "Unnamed deal", d.hubspotUrl)}</div>
-          <div style="font-size:9px;color:var(--muted)">Cashing / Closed Won</div>
+          <div style="font-size:9px;color:var(--muted)">Cashing / Closed Won · ${periodLabel}</div>
         </td>
         <td>${repBadge(d)}</td>
-        <td class="c" style="font-family:var(--mono);font-weight:800;color:var(--green)">${money(d.amount)}</td>
+        <td class="c"><span class="financial-click-num" onclick='event.stopPropagation(); openAcqFinancialDeal(${qstr(d.id)},"cashing")' style="font-family:var(--mono);font-weight:800;color:var(--green)">${money(d.amount)}</span></td>
         <td class="c" style="font-family:var(--mono);font-size:10px">${d.signedDate || "—"}</td>
-        <td class="c" style="font-family:var(--mono);font-size:10px">${d.cashingDate || "—"}</td>
-        <td class="c"><span class="fin-status ok">${days !== null && days !== undefined ? days + "d" : "—"}</span></td>
+        <td class="c" style="font-family:var(--mono);font-size:10px">${d.cashingDate || d.actionDate || "—"}</td>
+        <td class="c"><span class="fin-status ok financial-click-num" onclick='event.stopPropagation(); openAcqFinancialDeal(${qstr(d.id)},"cashing")'>${days !== null && days !== undefined ? days + "d" : "—"}</span></td>
       </tr>
     `;
   };
@@ -1941,13 +2049,13 @@ function renderFinancialDetails(){
       <tr>
         <td>
           <div style="font-weight:700">${recordLink(d.name || "Unnamed deal", d.hubspotUrl)}</div>
-          <div style="font-size:9px;color:var(--muted)">Signed Contract / Booking</div>
+          <div style="font-size:9px;color:var(--muted)">Signed Contract / Booking / Binding to Cash · ${periodLabel}</div>
         </td>
         <td>${repBadge(d)}</td>
-        <td class="c" style="font-family:var(--mono);font-weight:800;color:var(--amber)">${money(d.amount)}</td>
-        <td class="c" style="font-family:var(--mono);font-size:10px">${d.signedDate || "—"}</td>
-        <td class="c" style="font-family:var(--mono);font-size:10px">${days !== null && days !== undefined ? days + "d" : "—"}</td>
-        <td class="c"><span class="fin-status ${cls}">${esc(st)}</span></td>
+        <td class="c"><span class="financial-click-num" onclick='event.stopPropagation(); openAcqFinancialDeal(${qstr(d.id)},"signed")' style="font-family:var(--mono);font-weight:800;color:var(--amber)">${money(d.amount)}</span></td>
+        <td class="c" style="font-family:var(--mono);font-size:10px">${d.signedDate || d.actionDate || "—"}</td>
+        <td class="c"><span class="financial-click-num" onclick='event.stopPropagation(); openAcqFinancialDeal(${qstr(d.id)},"signed")' style="font-family:var(--mono);font-size:10px">${days !== null && days !== undefined ? days + "d" : "—"}</span></td>
+        <td class="c"><span class="fin-status ${cls} financial-click-num" onclick='event.stopPropagation(); openAcqFinancialDeal(${qstr(d.id)},"signed")'>${esc(st)}</span></td>
       </tr>
     `;
   };
@@ -1956,14 +2064,14 @@ function renderFinancialDetails(){
     "financialCashingBody",
     cashing.length
       ? cashing.slice(0,10).map(cashingRow).join("")
-      : `<tr><td colspan="6"><div class="fin-empty">No Cashing / Closed Won deals found in the available acquisition financial data.</div></td></tr>`
+      : `<tr><td colspan="6"><div class="fin-empty">No YTD Cashing / Closed Won deals found in the available acquisition financial data.</div></td></tr>`
   );
 
   setHTML(
     "financialSignedBody",
     signed.length
       ? signed.slice(0,10).map(signedRow).join("")
-      : `<tr><td colspan="6"><div class="fin-empty">No Signed Contract / Booking deals found in the available acquisition financial data.</div></td></tr>`
+      : `<tr><td colspan="6"><div class="fin-empty">No YTD Signed Contract / Booking / Binding to Cash deals found in the available acquisition financial data.</div></td></tr>`
   );
 }
 function renderManagerAddons(){
@@ -2332,7 +2440,7 @@ function restoreCurrentView(options={}){
     const repName = D ? (D.repData||[]).find(r=>r.name.toLowerCase().replace(/\s/g,"-")===id)?.name : null;
     if($("topbarTitle")) $("topbarTitle").textContent = id === "team" ? "Acquisition · Team Overview" : id === "financial" ? "Acquisition · Financial Details" : "Acquisition · " + (repName || id);
     if($("topbarSub")){
-      $("topbarSub").textContent = id === "financial" ? "Cashing revenue · Signed contracts · Pending to cash" : D ? "Updated " + (D.meta?.generatedAt||"") + " · Auto-refresh 5min" : "Loading...";
+      $("topbarSub").textContent = id === "financial" ? "YTD cashing revenue · signed contracts · pending to cash" : D ? "Updated " + (D.meta?.generatedAt||"") + " · Auto-refresh 5min" : "Loading...";
     }
   }
 
@@ -4820,7 +4928,7 @@ function enhanceAcquisitionRepFollowupSections(){
     var sub = q('topbarSub');
     if(sub){
       sub.textContent = id === 'financial'
-        ? 'Cashing revenue · Signed contracts · Pending to cash'
+        ? 'YTD cashing revenue · signed contracts · pending to cash'
         : (window.D ? ('Updated ' + ((D.meta && D.meta.generatedAt) || '') + ' · Auto-refresh 5min') : 'Loading...');
     }
     if(id === 'financial') safeCall(window.renderFinancialDetails);
