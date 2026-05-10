@@ -2,7 +2,7 @@
   "yesterdayLabel": "Saturday, 9 May 2026",
   "meta": {
     "yesterdayLabel": "Saturday, 9 May 2026",
-    "generatedAt": "10:36 PM"
+    "generatedAt": "10:43 PM"
   },
   "debug": {
     "total_ranked": 839,
@@ -36905,19 +36905,19 @@
     "kpiLine": "MTD: 325 calls (43% connected), 16 meetings, 3 won ($15K), 8 lost ($78K), pipeline $4.7M"
   },
   "aiInsights": {
-    "summary": "$78K lost vs $15K won this month - urgent pipeline conversion and deal qualification needed",
+    "summary": "Pipeline hygiene crisis: 200 stuck/cold deals across team while lost deal value ($78K) outpaces wins ($15K) 5:1",
     "patterns": [
-      "Zein Fares has highest connection rate (74%) but lost all 3 deals worth $49K - qualification or pricing issue",
-      "176 stuck deals and 128 cold deals across team represents $4.7M at risk - pipeline hygiene critical",
-      "Contactability issues caused $49K in losses (2 deals) - second highest loss reason after timing"
+      "Contact-ability issues caused highest-value losses: $49K (63% of total lost revenue) from just 2 deals",
+      "Zein Fares has 74% connection rate but 142 stagnant pipeline deals (73 stuck, 69 cold) with $49K in losses and zero wins",
+      "Team averaging 43% connection rate with only 4.9% call-to-meeting conversion (16 meetings from 325 calls), indicating qualification issues"
     ],
     "quick_wins": [
-      "Zein: Review lost deal reasons with sales manager by Wednesday - 74% connect rate but $49K losses indicates qualification gap",
-      "Ursula & Zein: Prioritize 150 combined stuck/cold deals - call top 20 high-value opportunities by Friday EOD"
+      "Ursula & Zein: Immediately contact 2 lost Contact-ability deals ($49K) with executive sponsor outreach and alternative decision-maker mapping by Wednesday",
+      "All reps: Conduct pipeline scrub by Friday - close or re-engage 50% of cold deals (135 total) to improve forecast accuracy and focus efforts"
     ],
     "risks": [
-      "43% connection rate is below industry standard (55-60%) - outreach strategy and contact data quality needs immediate attention",
-      "$78K lost vs $15K won creates 5:1 loss ratio - deal qualification criteria and competitive positioning require urgent review"
+      "Revenue gap widening: $78K lost vs $15K won with only $4.7M pipeline to cover targets - need 3x higher close rate or pipeline injection",
+      "Timing/project delays represent 38% of lost deals ($25K) - indicates poor discovery or misaligned sales cycles with customer procurement timelines"
     ]
   },
   "marketNews": [
@@ -36926,21 +36926,21 @@
       "tag": "Regulation",
       "color": "#D97706",
       "source": "HRSD Saudi",
-      "text": "Saudi Arabia announces Q3 2026 Nitaqat compliance audit targeting companies with 200+ employees, mandating digital recruitment tracking systems"
+      "text": "Saudi Arabia announces mandatory AI-based recruitment reporting for Nitaqat compliance starting Q3 2026, requiring ATS integration for all firms with 200+ employees"
     },
     {
       "icon": "📊",
       "tag": "M&A",
       "color": "#7C3AED",
       "source": "Bloomberg",
-      "text": "Oracle HCM acquires regional HR tech startup HireFlow for $42M, expanding ATS capabilities across UAE and Egypt markets"
+      "text": "Oracle HCM acquires regional competitor Zoho Recruit MENA operations for $47M, consolidating enterprise HR tech market share in UAE and KSA"
     },
     {
       "icon": "⚡",
       "tag": "Trend",
       "color": "#2563EB",
       "source": "Gartner",
-      "text": "GCC enterprises increase HR tech budgets by 28% in 2026, with 67% prioritizing AI-powered applicant screening and compliance automation"
+      "text": "GCC enterprises increase HR tech budgets by 34% in 2026, with 68% prioritizing localization features and Arabic-first interfaces for Emiratization tracking"
     }
   ]
 }
