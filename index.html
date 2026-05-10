@@ -4409,368 +4409,6 @@ setInterval(loadData,5*60*1000);
 
 <script>
 /* ═══════════════════════════════════════════
-   ACQUISITION UNIVERSAL CLICKABLE NUMBERS
-   Scope: Acquisition only. Retention is not touched.
-   Requires the updated n8n node to export D.acquisitionDetails for full drill-down rows.
-   ═══════════════════════════════════════════ */
-(function(){
-  if(window.__acqUniversalClickableNumbersV2) return;
-  window.__acqUniversalClickableNumbersV2 = true;
-
-  function byId(id){ return document.getElementById(id); }
-  function asArray(v){ return Array.isArray(v) ? v : []; }
-  function cleanText(v){ return String(v || '').replace(/\s+/g,' ').trim(); }
-  function ownerMatch(row, rep){
-    if(!rep) return true;
-    var rid = String(rep.id || '');
-    var rn = String(rep.name || '');
-    return String(row.ownerId || row.hubspot_owner_id || row.owner || '') === rid ||
-           String(row.repId || '') === rid ||
-           String(row.ownerName || row.rep || '') === rn;
-  }
-  function getRepById(repId){
-    var x = String(repId || '');
-    return asArray(window.D && D.repData).find(function(r){
-      return String(r.id) === x || String(r.name) === x || String(r.name || '').toLowerCase() === x.toLowerCase();
-    }) || null;
-  }
-  function getRepFromRow(tr){
-    if(!tr || !window.D) return null;
-    var name = cleanText((tr.cells && tr.cells[0] ? tr.cells[0].textContent : '')).replace(/RET|VIEW/g,'').trim();
-    return asArray(D.repData).find(function(r){ return name.indexOf(r.name) >= 0 || r.name.indexOf(name) >= 0; }) || null;
-  }
-  function rowName(row){ return row.name || row.companyName || row.dealname || row.title || row.email || row.id || 'Unknown'; }
-  function rowType(row){
-    if(row.type) return row.type;
-    if(row.email || row.leadStatus || row.sourceBucket) return 'lead';
-    if(row.amount !== undefined || row.stage || row.stageLabel || row.dealstage || row.reasons) return 'deal';
-    if(row.activityType || row.outcome || row.disposition) return 'activity';
-    return 'company';
-  }
-  function rowUrl(row, type){
-    if(row.hubspotUrl || row.url) return row.hubspotUrl || row.url;
-    if(typeof window.hubspotRecordUrl === 'function'){
-      if(type === 'lead') return hubspotRecordUrl('contact', row.id);
-      if(type === 'deal') return hubspotRecordUrl('deal', row.id);
-      if(type === 'activity' && row.activityType === 'call') return hubspotRecordUrl('call', row.id);
-      if(type === 'activity' && row.activityType === 'meeting') return hubspotRecordUrl('meeting', row.id);
-      return hubspotRecordUrl('company', row.id);
-    }
-    return null;
-  }
-  function filterRep(rows, opts){
-    var rep = opts && opts.repId ? getRepById(opts.repId) : null;
-    return rep ? rows.filter(function(row){ return ownerMatch(row, rep); }) : rows;
-  }
-  function rowsFromRepField(kind, opts){
-    var rep = opts && opts.repId ? getRepById(opts.repId) : null;
-    var reps = rep ? [rep] : asArray(window.D && D.repData);
-    if(kind === 'open_deals' || kind === 'pipeline') return reps.flatMap(function(r){ return asArray(r.topDeals).map(function(x){ return Object.assign({}, x, {ownerId:r.id, ownerName:r.name, rep:r.name}); }); });
-    if(kind === 'deals_at_risk') return reps.flatMap(function(r){ return [].concat(
-      asArray(r.needsAttention).map(function(x){ return Object.assign({riskType:'No next activity'}, x, {ownerId:r.id, ownerName:r.name, rep:r.name}); }),
-      asArray(r.cold).map(function(x){ return Object.assign({riskType:'Cold deal'}, x, {ownerId:r.id, ownerName:r.name, rep:r.name}); }),
-      asArray(r.stuck).map(function(x){ return Object.assign({riskType:'Stuck deal'}, x, {ownerId:r.id, ownerName:r.name, rep:r.name}); })
-    ); });
-    if(kind === 'rank_a_untouched') return reps.flatMap(function(r){ return asArray(r.rankAUntouched).map(function(x){ return Object.assign({rank:'A'}, x, {ownerId:r.id, ownerName:r.name}); }); });
-    if(kind === 'rank_b_untouched') return reps.flatMap(function(r){ return asArray(r.rankBUntouched).map(function(x){ return Object.assign({rank:'B'}, x, {ownerId:r.id, ownerName:r.name}); }); });
-    if(kind === 'rank_ab_untouched') return rowsFromRepField('rank_a_untouched', opts).concat(rowsFromRepField('rank_b_untouched', opts));
-    return [];
-  }
-
-  var oldRowsFn = window.acqRowsForMetric;
-  var oldLabelFn = window.acqLabel;
-
-  function details(){ return (window.D && D.acquisitionDetails) || {}; }
-  function periodBucket(period){
-    return period === 'mtd' ? 'mtd' : period === 'ytd' ? 'ytd' : 'yesterday';
-  }
-  function universalRows(kind, opts){
-    opts = opts || {};
-    var ad = details();
-    var rows = [];
-
-    var map = {
-      calls_yesterday: ['calls','yesterday'], calls_mtd: ['calls','mtd'], calls_ytd: ['calls','ytd'],
-      connected_yesterday: ['calls','connectedYesterday'], connected_mtd: ['calls','connectedMTD'], connected_ytd: ['calls','connectedYTD'],
-      missed_yesterday: ['calls','missedYesterday'], missed_mtd: ['calls','missedMTD'], missed_ytd: ['calls','missedYTD'],
-      meetings_yesterday: ['meetings','yesterday'], meetings_mtd: ['meetings','mtd'], meetings_ytd: ['meetings','ytd'],
-      new_deals_yesterday: ['deals','createdYesterday'], new_deals_mtd: ['deals','createdMTD'], new_deals_ytd: ['deals','createdYTD'],
-      won_yesterday: ['deals','wonYesterday'], won_mtd: ['deals','wonMTD'], won_ytd: ['deals','wonYTD'],
-      lost_yesterday: ['deals','lostYesterday'], lost_mtd: ['deals','lostMTD'], lost_ytd: ['deals','lostYTD'],
-      leads_yesterday: ['leads','yesterday'], leads_mtd: ['leads','mtd'], leads_ytd: ['leads','ytd']
-    };
-    if(map[kind]) rows = asArray((ad[map[kind][0]] || {})[map[kind][1]]);
-    else if(kind === 'open_deals' || kind === 'pipeline') rows = asArray(ad.deals && ad.deals.open);
-    else if(kind === 'pipeline_stage'){
-      var stage = String(opts.stage || '').toLowerCase();
-      rows = asArray(ad.deals && ad.deals.open).filter(function(r){ return String(r.stage || r.stageLabel || r.dealstage || '').toLowerCase() === stage; });
-    }
-    else if(kind === 'financial_cashing') rows = asArray(ad.financial && ad.financial.cashing);
-    else if(kind === 'financial_signed') rows = asArray(ad.financial && ad.financial.signed);
-    else if(kind === 'financial_pending') rows = asArray(ad.financial && ad.financial.signed);
-    else if(kind === 'rank_a_untouched' || kind === 'rank_b_untouched' || kind === 'rank_ab_untouched' || kind === 'deals_at_risk') rows = rowsFromRepField(kind, opts);
-    else if(typeof oldRowsFn === 'function') rows = oldRowsFn(kind, opts) || [];
-
-    if(!rows.length){
-      if(kind === 'open_deals' || kind === 'pipeline') rows = rowsFromRepField('open_deals', opts);
-      if((kind === 'rank_a_untouched' || kind === 'rank_b_untouched' || kind === 'rank_ab_untouched' || kind === 'deals_at_risk')) rows = rowsFromRepField(kind, opts);
-    }
-    return filterRep(rows, opts);
-  }
-
-  function universalLabel(kind){
-    var labels = {
-      calls_yesterday:['Yesterday calls','Call records created yesterday.'],
-      calls_mtd:['MTD calls','Call records created this month.'],
-      calls_ytd:['YTD calls','Call records created this year.'],
-      connected_yesterday:['Yesterday connected calls','Calls with the connected disposition yesterday.'],
-      connected_mtd:['MTD connected calls','Calls with the connected disposition this month.'],
-      connected_ytd:['YTD connected calls','Calls with the connected disposition this year.'],
-      missed_yesterday:['Yesterday missed calls','Calls not marked as connected yesterday.'],
-      missed_mtd:['MTD missed calls','Calls not marked as connected this month.'],
-      missed_ytd:['YTD missed calls','Calls not marked as connected this year.'],
-      meetings_yesterday:['Yesterday completed meetings','Meetings with hs_meeting_outcome = COMPLETED yesterday.'],
-      meetings_mtd:['MTD completed meetings','Meetings with hs_meeting_outcome = COMPLETED this month.'],
-      meetings_ytd:['YTD completed meetings','Meetings with hs_meeting_outcome = COMPLETED this year.'],
-      open_deals:['Open deals','Open acquisition pipeline deals.'],
-      pipeline:['Pipeline value','Open deals behind the pipeline value.'],
-      pipeline_stage:['Pipeline stage details','Open deals inside the selected stage.'],
-      new_deals_yesterday:['New deals yesterday','Deals created yesterday.'],
-      new_deals_mtd:['New deals MTD','Deals created this month.'],
-      new_deals_ytd:['New deals YTD','Deals created this year.'],
-      won_yesterday:['Closed Won yesterday','Closed won / cashing deals yesterday.'],
-      won_mtd:['Closed Won MTD','Closed won / cashing deals this month.'],
-      won_ytd:['Closed Won YTD','Closed won / cashing deals this year.'],
-      lost_yesterday:['Closed Lost yesterday','Closed lost deals yesterday.'],
-      lost_mtd:['Closed Lost MTD','Closed lost deals this month.'],
-      lost_ytd:['Closed Lost YTD','Closed lost deals this year.'],
-      leads_yesterday:['New leads yesterday','Lead/contact rows created yesterday.'],
-      leads_mtd:['Leads MTD','Lead/contact rows created this month.'],
-      leads_ytd:['Leads YTD','Lead/contact rows created this year.'],
-      financial_cashing:['YTD cashing details','Cashing / closed-won financial deals this year.'],
-      financial_signed:['YTD signed contract details','Signed / booking deals this year.'],
-      financial_pending:['YTD pending to cash','Signed value still pending to cash.']
-    };
-    return labels[kind] || (typeof oldLabelFn === 'function' ? oldLabelFn(kind) : ['Details','Rows available for this number.']);
-  }
-
-  window.acqRowsForMetric = universalRows;
-  window.acqLabel = universalLabel;
-  try { acqRowsForMetric = universalRows; } catch(e) {}
-  try { acqLabel = universalLabel; } catch(e) {}
-
-  function openUniversal(kind, opts){
-    opts = opts || {};
-    if(typeof window.openAcqMetricCard === 'function'){
-      window.openAcqMetricCard(kind, opts);
-      return;
-    }
-    var rows = universalRows(kind, opts);
-    var label = universalLabel(kind);
-    var existing = byId('acqMetricBackdrop');
-    if(existing) existing.remove();
-    var html = rows.length ? rows.slice(0,100).map(function(row){
-      var type = rowType(row), name = rowName(row), url = rowUrl(row,type);
-      var meta = row.date || row.createdAt || row.activityDate || row.stage || row.stageLabel || row.country || '';
-      var status = row.status || row.outcome || row.leadStatus || row.disposition || row.riskType || type;
-      var value = row.amount !== undefined ? (typeof fmt === 'function' ? fmt(row.amount) : row.amount) : (row.value || row.ageDays || '');
-      return '<div class="acq-detail-row"><div class="acq-detail-name">'+recordLink(esc(name),url)+'<div class="acq-detail-meta">'+esc(meta)+'</div></div><div>'+esc(row.ownerName || row.rep || '—')+'</div><div><span class="acq-detail-pill">'+esc(status || '—')+'</span></div><div style="font-family:var(--mono);font-weight:900;text-align:right">'+esc(value || '—')+'</div></div>';
-    }).join('') : '<div class="acq-detail-empty">No detail rows available in current data.json for this number. Run the updated n8n node once to export acquisitionDetails.</div>';
-    var node = document.createElement('div');
-    node.id = 'acqMetricBackdrop';
-    node.className = 'acq-detail-backdrop';
-    node.onclick = function(e){ if(e.target === node) node.remove(); };
-    node.innerHTML = '<div class="acq-detail-card"><div class="acq-detail-hd"><div><div class="acq-detail-title">'+esc(label[0])+' <span class="badge bb" style="margin-left:8px">'+rows.length.toLocaleString()+' rows</span></div><div class="acq-detail-sub">'+esc(label[1])+'</div></div><button class="acq-detail-close" onclick="document.getElementById(\'acqMetricBackdrop\')?.remove()">×</button></div><div class="acq-detail-body">'+html+'</div></div>';
-    document.body.appendChild(node);
-  }
-  window.openAcqUniversalMetric = openUniversal;
-
-  function makeClickable(el, kind, opts){
-    if(!el || el.dataset.acqClickReady === '1') return;
-    el.dataset.acqClickReady = '1';
-    el.classList.add('metric-clickable');
-    el.style.cursor = 'pointer';
-    el.title = 'Click to open details';
-    el.addEventListener('click', function(ev){ ev.stopPropagation(); openUniversal(kind, opts || {}); });
-  }
-
-  function metricFromLabel(label){
-    label = String(label || '').toLowerCase();
-    var period = label.indexOf('ytd') >= 0 || label.indexOf('year') >= 0 ? 'ytd' : label.indexOf('mtd') >= 0 || label.indexOf('month') >= 0 ? 'mtd' : 'yesterday';
-    if(label.indexOf('connected') >= 0) return 'connected_' + period;
-    if(label.indexOf('meeting') >= 0) return 'meetings_' + period;
-    if(label.indexOf('new deal') >= 0) return 'new_deals_' + period;
-    if(label.indexOf('open deal') >= 0) return 'open_deals';
-    if(label.indexOf('pipeline') >= 0) return 'pipeline';
-    if(label.indexOf('won') >= 0 || label.indexOf('cashing') >= 0) return 'won_' + period;
-    if(label.indexOf('lost') >= 0) return 'lost_' + period;
-    if(label.indexOf('lead') >= 0) return 'leads_' + period;
-    if(label.indexOf('call') >= 0) return 'calls_' + period;
-    return 'open_deals';
-  }
-
-  function bindPerformanceTable(){
-    var tbody = byId('perfBody');
-    if(!tbody) return;
-    Array.prototype.forEach.call(tbody.querySelectorAll('tr'), function(tr){
-      var rep = getRepFromRow(tr);
-      var opts = rep ? { repId: rep.id } : {};
-      var map = {1:'calls_yesterday',2:'connected_yesterday',3:'missed_yesterday',4:'connected_yesterday',5:'meetings_yesterday',6:'open_deals',7:'pipeline'};
-      Object.keys(map).forEach(function(i){
-        var cell = tr.cells && tr.cells[Number(i)];
-        if(cell) makeClickable(cell, map[i], opts);
-      });
-    });
-  }
-
-  function bindKpiCards(){
-    var sec = byId('kpiSection');
-    if(!sec) return;
-    Array.prototype.forEach.call(sec.querySelectorAll('.sum-card'), function(card){
-      var label = cleanText(card.querySelector('.sum-lbl') && card.querySelector('.sum-lbl').textContent);
-      var kind = metricFromLabel(label);
-      makeClickable(card, kind, {});
-      var val = card.querySelector('.sum-val');
-      if(val) makeClickable(val, kind, {});
-    });
-  }
-
-  function bindCommandPreview(){
-    [['cpNotLeads','leads_not_contacted'],['cpUntouched','rank_ab_untouched'],['cpAtRisk','deals_at_risk'],['cpContactRate','leads_contacted'],['cpPipeline','pipeline'],['cpWonMTD','won_mtd'],['cpLostMTD','lost_mtd'],['cpOutreachRate','leads_contacted'],['cpContactedLeads','leads_contacted'],['cpNotContactedLeads','leads_not_contacted'],['cpCallsMTD','calls_mtd'],['cpConnMTD','connected_mtd'],['cpMtgsMTD','meetings_mtd']].forEach(function(x){ makeClickable(byId(x[0]), x[1], {}); });
-  }
-
-  function bindOutreach(){
-    var grid = byId('outreachKpiGrid');
-    if(grid){
-      Array.prototype.forEach.call(grid.querySelectorAll('.outreach-kpi-box'), function(box){
-        var label = cleanText(box.querySelector('.outreach-kpi-lbl') && box.querySelector('.outreach-kpi-lbl').textContent).toLowerCase();
-        var kind = label.indexOf('not contacted') >= 0 && label.indexOf('compan') >= 0 ? 'companies_not_contacted' :
-          label.indexOf('not contacted') >= 0 ? 'leads_not_contacted' :
-          label.indexOf('contacted') >= 0 ? 'leads_contacted' :
-          label.indexOf('compan') >= 0 ? 'companies_not_contacted' : 'leads_ytd';
-        makeClickable(box, kind, {});
-      });
-    }
-    [['outreachLeadRateVal','leads_contacted'],['outreachCoRateVal','companies_not_contacted'],['outreachActCalls','connected_ytd'],['outreachActMeetings','meetings_ytd'],['outreachOnlineSplit','online_not_contacted'],['outreachOfflineSplit','offline_not_contacted'],['outreachLeadBadge','leads_contacted'],['outreachCoBadge','companies_not_contacted'],['outreachLeadNotBadge','leads_not_contacted'],['outreachCoNotBadge','companies_not_contacted']].forEach(function(x){ makeClickable(byId(x[0]), x[1], {}); });
-  }
-
-  function bindRankTable(){
-    var tbody = byId('rankRepBody');
-    if(!tbody) return;
-    Array.prototype.forEach.call(tbody.querySelectorAll('tr'), function(tr){
-      var rep = getRepFromRow(tr);
-      var opts = rep ? {repId:rep.id} : {};
-      var map = {1:'rank_a_untouched',2:'leads_contacted',3:'rank_a_untouched',4:'rank_b_untouched',5:'leads_contacted',6:'rank_b_untouched',7:'deals_at_risk'};
-      Object.keys(map).forEach(function(i){ var cell = tr.cells && tr.cells[Number(i)]; if(cell) makeClickable(cell, map[i], opts); });
-    });
-  }
-
-  function bindPipeline(){
-    [['pipeTotal','open_deals'],['pipeTotalBadge','open_deals'],['pipeTotalAmt','pipeline']].forEach(function(x){ makeClickable(byId(x[0]), x[1], {}); });
-    Array.prototype.forEach.call(document.querySelectorAll('#pipeHorizContainer .pipe-stage'), function(stage){
-      var label = cleanText(stage.querySelector('.ps-name') && stage.querySelector('.ps-name').textContent);
-      makeClickable(stage, 'pipeline_stage', {stage: label});
-    });
-    Array.prototype.forEach.call(document.querySelectorAll('#pipeCards .pcard'), function(card){
-      var name = cleanText(card.querySelector('.pcard-top span') && card.querySelector('.pcard-top span').textContent).replace(/RET|VIEW/g,'').trim();
-      var rep = asArray(window.D && D.repData).find(function(r){ return r.name.indexOf(name) === 0 || name.indexOf((r.name||'').split(' ')[0]) >= 0; });
-      var opts = rep ? {repId:rep.id} : {};
-      makeClickable(card.querySelector('.pcard-top'), 'open_deals', opts);
-      Array.prototype.forEach.call(card.querySelectorAll('.pdeal-amt'), function(v){ makeClickable(v, 'open_deals', opts); });
-    });
-  }
-
-  function bindLeads(){
-    [['leadsBadgeRow','leads_ytd']].forEach(function(x){ makeClickable(byId(x[0]), x[1], {}); });
-    Array.prototype.forEach.call(document.querySelectorAll('#leadsPeriods .lperiod'), function(periodBox){
-      var label = cleanText(periodBox.querySelector('.lperiod-label') && periodBox.querySelector('.lperiod-label').textContent).toLowerCase();
-      var kind = label.indexOf('month') >= 0 ? 'leads_mtd' : label.indexOf('year') >= 0 ? 'leads_ytd' : 'leads_yesterday';
-      makeClickable(periodBox, kind, {});
-    });
-    var body = byId('leadsRepBody');
-    if(body){
-      Array.prototype.forEach.call(body.querySelectorAll('tr'), function(tr){
-        var rep = getRepFromRow(tr);
-        var opts = rep ? {repId:rep.id} : {};
-        [1,2,3].forEach(function(i){ var cell = tr.cells && tr.cells[i]; if(cell) makeClickable(cell, i===1?'leads_yesterday':i===2?'leads_mtd':'leads_ytd', opts); });
-      });
-    }
-  }
-
-  function bindWonLost(){
-    [['wonBadge','won_mtd'],['lostBadge','lost_mtd']].forEach(function(x){ makeClickable(byId(x[0]), x[1], {}); });
-    Array.prototype.forEach.call(document.querySelectorAll('#wonContainer .deal-amt'), function(el){ makeClickable(el, 'won_mtd', {}); });
-    Array.prototype.forEach.call(document.querySelectorAll('#lostContainer .deal-amt'), function(el){ makeClickable(el, 'lost_mtd', {}); });
-  }
-
-  function bindRepPages(){
-    Array.prototype.forEach.call(document.querySelectorAll('#repPanels .panel'), function(panel){
-      var slug = String(panel.id || '').replace(/^panel-/,'');
-      var rep = asArray(window.D && D.repData).find(function(r){ return String(r.name || '').toLowerCase().replace(/\s/g,'-') === slug; });
-      var opts = rep ? {repId:rep.id} : {};
-      Array.prototype.forEach.call(panel.querySelectorAll('.schip,.hstat-v,.hstat-l,.badge,.deal-amt,.pdeal-amt,.citem-amt'), function(el){
-        var text = cleanText(el.textContent).toLowerCase();
-        var kind = text.indexOf('lost')>=0 ? 'lost_mtd' : text.indexOf('won')>=0 ? 'won_mtd' : text.indexOf('meeting')>=0 ? 'meetings_yesterday' : text.indexOf('connected')>=0 ? 'connected_yesterday' : text.indexOf('call')>=0 ? 'calls_yesterday' : text.indexOf('lead')>=0 ? 'leads_yesterday' : 'open_deals';
-        makeClickable(el, kind, opts);
-      });
-    });
-  }
-
-  function bindFinancialFallback(){
-    [['finCashingBadge','financial_cashing'],['finSignedBadge','financial_signed'],['finCashingMini','financial_cashing'],['finSignedMini','financial_signed']].forEach(function(x){ makeClickable(byId(x[0]), x[1], {}); });
-  }
-
-  function addCompletedMeetingNote(){
-    var head = byId('perfDate');
-    if(head && !head.dataset.completedNote){
-      head.dataset.completedNote = '1';
-      head.title = 'Meetings column is COMPLETED only after using the updated n8n Code node.';
-      if(!/Completed/i.test(head.textContent || '')) head.textContent = (head.textContent || '') + ' · Completed meetings only';
-    }
-  }
-
-  function enhanceAllAcqNumbers(){
-    if(!window.D) return;
-    bindPerformanceTable();
-    bindKpiCards();
-    bindCommandPreview();
-    bindOutreach();
-    bindRankTable();
-    bindPipeline();
-    bindLeads();
-    bindWonLost();
-    bindRepPages();
-    bindFinancialFallback();
-    addCompletedMeetingNote();
-  }
-  window.enhanceAllAcqNumbers = enhanceAllAcqNumbers;
-
-  function schedule(){ setTimeout(enhanceAllAcqNumbers,0); setTimeout(enhanceAllAcqNumbers,250); setTimeout(enhanceAllAcqNumbers,900); }
-  window.scheduleAcqClickableNumbers = schedule;
-
-  if(typeof window.render === 'function' && !window.render.__acqClickableWrapped){
-    var oldRender = window.render;
-    window.render = function(){ var res = oldRender.apply(this, arguments); schedule(); return res; };
-    window.render.__acqClickableWrapped = true;
-    try { render = window.render; } catch(e) {}
-  }
-  if(typeof window.loadData === 'function' && !window.loadData.__acqClickableWrapped){
-    var oldLoad = window.loadData;
-    window.loadData = function(){ var res = oldLoad.apply(this, arguments); try{ if(res && typeof res.then === 'function') res.then(schedule).catch(schedule); else schedule(); }catch(e){ schedule(); } return res; };
-    window.loadData.__acqClickableWrapped = true;
-    try { loadData = window.loadData; } catch(e) {}
-  }
-  if(typeof window.switchTab === 'function' && !window.switchTab.__acqClickableWrapped){
-    var oldSwitch = window.switchTab;
-    window.switchTab = function(){ var res = oldSwitch.apply(this, arguments); schedule(); return res; };
-    window.switchTab.__acqClickableWrapped = true;
-    try { switchTab = window.switchTab; } catch(e) {}
-  }
-  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', schedule); else schedule();
-})();
-
-
-/* ═══════════════════════════════════════════
    ACQUISITION STABLE TABLES FIX
    Keeps the clean Financial Details logic and normal clickable popups,
    but stops the extra generated Acquisition follow-up tables from being injected multiple times.
@@ -4859,6 +4497,67 @@ setInterval(loadData,5*60*1000);
   setTimeout(cleanupAcqGeneratedTables, 800);
 })();
 
+</script>
+
+
+<script>
+/* ACQUISITION TABLES NON-CLICKABLE SAFETY PATCH
+   Keeps normal table layout and removes metric popup behavior from table cells only.
+   Retention untouched. */
+(function(){
+  if(window.__acqNoClickableTablesPatch) return;
+  window.__acqNoClickableTablesPatch = true;
+
+  function stripTableMetricClicks(){
+    try{
+      document.querySelectorAll('#panel-team table.tbl .metric-clickable, #repPanels table.tbl .metric-clickable, #panel-financial table.tbl .metric-clickable, #panel-financial table.tbl .financial-click-num').forEach(function(el){
+        el.classList.remove('metric-clickable');
+        el.classList.remove('financial-click-num');
+        el.onclick = null;
+        el.removeAttribute('title');
+      });
+      document.querySelectorAll('#panel-team table.tbl [onclick], #repPanels table.tbl [onclick], #panel-financial table.tbl [onclick]').forEach(function(el){
+        var onclick = el.getAttribute('onclick') || '';
+        if(/openAcq|openUniversal|openAcqMetric|openAcqFinancial/i.test(onclick)){
+          el.removeAttribute('onclick');
+          el.onclick = null;
+        }
+        el.style.cursor = '';
+      });
+      document.querySelectorAll('#panel-team table.tbl td, #panel-team table.tbl th, #repPanels table.tbl td, #repPanels table.tbl th, #panel-financial table.tbl td, #panel-financial table.tbl th').forEach(function(el){
+        el.style.cursor = '';
+      });
+    }catch(e){}
+  }
+
+  var oldRender = window.render;
+  if(typeof oldRender === 'function' && !oldRender.__noClickableTablesWrapped){
+    window.render = function(){
+      var res = oldRender.apply(this, arguments);
+      setTimeout(stripTableMetricClicks, 0);
+      setTimeout(stripTableMetricClicks, 250);
+      return res;
+    };
+    window.render.__noClickableTablesWrapped = true;
+    try { render = window.render; } catch(e) {}
+  }
+
+  var oldSwitchTab = window.switchTab;
+  if(typeof oldSwitchTab === 'function' && !oldSwitchTab.__noClickableTablesWrapped){
+    window.switchTab = function(){
+      var res = oldSwitchTab.apply(this, arguments);
+      setTimeout(stripTableMetricClicks, 0);
+      setTimeout(stripTableMetricClicks, 250);
+      return res;
+    };
+    window.switchTab.__noClickableTablesWrapped = true;
+    try { switchTab = window.switchTab; } catch(e) {}
+  }
+
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', stripTableMetricClicks);
+  else stripTableMetricClicks();
+  setTimeout(stripTableMetricClicks, 500);
+})();
 </script>
 
 </body>
