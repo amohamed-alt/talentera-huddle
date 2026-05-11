@@ -1838,11 +1838,29 @@ function hubspotRecordUrl(objectType, id){
   return `https://app.hubspot.com/contacts/${portalId}/${obj}/${id}`;
 }
 function acqFirstValue(row, keys){
+  const sources = [row, row?.properties, row?.propertyValues, row?.fields];
   for(const key of keys){
-    const val = row?.[key];
-    if(val !== undefined && val !== null && String(val).trim() !== "") return val;
+    for(const src of sources){
+      if(!src) continue;
+      const val = src[key];
+      if(val !== undefined && val !== null && String(val).trim() !== "") return val;
+    }
   }
   return null;
+}
+function acqContactId(row){
+  return acqFirstValue(row, ["id","hs_object_id","contactId","vid","recordId","objectId"]);
+}
+function acqContactEmail(row){
+  return acqFirstValue(row, ["email","hs_email","contactEmail"]);
+}
+function acqContactPhone(row){
+  return acqFirstValue(row, ["phone","mobilephone","mobilePhone","hs_whatsapp_phone_number"]);
+}
+function acqHubSpotUrl(row, objectType="contact"){
+  if(row?.hubspotUrl || row?.url) return row.hubspotUrl || row.url;
+  const id = objectType === "deal" ? acqFirstValue(row,["id","hs_object_id","dealId","recordId"]) : acqContactId(row);
+  return id && typeof hubspotRecordUrl === "function" ? hubspotRecordUrl(objectType, id) : null;
 }
 function acqParseDateValue(value){
   if(!value) return null;
@@ -1942,9 +1960,10 @@ function acqMaxDays(rows){
   return nums.length ? Math.max(...nums) : null;
 }
 function acqContactName(row){
-  const fn = String(row?.firstname || row?.firstName || "").trim();
-  const ln = String(row?.lastname || row?.lastName || "").trim();
-  return row?.name || row?.fullName || [fn,ln].filter(Boolean).join(" ") || row?.email || row?.id || "Unknown contact";
+  const fn = String(acqFirstValue(row, ["firstname","firstName","first_name"]) || "").trim();
+  const ln = String(acqFirstValue(row, ["lastname","lastName","last_name"]) || "").trim();
+  const full = acqFirstValue(row, ["name","fullName","fullname","contactName"]);
+  return full || [fn, ln].filter(Boolean).join(" ") || acqContactEmail(row) || (acqContactId(row) ? `Contact #${acqContactId(row)}` : "Unknown contact");
 }
 function acqNoConnectedLeadTableRow(c){
   const created = acqCreatedDate(c);
@@ -1953,7 +1972,9 @@ function acqNoConnectedLeadTableRow(c){
   const daysColor = Number.isFinite(days) && days >= 14 ? "var(--red)" : Number.isFinite(days) && days >= 7 ? "var(--amber)" : "var(--green)";
   const bucket = acqLeadSourceBucket(c);
   const pillClass = bucket === "online" ? "acq-source-online" : "acq-source-offline";
-  return `<tr><td><div style="font-weight:700">${recordLink(acqContactName(c), c.hubspotUrl || acqRowUrl?.(c,"lead"))}</div><div style="font-family:var(--mono);font-size:9px;color:var(--muted)">${esc(c.email || c.phone || "")}</div></td><td style="font-size:11px;font-weight:700;color:${c.ownerColor || 'var(--text2)'}">${esc(c.ownerName || c.ownerId || "—")}</td><td><span class="acq-source-pill ${pillClass}">${esc(c._sourceLabel || acqLeadSourceLabel(c))}</span></td><td class="c" style="font-family:var(--mono);font-size:10px">${created ? String(created).split("T")[0] : "—"}</td><td class="c"><span class="badge br" style="font-size:8px">0</span></td><td class="c"><span style="font-family:var(--mono);font-size:12px;font-weight:900;color:${daysColor}">${daysText}</span></td></tr>`;
+  const emailOrPhone = acqContactEmail(c) || acqContactPhone(c) || "No email in exported data";
+  const owner = acqFirstValue(c, ["ownerName","rep","hubspot_owner_name","owner"]) || acqFirstValue(c, ["ownerId","hubspot_owner_id"]) || "—";
+  return `<tr><td><div style="font-weight:700">${recordLink(acqContactName(c), acqHubSpotUrl(c,"contact"))}</div><div style="font-family:var(--mono);font-size:9px;color:var(--muted)">${esc(emailOrPhone)}</div></td><td style="font-size:11px;font-weight:700;color:${c.ownerColor || 'var(--text2)'}">${esc(owner)}</td><td><span class="acq-source-pill ${pillClass}">${esc(c._sourceLabel || acqLeadSourceLabel(c))}</span></td><td class="c" style="font-family:var(--mono);font-size:10px">${created ? String(created).split("T")[0] : "—"}</td><td class="c"><span class="badge br" style="font-size:8px">0</span></td><td class="c"><span style="font-family:var(--mono);font-size:12px;font-weight:900;color:${daysColor}">${daysText}</span></td></tr>`;
 }
 function acqNoConnectedMiniRows(rows, emptyText){
   const shown = (rows || []).slice(0, 5);
@@ -1961,22 +1982,25 @@ function acqNoConnectedMiniRows(rows, emptyText){
   return `<div class="mini-list">${shown.map(row => {
     const days = Number(row._daysWithoutContact ?? acqLeadDaysWithoutContact(row));
     const daysText = Number.isFinite(days) ? `${days}d` : "—";
-    return `<div class="mini-row"><div class="mini-main"><div class="mini-name">${recordLink(acqContactName(row), row.hubspotUrl || acqRowUrl?.(row,"lead"))}</div><div class="mini-meta">${esc(row.email || "No email")} · ${esc(row._sourceLabel || acqLeadSourceLabel(row))}</div></div><div class="mini-score" title="Days without connected call">${daysText}</div></div>`;
+    const emailOrPhone = acqContactEmail(row) || acqContactPhone(row) || "No email in exported data";
+    return `<div class="mini-row"><div class="mini-main"><div class="mini-name">${recordLink(acqContactName(row), acqHubSpotUrl(row,"contact"))}</div><div class="mini-meta">${esc(emailOrPhone)} · ${esc(row._sourceLabel || acqLeadSourceLabel(row))}</div></div><div class="mini-score" title="Days without connected call">${daysText}</div></div>`;
   }).join("")}</div>`;
 }
 function renderRepNoConnectedLeadsBlock(rep){
   if(!rep || rep.type === "view") return "";
   const rows = acqNoConnectedLeadRows(D?.outreachCoverage?.contacts || {}, rep.id);
   const split = acqSplitNoConnectedLeadRows(rows);
+  window.__acqNoConnectedRowsCache = window.__acqNoConnectedRowsCache || {};
+  window.__acqNoConnectedRowsCache[String(rep.id)] = { all: rows, online: split.online, offline: split.offline };
   const id = String(rep.id || rep.name || "").replace(/'/g,"&#039;");
   const onlineMax = acqMaxDays(split.online);
   const offlineMax = acqMaxDays(split.offline);
   return `<div class="acq-follow-card" data-acq-zero-connected-calls style="--fc:var(--red);margin-bottom:14px">
-    <div class="acq-follow-hd"><div class="acq-follow-title">☎ Contacts with 0 connected calls</div><span class="badge br metric-clickable" onclick="openAcqMetricCard('leads_not_contacted',{repId:'${id}'})">${rows.length} contacts</span></div>
+    <div class="acq-follow-hd"><div class="acq-follow-title">☎ Contacts with 0 connected calls</div><span class="badge br metric-clickable" onclick="openAcqNoConnectedMetric('all','${id}')">${rows.length} contacts</span></div>
     <div class="acq-follow-sub">Assigned to ${esc(rep.name)}. The number on the right is how many days the contact has stayed without a connected call.</div>
     <div class="acq-lead-split">
-      <div class="acq-mini-table"><div class="acq-mini-hd"><div class="acq-mini-title" style="color:var(--blue)">Online / Inbound</div><span class="acq-source-pill acq-source-online metric-clickable" onclick="openAcqMetricCard('online_not_contacted',{repId:'${id}'})">${split.online.length} · ${onlineMax !== null ? onlineMax + 'd max' : '—'}</span></div>${acqNoConnectedMiniRows(split.online, 'No online contacts with 0 connected calls.')}</div>
-      <div class="acq-mini-table"><div class="acq-mini-hd"><div class="acq-mini-title" style="color:var(--amber)">Offline / Outbound</div><span class="acq-source-pill acq-source-offline metric-clickable" onclick="openAcqMetricCard('offline_not_contacted',{repId:'${id}'})">${split.offline.length} · ${offlineMax !== null ? offlineMax + 'd max' : '—'}</span></div>${acqNoConnectedMiniRows(split.offline, 'No offline contacts with 0 connected calls.')}</div>
+      <div class="acq-mini-table"><div class="acq-mini-hd"><div class="acq-mini-title" style="color:var(--blue)">Online / Inbound</div><span class="acq-source-pill acq-source-online metric-clickable" onclick="openAcqNoConnectedMetric('online','${id}')">${split.online.length} · ${onlineMax !== null ? onlineMax + 'd max' : '—'}</span></div>${acqNoConnectedMiniRows(split.online, 'No online contacts with 0 connected calls.')}</div>
+      <div class="acq-mini-table"><div class="acq-mini-hd"><div class="acq-mini-title" style="color:var(--amber)">Offline / Outbound</div><span class="acq-source-pill acq-source-offline metric-clickable" onclick="openAcqNoConnectedMetric('offline','${id}')">${split.offline.length} · ${offlineMax !== null ? offlineMax + 'd max' : '—'}</span></div>${acqNoConnectedMiniRows(split.offline, 'No offline contacts with 0 connected calls.')}</div>
     </div>
   </div>`;
 }
@@ -2090,36 +2114,68 @@ function acqRepById(repId){
 function acqSourceNorm(v){ return String(v||'').trim().toUpperCase(); }
 function acqFilterOwner(rows,rep){
   if(!rep) return rows;
-  return rows.filter(row => String(row.ownerId||'')===String(rep.id) || String(row.hubspot_owner_id||'')===String(rep.id) || String(row.ownerName||'')===String(rep.name) || String(row.rep||'')===String(rep.name));
+  return rows.filter(row => {
+    const ownerId = acqFirstValue(row, ["ownerId","hubspot_owner_id","hs_owner_id"]);
+    const ownerName = acqFirstValue(row, ["ownerName","rep","hubspot_owner_name","owner"]);
+    return String(ownerId||"") === String(rep.id) || String(ownerName||"") === String(rep.name);
+  });
 }
 function acqRowsForMetric(kind,opts={}){
   if(!D) return [];
   const oc=D.outreachCoverage||{};
   const rep=opts.repId ? acqRepById(opts.repId) : null;
   let rows=[];
-  if(kind==='leads_not_contacted') rows=acqNoConnectedLeadRows(oc.contacts||{}, opts.repId);
+  if(kind==='leads_not_contacted') rows=getAcqNoConnectedMetricRows('all', opts.repId || null);
   else if(kind==='leads_contacted') rows=[...(oc.contacts?.contactedList||[])];
-  else if(kind==='online_not_contacted') rows=acqSplitNoConnectedLeadRows(acqNoConnectedLeadRows(oc.contacts||{}, opts.repId)).online;
-  else if(kind==='offline_not_contacted') rows=acqSplitNoConnectedLeadRows(acqNoConnectedLeadRows(oc.contacts||{}, opts.repId)).offline;
+  else if(kind==='online_not_contacted') rows=getAcqNoConnectedMetricRows('online', opts.repId || null);
+  else if(kind==='offline_not_contacted') rows=getAcqNoConnectedMetricRows('offline', opts.repId || null);
   else if(kind==='companies_not_contacted') rows=[...(oc.companies?.notContactedList||[])];
   else if(kind==='rank_a_untouched') rows=(rep ? (rep.rankAUntouched||[]) : (D.repData||[]).flatMap(r=>(r.rankAUntouched||[]).map(x=>({...x,ownerName:r.name,ownerId:r.id,rank:'A'}))));
   else if(kind==='rank_b_untouched') rows=(rep ? (rep.rankBUntouched||[]) : (D.repData||[]).flatMap(r=>(r.rankBUntouched||[]).map(x=>({...x,ownerName:r.name,ownerId:r.id,rank:'B'}))));
   else if(kind==='rank_ab_untouched') rows=(rep ? [...(rep.rankAUntouched||[]).map(x=>({...x,rank:'A'})),...(rep.rankBUntouched||[]).map(x=>({...x,rank:'B'}))] : (D.repData||[]).flatMap(r=>[...(r.rankAUntouched||[]).map(x=>({...x,ownerName:r.name,ownerId:r.id,rank:'A'})),...(r.rankBUntouched||[]).map(x=>({...x,ownerName:r.name,ownerId:r.id,rank:'B'}))]));
   else if(kind==='deals_at_risk') rows=(rep ? [...(rep.needsAttention||[]),...(rep.cold||[]),...(rep.stuck||[])] : (D.repData||[]).flatMap(r=>[...(r.needsAttention||[]).map(x=>({...x,ownerName:r.name,ownerId:r.id})),...(r.cold||[]).map(x=>({...x,ownerName:r.name,ownerId:r.id})),...(r.stuck||[]).map(x=>({...x,ownerName:r.name,ownerId:r.id}))]));
   else if(kind==='open_deals') rows=(rep ? (rep.topDeals||[]) : (D.repData||[]).flatMap(r=>(r.topDeals||[]).map(x=>({...x,ownerName:r.name,ownerId:r.id}))));
+  if(['leads_not_contacted','online_not_contacted','offline_not_contacted'].includes(kind)) return rows;
   return acqFilterOwner(rows,rep);
 }
 function acqRowType(row){
-  if(row.email || row.leadStatus || row.firstname) return 'lead';
-  if(row.amount!==undefined || row.stage || row.reasons) return 'deal';
+  if(acqContactEmail(row) || acqFirstValue(row,["leadStatus","hs_lead_status","firstname","lastname","contactId","vid"]) || row?._sourceBucket) return 'lead';
+  if(acqFirstValue(row,["amount","stage","dealstage","dealname"]) !== null || row?.reasons) return 'deal';
   return 'company';
 }
-function acqRowName(row){ return row.name || row.companyName || row.dealname || row.email || row.title || row.id || 'Unknown'; }
+function acqRowName(row){
+  const type = acqRowType(row);
+  if(type === 'lead') return acqContactName(row);
+  return acqFirstValue(row,["name","companyName","dealname","title","domain","id","hs_object_id"]) || 'Unknown';
+}
 function acqRowUrl(row,type){
-  if(row.hubspotUrl || row.url) return row.hubspotUrl || row.url;
-  if(type==='lead') return hubspotRecordUrl('contact',row.id);
-  if(type==='deal') return hubspotRecordUrl('deal',row.id);
-  return hubspotRecordUrl('company',row.id);
+  if(row?.hubspotUrl || row?.url) return row.hubspotUrl || row.url;
+  if(type==='lead') return acqHubSpotUrl(row,'contact');
+  if(type==='deal'){ const id=acqFirstValue(row,["id","hs_object_id","dealId","recordId"]); return id && typeof hubspotRecordUrl === 'function' ? hubspotRecordUrl('deal',id) : null; }
+  const id=acqFirstValue(row,["id","hs_object_id","companyId","recordId"]);
+  return id && typeof hubspotRecordUrl === 'function' ? hubspotRecordUrl('company',id) : null;
+}
+function getAcqNoConnectedMetricRows(kind="all", repId=null){
+  const repKey = repId ? String(repId) : null;
+  const cached = repKey ? window.__acqNoConnectedRowsCache?.[repKey] : null;
+  if(cached){
+    if(kind === "online") return cached.online || [];
+    if(kind === "offline") return cached.offline || [];
+    return cached.all || [];
+  }
+  const allRows = acqNoConnectedLeadRows(D?.outreachCoverage?.contacts || {}, repId || undefined);
+  const split = acqSplitNoConnectedLeadRows(allRows);
+  if(kind === "online") return split.online;
+  if(kind === "offline") return split.offline;
+  return allRows;
+}
+function openAcqNoConnectedMetric(kind="all", repId=null){
+  const map = {
+    all: "leads_not_contacted",
+    online: "online_not_contacted",
+    offline: "offline_not_contacted"
+  };
+  return openAcqMetricCard(map[kind] || "leads_not_contacted", { repId, _zeroKind: kind });
 }
 function openAcqMetricCard(kind,opts={}){
   const rows=acqRowsForMetric(kind,opts);
@@ -2129,19 +2185,20 @@ function openAcqMetricCard(kind,opts={}){
   if(existing) existing.remove();
   const rowHtml=rows.length ? rows.slice(0,80).map(row=>{
     const type=acqRowType(row), name=acqRowName(row), url=acqRowUrl(row,type);
-    const owner=row.ownerName || rep?.name || row.rep || '—';
+    const owner=acqFirstValue(row,["ownerName","rep","hubspot_owner_name","owner"]) || rep?.name || acqFirstValue(row,["ownerId","hubspot_owner_id"]) || '—';
     const leadDays = type==='lead' ? acqLeadDaysWithoutContact(row) : null;
-    const meta= type==='lead' ? `${row.email||''}${row.source||row.sourceBucket||row.hs_analytics_source ? ' · '+(row.source||row.sourceBucket||row.hs_analytics_source) : ''}${acqCreatedDate(row) ? ' · Created '+String(acqCreatedDate(row)).slice(0,10) : ''}` : type==='deal' ? `${row.stage||row.stageLabel||''}${row.days? ' · '+row.days+'d' : ''}` : `${row.country||''}${row.rank ? ' · Rank '+row.rank : ''}`;
-    const value = type==='lead' ? (leadDays !== null ? leadDays + 'd' : '—') : row.amount!==undefined ? fmt(row.amount||0) : (row.score!==undefined ? row.score : (row.ageDays!==undefined ? row.ageDays+'d' : ''));
-    const status = type==='lead' ? `${acqConnectedCallsCount(row) ?? 0} connected calls` : (row.leadStatus || row.status || row.reason || row.priority || (type==='deal'?'Deal':'Company'));
-    return `<div class="acq-detail-row"><div class="acq-detail-name">${recordLink(esc(name),url)}<div class="acq-detail-meta">${esc(meta||'')}</div></div><div>${esc(owner)}</div><div><span class="acq-detail-pill">${esc(status||'—')}</span></div><div style="font-family:var(--mono);font-weight:900;text-align:right">${esc(value||'—')}</div></div>`;
+    const leadContact = acqContactEmail(row) || acqContactPhone(row) || 'No email in exported data';
+    const meta= type==='lead' ? `${leadContact} · ${row._sourceLabel || acqLeadSourceLabel(row)}${acqCreatedDate(row) ? ' · Created '+String(acqCreatedDate(row)).slice(0,10) : ''}` : type==='deal' ? `${acqFirstValue(row,["stage","stageLabel","dealstage"])||''}${row.days? ' · '+row.days+'d' : ''}` : `${acqFirstValue(row,["country"])||''}${row.rank ? ' · Rank '+row.rank : ''}`;
+    const value = type==='lead' ? (leadDays !== null ? leadDays + 'd' : '—') : acqFirstValue(row,["amount"]) !== null ? fmt(acqFirstValue(row,["amount"])||0) : (row.score!==undefined ? row.score : (row.ageDays!==undefined ? row.ageDays+'d' : ''));
+    const status = type==='lead' ? `${acqConnectedCallsCount(row) ?? 0} connected calls` : (acqFirstValue(row,["leadStatus","status","reason","priority"]) || (type==='deal'?'Deal':'Company'));
+    return `<div class="acq-detail-row"><div class="acq-detail-name">${recordLink(name,url)}<div class="acq-detail-meta">${esc(meta||'')}</div></div><div>${esc(owner)}</div><div><span class="acq-detail-pill">${esc(status||'—')}</span></div><div style="font-family:var(--mono);font-weight:900;text-align:right">${esc(value||'—')}</div></div>`;
   }).join('') : `<div class="acq-detail-empty">No detail rows available in current data.json for this metric. Run the updated n8n Code node once so acquisitionDetails is exported.</div>`;
   const more=rows.length>80?`<div class="acq-detail-empty" style="padding:12px">Showing first 80 of ${rows.length.toLocaleString()} rows.</div>`:'';
   const node=document.createElement('div');
   node.id='acqMetricBackdrop';
   node.className='acq-detail-backdrop';
   node.onclick=(e)=>{ if(e.target===node) node.remove(); };
-  node.innerHTML=`<div class="acq-detail-card"><div class="acq-detail-hd"><div><div class="acq-detail-title">${esc(title)}${rep?` · ${esc(rep.name)}`:''} <span class="badge bb" style="margin-left:8px">${rows.length.toLocaleString()} rows</span></div><div class="acq-detail-sub">${esc(desc)} · Names open directly in HubSpot when a link is available.</div></div><button class="acq-detail-close" onclick="document.getElementById('acqMetricBackdrop')?.remove()">×</button></div><div class="acq-detail-body">${rowHtml}${more}</div></div>`;
+  node.innerHTML=`<div class="acq-detail-card"><div class="acq-detail-hd"><div><div class="acq-detail-title">${esc(title)}${rep?` · ${esc(rep.name)}`:''} <span class="badge bb" style="margin-left:8px">${rows.length.toLocaleString()} ${rows.length === 1 ? 'row' : 'rows'}</span></div><div class="acq-detail-sub">${esc(desc)} · Names open directly in HubSpot when a link is available.</div></div><button class="acq-detail-close" onclick="document.getElementById('acqMetricBackdrop')?.remove()">×</button></div><div class="acq-detail-body">${rowHtml}${more}</div></div>`;
   document.body.appendChild(node);
 }
 function acqMakeClickable(id,kind,opts={}){
@@ -2156,8 +2213,8 @@ function enhanceAcqOverviewClickables(){
   acqMakeClickable('cpAtRisk','deals_at_risk');
   acqMakeClickable('outreachLeadNotBadge','leads_not_contacted');
   acqMakeClickable('outreachCoNotBadge','companies_not_contacted');
-  const online=$('outreachOnlineSplit'); if(online){ online.classList.add('metric-clickable'); online.onclick=()=>openAcqMetricCard('online_not_contacted'); online.title='Click to see online/inbound leads not contacted'; }
-  const offline=$('outreachOfflineSplit'); if(offline){ offline.classList.add('metric-clickable'); offline.onclick=()=>openAcqMetricCard('offline_not_contacted'); offline.title='Click to see offline/outbound leads not contacted'; }
+  const online=$('outreachOnlineSplit'); if(online){ online.classList.add('metric-clickable'); online.onclick=()=>openAcqNoConnectedMetric('online'); online.title='Click to see online/inbound contacts with 0 connected calls'; }
+  const offline=$('outreachOfflineSplit'); if(offline){ offline.classList.add('metric-clickable'); offline.onclick=()=>openAcqNoConnectedMetric('offline'); offline.title='Click to see offline/outbound contacts with 0 connected calls'; }
 }
 function acqSmallRows(rows,type){
   const shown=(rows||[]).slice(0,5);
