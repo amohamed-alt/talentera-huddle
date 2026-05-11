@@ -5609,9 +5609,11 @@ setInterval(loadData,5*60*1000);
   function money(v){
     var n = Number(String(v == null ? 0 : v).replace(/[^0-9.-]/g,''));
     if(!isFinite(n) || !n) return '$0';
-    if(Math.abs(n) >= 1000000) return '$' + (n / 1000000).toFixed(1) + 'M';
-    if(Math.abs(n) >= 1000) return '$' + Math.round(n / 1000).toLocaleString() + 'K';
-    return '$' + Math.round(n).toLocaleString();
+    var hasDecimals = Math.abs(n % 1) > 0.000001;
+    return '$' + n.toLocaleString(undefined, {
+      minimumFractionDigits: hasDecimals ? 2 : 0,
+      maximumFractionDigits: 2
+    });
   }
   function number(v){
     var n = Number(String(v == null ? 0 : v).replace(/[^0-9.-]/g,''));
@@ -5753,8 +5755,9 @@ setInterval(loadData,5*60*1000);
   function empty(cols,msg){ return '<tr><td colspan="' + cols + '" class="ret-fin-empty">' + safe(msg) + '</td></tr>'; }
   function cellMoney(v,color){ return '<span style="font-family:var(--mono);font-weight:900;color:' + color + '">' + money(v) + '</span>'; }
   function clientCell(row){
+    var extra = row && (row.isNotInBudget || row.sourceOnlyReason) ? ' · Not in Budget 2026' : '';
     return '<div style="font-weight:900">' + safe(row.clientName || 'Unknown Client') + '</div>' +
-      '<div style="font-size:10px;color:var(--muted)">GID: ' + safe(row.gid || '—') + ' · ' + safe(row.location || 'No location') + '</div>';
+      '<div style="font-size:10px;color:var(--muted)">GID: ' + safe(row.gid || '—') + ' · ' + safe(row.location || 'No location') + safe(extra) + '</div>';
   }
   function ensureStyles(){
     if(byId('retFinSheetsOnlyV2Styles')) return;
