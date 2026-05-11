@@ -5831,20 +5831,22 @@ setInterval(loadData,5*60*1000);
     badge.textContent = booked + '/' + collected;
     badge.title = 'Booking rows / Collection rows from retentionSheets2026';
   }
-
-  function retFinMetricConfig(kind){
+  function retFinMetricLabel(kind){
     var map = {
-      renewal:{title:'Renewal Value Accounts', desc:'Accounts included in the current filters from 2026 Budget.', color:'var(--cyan)', value:function(r,m){ return renewalValue(r,m); }},
-      booked:{title:'Booked Pending Collection', desc:'Booking sheet value that is still not collected.', color:'var(--purple)', value:function(r,m){ return monthCellValue(r,'booked',m); }},
-      collected:{title:'Cash Collected Accounts', desc:'Accounts with collection value from Retention Accounts Collection.', color:'var(--green)', value:function(r,m){ return monthCellValue(r,'collected',m); }},
-      remaining:{title:'Remaining Collection Accounts', desc:'Accounts where booked pending value is still above collected cash.', color:'var(--blue)', value:function(r,m){ return remaining(r,m); }},
-      delayed:{title:'Delayed Accounts', desc:'Budget renewal month passed and no booking/collection exists.', color:'var(--red)', value:function(r,m){ return renewalValue(r,m); }},
-      late:{title:'Renewed Late Accounts', desc:'First booking/collection month is after the Budget renewal month.', color:'var(--amber)', value:function(r,m){ return renewalValue(r,m); }}
+      renewal:{title:'Renewal Value Accounts', note:'All renewal accounts from 2026 Budget after the current filters.', valueKey:'renewal', color:'var(--cyan)'},
+      booked:{title:'Booked Value Accounts', note:'Booking rows still pending collection after the current filters.', valueKey:'booked', color:'var(--purple)'},
+      collected:{title:'Cash Collected Accounts', note:'Collection rows from Retention Accounts Collection after the current filters.', valueKey:'collected', color:'var(--green)'},
+      remaining:{title:'Remaining Collection Accounts', note:'Booked value minus collected value after the current filters.', valueKey:'remaining', color:'var(--blue)'},
+      delayed:{title:'Delayed Accounts', note:'Renewal month passed and no booking/collection exists.', valueKey:'renewal', color:'var(--red)'},
+      late:{title:'Renewed Late Accounts', note:'First booking/collection month is after the renewal month.', valueKey:'renewal', color:'var(--amber)'}
     };
     return map[kind] || map.renewal;
   }
-  function retFinRowsForMetric(kind, rows, m){
-    if(kind === 'renewal') return rows;
+  function retFinRowsForMetric(kind){
+    var f = filters();
+    var m = f.month || 'All';
+    var rows = accounts().filter(passFilters);
+    if(kind === 'renewal') return rows.filter(function(r){ return renewalValue(r,m) > 0; });
     if(kind === 'booked') return rows.filter(function(r){ return monthCellValue(r,'booked',m) > 0; });
     if(kind === 'collected') return rows.filter(function(r){ return monthCellValue(r,'collected',m) > 0; });
     if(kind === 'remaining') return rows.filter(function(r){ return remaining(r,m) > 0; });
@@ -5852,45 +5854,68 @@ setInterval(loadData,5*60*1000);
     if(kind === 'late') return rows.filter(function(r){ return norm(statusOf(r)).indexOf('late') >= 0 && (m === 'All' || r.renewalMonth === m || r.bookingMonth === m || r.collectionMonth === m); });
     return rows;
   }
-  function retFinMetricRow(row, i, m){
+  function retFinMetricTotal(kind, rows){
+    var m = (filters().month || 'All');
+    if(kind === 'booked') return rows.reduce(function(s,r){ return s + monthCellValue(r,'booked',m); },0);
+    if(kind === 'collected') return rows.reduce(function(s,r){ return s + monthCellValue(r,'collected',m); },0);
+    if(kind === 'remaining') return rows.reduce(function(s,r){ return s + remaining(r,m); },0);
+    return rows.reduce(function(s,r){ return s + renewalValue(r,m); },0);
+  }
+  function retFinDetailMonthText(row, kind){
+    var m = filters().month || 'All';
+    if(m !== 'All') return m;
+    if(kind === 'booked') return row.bookingMonth || '—';
+    if(kind === 'collected') return row.collectionMonth || '—';
+    return row.renewalMonth || row.bookingMonth || row.collectionMonth || '—';
+  }
+  function retFinModalRow(row, kind){
+    var m = filters().month || 'All';
     var st = statusOf(row);
-    var fin = row.financialStatus || (number(row.collectedValue) > 0 ? 'Cashed / Collected' : number(row.bookedValue) > 0 ? 'Booked - Pending Collection' : 'No Action Yet');
-    return '<tr class="' + rowClass(i, norm(st).indexOf('delayed') >= 0 ? 'risk' : norm(st).indexOf('late') >= 0 ? 'warn' : 'ok') + '">' +
+    return '<tr>' +
       '<td>' + clientCell(row) + '</td>' +
       '<td>' + safe(rmOf(row) || '—') + '</td>' +
       '<td>' + safe(csmOf(row) || '—') + '</td>' +
       '<td class="c">' + safe(productOf(row)) + '</td>' +
-      '<td class="c">' + safe(row.renewalMonth || '—') + '</td>' +
+      '<td class="c">' + safe(retFinDetailMonthText(row, kind)) + '</td>' +
       '<td class="c">' + cellMoney(renewalValue(row,m),'var(--cyan)') + '</td>' +
       '<td class="c">' + cellMoney(monthCellValue(row,'booked',m),'var(--purple)') + '</td>' +
       '<td class="c">' + cellMoney(monthCellValue(row,'collected',m),'var(--green)') + '</td>' +
       '<td class="c">' + cellMoney(remaining(row,m),'var(--blue)') + '</td>' +
       '<td class="c">' + badge(st) + '</td>' +
-      '<td class="c"><span class="badge ' + statusClass(fin) + '">' + safe(fin) + '</span></td>' +
     '</tr>';
   }
-  window.closeRetFinSheetMetric = function(){
-    var old = document.getElementById('retFinSheetMetricBackdrop');
-    if(old) old.remove();
-  };
-  window.openRetFinSheetMetric = function(kind){
+  window.openRetFinSheetDetails = function(kind){
+    var cfg = retFinMetricLabel(kind);
+    var rows = retFinRowsForMetric(kind);
+    var total = retFinMetricTotal(kind, rows);
     var f = filters();
-    var m = f.month || 'All';
-    var baseRows = accounts().filter(passFilters);
-    var cfg = retFinMetricConfig(kind);
-    var rows = retFinRowsForMetric(kind, baseRows, m);
-    var totalValue = rows.reduce(function(s,r){ return s + cfg.value(r,m); }, 0);
-    var old = document.getElementById('retFinSheetMetricBackdrop');
+    var filterText = [
+      'Month: ' + (f.month || 'All'),
+      'RM: ' + (f.rm || 'All'),
+      'CSM: ' + (f.csm || 'All'),
+      'Product: ' + (f.product || 'All'),
+      'Status: ' + (f.status || 'All')
+    ].join(' · ');
+
+    var old = document.getElementById('retFinSheetDetailsBackdrop');
     if(old) old.remove();
+
+    var body = rows.length ?
+      '<div style="overflow-x:auto"><table class="tbl"><thead><tr>' +
+        '<th>Client</th><th>RM 2026</th><th>CSM</th><th class="c">Product</th><th class="c">Month</th><th class="c">Renewal</th><th class="c">Booked</th><th class="c">Collected</th><th class="c">Remaining</th><th class="c">Status</th>' +
+      '</tr></thead><tbody>' + rows.slice(0,150).map(function(r){ return retFinModalRow(r, kind); }).join('') + '</tbody></table></div>' +
+      (rows.length > 150 ? '<div class="ret-drill-empty" style="padding:12px">Showing first 150 of ' + rows.length.toLocaleString() + ' rows.</div>' : '')
+      : '<div class="ret-drill-empty">No accounts found for this card with the current filters.</div>';
+
     var node = document.createElement('div');
-    node.id = 'retFinSheetMetricBackdrop';
+    node.id = 'retFinSheetDetailsBackdrop';
     node.className = 'acq-detail-backdrop';
-    node.onclick = function(e){ if(e.target === node) window.closeRetFinSheetMetric(); };
-    node.innerHTML = '<div class="acq-detail-card" style="width:min(1180px,calc(100vw - 40px));border-top:4px solid ' + cfg.color + '">' +
-      '<div class="acq-detail-hd"><div><div class="acq-detail-title">' + safe(cfg.title) + ' <span class="badge bb" style="margin-left:8px">' + rows.length.toLocaleString() + ' rows</span></div><div class="acq-detail-sub">' + safe(cfg.desc) + ' · ' + safe(monthLabel(m)) + ' · total ' + safe(money(totalValue)) + ' · current filters applied.</div></div><button class="acq-detail-close" onclick="closeRetFinSheetMetric()">×</button></div>' +
-      '<div class="acq-detail-body"><div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Client</th><th>RM 2026</th><th>CSM</th><th class="c">Product</th><th class="c">Renewal Month</th><th class="c">Renewal</th><th class="c">Booked Pending</th><th class="c">Collected</th><th class="c">Remaining</th><th class="c">Status</th><th class="c">Financial</th></tr></thead><tbody>' +
-      (rows.length ? rows.map(function(r,i){ return retFinMetricRow(r,i,m); }).join('') : empty(11,'No accounts found for this card under the selected filters.')) +
-      '</tbody></table></div></div></div>';
+    node.onclick = function(e){ if(e.target === node) node.remove(); };
+    node.innerHTML = '<div class="acq-detail-card" style="border-top:4px solid ' + cfg.color + '">' +
+      '<div class="acq-detail-hd"><div><div class="acq-detail-title">' + safe(cfg.title) + ' <span class="badge bb" style="margin-left:8px">' + rows.length.toLocaleString() + ' rows</span></div>' +
+      '<div class="acq-detail-sub">' + safe(cfg.note) + ' · Total: ' + safe(money(total)) + ' · ' + safe(filterText) + '</div></div>' +
+      '<button class="acq-detail-close" onclick="document.getElementById(\'retFinSheetDetailsBackdrop\')?.remove()">×</button></div>' +
+      '<div class="acq-detail-body">' + body + '</div></div>';
     document.body.appendChild(node);
   };
   window.renderRetentionFinancialDetails = function(){
@@ -5929,7 +5954,7 @@ setInterval(loadData,5*60*1000);
       {k:'remaining',v:money(remainingTotal),l:'Remaining Collection',s:'Booked - Collected · ' + monthText,c:'var(--blue)'},
       {k:'delayed',v:delayedRows.length.toLocaleString(),l:'Delayed Accounts',s:'Due month passed · no booking/collection',c:'var(--red)'},
       {k:'late',v:lateRows.length.toLocaleString(),l:'Renewed Late',s:'Booking after renewal month',c:'var(--amber)'}
-    ].map(function(x){ return '<div class="ret-fin-card ret-click-card" onclick="openRetFinSheetMetric('' + x.k + '')" title="Click to open account list" style="--fc:' + x.c + '"><div class="ret-fin-card-v">' + x.v + '</div><div class="ret-fin-card-l">' + x.l + '</div><div class="ret-fin-card-s">' + x.s + '</div></div>'; }).join(''));
+    ].map(function(x){ return '<div class="ret-fin-card ret-click-card" style="--fc:' + x.c + '" onclick="openRetFinSheetDetails(\'' + x.k + '\')" title="Click to open account list"><div class="ret-fin-card-v">' + x.v + '</div><div class="ret-fin-card-l">' + x.l + '</div><div class="ret-fin-card-s">' + x.s + '</div></div>'; }).join(''));
 
     var warning = byId('retFinSheetDataWarning');
     if(!warning){
@@ -5939,13 +5964,12 @@ setInterval(loadData,5*60*1000);
       var filter = byId('retFinSheetFilter');
       if(filter && filter.parentNode) filter.parentNode.insertBefore(warning, filter.nextSibling);
     }
-    var rsSummary = sheets().summary || {};
-    var globalBookedTotal = allRows.reduce(function(s,r){ return s + number(r.bookedValue); },0);
-    var globalCollectedTotal = allRows.reduce(function(s,r){ return s + number(r.collectedValue); },0);
-    var globalHasFinancialData = globalBookedTotal > 0 || globalCollectedTotal > 0 || number(sheets().bookedValue) > 0 || number(sheets().bookingSheetValue) > 0 || number(sheets().collectedValue) > 0 || number(rsSummary.totalBookedValue) > 0 || number(rsSummary.totalCollectedValue) > 0 || number(rsSummary.remainingCollection) > 0;
-    if(!globalHasFinancialData){
+    var hasAnySheetFinancialData = allRows.some(function(r){
+      return number(r.bookedValue) > 0 || number(r.collectedValue) > 0 || number(r.bookingSheetValue) > 0 || number(r.remainingCollection) > 0;
+    });
+    if(!hasAnySheetFinancialData){
       warning.style.display = 'block';
-      warning.textContent = 'Booking and Collection are not detected in this data-retention.json. Update the n8n Build node, then this view will populate automatically.';
+      warning.textContent = 'Booking and Collection are not available in retentionSheets2026. Check the n8n Build node output.';
     } else {
       warning.style.display = 'none';
     }
