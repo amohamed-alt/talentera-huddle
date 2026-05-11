@@ -4222,7 +4222,7 @@ function toggleRetMore(bodyId, btn){
       {v: money(bookedTotal), l:'Booked Value', s: rows.filter(function(r){ return monthlyValue(r,'booked',m) > 0; }).length + ' rows · Booking sheet', c:'var(--purple)'},
       {v: money(collectedTotal), l:'Cash Collected', s: rows.filter(function(r){ return monthlyValue(r,'collected',m) > 0; }).length + ' rows · Collection sheet', c:'var(--green)'},
       {v: money(remainingTotal), l:'Remaining Collection', s:'Booked - Collected · ' + monthText, c:'var(--blue)'},
-      {v: delayedRows.length.toLocaleString(), l:'Delayed Accounts', s:'Due month passed · no booking', c:'var(--red)'},
+      {v: delayedRows.length.toLocaleString(), l:'Delayed Accounts', s:'Due month passed · no booking/collection', c:'var(--red)'},
       {v: lateRows.length.toLocaleString(), l:'Renewed Late', s:'Booking after renewal month', c:'var(--amber)'}
     ].map(function(x){ return '<div class="ret-fin-card" style="--fc:' + x.c + '"><div class="ret-fin-card-v">' + x.v + '</div><div class="ret-fin-card-l">' + x.l + '</div><div class="ret-fin-card-s">' + x.s + '</div></div>'; }).join(''));
 
@@ -5628,7 +5628,43 @@ setInterval(loadData,5*60*1000);
   function productOf(row){ return String(row.product || row.Product || 'Unknown').trim() || 'Unknown'; }
   function rmOf(row){ return String(row.rm || row.rm2026 || row['RM 2026'] || row.RM || '').trim(); }
   function csmOf(row){ return String(row.csm || row.csmName || row['CSM Name'] || row.CSM || row.csmOwnerName || '').trim(); }
-  function statusOf(row){ return String(row.status || row.renewalStatusFromSheet || 'Unknown').trim() || 'Unknown'; }
+  function monthIndexFromKey(key){
+    var x = MONTHS.find(function(m){ return m.key === key; });
+    return x ? Number(x.key === 'All' ? 0 : x.key && x.key !== 'All' ? x.key : 0) : 0;
+  }
+  function monthIndexFromLabel(label){
+    var t = norm(label);
+    var m = MONTHS.find(function(x){ return x.key !== 'All' && (norm(x.key) === t || norm(x.label) === t); });
+    return m ? MONTHS.indexOf(m) : 0;
+  }
+  function monthIndex(row, fieldIndex, fieldMonth){
+    var n = Number(row && row[fieldIndex]);
+    if(isFinite(n) && n > 0) return n;
+    var key = row && row[fieldMonth];
+    var found = MONTHS.find(function(x){ return x.key !== 'All' && (x.key === key || norm(x.label) === norm(key)); });
+    return found ? MONTHS.filter(function(x){ return x.key !== 'All'; }).findIndex(function(x){ return x.key === found.key; }) + 1 : null;
+  }
+  function riyadhMonthIndex(){
+    var now = new Date();
+    var riyadhNow = new Date(now.getTime() + 3 * 60 * 60 * 1000);
+    return riyadhNow.getUTCMonth() + 1;
+  }
+  function firstRenewalProof(row){
+    var proofs = [];
+    var b = monthIndex(row,'bookingMonthIndex','bookingMonth');
+    var c = monthIndex(row,'collectionMonthIndex','collectionMonth');
+    if(number(row && row.bookedValue) > 0 && b) proofs.push({type:'Booked', monthIndex:b, month:row.bookingMonth});
+    if(number(row && row.collectedValue) > 0 && c) proofs.push({type:'Collection', monthIndex:c, month:row.collectionMonth});
+    proofs.sort(function(a,b){ return a.monthIndex - b.monthIndex; });
+    return proofs[0] || null;
+  }
+  function statusOf(row){
+    var renewalIndex = monthIndex(row,'renewalMonthIndex','renewalMonth');
+    if(!renewalIndex) return String(row && row.status || 'No Renewal Month').trim() || 'No Renewal Month';
+    var proof = firstRenewalProof(row);
+    if(proof) return proof.monthIndex > renewalIndex ? 'Renewed Late' : 'Renewed On Time';
+    return riyadhMonthIndex() > renewalIndex ? 'Delayed' : 'Upcoming';
+  }
   function statusClass(status){
     var s = norm(status);
     if(s.indexOf('late') >= 0) return 'ba';
@@ -5685,7 +5721,7 @@ setInterval(loadData,5*60*1000);
       var s = norm(statusOf(row));
       var want = norm(f.status);
       if(want === 'renewed'){
-        if(s.indexOf('renewed') < 0 && norm(row.renewalStatusFromSheet).indexOf('renewed') < 0) return false;
+        if(s.indexOf('renewed') < 0) return false;
       } else if(s.indexOf(want) < 0) return false;
     }
     return true;
@@ -5756,7 +5792,7 @@ setInterval(loadData,5*60*1000);
       selectHtml('retFinFilterRm','RM 2026',f.rm || 'All',uniqueOptions(dataRows,rmOf)).replace('RET_FIN_SHEET_FILTERS.rm=this.value','RET_FIN_SHEET_FILTERS.rm=this.value') +
       selectHtml('retFinFilterCsm','CSM',f.csm || 'All',uniqueOptions(dataRows,csmOf)).replace('RET_FIN_SHEET_FILTERS.csm=this.value','RET_FIN_SHEET_FILTERS.csm=this.value') +
       selectHtml('retFinFilterProduct','Product',f.product || 'All',uniqueOptions(dataRows,productOf)).replace('RET_FIN_SHEET_FILTERS.product=this.value','RET_FIN_SHEET_FILTERS.product=this.value') +
-      selectHtml('retFinFilterStatus','Status',f.status || 'All',uniqueOptions(dataRows,statusOf).concat(uniqueOptions(dataRows,function(r){ return r.renewalStatusFromSheet || ''; })).filter(function(v,i,a){ return v && a.indexOf(v) === i; })).replace('RET_FIN_SHEET_FILTERS.status=this.value','RET_FIN_SHEET_FILTERS.status=this.value') +
+      selectHtml('retFinFilterStatus','Status',f.status || 'All',uniqueOptions(dataRows,statusOf).filter(function(v,i,a){ return v && a.indexOf(v) === i; })).replace('RET_FIN_SHEET_FILTERS.status=this.value','RET_FIN_SHEET_FILTERS.status=this.value') +
       '<button class="ret-sheet-select" style="cursor:pointer;color:var(--red);min-width:auto" onclick="RET_FIN_SHEET_FILTERS={month:\'All\',rm:\'All\',csm:\'All\',product:\'All\',status:\'All\'}; renderRetentionFinancialDetails();">Reset</button>' +
       '<span class="ret-sheet-note">Filters apply to cards, owner summary and all tables.</span></div><span class="badge bb">Sheets only</span></div>' +
       '<div class="ret-sheet-source"><span class="ret-sheet-pill">Budget: ' + safe(src.budget || '1- 2026 Budget') + '</span><span class="ret-sheet-pill">Booking: ' + safe(src.booking || 'Retention Accounts Booking') + '</span><span class="ret-sheet-pill">Collection: ' + safe(src.collection || 'Retention Accounts Collection') + '</span><span class="ret-sheet-pill">Last updated: ' + safe(sheets().lastUpdated || (window.R && window.R.generatedAt) || '—') + '</span></div>';
@@ -5770,13 +5806,13 @@ setInterval(loadData,5*60*1000);
     var notes = panel.querySelectorAll('.ret-fin-mini-note');
     if(notes[0]) notes[0].textContent = 'Source = Retention Accounts Collection. Uses month/product cells from the sheet only.';
     if(notes[1]) notes[1].textContent = 'Source = Retention Accounts Booking. Uses month/product cells from the sheet only.';
-    if(notes[2]) notes[2].textContent = 'Source = 1- 2026 Budget. Shows renewal value, renewal month, Product, RM 2026, CSM and sheet renewal status.';
-    if(notes[3]) notes[3].textContent = 'Delayed = renewal month passed with no booking. Renewed Late = booking month after renewal month. Calculated from sheets output.';
+    if(notes[2]) notes[2].textContent = 'Source = 1- 2026 Budget. Status is calculated only from Booking / Collection sheets, not from the Budget overview status.';
+    if(notes[3]) notes[3].textContent = 'Delayed = renewal month passed with no booking or collection. Renewed Late = first booking/collection month after renewal month.';
 
     var heads = {
       retFinCashedBody:['Client','RM 2026','CSM','Product','Collection Month','Collected','Remaining','Status'],
       retFinBookedBody:['Client','RM 2026','CSM','Product','Booking Month','Booked','Remaining','Status'],
-      retFinRenewedBody:['Client','GID','RM 2026','CSM','Product','Renewal Month','Renewal Value','Sheet Status'],
+      retFinRenewedBody:['Client','GID','RM 2026','CSM','Product','Renewal Month','Renewal Value','Calculated Status'],
       retFinDelayedBody:['Client','RM 2026','CSM','Product','Renewal Month','Renewal Value','Current Status','Action']
     };
     Object.keys(heads).forEach(function(tbodyId){
@@ -5821,7 +5857,7 @@ setInterval(loadData,5*60*1000);
     var bookingRows = rows.filter(function(r){ return monthCellValue(r,'booked',m) > 0; });
     var collectionRows = rows.filter(function(r){ return monthCellValue(r,'collected',m) > 0; });
     var delayedRows = rows.filter(function(r){ return norm(statusOf(r)).indexOf('delayed') >= 0 && (m === 'All' || r.renewalMonth === m); });
-    var lateRows = rows.filter(function(r){ return norm(statusOf(r)).indexOf('late') >= 0 && (m === 'All' || r.renewalMonth === m || r.bookingMonth === m); });
+    var lateRows = rows.filter(function(r){ return norm(statusOf(r)).indexOf('late') >= 0 && (m === 'All' || r.renewalMonth === m || r.bookingMonth === m || r.collectionMonth === m); });
     var actionRows = delayedRows.concat(lateRows.filter(function(r){ return delayedRows.indexOf(r) < 0; }));
 
     set('retFinTopGrid', [
@@ -5829,7 +5865,7 @@ setInterval(loadData,5*60*1000);
       {v:money(bookedTotal),l:'Booked Value',s:bookingRows.length.toLocaleString() + ' rows · Booking sheet',c:'var(--purple)'},
       {v:money(collectedTotal),l:'Cash Collected',s:collectionRows.length.toLocaleString() + ' rows · Collection sheet',c:'var(--green)'},
       {v:money(remainingTotal),l:'Remaining Collection',s:'Booked - Collected · ' + monthText,c:'var(--blue)'},
-      {v:delayedRows.length.toLocaleString(),l:'Delayed Accounts',s:'Due month passed · no booking',c:'var(--red)'},
+      {v:delayedRows.length.toLocaleString(),l:'Delayed Accounts',s:'Due month passed · no booking/collection',c:'var(--red)'},
       {v:lateRows.length.toLocaleString(),l:'Renewed Late',s:'Booking after renewal month',c:'var(--amber)'}
     ].map(function(x){ return '<div class="ret-fin-card" style="--fc:' + x.c + '"><div class="ret-fin-card-v">' + x.v + '</div><div class="ret-fin-card-l">' + x.l + '</div><div class="ret-fin-card-s">' + x.s + '</div></div>'; }).join(''));
 
@@ -5876,11 +5912,11 @@ setInterval(loadData,5*60*1000);
       return '<tr class="' + rowClass(i,'warn') + '"><td>' + clientCell(row) + '</td><td>' + safe(rmOf(row) || '—') + '</td><td>' + safe(csmOf(row) || '—') + '</td><td class="c">' + safe(productOf(row)) + '</td><td class="c">' + safe(m === 'All' ? (row.bookingMonth || '—') : m) + '</td><td class="c">' + cellMoney(monthCellValue(row,'booked',m),'var(--purple)') + '</td><td class="c">' + cellMoney(remaining(row,m),'var(--blue)') + '</td><td class="c">' + badge(statusOf(row)) + '</td></tr>';
     }
     function overviewRow(row,i){
-      return '<tr class="' + rowClass(i,'ok') + '"><td>' + clientCell(row) + '</td><td class="c" style="font-family:var(--mono)">' + safe(row.gid || '—') + '</td><td>' + safe(rmOf(row) || '—') + '</td><td>' + safe(csmOf(row) || '—') + '</td><td class="c">' + safe(productOf(row)) + '</td><td class="c">' + safe(row.renewalMonth || '—') + '</td><td class="c">' + cellMoney(renewalValue(row,m),'var(--cyan)') + '</td><td class="c">' + badge(row.renewalStatusFromSheet || statusOf(row)) + '</td></tr>';
+      return '<tr class="' + rowClass(i,'ok') + '"><td>' + clientCell(row) + '</td><td class="c" style="font-family:var(--mono)">' + safe(row.gid || '—') + '</td><td>' + safe(rmOf(row) || '—') + '</td><td>' + safe(csmOf(row) || '—') + '</td><td class="c">' + safe(productOf(row)) + '</td><td class="c">' + safe(row.renewalMonth || '—') + '</td><td class="c">' + cellMoney(renewalValue(row,m),'var(--cyan)') + '</td><td class="c">' + badge(statusOf(row)) + '</td></tr>';
     }
     function actionRow(row,i){
       var st = statusOf(row), isLate = norm(st).indexOf('late') >= 0;
-      return '<tr class="' + rowClass(i,isLate ? 'warn' : 'risk') + '"><td>' + clientCell(row) + '</td><td>' + safe(rmOf(row) || '—') + '</td><td>' + safe(csmOf(row) || '—') + '</td><td class="c">' + safe(productOf(row)) + '</td><td class="c">' + safe(row.renewalMonth || '—') + '</td><td class="c">' + cellMoney(number(row.renewalValue2026),'var(--red)') + '</td><td class="c">' + badge(st) + '</td><td>' + safe(isLate ? 'Renewed after due month' : 'Follow up / collect booking status') + '</td></tr>';
+      return '<tr class="' + rowClass(i,isLate ? 'warn' : 'risk') + '"><td>' + clientCell(row) + '</td><td>' + safe(rmOf(row) || '—') + '</td><td>' + safe(csmOf(row) || '—') + '</td><td class="c">' + safe(productOf(row)) + '</td><td class="c">' + safe(row.renewalMonth || '—') + '</td><td class="c">' + cellMoney(number(row.renewalValue2026),'var(--red)') + '</td><td class="c">' + badge(st) + '</td><td>' + safe(isLate ? 'Renewed after due month' : 'No booking/collection yet') + '</td></tr>';
     }
 
     set('retFinCashedBody', collectionRows.length ? collectionRows.map(collectionRow).join('') : empty(8,'No collection rows found from the Collection sheet for the selected filters.'));
