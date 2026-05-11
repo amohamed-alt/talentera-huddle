@@ -5831,6 +5831,68 @@ setInterval(loadData,5*60*1000);
     badge.textContent = booked + '/' + collected;
     badge.title = 'Booking rows / Collection rows from retentionSheets2026';
   }
+
+  function retFinMetricConfig(kind){
+    var map = {
+      renewal:{title:'Renewal Value Accounts', desc:'Accounts included in the current filters from 2026 Budget.', color:'var(--cyan)', value:function(r,m){ return renewalValue(r,m); }},
+      booked:{title:'Booked Pending Collection', desc:'Booking sheet value that is still not collected.', color:'var(--purple)', value:function(r,m){ return monthCellValue(r,'booked',m); }},
+      collected:{title:'Cash Collected Accounts', desc:'Accounts with collection value from Retention Accounts Collection.', color:'var(--green)', value:function(r,m){ return monthCellValue(r,'collected',m); }},
+      remaining:{title:'Remaining Collection Accounts', desc:'Accounts where booked pending value is still above collected cash.', color:'var(--blue)', value:function(r,m){ return remaining(r,m); }},
+      delayed:{title:'Delayed Accounts', desc:'Budget renewal month passed and no booking/collection exists.', color:'var(--red)', value:function(r,m){ return renewalValue(r,m); }},
+      late:{title:'Renewed Late Accounts', desc:'First booking/collection month is after the Budget renewal month.', color:'var(--amber)', value:function(r,m){ return renewalValue(r,m); }}
+    };
+    return map[kind] || map.renewal;
+  }
+  function retFinRowsForMetric(kind, rows, m){
+    if(kind === 'renewal') return rows;
+    if(kind === 'booked') return rows.filter(function(r){ return monthCellValue(r,'booked',m) > 0; });
+    if(kind === 'collected') return rows.filter(function(r){ return monthCellValue(r,'collected',m) > 0; });
+    if(kind === 'remaining') return rows.filter(function(r){ return remaining(r,m) > 0; });
+    if(kind === 'delayed') return rows.filter(function(r){ return norm(statusOf(r)).indexOf('delayed') >= 0 && (m === 'All' || r.renewalMonth === m); });
+    if(kind === 'late') return rows.filter(function(r){ return norm(statusOf(r)).indexOf('late') >= 0 && (m === 'All' || r.renewalMonth === m || r.bookingMonth === m || r.collectionMonth === m); });
+    return rows;
+  }
+  function retFinMetricRow(row, i, m){
+    var st = statusOf(row);
+    var fin = row.financialStatus || (number(row.collectedValue) > 0 ? 'Cashed / Collected' : number(row.bookedValue) > 0 ? 'Booked - Pending Collection' : 'No Action Yet');
+    return '<tr class="' + rowClass(i, norm(st).indexOf('delayed') >= 0 ? 'risk' : norm(st).indexOf('late') >= 0 ? 'warn' : 'ok') + '">' +
+      '<td>' + clientCell(row) + '</td>' +
+      '<td>' + safe(rmOf(row) || '—') + '</td>' +
+      '<td>' + safe(csmOf(row) || '—') + '</td>' +
+      '<td class="c">' + safe(productOf(row)) + '</td>' +
+      '<td class="c">' + safe(row.renewalMonth || '—') + '</td>' +
+      '<td class="c">' + cellMoney(renewalValue(row,m),'var(--cyan)') + '</td>' +
+      '<td class="c">' + cellMoney(monthCellValue(row,'booked',m),'var(--purple)') + '</td>' +
+      '<td class="c">' + cellMoney(monthCellValue(row,'collected',m),'var(--green)') + '</td>' +
+      '<td class="c">' + cellMoney(remaining(row,m),'var(--blue)') + '</td>' +
+      '<td class="c">' + badge(st) + '</td>' +
+      '<td class="c"><span class="badge ' + statusClass(fin) + '">' + safe(fin) + '</span></td>' +
+    '</tr>';
+  }
+  window.closeRetFinSheetMetric = function(){
+    var old = document.getElementById('retFinSheetMetricBackdrop');
+    if(old) old.remove();
+  };
+  window.openRetFinSheetMetric = function(kind){
+    var f = filters();
+    var m = f.month || 'All';
+    var baseRows = accounts().filter(passFilters);
+    var cfg = retFinMetricConfig(kind);
+    var rows = retFinRowsForMetric(kind, baseRows, m);
+    var totalValue = rows.reduce(function(s,r){ return s + cfg.value(r,m); }, 0);
+    var old = document.getElementById('retFinSheetMetricBackdrop');
+    if(old) old.remove();
+    var node = document.createElement('div');
+    node.id = 'retFinSheetMetricBackdrop';
+    node.className = 'acq-detail-backdrop';
+    node.onclick = function(e){ if(e.target === node) window.closeRetFinSheetMetric(); };
+    node.innerHTML = '<div class="acq-detail-card" style="width:min(1180px,calc(100vw - 40px));border-top:4px solid ' + cfg.color + '">' +
+      '<div class="acq-detail-hd"><div><div class="acq-detail-title">' + safe(cfg.title) + ' <span class="badge bb" style="margin-left:8px">' + rows.length.toLocaleString() + ' rows</span></div><div class="acq-detail-sub">' + safe(cfg.desc) + ' · ' + safe(monthLabel(m)) + ' · total ' + safe(money(totalValue)) + ' · current filters applied.</div></div><button class="acq-detail-close" onclick="closeRetFinSheetMetric()">×</button></div>' +
+      '<div class="acq-detail-body"><div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Client</th><th>RM 2026</th><th>CSM</th><th class="c">Product</th><th class="c">Renewal Month</th><th class="c">Renewal</th><th class="c">Booked Pending</th><th class="c">Collected</th><th class="c">Remaining</th><th class="c">Status</th><th class="c">Financial</th></tr></thead><tbody>' +
+      (rows.length ? rows.map(function(r,i){ return retFinMetricRow(r,i,m); }).join('') : empty(11,'No accounts found for this card under the selected filters.')) +
+      '</tbody></table></div></div></div>';
+    document.body.appendChild(node);
+  };
   window.renderRetentionFinancialDetails = function(){
     ensurePanelTextAndFilters();
     var allRows = accounts();
@@ -5861,13 +5923,13 @@ setInterval(loadData,5*60*1000);
     var actionRows = delayedRows.concat(lateRows.filter(function(r){ return delayedRows.indexOf(r) < 0; }));
 
     set('retFinTopGrid', [
-      {v:money(renewalTotal),l:'Renewal Value',s:rows.length.toLocaleString() + ' accounts · ' + monthText,c:'var(--cyan)'},
-      {v:money(bookedTotal),l:'Booked Value',s:bookingRows.length.toLocaleString() + ' rows · Booking sheet',c:'var(--purple)'},
-      {v:money(collectedTotal),l:'Cash Collected',s:collectionRows.length.toLocaleString() + ' rows · Collection sheet',c:'var(--green)'},
-      {v:money(remainingTotal),l:'Remaining Collection',s:'Booked - Collected · ' + monthText,c:'var(--blue)'},
-      {v:delayedRows.length.toLocaleString(),l:'Delayed Accounts',s:'Due month passed · no booking/collection',c:'var(--red)'},
-      {v:lateRows.length.toLocaleString(),l:'Renewed Late',s:'Booking after renewal month',c:'var(--amber)'}
-    ].map(function(x){ return '<div class="ret-fin-card" style="--fc:' + x.c + '"><div class="ret-fin-card-v">' + x.v + '</div><div class="ret-fin-card-l">' + x.l + '</div><div class="ret-fin-card-s">' + x.s + '</div></div>'; }).join(''));
+      {k:'renewal',v:money(renewalTotal),l:'Renewal Value',s:rows.length.toLocaleString() + ' accounts · ' + monthText,c:'var(--cyan)'},
+      {k:'booked',v:money(bookedTotal),l:'Booked Value',s:bookingRows.length.toLocaleString() + ' rows · Booking sheet',c:'var(--purple)'},
+      {k:'collected',v:money(collectedTotal),l:'Cash Collected',s:collectionRows.length.toLocaleString() + ' rows · Collection sheet',c:'var(--green)'},
+      {k:'remaining',v:money(remainingTotal),l:'Remaining Collection',s:'Booked - Collected · ' + monthText,c:'var(--blue)'},
+      {k:'delayed',v:delayedRows.length.toLocaleString(),l:'Delayed Accounts',s:'Due month passed · no booking/collection',c:'var(--red)'},
+      {k:'late',v:lateRows.length.toLocaleString(),l:'Renewed Late',s:'Booking after renewal month',c:'var(--amber)'}
+    ].map(function(x){ return '<div class="ret-fin-card ret-click-card" onclick="openRetFinSheetMetric('' + x.k + '')" title="Click to open account list" style="--fc:' + x.c + '"><div class="ret-fin-card-v">' + x.v + '</div><div class="ret-fin-card-l">' + x.l + '</div><div class="ret-fin-card-s">' + x.s + '</div></div>'; }).join(''));
 
     var warning = byId('retFinSheetDataWarning');
     if(!warning){
@@ -5877,9 +5939,13 @@ setInterval(loadData,5*60*1000);
       var filter = byId('retFinSheetFilter');
       if(filter && filter.parentNode) filter.parentNode.insertBefore(warning, filter.nextSibling);
     }
-    if(bookedTotal === 0 && collectedTotal === 0){
+    var rsSummary = sheets().summary || {};
+    var globalBookedTotal = allRows.reduce(function(s,r){ return s + number(r.bookedValue); },0);
+    var globalCollectedTotal = allRows.reduce(function(s,r){ return s + number(r.collectedValue); },0);
+    var globalHasFinancialData = globalBookedTotal > 0 || globalCollectedTotal > 0 || number(sheets().bookedValue) > 0 || number(sheets().bookingSheetValue) > 0 || number(sheets().collectedValue) > 0 || number(rsSummary.totalBookedValue) > 0 || number(rsSummary.totalCollectedValue) > 0 || number(rsSummary.remainingCollection) > 0;
+    if(!globalHasFinancialData){
       warning.style.display = 'block';
-      warning.textContent = 'Booking and Collection are 0 because data-retention.json currently has bookedValue/collectedValue as 0 and no bookingByMonth/collectionByMonth maps. Update the n8n Build node, then this view will populate automatically.';
+      warning.textContent = 'Booking and Collection are not detected in this data-retention.json. Update the n8n Build node, then this view will populate automatically.';
     } else {
       warning.style.display = 'none';
     }
