@@ -5016,9 +5016,15 @@ function updateClock(){
   if($("topbarSub")&&D && !$("panel-retention")?.classList.contains("active") && !$("panel-financial")?.classList.contains("active"))$("topbarSub").textContent=`${riy.toLocaleTimeString("en-US",{hour:"2-digit",minute:"2-digit"})} Riyadh · Auto-refresh 5min`;
 }
 setInterval(updateClock,60000);
-loadData();
-setInterval(loadData,5*60*1000);
+window.__dashboardAutoRefreshTimer && clearInterval(window.__dashboardAutoRefreshTimer);
 
+loadData({ keepView:true, keepScroll:true });
+
+window.__dashboardAutoRefreshTimer = setInterval(function(){
+  if(typeof loadData === "function"){
+    loadData({ keepView:true, keepScroll:true, auto:true });
+  }
+}, 5 * 60 * 1000);
 
 /* ═══════════════════════════════════════════
    ACQUISITION REP TABS — RESTORE YEST / MTD / YTD SUMMARY
@@ -5645,7 +5651,7 @@ setInterval(loadData,5*60*1000);
 
   var oldLoad = window.loadData;
   if(typeof oldLoad === 'function' && !oldLoad.__upsellingWrapped){
-    window.loadData = async function(){
+    window.loadData = async function(options = {}){
       var result = oldLoad.apply(this, arguments);
       if(result && typeof result.then === 'function') await result;
       try{
@@ -5706,34 +5712,57 @@ setInterval(loadData,5*60*1000);
   }
 
   window.loadData = async function(){
-    var ri = document.getElementById('ri');
-    if(ri) ri.classList.add('spin');
-    var y = window.scrollY;
-    try{
-      var acq = await readFirst(['./data.json']);
-      if(!acq) throw new Error('data.json not loaded');
-      window.D = acq.data;
+   window.loadData = async function(options = {}){
+  var ri = document.getElementById('ri');
+  if(ri) ri.classList.add('spin');
 
-      var ret = await readFirst(RETENTION_JSON_PATHS);
-      window.R = ret ? ret.data : null;
-      window.RETENTION_JSON_LOADED_FROM = ret ? ret.path : null;
-    }catch(e){
-      console.error('Dashboard data load failed:', e);
-      window.D = window.D || {meta:{yesterdayLabel:'No data',generatedAt:'--'},kpi:{yesterday:{},mtd:{},ytd:{}},team:{},repData:[],stageData:[],topInactiveRankAccounts:[],rankTotals:{},autoRecs:[],closedWon:[],closedLost:[],lostByReason:{},marketNews:[]};
-      window.R = window.R || null;
+  var y = options.keepScroll === false ? 0 : window.scrollY;
+  var stateBeforeRefresh = window.getDashboardState ? window.getDashboardState() : null;
+
+  try{
+    var acq = await readFirst(['./data.json']);
+    if(!acq) throw new Error('data.json not loaded');
+    window.D = acq.data;
+
+    var ret = await readFirst(RETENTION_JSON_PATHS);
+    window.R = ret ? ret.data : null;
+    window.RETENTION_JSON_LOADED_FROM = ret ? ret.path : null;
+  }catch(e){
+    console.error('Dashboard data load failed:', e);
+    window.D = window.D || {meta:{yesterdayLabel:'No data',generatedAt:'--'},kpi:{yesterday:{},mtd:{},ytd:{}},team:{},repData:[],stageData:[],topInactiveRankAccounts:[],rankTotals:{},autoRecs:[],closedWon:[],closedLost:[],lostByReason:{},marketNews:[]};
+    window.R = window.R || null;
+  }
+
+  try{
+    if(typeof window.render === 'function') window.render();
+  }catch(e){
+    console.error('render failed', e);
+  }
+
+  try{
+    if(window.restoreDashboardState && stateBeforeRefresh){
+      window.restoreDashboardState(stateBeforeRefresh);
+    }else if(typeof window.restoreCurrentView === 'function'){
+      window.restoreCurrentView({ keepScroll:true });
     }
+  }catch(e){
+    console.error('restore view failed', e);
+  }
 
-    try{ if(typeof window.render === 'function') window.render(); }catch(e){ console.error('render failed', e); }
-    try{ if(typeof window.restoreCurrentView === 'function') window.restoreCurrentView({keepScroll:true}); }catch(e){ console.error('restore view failed', e); }
-    requestAnimationFrame(function(){ window.scrollTo(0, y); });
+  requestAnimationFrame(function(){
+    requestAnimationFrame(function(){
+      if(options.keepScroll !== false) window.scrollTo(0, y);
+    });
+  });
 
-    if(window.APP_MAIN_PANEL === 'retention'){
-      var sub = document.getElementById('topbarSub');
-      if(sub && !window.R) sub.textContent = 'Retention JSON was not loaded. Check filename and valid JSON.';
-      if(sub && window.R && window.RETENTION_JSON_LOADED_FROM) sub.textContent = 'Updated ' + (window.R.generatedAt || '') + ' · Loaded from ' + window.RETENTION_JSON_LOADED_FROM;
-    }
-    if(ri) ri.classList.remove('spin');
-  };
+  if(typeof APP_MAIN_PANEL !== 'undefined' && APP_MAIN_PANEL === 'retention'){
+    var sub = document.getElementById('topbarSub');
+    if(sub && !window.R) sub.textContent = 'Retention JSON was not loaded. Check filename and valid JSON.';
+    if(sub && window.R && window.RETENTION_JSON_LOADED_FROM) sub.textContent = 'Updated ' + (window.R.generatedAt || '') + ' · Loaded from ' + window.RETENTION_JSON_LOADED_FROM;
+  }
+
+  if(ri) ri.classList.remove('spin');
+};
 
   // Re-load once using the robust reader after all original scripts finish.
   setTimeout(function(){ if(typeof window.loadData === 'function') window.loadData(); }, 50);
@@ -6742,6 +6771,92 @@ setInterval(loadData,5*60*1000);
   setTimeout(function(){
     if(window.APP_MAIN_PANEL === 'retention' && window.APP_RETENTION_VIEW === 'financial') window.renderRetentionFinancialDetails();
   }, 0);
+})();
+ (function(){
+  if(window.__dashboardStateGuard) return;
+  window.__dashboardStateGuard = true;
+
+  window.__dashboardUiState = window.__dashboardUiState || {
+    filters:{},
+    openSections:{}
+  };
+
+  window.getDashboardState = function(){
+    let activePanel = document.querySelector(".panel.active");
+    let activeTab = document.querySelector(".tab-btn.active");
+    let activeNav = document.querySelector(".nav-item.active");
+
+    return {
+      scrollY: window.scrollY,
+      appMainPanel: typeof APP_MAIN_PANEL !== "undefined" ? APP_MAIN_PANEL : "acquisition",
+      appAcqTabId: typeof APP_ACQ_TAB_ID !== "undefined" ? APP_ACQ_TAB_ID : "team",
+      appRetentionView: typeof APP_RETENTION_VIEW !== "undefined" ? APP_RETENTION_VIEW : "overview",
+      appRetentionOwnerId: typeof APP_RETENTION_OWNER_ID !== "undefined" ? APP_RETENTION_OWNER_ID : null,
+      retSelectedOwnerId: typeof RET_SELECTED_OWNER_ID !== "undefined" ? RET_SELECTED_OWNER_ID : null,
+      retTierMatrixFilter: typeof RET_TIER_MATRIX_FILTER !== "undefined" ? RET_TIER_MATRIX_FILTER : "all",
+      activePanelId: activePanel ? activePanel.id : null,
+      activeTabId: activeTab ? activeTab.id : null,
+      activeNavId: activeNav ? activeNav.id : null,
+      filters: JSON.parse(JSON.stringify(window.__dashboardUiState.filters || {})),
+      openSections: JSON.parse(JSON.stringify(window.__dashboardUiState.openSections || {}))
+    };
+  };
+
+  window.restoreDashboardState = function(state){
+    if(!state) return;
+
+    try{
+      if(typeof APP_MAIN_PANEL !== "undefined") APP_MAIN_PANEL = state.appMainPanel || "acquisition";
+      if(typeof APP_ACQ_TAB_ID !== "undefined") APP_ACQ_TAB_ID = state.appAcqTabId || "team";
+      if(typeof APP_RETENTION_VIEW !== "undefined") APP_RETENTION_VIEW = state.appRetentionView || "overview";
+      if(typeof APP_RETENTION_OWNER_ID !== "undefined") APP_RETENTION_OWNER_ID = state.appRetentionOwnerId || null;
+      if(typeof RET_SELECTED_OWNER_ID !== "undefined") RET_SELECTED_OWNER_ID = state.retSelectedOwnerId || null;
+      if(typeof RET_TIER_MATRIX_FILTER !== "undefined") RET_TIER_MATRIX_FILTER = state.retTierMatrixFilter || "all";
+
+      window.__dashboardUiState.filters = state.filters || {};
+      window.__dashboardUiState.openSections = state.openSections || {};
+
+      if(typeof restoreCurrentView === "function"){
+        restoreCurrentView({ keepScroll:true });
+      }
+
+      if(state.activePanelId){
+        document.querySelectorAll(".panel").forEach(function(p){ p.classList.remove("active"); });
+        document.getElementById(state.activePanelId)?.classList.add("active");
+      }
+
+      if(state.activeTabId){
+        document.querySelectorAll(".tab-btn").forEach(function(t){ t.classList.remove("active"); });
+        document.getElementById(state.activeTabId)?.classList.add("active");
+      }
+
+      if(state.activeNavId){
+        document.querySelectorAll(".nav-item").forEach(function(n){ n.classList.remove("active"); });
+        document.getElementById(state.activeNavId)?.classList.add("active");
+      }
+
+      requestAnimationFrame(function(){
+        requestAnimationFrame(function(){
+          window.scrollTo(0, Number(state.scrollY || 0));
+          if(typeof window.reapplyDashboardFilters === "function"){
+            window.reapplyDashboardFilters();
+          }
+        });
+      });
+    }catch(e){
+      console.error("restoreDashboardState failed", e);
+    }
+  };
+
+  window.saveDashboardFilter = function(key, value){
+    window.__dashboardUiState.filters[key] = value;
+  };
+
+  window.getDashboardFilter = function(key, fallback){
+    return window.__dashboardUiState.filters[key] !== undefined
+      ? window.__dashboardUiState.filters[key]
+      : fallback;
+  };
 })();
 </script>
 
