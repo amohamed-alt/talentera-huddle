@@ -2819,25 +2819,68 @@ function restoreCurrentView(options={}){
   }
 }
 
-async function loadData(){
-  const ri=$("ri");ri.classList.add("spin");
-  try{
-    const res=await fetch("./data.json?t="+Date.now());
-    if(!res.ok)throw new Error();
-    D=await res.json();
+async function fetchJsonFromSources(urls, required){
+  const stamp = Date.now();
+  let lastError = null;
+
+  for(const baseUrl of urls){
+    if(!baseUrl) continue;
+
     try{
-      const rres=await fetch("./data-retention.json?t="+Date.now());
-      R=rres.ok ? await rres.json() : null;
-    }catch(_){ R=null; }
+      const sep = baseUrl.includes("?") ? "&" : "?";
+      const res = await fetch(baseUrl + sep + "t=" + stamp, { cache: "no-store" });
+
+      if(!res.ok){
+        lastError = new Error("HTTP " + res.status + " from " + baseUrl);
+        continue;
+      }
+
+      return await res.json();
+    }catch(e){
+      lastError = e;
+    }
+  }
+
+  if(required) throw lastError || new Error("No dashboard data source loaded");
+  return null;
+}
+
+async function loadData(){
+  const ri=$("ri");
+  if(ri) ri.classList.add("spin");
+
+  const acquisitionSources = [
+    "./data.json",
+    "data.json",
+    "https://amohamed-alt.github.io/talentera-huddle/data.json",
+    "https://raw.githubusercontent.com/amohamed-alt/talentera-huddle/refs/heads/main/data.json"
+  ];
+
+  const retentionSources = [
+    "./data-retention.json",
+    "data-retention.json",
+    "./Data%20Retention.json",
+    "Data%20Retention.json",
+    "https://amohamed-alt.github.io/talentera-huddle/data-retention.json",
+    "https://amohamed-alt.github.io/talentera-huddle/Data%20Retention.json",
+    "https://raw.githubusercontent.com/amohamed-alt/talentera-huddle/refs/heads/main/data-retention.json",
+    "https://raw.githubusercontent.com/amohamed-alt/talentera-huddle/refs/heads/main/Data%20Retention.json"
+  ];
+
+  try{
+    D = await fetchJsonFromSources(acquisitionSources, true);
+    R = await fetchJsonFromSources(retentionSources, false);
   }catch(e){
+    console.error("Dashboard data failed to load", e);
     D={meta:{yesterdayLabel:"No data",generatedAt:"--"},kpi:{yesterday:{},mtd:{},ytd:{}},team:{},repData:[],stageData:[],topInactiveRankAccounts:[],rankTotals:{},autoRecs:[],closedWon:[],closedLost:[],lostByReason:{},marketNews:[]};
     R=null;
   }
+
   const scrollYBeforeRefresh = window.scrollY;
   render();
   restoreCurrentView({ keepScroll: true });
   requestAnimationFrame(()=>window.scrollTo(0, scrollYBeforeRefresh));
-  ri.classList.remove("spin");
+  if(ri) ri.classList.remove("spin");
 }
 
 function render(){
