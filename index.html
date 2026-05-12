@@ -2067,7 +2067,184 @@ function openDealsTable(show,rest,did){
 }
 
 
+function acqUiSlug(v){
+  return String(v || "item").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"") || "item";
+}
 
+function renderRepAiCoachingCard(rep, rows){
+  const list = Array.isArray(rows) ? rows : [];
+  const id = `ai-coaching-${acqUiSlug(rep.id || rep.name)}`;
+  const visible = 5;
+
+  const body = list.length
+    ? list.map((item,i) => {
+        const hidden = i >= visible ? "display:none" : "";
+        return `<div class="mini-row" data-ai-coaching-row="${id}" style="${hidden}">
+          <div class="mini-main">
+            <div class="mini-name">${recordLink(item.name || "Unnamed deal", item.hubspotUrl)}</div>
+            <div class="mini-meta">${(item.reasons || []).map(rs => esc(rs)).join(" · ") || "No next activity"}</div>
+          </div>
+          <div class="mini-score" style="color:var(--purple)">${fmt(item.amount || 0)}</div>
+        </div>`;
+      }).join("")
+    : `<div class="acq-empty">All deals have next activity scheduled.</div>`;
+
+  const more = list.length > visible
+    ? `<button class="acq-show-btn" onclick="toggleRepAiCoachingRows('${id}', this)">▼ Show ${list.length - visible} more</button>`
+    : "";
+
+  return `<div class="card" style="margin-bottom:14px">
+    <div class="card-hd">
+      <div class="card-title"><div class="card-title-icon" style="background:var(--purple-bg)">⚡</div>AI Coaching</div>
+      <span class="badge bp">${list.length} deals</span>
+    </div>
+    <div class="mini-list">${body}</div>
+    ${more}
+  </div>`;
+}
+
+function toggleRepAiCoachingRows(id, btn){
+  const rows = Array.from(document.querySelectorAll(`[data-ai-coaching-row="${id}"]`));
+  const open = btn.dataset.open === "1";
+
+  rows.forEach((row,i) => {
+    row.style.display = open && i >= 5 ? "none" : "";
+  });
+
+  btn.dataset.open = open ? "0" : "1";
+  btn.textContent = open ? `▼ Show ${Math.max(rows.length - 5, 0)} more` : "▲ Show less";
+}
+ function acqRankCountry(row){
+  return acqFirstValue(row, ["country","countryName","companyCountry","hs_country","ip_country_code","country_code"]) || "Unknown";
+}
+
+function acqRankCompanyName(row){
+  return acqFirstValue(row, ["name","company","companyName","accountName"]) || "Unnamed account";
+}
+
+function acqRankCompanyUrl(row){
+  const id = acqFirstValue(row, ["id","hs_object_id","companyId","recordId","objectId"]);
+  return row.hubspotUrl || row.url || (id && typeof hubspotRecordUrl === "function" ? hubspotRecordUrl("company", id) : null);
+}
+
+function renderRepRankRows(rows, id, rank, color){
+  if(!rows.length){
+    return `<div class="acq-empty">All Rank ${rank} accounts contacted.</div>`;
+  }
+
+  return rows.map((row,i) => {
+    const hidden = i >= 5 ? "display:none" : "";
+    return `<div class="mini-row" data-rank-row="${id}" data-country="${acqUiSlug(row._country)}" style="${hidden}">
+      <div class="mini-main">
+        <div class="mini-name">${recordLink(acqRankCompanyName(row), acqRankCompanyUrl(row))}</div>
+        <div class="mini-meta">Rank ${rank} · ${esc(row._country)}</div>
+      </div>
+      <div class="mini-score" style="color:${color}">Rank ${rank}</div>
+    </div>`;
+  }).join("");
+}
+
+function renderRepRankCoverageCard(rep, rankA, rankB){
+  const id = `rank-coverage-${acqUiSlug(rep.id || rep.name)}`;
+
+  const aRows = (Array.isArray(rankA) ? rankA : []).map(x => ({ ...x, _rank:"A", _country:acqRankCountry(x) }));
+  const bRows = (Array.isArray(rankB) ? rankB : []).map(x => ({ ...x, _rank:"B", _country:acqRankCountry(x) }));
+  const allRows = [...aRows, ...bRows];
+
+  const countryCounts = allRows.reduce((m,row) => {
+    m[row._country] = (m[row._country] || 0) + 1;
+    return m;
+  }, {});
+
+  const chips = [
+    `<button class="acq-country-chip active" onclick="filterRepRankCoverage('${id}','all',this)">All ${allRows.length}</button>`,
+    ...Object.entries(countryCounts)
+      .sort((a,b) => b[1] - a[1])
+      .map(([country,count]) => `<button class="acq-country-chip" onclick="filterRepRankCoverage('${id}','${acqUiSlug(country)}',this)">${esc(country)} ${count}</button>`)
+  ].join("");
+
+  return `<div class="card" style="margin-bottom:0">
+    <div class="card-hd">
+      <div class="card-title"><div class="card-title-icon" style="background:var(--red-bg)">🎯</div>Rank A/B Coverage</div>
+      <div style="display:flex;gap:5px">
+        <span class="rank-a">${rep.rankA || 0}A</span>
+        <span class="rank-b">${rep.rankB || 0}B</span>
+      </div>
+    </div>
+
+    <div class="acq-country-tools">
+      <div class="acq-country-row" data-rank-chip-row="${id}">${chips}</div>
+    </div>
+
+    <div style="padding:12px 18px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+        <span style="font-size:10px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.08em">Rank A — ${rep.rankA || 0}</span>
+        <div style="display:flex;gap:8px;font-size:10px;font-weight:600">
+          <span style="color:var(--green)">✓ ${rep.rankAContacted || 0}</span>
+          <span style="color:var(--red)">✗ ${rep.rankANotContacted || 0}</span>
+        </div>
+      </div>
+
+      <div class="mini-list" id="${id}-a">${renderRepRankRows(aRows, `${id}-a`, "A", "var(--red)")}</div>
+      <button class="acq-show-btn" id="${id}-a-btn" style="${aRows.length > 5 ? "" : "display:none"}" onclick="toggleRepRankCoverageRows('${id}-a', this)">▼ Show ${Math.max(aRows.length - 5, 0)} more</button>
+
+      <div style="display:flex;align-items:center;justify-content:space-between;margin:14px 0 8px">
+        <span style="font-size:10px;font-weight:700;color:var(--amber);text-transform:uppercase;letter-spacing:.08em">Rank B — ${rep.rankB || 0}</span>
+        <div style="display:flex;gap:8px;font-size:10px;font-weight:600">
+          <span style="color:var(--green)">✓ ${rep.rankBContacted || 0}</span>
+          <span style="color:var(--amber)">✗ ${rep.rankBNotContacted || 0}</span>
+        </div>
+      </div>
+
+      <div class="mini-list" id="${id}-b">${renderRepRankRows(bRows, `${id}-b`, "B", "var(--amber)")}</div>
+      <button class="acq-show-btn" id="${id}-b-btn" style="${bRows.length > 5 ? "" : "display:none"}" onclick="toggleRepRankCoverageRows('${id}-b', this)">▼ Show ${Math.max(bRows.length - 5, 0)} more</button>
+    </div>
+  </div>`;
+}
+
+function filterRepRankCoverage(id, countryKey, btn){
+  const chipRow = document.querySelector(`[data-rank-chip-row="${id}"]`);
+  if(chipRow){
+    chipRow.querySelectorAll(".acq-country-chip").forEach(x => x.classList.remove("active"));
+  }
+  if(btn) btn.classList.add("active");
+
+  [`${id}-a`, `${id}-b`].forEach(sectionId => {
+    const rows = Array.from(document.querySelectorAll(`[data-rank-row="${sectionId}"]`));
+    const matched = rows.filter(row => countryKey === "all" || row.dataset.country === countryKey);
+
+    rows.forEach(row => row.style.display = "none");
+    matched.forEach((row,i) => row.style.display = i < 5 ? "" : "none");
+
+    const btnEl = document.getElementById(`${sectionId}-btn`);
+    if(btnEl){
+      const extra = Math.max(matched.length - 5, 0);
+      btnEl.dataset.open = "0";
+      btnEl.style.display = extra ? "block" : "none";
+      btnEl.textContent = `▼ Show ${extra} more`;
+    }
+  });
+}
+
+function toggleRepRankCoverageRows(sectionId, btn){
+  const rows = Array.from(document.querySelectorAll(`[data-rank-row="${sectionId}"]`)).filter(row => row.style.display !== "none" || row.dataset.visibleByFilter !== "0");
+  const allRows = Array.from(document.querySelectorAll(`[data-rank-row="${sectionId}"]`));
+  const open = btn.dataset.open === "1";
+
+  if(open){
+    allRows.forEach((row,i) => {
+      if(row.style.display !== "none" || i < 5) row.style.display = i < 5 ? "" : "none";
+    });
+    btn.dataset.open = "0";
+    btn.textContent = `▼ Show ${Math.max(allRows.length - 5, 0)} more`;
+  }else{
+    allRows.forEach(row => {
+      if(row.style.display !== "none") row.style.display = "";
+    });
+    btn.dataset.open = "1";
+    btn.textContent = "▲ Show less";
+  }
+}
 function renderFinancialDetails(){
   const card = $("financialDetailsCard");
   if(!card) return;
@@ -3114,26 +3291,15 @@ renderManagerAddons();
       <div class="stat-chips">
         ${[{v:calls,l:"Calls Yesterday",c:calls<5?"var(--red)":"var(--blue)"},{v:rate+"%",l:"Connection Rate",c:rc},{v:mtgs,l:"Meetings Yesterday",c:"var(--purple)"},{v:r.openDeals||0,l:"Open Deals",c:"var(--amber)"}].map(s=>`<div class="schip" style="--sc2:${s.c}"><div class="schip-accent"></div><div class="schip-v">${s.v}</div><div class="schip-l">${s.l}</div></div>`).join("")}
       </div>
-      ${renderRepNoConnectedLeadsBlock(r)}
-      <div class="card" style="margin-bottom:14px">
-        <div class="card-hd"><div class="card-title"><div class="card-title-icon" style="background:var(--purple-bg)">&#9889;</div>AI Coaching</div><span class="badge bp">${needsAtt.length} deals</span></div>
-        <div style="padding:12px 14px">${needsAtt.length===0?`<div style="padding:10px 12px;background:var(--green-bg);border-radius:var(--r-sm);border-left:3px solid var(--green);font-size:11px;font-weight:600;color:var(--green)">&#9989; All deals have next activity scheduled</div>`:needsAtt.map(item=>`<div style="padding:10px 12px;margin-bottom:8px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-sm);border-left:3px solid var(--amber)"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px"><span style="font-weight:600;font-size:11px">&#128203; ${recordLink(item.name,item.hubspotUrl)}</span><span style="font-family:var(--mono);font-size:10px;color:var(--muted)">${fmt(item.amount||0)}</span></div>${(item.reasons||[]).map(rs=>`<div style="font-size:10px;color:var(--amber);font-weight:600">&#9888;&#65039; ${rs}</div>`).join("")}</div>`).join("")}</div>
-      </div>
+      
+      ${renderRepAiCoachingCard(r, needsAtt)}
       ${repLost.length?`<div class="card" style="margin-bottom:14px"><div class="card-hd" style="border-left:3px solid var(--red)"><div class="card-title" style="color:var(--red)"><div class="card-title-icon" style="background:var(--red-bg)">&#10060;</div>Lost Deals &mdash; ${r.name.split(" ")[0]}</div><span class="badge br">${repLost.length} &middot; ${fmt(repLost.reduce((s,d)=>s+(d.amount||0),0))}</span></div><div>${repLost.slice(0,5).map(d=>dealRow(d,"var(--red)",true)).join("")}</div>${repLRL.length?`<div class="loss-reasons-section" style="border-top:1px solid var(--border)"><div class="loss-reasons-title">&#128202; Why ${r.name.split(" ")[0]} Lost These Deals</div><div class="loss-reason-grid">${repLRL.map(lr=>{const tR=repLRL.reduce((s,x)=>s+x.amount,0);const p=tR>0?(lr.amount/tR)*100:0;return`<div class="loss-reason-card"><div class="loss-reason-name">${lr.reason}</div><div class="loss-reason-stats"><span class="loss-reason-count"><span style="width:6px;height:6px;border-radius:50%;background:var(--red);display:inline-block"></span>${lr.count} ${lr.count===1?"deal":"deals"}</span><span class="loss-reason-amt">${fmt(lr.amount)}</span></div><div class="loss-reason-bar"><div class="loss-reason-bar-fill" style="width:${p}%"></div></div></div>`;}).join("")}</div></div>`:""}</div>`:""}
       <div class="g2">
         <div class="card" style="margin-bottom:0">
           <div class="card-hd"><div class="card-title"><div class="card-title-icon" style="background:var(--blue-bg)">&#128188;</div>Open Deals</div><span class="badge bb">${r.openDeals||0} &middot; ${fmt(r.pipeAmt||0)}</span></div>
           ${openDealsTable(show,rest,did)}
         </div>
-        <div class="card" style="margin-bottom:0">
-          <div class="card-hd"><div class="card-title"><div class="card-title-icon" style="background:var(--red-bg)">&#127919;</div>Rank A/B Coverage</div><div style="display:flex;gap:5px"><span class="rank-a">${r.rankA||0}A</span><span class="rank-b">${r.rankB||0}B</span></div></div>
-          <div style="padding:12px 18px">
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px"><span style="font-size:10px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.08em">Rank A &mdash; ${r.rankA||0}</span><div style="display:flex;gap:8px;font-size:10px;font-weight:600"><span style="color:var(--green)">&#10003; ${r.rankAContacted||0}</span><span style="color:var(--red)">&#10007; ${r.rankANotContacted||0}</span></div></div>
-            ${repUntA.length?`<div style="background:var(--red-bg);border:1px solid var(--red-bd);border-radius:var(--r-sm);padding:8px 10px;margin-bottom:12px"><div style="font-size:9px;font-weight:700;color:var(--red);margin-bottom:5px">Not contacted yet:</div>${repUntA.map(c=>`<div style="font-size:10px;color:var(--text2);padding:2px 0;border-bottom:1px solid var(--red-bd)">&#8226; ${recordLink(c.name,c.hubspotUrl)}</div>`).join("")}</div>`:`<div style="font-size:10px;color:var(--green);font-weight:600;margin-bottom:12px">&#10003; All Rank A accounts contacted</div>`}
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px"><span style="font-size:10px;font-weight:700;color:var(--amber);text-transform:uppercase;letter-spacing:.08em">Rank B &mdash; ${r.rankB||0}</span><div style="display:flex;gap:8px;font-size:10px;font-weight:600"><span style="color:var(--green)">&#10003; ${r.rankBContacted||0}</span><span style="color:var(--amber)">&#10007; ${r.rankBNotContacted||0}</span></div></div>
-            ${repUntB.length?`<div style="background:var(--amber-bg);border:1px solid var(--amber-bd);border-radius:var(--r-sm);padding:8px 10px"><div style="font-size:9px;font-weight:700;color:var(--amber);margin-bottom:5px">Not contacted yet:</div>${repUntB.map(c=>`<div style="font-size:10px;color:var(--text2);padding:2px 0;border-bottom:1px solid var(--amber-bd)">&#8226; ${recordLink(c.name,c.hubspotUrl)}</div>`).join("")}</div>`:`<div style="font-size:10px;color:var(--green);font-weight:600">&#10003; All Rank B accounts contacted</div>`}
-          </div>
-        </div>
+       ${renderRepRankCoverageCard(r, repUntA, repUntB)}
       </div>
       ${stuck.length?`<div class="card" style="margin-top:14px"><div class="card-hd" style="border-left:3px solid var(--red)"><div class="card-title" style="color:var(--red)">&#128308; Stuck Deals (&gt;21 days)</div><span class="badge br">${stuck.length}</span></div><table class="tbl"><thead><tr><th>Deal</th><th class="c">Days Stuck</th><th class="c">Amount</th></tr></thead><tbody>${stuck.map(s=>`<tr><td style="font-weight:600">${s.name}</td><td class="c"><span style="font-weight:700;color:var(--red);font-family:var(--mono)">${s.days}d</span></td><td class="c"><span style="font-family:var(--mono)">${fmt(s.amount||0)}</span></td></tr>`).join("")}</tbody></table></div>`:""}
       <div class="card" style="margin-top:14px">
@@ -5997,7 +6163,7 @@ setInterval(loadData,5*60*1000);
     const title = bucket === 'online' ? 'Online / Inbound needs contact' : 'Offline / Outbound needs contact';
     const id = `acq-need-${slug(rep.id)}-${bucket}`;
     const maxDays = rows.length ? Math.max(...rows.map(x => Number(daysValue(x) || 0))) : 0;
-    const rowLimit = 10;
+    const rowLimit = 5;
     const body = rows.length
       ? rows.map((row, i) => rowHtml(row, i, id, rowLimit)).join('')
       : `<div class="acq-empty">No ${bucket} contacts need contact for ${safe(rep.name)}.</div>`;
