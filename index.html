@@ -5178,7 +5178,109 @@ window.__dashboardAutoRefreshTimer = setInterval(function(){
 
 </script>
 
+<script>
+(function(){
+  if(window.__TAB_KPI_RECOVERY_FIXED__) return;
+  window.__TAB_KPI_RECOVERY_FIXED__ = true;
 
+  function runAcquisitionTabKpis(){
+    try{
+      if(typeof window.enhanceAcquisitionRepPeriodSummaries === 'function'){
+        window.enhanceAcquisitionRepPeriodSummaries();
+      }
+    }catch(e){
+      console.warn('Acquisition tab KPIs failed', e);
+    }
+
+    try{
+      if(typeof window.renderAllRepNeedsContact === 'function'){
+        window.renderAllRepNeedsContact();
+      }
+    }catch(e){
+      console.warn('Acquisition needs-contact sections failed', e);
+    }
+  }
+
+  function runRetentionTabKpis(){
+    try{
+      if(window.APP_MAIN_PANEL !== 'retention') return;
+
+      if(window.APP_RETENTION_VIEW === 'overview' && typeof window.renderRetentionOverview === 'function'){
+        window.renderRetentionOverview();
+      }
+
+      if(window.APP_RETENTION_VIEW === 'financial' && typeof window.renderRetentionFinancialDetails === 'function'){
+        window.renderRetentionFinancialDetails();
+      }
+
+      if(window.APP_RETENTION_VIEW === 'upselling' && typeof window.renderRetentionUpsellingFeaturesPlan === 'function'){
+        window.renderRetentionUpsellingFeaturesPlan();
+      }
+
+      if(window.APP_RETENTION_VIEW === 'owner' && typeof window.renderRetentionOwnerPage === 'function'){
+        window.renderRetentionOwnerPage(window.APP_RETENTION_OWNER_ID || window.RET_SELECTED_OWNER_ID);
+      }
+    }catch(e){
+      console.warn('Retention tab KPIs failed', e);
+    }
+  }
+
+  function recoverAllTabKpis(){
+    setTimeout(runAcquisitionTabKpis, 0);
+    setTimeout(runAcquisitionTabKpis, 150);
+    setTimeout(runRetentionTabKpis, 0);
+    setTimeout(runRetentionTabKpis, 150);
+  }
+
+  var oldRender = window.render;
+  if(typeof oldRender === 'function' && !oldRender.__tabKpiRecoveryWrapped){
+    window.render = function(){
+      var result = oldRender.apply(this, arguments);
+      recoverAllTabKpis();
+      return result;
+    };
+    window.render.__tabKpiRecoveryWrapped = true;
+    try{ render = window.render; }catch(e){}
+  }
+
+  var oldSwitchTab = window.switchTab;
+  if(typeof oldSwitchTab === 'function' && !oldSwitchTab.__tabKpiRecoveryWrapped){
+    window.switchTab = function(){
+      var result = oldSwitchTab.apply(this, arguments);
+      recoverAllTabKpis();
+      return result;
+    };
+    window.switchTab.__tabKpiRecoveryWrapped = true;
+    try{ switchTab = window.switchTab; }catch(e){}
+  }
+
+  var oldSwitchMainPanel = window.switchMainPanel;
+  if(typeof oldSwitchMainPanel === 'function' && !oldSwitchMainPanel.__tabKpiRecoveryWrapped){
+    window.switchMainPanel = function(){
+      var result = oldSwitchMainPanel.apply(this, arguments);
+      recoverAllTabKpis();
+      return result;
+    };
+    window.switchMainPanel.__tabKpiRecoveryWrapped = true;
+    try{ switchMainPanel = window.switchMainPanel; }catch(e){}
+  }
+
+  var oldSwitchRetentionFinancial = window.switchRetentionFinancial;
+  if(typeof oldSwitchRetentionFinancial === 'function' && !oldSwitchRetentionFinancial.__tabKpiRecoveryWrapped){
+    window.switchRetentionFinancial = function(){
+      var result = oldSwitchRetentionFinancial.apply(this, arguments);
+      recoverAllTabKpis();
+      return result;
+    };
+    window.switchRetentionFinancial.__tabKpiRecoveryWrapped = true;
+    try{ switchRetentionFinancial = window.switchRetentionFinancial; }catch(e){}
+  }
+
+  document.addEventListener('DOMContentLoaded', recoverAllTabKpis);
+  window.addEventListener('hashchange', recoverAllTabKpis);
+  setTimeout(recoverAllTabKpis, 300);
+})();
+</script>
 <script>
 /* FINAL MANAGER ORDER — clean version only.
    Reorders existing Acquisition Team Overview sections; does not recreate removed sections,
@@ -5669,18 +5771,14 @@ window.__dashboardAutoRefreshTimer = setInterval(function(){
 
 
 <script>
-/* ROBUST RETENTION JSON READER — final guard
-   Scope: loading only. Acquisition data.json remains the primary source for Acquisition.
-   This makes the dashboard read data-retention.json safely and also tries common legacy file names.
-*/
 (function(){
-  if(window.__ROBUST_RETENTION_JSON_READER__) return;
-  window.__ROBUST_RETENTION_JSON_READER__ = true;
+  if(window.__ROBUST_RETENTION_JSON_READER_FIXED__) return;
+  window.__ROBUST_RETENTION_JSON_READER_FIXED__ = true;
 
   var RETENTION_JSON_PATHS = [
     './data-retention.json',
-    './Data%20Retention.json',
     './Data Retention.json',
+    './Data%20Retention.json',
     './retention-data.json',
     './data_retention.json',
     './retention.json'
@@ -5693,82 +5791,134 @@ window.__dashboardAutoRefreshTimer = setInterval(function(){
     var text = await res.text();
     text = String(text || '').replace(/^\uFEFF/, '').trim();
     if(!text) throw new Error('Empty JSON file: ' + path);
-    try{
-      return { data: JSON.parse(text), path: path };
-    }catch(err){
-      console.error('Invalid JSON in', path, err, text.slice(Math.max(0, text.length - 300)));
-      throw err;
-    }
+    return { data: JSON.parse(text), path: path };
   }
 
   async function readFirst(paths){
     var errors = [];
-    for(var i=0;i<paths.length;i++){
-      try{ return await readJson(paths[i]); }
-      catch(e){ errors.push(paths[i] + ': ' + (e && e.message ? e.message : e)); }
+    for(var i = 0; i < paths.length; i++){
+      try{
+        return await readJson(paths[i]);
+      }catch(e){
+        errors.push(paths[i] + ': ' + (e && e.message ? e.message : e));
+      }
     }
-    console.warn('No JSON source loaded:', errors.join(' | '));
+    console.warn('JSON load failed:', errors.join(' | '));
     return null;
   }
 
-  window.loadData = async function(){
-   window.loadData = async function(options = {}){
-  var ri = document.getElementById('ri');
-  if(ri) ri.classList.add('spin');
-
-  var y = options.keepScroll === false ? 0 : window.scrollY;
-  var stateBeforeRefresh = window.getDashboardState ? window.getDashboardState() : null;
-
-  try{
-    var acq = await readFirst(['./data.json']);
-    if(!acq) throw new Error('data.json not loaded');
-    window.D = acq.data;
-
-    var ret = await readFirst(RETENTION_JSON_PATHS);
-    window.R = ret ? ret.data : null;
-    window.RETENTION_JSON_LOADED_FROM = ret ? ret.path : null;
-  }catch(e){
-    console.error('Dashboard data load failed:', e);
-    window.D = window.D || {meta:{yesterdayLabel:'No data',generatedAt:'--'},kpi:{yesterday:{},mtd:{},ytd:{}},team:{},repData:[],stageData:[],topInactiveRankAccounts:[],rankTotals:{},autoRecs:[],closedWon:[],closedLost:[],lostByReason:{},marketNews:[]};
-    window.R = window.R || null;
+  function fallbackAcquisitionData(){
+    return {
+      meta:{yesterdayLabel:'No data',generatedAt:'--'},
+      kpi:{yesterday:{},mtd:{},ytd:{}},
+      team:{},
+      repData:[],
+      stageData:[],
+      topInactiveRankAccounts:[],
+      rankTotals:{},
+      outreachCoverage:{},
+      autoRecs:[],
+      closedWon:[],
+      closedLost:[],
+      lostByReason:{},
+      marketNews:[]
+    };
   }
 
-  try{
-    if(typeof window.render === 'function') window.render();
-  }catch(e){
-    console.error('render failed', e);
-  }
-
-  try{
-    if(window.restoreDashboardState && stateBeforeRefresh){
-      window.restoreDashboardState(stateBeforeRefresh);
-    }else if(typeof window.restoreCurrentView === 'function'){
-      window.restoreCurrentView({ keepScroll:true });
+  function refreshCurrentView(options, previousState, previousScroll){
+    try{
+      if(typeof window.render === 'function') window.render();
+    }catch(e){
+      console.error('Main render failed', e);
     }
-  }catch(e){
-    console.error('restore view failed', e);
-  }
 
-  requestAnimationFrame(function(){
+    try{
+      if(window.restoreDashboardState && previousState){
+        window.restoreDashboardState(previousState);
+      }else if(typeof window.restoreCurrentView === 'function'){
+        window.restoreCurrentView({ keepScroll:true });
+      }
+    }catch(e){
+      console.error('Restore view failed', e);
+    }
+
+    try{
+      if(window.APP_MAIN_PANEL === 'retention' && window.APP_RETENTION_VIEW === 'financial' && typeof window.renderRetentionFinancialDetails === 'function'){
+        window.renderRetentionFinancialDetails();
+      }
+
+      if(window.APP_MAIN_PANEL === 'retention' && window.APP_RETENTION_VIEW === 'upselling' && typeof window.renderRetentionUpsellingFeaturesPlan === 'function'){
+        window.renderRetentionUpsellingFeaturesPlan();
+      }
+
+      if(window.APP_MAIN_PANEL === 'retention' && typeof window.renderRetentionSidebar === 'function'){
+        window.renderRetentionSidebar(window.APP_RETENTION_VIEW || 'overview');
+      }
+    }catch(e){
+      console.error('Retention post-render failed', e);
+    }
+
     requestAnimationFrame(function(){
-      if(options.keepScroll !== false) window.scrollTo(0, y);
+      requestAnimationFrame(function(){
+        if(!options || options.keepScroll !== false) window.scrollTo(0, previousScroll || 0);
+      });
     });
-  });
-
-  if(typeof APP_MAIN_PANEL !== 'undefined' && APP_MAIN_PANEL === 'retention'){
-    var sub = document.getElementById('topbarSub');
-    if(sub && !window.R) sub.textContent = 'Retention JSON was not loaded. Check filename and valid JSON.';
-    if(sub && window.R && window.RETENTION_JSON_LOADED_FROM) sub.textContent = 'Updated ' + (window.R.generatedAt || '') + ' · Loaded from ' + window.RETENTION_JSON_LOADED_FROM;
   }
 
-  if(ri) ri.classList.remove('spin');
-};
+  window.loadData = async function(options){
+    options = options || {};
 
-  // Re-load once using the robust reader after all original scripts finish.
-  setTimeout(function(){ if(typeof window.loadData === 'function') window.loadData(); }, 50);
+    var ri = document.getElementById('ri');
+    if(ri) ri.classList.add('spin');
+
+    var previousScroll = options.keepScroll === false ? 0 : window.scrollY;
+    var previousState = window.getDashboardState ? window.getDashboardState() : null;
+
+    try{
+      var acq = await readFirst(['./data.json']);
+      window.D = acq && acq.data ? acq.data : fallbackAcquisitionData();
+      window.DATA_LOADED_FROM = acq ? acq.path : null;
+
+      var ret = await readFirst(RETENTION_JSON_PATHS);
+      window.R = ret && ret.data ? ret.data : null;
+      window.RETENTION_JSON_LOADED_FROM = ret ? ret.path : null;
+
+      if(window.R && window.R.retentionSheets2026){
+        window.RETENTION_SHEETS_2026_READY = true;
+      }
+
+      if(window.R && Array.isArray(window.R.featuresPlanForUpselling)){
+        window.RETENTION_FEATURES_PLAN_READY = true;
+      }
+    }catch(e){
+      console.error('Dashboard data load failed:', e);
+      window.D = window.D || fallbackAcquisitionData();
+      window.R = window.R || null;
+    }
+
+    refreshCurrentView(options, previousState, previousScroll);
+
+    try{
+      var sub = document.getElementById('topbarSub');
+      if(sub && window.APP_MAIN_PANEL === 'retention'){
+        if(!window.R){
+          sub.textContent = 'Retention JSON was not loaded. Check data-retention.json.';
+        }else{
+          sub.textContent = 'Updated ' + (window.R.generatedAt || window.R.retentionSheets2026?.lastUpdated || '—') + ' · Loaded from ' + (window.RETENTION_JSON_LOADED_FROM || 'retention json');
+        }
+      }
+    }catch(e){}
+
+    if(ri) ri.classList.remove('spin');
+  };
+
+  setTimeout(function(){
+    if(typeof window.loadData === 'function'){
+      window.loadData({ keepView:true, keepScroll:true });
+    }
+  }, 50);
 })();
 </script>
-
 
 <script>
 (function() {
