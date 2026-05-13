@@ -1559,7 +1559,7 @@ body::after{
             </div>
             <div style="border-top:1px solid var(--border)">
               <div style="padding:10px 18px 6px;display:flex;align-items:center;justify-content:space-between">
-                <span style="font-size:10px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.1em">&#9742; Contacts With Never Connected</span>
+                <span style="font-size:10px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.1em">&#9742; ☎ Leads Need Contact</span>
                 <span class="badge br" id="outreachLeadNotBadge"></span>
               </div>
               <div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Contact</th><th>Owner</th><th>Source</th><th class="c">Created</th><th class="c">Connected Calls</th><th class="c">Days Without Contact</th></tr></thead><tbody id="outreachLeadNotBody"></tbody></table></div>
@@ -2723,32 +2723,37 @@ function renderOutreach(){
   setStyle("outreachLeadNotMore", "display", "none");
   setStyle("outreachCoNotMore", "display", "none");
 
-  const noConnLeads = acqNoConnectedLeadRows(ct);
-  const split = acqSplitNoConnectedLeadRows(noConnLeads);
+  const needContactLeads = Array.isArray(ct.notContactedList)
+    ? [...ct.notContactedList]
+    : acqNoConnectedLeadRows(ct);
+
+  const split = acqSplitNoConnectedLeadRows(needContactLeads);
   const totalLeads = Number(ct.total || 0);
   const contactedLeads = Number(ct.contacted || 0);
-  const noConnCount = noConnLeads.length;
+  const needContactCount = Number(ct.notContacted || needContactLeads.length || Math.max(totalLeads - contactedLeads, 0));
 
-  setText("outreachLeadBadge", `${noConnCount.toLocaleString()} with 0 connected calls`);
+  setText("outreachLeadBadge", `${needContactCount.toLocaleString()} need contact`);
   setText("outreachCoBadge", `${co.contacted || 0}/${co.total || 0} companies`);
 
   const kpis = [
-    { v: totalLeads,       l: "Total Leads",             c: "var(--cyan)"  },
-    { v: contactedLeads,   l: "Contacted Leads",         c: "var(--green)" },
-    { v: noConnCount,      l: "Never Connected",        c: "var(--red)"   },
-    { v: co.total || 0,        l: "Total Companies",         c: "var(--cyan)"  },
-    { v: co.contacted || 0,    l: "Contacted Companies",     c: "var(--green)" },
-    { v: co.notContacted || 0, l: "Not Contacted Companies", c: "var(--amber)" },
+    { v: totalLeads, l: "Total Leads", c: "var(--cyan)" },
+    { v: contactedLeads, l: "Contacted Leads", c: "var(--green)" },
+    { v: needContactCount, l: "Need Contact", c: "var(--red)" },
+    { v: co.total || 0, l: "Total Companies", c: "var(--cyan)" },
+    { v: co.contacted || 0, l: "Contacted Companies", c: "var(--green)" },
+    { v: co.notContacted || 0, l: "Not Contacted Companies", c: "var(--amber)" }
   ];
 
   setHTML("outreachKpiGrid", kpis.map(k => `<div class="outreach-kpi-box"><div class="outreach-kpi-val" style="color:${k.c}">${Number(k.v || 0).toLocaleString()}</div><div class="outreach-kpi-lbl">${k.l}</div></div>`).join(""));
 
   const lr = Number(ct.contactedRate || 0);
   const cr = Number(co.contactedRate || 0);
+
   setText("outreachLeadRateVal", `${lr}%`);
   setStyle("outreachLeadRateVal", "color", rateColor(lr));
   setStyle("outreachLeadRateBar", "width", `${Math.max(0, Math.min(100, lr))}%`);
   setStyle("outreachLeadRateBar", "background", rateColor(lr));
+
   setText("outreachCoRateVal", `${cr}%`);
   setStyle("outreachCoRateVal", "color", rateColor(cr));
   setStyle("outreachCoRateBar", "width", `${Math.max(0, Math.min(100, cr))}%`);
@@ -2759,24 +2764,34 @@ function renderOutreach(){
 
   const onlineMax = acqMaxDays(split.online);
   const offlineMax = acqMaxDays(split.offline);
+
   setText("outreachOnlineSplit", `${split.online.length.toLocaleString()} need contact · longest ${onlineMax !== null ? onlineMax + 'd' : '—'}`);
   setText("outreachOfflineSplit", `${split.offline.length.toLocaleString()} need contact · longest ${offlineMax !== null ? offlineMax + 'd' : '—'}`);
 
-  const ncLeads = noConnLeads;
+  const ncLeads = needContactLeads.sort((a,b)=>Number(acqLeadDaysWithoutContact(b) || 0)-Number(acqLeadDaysWithoutContact(a) || 0));
   const ncCos = [...(co.notContactedList || [])].sort((a,b)=>new Date(b.createdAt || 0)-new Date(a.createdAt || 0));
-  setText("outreachLeadNotBadge", `${ncLeads.length.toLocaleString()} contacts`);
+
+  setText("outreachLeadNotBadge", `${ncLeads.length.toLocaleString()} leads`);
   setText("outreachCoNotBadge", `${ncCos.length} companies`);
 
   const slL = ncLeads.slice(0, 10), rlL = ncLeads.slice(10);
-  setHTML("outreachLeadNotBody", slL.length ? slL.map(acqNoConnectedLeadTableRow).join("") : `<tr><td colspan="6" style="text-align:center;color:var(--green);padding:14px;font-style:italic">✓ No contacts with 0 connected calls</td></tr>`);
+  setHTML("outreachLeadNotBody", slL.length ? slL.map(acqNoConnectedLeadTableRow).join("") : `<tr><td colspan="6" style="text-align:center;color:var(--green);padding:14px;font-style:italic">✓ No leads need contact</td></tr>`);
   setHTML("outreachLeadNotBodyMore", rlL.map(acqNoConnectedLeadTableRow).join(""));
-  if($("outreachLeadNotToggle")){ $("outreachLeadNotToggle").style.display = rlL.length ? "block" : "none"; $("outreachLeadNotToggle").textContent = `▼ Show ${rlL.length} more`; }
+  if($("outreachLeadNotToggle")){
+    $("outreachLeadNotToggle").style.display = rlL.length ? "block" : "none";
+    $("outreachLeadNotToggle").textContent = `▼ Show ${rlL.length} more`;
+  }
 
   const coRow = c => `<tr><td><div style="font-weight:600">${recordLink(c.name || c.id || "Unknown", c.hubspotUrl)}</div><div style="font-size:9px;color:var(--muted)">${c.country || "Unknown"}${c.rank ? ` · Rank ${c.rank}` : ""}</div></td><td style="font-size:11px;font-weight:600;color:${c.ownerColor || 'var(--text2)'}">${c.ownerName || c.ownerId || "—"}</td><td class="c" style="font-size:10px;color:var(--muted);font-family:var(--mono)">${c.domain || "—"}</td><td class="c" style="font-family:var(--mono);font-size:10px">${c.createdAt ? (c.createdAt+"").split("T")[0] : "—"}</td></tr>`;
+
   const slC = ncCos.slice(0, 10), rlC = ncCos.slice(10);
   setHTML("outreachCoNotBody", slC.length ? slC.map(coRow).join("") : `<tr><td colspan="4" style="text-align:center;color:var(--green);padding:14px;font-style:italic">✓ All companies have been contacted</td></tr>`);
   setHTML("outreachCoNotBodyMore", rlC.map(coRow).join(""));
-  if($("outreachCoNotToggle")){ $("outreachCoNotToggle").style.display = rlC.length ? "block" : "none"; $("outreachCoNotToggle").textContent = `▼ Show ${rlC.length} more`; }
+  if($("outreachCoNotToggle")){
+    $("outreachCoNotToggle").style.display = rlC.length ? "block" : "none";
+    $("outreachCoNotToggle").textContent = `▼ Show ${rlC.length} more`;
+  }
+
   enhanceAcqOverviewClickables();
 }
 
