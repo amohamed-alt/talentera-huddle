@@ -1281,6 +1281,289 @@ body::after{
 .ret-fin-card-icon{width:30px;height:30px;border-radius:11px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.72);border:1px solid rgba(22,64,42,.10);font-size:16px;margin-bottom:9px;box-shadow:var(--sh-xs)}
 .ret-export-btn{border:1px solid var(--green-bd);background:var(--green-bg);color:var(--primary-dk);border-radius:999px;padding:5px 9px;font-size:9px;font-weight:900;cursor:pointer;font-family:var(--font);margin-left:6px;white-space:nowrap}
 .ret-export-btn:hover{background:rgba(22,163,74,.14);transform:translateY(-1px)}
+
+/* ═══════════════════════════════════════════
+   RETENTION FINANCIAL UI RESCUE PATCH
+   Scoped to #panel-retention-financial only
+   ═══════════════════════════════════════════ */
+#panel-retention-financial{
+  max-width:1540px;
+  margin:0 auto;
+}
+#panel-retention-financial .ret-fin-hero{
+  min-height:118px;
+  padding:22px 28px;
+  margin-bottom:16px;
+  border-left-width:6px;
+  background:
+    radial-gradient(circle at 92% 10%,rgba(8,145,178,.12),transparent 30%),
+    linear-gradient(135deg,rgba(255,255,255,.92),rgba(255,255,255,.58)) !important;
+}
+#panel-retention-financial .ret-fin-hero-title{
+  font-size:24px;
+  line-height:1.15;
+}
+#panel-retention-financial .ret-fin-hero-sub{
+  font-size:13px;
+  max-width:980px;
+}
+#panel-retention-financial .ret-sheet-filter,
+#panel-retention-financial .ret-sheet-filter-card{
+  display:block;
+  margin:0 0 16px;
+  border:1px solid rgba(22,64,42,.10);
+  border-top:4px solid var(--cyan);
+  border-radius:24px;
+  overflow:hidden;
+  box-shadow:var(--sh);
+  background:linear-gradient(180deg,rgba(255,255,255,.82),rgba(255,255,255,.52)) !important;
+  backdrop-filter:blur(18px) saturate(155%);
+  -webkit-backdrop-filter:blur(18px) saturate(155%);
+}
+#panel-retention-financial .ret-sheet-filter-inner{
+  display:flex !important;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  padding:15px 18px;
+  border-bottom:1px solid rgba(22,64,42,.08);
+  background:rgba(255,255,255,.45) !important;
+}
+#panel-retention-financial .ret-sheet-filter-left{
+  display:flex !important;
+  align-items:center;
+  gap:8px 10px;
+  flex-wrap:wrap;
+}
+#panel-retention-financial .ret-sheet-label{
+  display:inline-flex;
+  align-items:center;
+  height:34px;
+  padding:0 2px 0 4px;
+  font-size:9px;
+  line-height:1;
+  font-weight:900;
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:.11em;
+}
+#panel-retention-financial .ret-sheet-select{
+  min-width:116px;
+  height:34px;
+  padding:0 12px;
+  border:1px solid rgba(22,64,42,.13);
+  border-radius:999px;
+  background:rgba(255,255,255,.88) !important;
+  color:var(--text2);
+  font-family:var(--font);
+  font-size:11px;
+  font-weight:850;
+  outline:none;
+  box-shadow:0 4px 14px rgba(17,47,31,.04);
+}
+#panel-retention-financial .ret-sheet-select:focus{
+  border-color:rgba(22,163,74,.32);
+  box-shadow:0 0 0 4px rgba(22,163,74,.09);
+}
+#panel-retention-financial button.ret-sheet-select{
+  min-width:auto;
+  color:var(--red) !important;
+  background:var(--red-bg) !important;
+  border-color:var(--red-bd) !important;
+}
+#panel-retention-financial .ret-sheet-note{
+  display:inline-flex;
+  align-items:center;
+  min-height:34px;
+  color:var(--muted);
+  font-size:10px;
+  font-weight:750;
+}
+#panel-retention-financial .ret-sheet-source{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  flex-wrap:wrap;
+  padding:11px 18px;
+  background:rgba(255,255,255,.34) !important;
+  color:var(--muted);
+  font-size:10px;
+  font-weight:750;
+  border-top:0;
+}
+#panel-retention-financial .ret-sheet-pill{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  max-width:100%;
+  padding:5px 9px;
+  border-radius:999px;
+  border:1px solid rgba(22,64,42,.10);
+  background:rgba(255,255,255,.65) !important;
+  color:var(--text2);
+  font-size:9px;
+  font-weight:900;
+  white-space:nowrap;
+}
+#panel-retention-financial .ret-fin-top-grid{
+  display:grid !important;
+  grid-template-columns:repeat(6,minmax(0,1fr)) !important;
+  gap:12px;
+  margin-bottom:16px;
+}
+#panel-retention-financial .ret-fin-card{
+  min-height:138px;
+  padding:16px 14px;
+  border-radius:22px;
+  border-top-width:0 !important;
+  border-left:4px solid var(--fc,var(--green)) !important;
+  background:
+    radial-gradient(circle at 88% 10%,color-mix(in srgb,var(--fc,var(--green)) 13%,transparent),transparent 34%),
+    linear-gradient(180deg,rgba(255,255,255,.88),rgba(255,255,255,.56)) !important;
+}
+#panel-retention-financial .ret-fin-card:hover{
+  transform:translateY(-3px);
+  box-shadow:var(--sh-md);
+}
+#panel-retention-financial .ret-fin-card-icon{
+  width:36px;
+  height:36px;
+  border-radius:14px;
+  margin-bottom:12px;
+  font-size:18px;
+  background:color-mix(in srgb,var(--fc,var(--green)) 12%,white) !important;
+  border-color:color-mix(in srgb,var(--fc,var(--green)) 22%,white) !important;
+}
+#panel-retention-financial .ret-fin-card-v{
+  font-size:25px;
+  letter-spacing:-.04em;
+  white-space:nowrap;
+}
+#panel-retention-financial .ret-fin-card-l{
+  margin-top:9px;
+  font-size:8px;
+  letter-spacing:.13em;
+}
+#panel-retention-financial .ret-fin-card-s{
+  margin-top:5px;
+  font-size:10px;
+  line-height:1.35;
+}
+#panel-retention-financial .ret-fin-board,
+#panel-retention-financial .ret-fin-subcard{
+  border-radius:24px;
+  overflow:hidden;
+  margin-bottom:16px;
+}
+#panel-retention-financial .ret-fin-board-hd,
+#panel-retention-financial .ret-fin-subhd{
+  min-height:54px;
+  padding:14px 18px;
+}
+#panel-retention-financial .ret-fin-board-title,
+#panel-retention-financial .ret-fin-subtitle{
+  font-size:12px;
+}
+#panel-retention-financial .ret-fin-owner-grid{
+  display:grid !important;
+  grid-template-columns:minmax(180px,1.25fr) 80px 95px repeat(4,minmax(115px,.85fr)) !important;
+}
+#panel-retention-financial .ret-fin-owner-cell{
+  padding:13px 15px;
+  min-height:44px;
+  display:flex;
+  align-items:center;
+  font-size:12px;
+}
+#panel-retention-financial .ret-fin-owner-head{
+  min-height:38px;
+  font-size:8px;
+}
+#panel-retention-financial .ret-fin-owner-name{
+  font-size:12px;
+}
+#panel-retention-financial .ret-fin-split{
+  gap:16px;
+  margin-bottom:16px;
+}
+#panel-retention-financial .ret-fin-mini-note{
+  padding:11px 16px;
+  font-size:10px;
+  line-height:1.55;
+}
+#panel-retention-financial .tbl{
+  min-width:860px;
+}
+#panel-retention-financial .tbl th{
+  position:sticky;
+  top:0;
+  z-index:3;
+  padding:11px 13px;
+  font-size:8px;
+  background:rgba(255,255,255,.74) !important;
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+}
+#panel-retention-financial .tbl td{
+  padding:12px 13px;
+  font-size:12px;
+  line-height:1.35;
+}
+#panel-retention-financial .tbl tbody tr:nth-child(even) td{
+  background:rgba(255,255,255,.20);
+}
+#panel-retention-financial .badge{
+  font-size:9px;
+  padding:4px 9px;
+}
+#panel-retention-financial .ret-show-btn{
+  height:38px;
+  font-size:10px;
+  letter-spacing:.04em;
+}
+#panel-retention-financial .ret-export-btn{
+  height:28px;
+  padding:0 11px;
+  border-radius:999px;
+  font-size:9px;
+}
+#panel-retention-financial .ret-click-card::after{
+  content:"Details";
+  right:13px;
+  top:13px;
+  font-size:8px;
+}
+@media(max-width:1400px){
+  #panel-retention-financial .ret-fin-top-grid{
+    grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+  }
+}
+@media(max-width:900px){
+  #panel-retention-financial .ret-fin-top-grid,
+  #panel-retention-financial .ret-fin-split{
+    grid-template-columns:1fr !important;
+  }
+  #panel-retention-financial .ret-sheet-filter-inner{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+  #panel-retention-financial .ret-sheet-filter-left,
+  #panel-retention-financial .ret-sheet-select{
+    width:100%;
+  }
+  #panel-retention-financial .ret-sheet-label{
+    width:100%;
+    height:auto;
+    padding-top:8px;
+  }
+  #panel-retention-financial .ret-fin-owner-grid{
+    display:block !important;
+  }
+  #panel-retention-financial .ret-fin-owner-cell{
+    border-bottom:1px solid rgba(22,64,42,.08);
+  }
+}
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
