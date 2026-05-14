@@ -4053,80 +4053,101 @@ function renderRetentionOwnerDetails(repId){
   }
 
   const m = details.metrics || {};
- const kpi = details.kpi || {};
-
-const ky = kpi.yesterday || {};
-const km = kpi.mtd || {};
-const kt = kpi.ytd || {};
-
-function kpiCard(v,l,s,c){
-  return `
-    <div class="ret-mini-kpi" style="--kc:${c}">
-      <div class="ret-mini-kpi-v">${v ?? 0}<span>•</span></div>
-      <div class="ret-mini-kpi-l">${l}</div>
-      <div class="ret-mini-kpi-s">${s}</div>
-    </div>
-  `;
-}
-
-const ownerKpiHtml = `
-<div class="card ret-kpi-master-card">
-  <div class="ret-kpi-master-hd">
-    <div class="ret-kpi-master-title">📌 Yesterday · MTD · YTD</div>
-    <span class="badge bb">Connected calls · Completed meetings · Sheets financials</span>
-  </div>
-
-  <div class="ret-kpi-period-row">
-    <div class="ret-kpi-period-label">
-      <div class="ret-kpi-period-name">YESTERDAY</div>
-      <div class="ret-kpi-period-sub">daily execution</div>
-    </div>
-
-    ${kpiCard(ky.calls,'CALLS','Connected','var(--blue)')}
-    ${kpiCard(ky.meetings,'MEETINGS','Completed','var(--purple)')}
-    ${kpiCard(ky.renewed,'RENEWED','After renewal','var(--green)')}
-    ${kpiCard(ky.booked,'BOOKED','Date entered CY','var(--purple)')}
-    ${kpiCard(ky.cashed,'CASHED','Date entered','var(--green)')}
-    ${kpiCard(ky.churn,'CHURN','Date entered','var(--red)')}
-    ${kpiCard(ky.delayed,'DELAYED','Overdue','var(--amber)')}
-  </div>
-
-  <div class="ret-kpi-period-row">
-    <div class="ret-kpi-period-label">
-      <div class="ret-kpi-period-name">MTD</div>
-      <div class="ret-kpi-period-sub">current month</div>
-    </div>
-
-    ${kpiCard(km.calls,'CALLS','Connected','var(--blue)')}
-    ${kpiCard(km.meetings,'MEETINGS','Completed','var(--purple)')}
-    ${kpiCard(km.renewed,'RENEWED','This month','var(--green)')}
-    ${kpiCard(km.booked,'BOOKED',fmt(km.bookedAmt || 0),'var(--purple)')}
-    ${kpiCard(km.cashed,'CASHED',fmt(km.cashedAmt || 0),'var(--green)')}
-    ${kpiCard(km.churn,'CHURN','Stage churned','var(--red)')}
-    ${kpiCard(km.delayed,'DELAYED','Past date','var(--amber)')}
-  </div>
-
-  <div class="ret-kpi-period-row">
-    <div class="ret-kpi-period-label">
-      <div class="ret-kpi-period-name">YTD</div>
-      <div class="ret-kpi-period-sub">current year</div>
-    </div>
-
-    ${kpiCard(kt.calls,'CALLS','Connected','var(--blue)')}
-    ${kpiCard(kt.meetings,'MEETINGS','Completed','var(--purple)')}
-    ${kpiCard(kt.renewed,'RENEWED','Renewals won','var(--green)')}
-    ${kpiCard(kt.booked,'BOOKED','Date entered CY','var(--purple)')}
-    ${kpiCard(kt.cashed,'CASHED','Date entered CY','var(--green)')}
-    ${kpiCard(kt.churn,'CHURN','Date entered','var(--red)')}
-    ${kpiCard(kt.delayed,'DELAYED','Overdue','var(--amber)')}
-  </div>
-</div>
-`;
+ 
   const color = details.color || 'var(--cyan)';
   const safe = v => esc(v ?? '—');
   const riskCount = Number(m.delayed||0) + Number(m.noContact||0) + Number(m.noMeeting||0);
   const revenueValue = Number(m.renewedAmt||0) + Number(m.cashedAmt||0) + Number(m.bookedAmt||0);
   const limit = 5;
+ function ownerDate(v){
+  const d = new Date(v || "");
+  return isNaN(d) ? null : d;
+}
+
+function isYesterdayDate(v){
+  const d = ownerDate(v);
+  if(!d) return false;
+  const y = new Date();
+  y.setDate(y.getDate() - 1);
+  return d.getFullYear() === y.getFullYear() && d.getMonth() === y.getMonth() && d.getDate() === y.getDate();
+}
+
+function isMtdDate(v){
+  const d = ownerDate(v);
+  const now = new Date();
+  return d && d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth();
+}
+
+function isYtdDate(v){
+  const d = ownerDate(v);
+  return d && d.getFullYear() === new Date().getFullYear();
+}
+
+function activityDate(a){
+  return a.hs_timestamp || a.timestamp || a.createdAt || a.date || a.activityDate || a.callDate || a.meetingDate;
+}
+
+function connectedCall(a){
+  const txt = String(a.disposition || a.hs_call_disposition || a.callDisposition || a.status || a.outcome || "").toLowerCase();
+  return txt.includes("connect") || txt.includes("connected");
+}
+
+function completedMeeting(a){
+  const txt = String(a.outcome || a.hs_meeting_outcome || a.meetingOutcome || a.status || "").toLowerCase();
+  return txt.includes("complete") || txt.includes("completed");
+}
+
+const ownerCalls = Array.isArray(details.calls) ? details.calls : [];
+const ownerMeetings = Array.isArray(details.meetings) ? details.meetings : [];
+
+function periodActivity(check){
+  const calls = ownerCalls.filter(a => check(activityDate(a)));
+  const meetings = ownerMeetings.filter(a => check(activityDate(a)));
+
+  return {
+    callsLogged: calls.length,
+    connectedCalls: calls.filter(connectedCall).length,
+    meetingsLogged: meetings.length,
+    completedMeetings: meetings.filter(completedMeeting).length
+  };
+}
+
+function ownerActivityCard(v,l,s,c){
+  return `
+    <div class="ret-kpi-compact" style="--rk:${c}">
+      <div class="ret-kpi-v">${Number(v || 0).toLocaleString()}<span>•</span></div>
+      <div class="ret-kpi-l">${l}</div>
+      <div class="ret-kpi-s">${s}</div>
+    </div>
+  `;
+}
+
+function ownerActivityRow(name,sub,color,stats){
+  return `
+    <div class="ret-kpi-period-row" style="--pc:${color};grid-template-columns:125px repeat(4,1fr)">
+      <div class="ret-kpi-period-label">
+        <div class="ret-kpi-period-name">${name}</div>
+        <div class="ret-kpi-period-sub">${sub}</div>
+      </div>
+      ${ownerActivityCard(stats.callsLogged,"Call Logged","HubSpot calls","var(--blue)")}
+      ${ownerActivityCard(stats.connectedCalls,"Connected Calls","Connected only","var(--green)")}
+      ${ownerActivityCard(stats.meetingsLogged,"Meeting Logged","HubSpot meetings","var(--purple)")}
+      ${ownerActivityCard(stats.completedMeetings,"Completed Meetings","Completed only","var(--green)")}
+    </div>
+  `;
+}
+
+const ownerKpiHtml = `
+  <div class="card ret-kpi-master-card" style="margin-bottom:14px;border-top-color:${safe(color)}">
+    <div class="ret-kpi-master-hd">
+      <div class="ret-kpi-master-title">📞 Activity KPIs · HubSpot</div>
+      <span class="badge bb">${safe(details.name)} · ${safe(details.role)}</span>
+    </div>
+    ${ownerActivityRow("Yesterday","daily execution","var(--blue)",periodActivity(isYesterdayDate))}
+    ${ownerActivityRow("MTD","month to date","var(--amber)",periodActivity(isMtdDate))}
+    ${ownerActivityRow("YTD","year to date","var(--green)",periodActivity(isYtdDate))}
+  </div>
+`;
 function asDate(v){
   const d = new Date(v || "");
   return isNaN(d) ? null : d;
