@@ -7310,44 +7310,115 @@ window.__dashboardAutoRefreshTimer = setInterval(function(){
 </script>
 <script>
 (function(){
-  if(window.__RETENTION_KPI_SHEETS_FULL_ROW__) return;
-  window.__RETENTION_KPI_SHEETS_FULL_ROW__ = true;
+  if(window.__RETENTION_KPI_FORCE_BUILD__) return;
+  window.__RETENTION_KPI_FORCE_BUILD__ = true;
 
-  function q(id){ return document.getElementById(id); }
-  function num(v){ return Number(String(v || 0).replace(/[$,]/g,"")) || 0; }
-  function money(v){
-    return new Intl.NumberFormat("en-US", {
-      style:"currency",
-      currency:"USD",
-      maximumFractionDigits:0,
-      minimumFractionDigits:0
-    }).format(num(v));
+  function n(v){return Number(String(v||0).replace(/[$,]/g,""))||0;}
+  function money(v){return new Intl.NumberFormat("en-US",{style:"currency",currency:"USD",maximumFractionDigits:0}).format(n(v));}
+  function get(r,keys){for(var i=0;i<keys.length;i++){if(r&&r[keys[i]]!==undefined&&r[keys[i]]!==null&&r[keys[i]]!=="")return r[keys[i]];}return "";}
+  function rows(){return window.R?.retentionSheets2026?.accounts||[];}
+  function status(r){return String(get(r,["status","calculatedStatus","renewalStatus","currentStatus"])||"").toLowerCase();}
+  function val(r,keys){return n(get(r,keys));}
+
+  function calls(r){return val(r,["calls","callsMade","totalCalls","callCount"]);}
+  function connected(r){return val(r,["connectedCalls","callsConnected","connected","totalConnectedCalls"]);}
+  function meetings(r){
+    var booked=val(r,["bookedMeetings","meetingsBooked","scheduledMeetings","meetingScheduled","meetingsScheduled"]);
+    var completed=val(r,["completedMeetings","meetingCompleted","meetingsCompleted"]);
+    var total=val(r,["meetings","meetingCount","totalMeetings"]);
+    return booked+completed || total;
   }
-  function rows(){
-    return window.R?.retentionSheets2026?.accounts || [];
-  }
-  function txt(r, keys){
-    for(var i=0;i<keys.length;i++){
-      if(r && r[keys[i]] !== undefined && r[keys[i]] !== null && r[keys[i]] !== "") return r[keys[i]];
-    }
-    return "";
-  }
-  function status(r){
-    return String(txt(r,["calculatedStatus","renewalStatus","status","currentStatus"])).toLowerCase();
-  }
-  function booked(r){ return num(txt(r,["bookedValue","bookingValue","booked","booking","totalBooked"])); }
-  function collected(r){ return num(txt(r,["collectedValue","collectionValue","cashCollected","collected","collection","totalCollected"])); }
-  function renewal(r){ return num(txt(r,["renewalValue2026","renewalValue","value","amount","budgetValue"])); }
+  function booked(r){return val(r,["bookedValue","bookingValue","booked","booking","bookingSheetValue","totalBooked"]);}
+  function collected(r){return val(r,["collectedValue","collectionValue","cashCollected","collected","collection","collectionSheetValue","totalCollected"]);}
+  function renewal(r){return val(r,["renewalValue2026","renewalValue","budgetValue","value","amount"]);}
   function remaining(r){
-    var explicit = num(txt(r,["remainingCollection","remaining","remainingValue"]));
-    return explicit || Math.max(renewal(r) - collected(r), 0);
+    var explicit=val(r,["remainingCollection","remaining","remainingValue"]);
+    return explicit || Math.max(renewal(r)-collected(r),0);
   }
-  function calls(r){ return num(txt(r,["calls","callsMade","totalCalls","callCount"])); }
-  function connected(r){ return num(txt(r,["connectedCalls","callsConnected","connected","totalConnectedCalls"])); }
-  function meetings(r){ return num(txt(r,["meetings","completedMeetings","meetingCompleted","meetingsCompleted","meetingCount"])); }
 
-  function cell(value,label,color,sub){
-    return '<div class="ret-kpi-compact" style="--rk:'+color+';min-height:78px">' +
-      '<div class="
+  function card(v,l,c,s){
+    return '<div class="ret-kpi-compact" style="--rk:'+c+'"><div class="ret-kpi-v">'+v+'</div><div class="ret-kpi-l">'+l+'</div><div class="ret-kpi-s">'+s+'</div></div>';
+  }
+
+  function render(){
+    var master=document.querySelector("#panel-retention .ret-kpi-master-card");
+    if(!master) return;
+
+    var old=document.getElementById("retentionSheetsMainKpiRow");
+    if(old) old.remove();
+
+    var data=rows();
+
+    var totalCalls=data.reduce((s,r)=>s+calls(r),0);
+    var totalConnected=data.reduce((s,r)=>s+connected(r),0);
+    var totalMeetings=data.reduce((s,r)=>s+meetings(r),0);
+
+    var bookedRows=data.filter(r=>booked(r)>0);
+    var collectedRows=data.filter(r=>collected(r)>0);
+    var remainingRows=data.filter(r=>remaining(r)>0);
+    var upcomingRows=data.filter(r=>status(r).includes("upcoming"));
+    var lateRows=data.filter(r=>status(r).includes("late"));
+
+    var bookedTotal=bookedRows.reduce((s,r)=>s+booked(r),0);
+    var collectedTotal=collectedRows.reduce((s,r)=>s+collected(r),0);
+    var remainingTotal=remainingRows.reduce((s,r)=>s+remaining(r),0);
+
+    var html =
+      '<div class="ret-kpi-period-row" id="retentionSheetsMainKpiRow" style="--pc:var(--cyan)">' +
+      '<div class="ret-kpi-period-label"><div class="ret-kpi-period-name">Sheets KPIs</div><div class="ret-kpi-period-sub">Calls · Meetings · Finance</div></div>' +
+      card(totalCalls.toLocaleString(),"Calls","var(--blue)","From sheets") +
+      card(totalConnected.toLocaleString(),"Connected","var(--green)","Connected calls") +
+      card(totalMeetings.toLocaleString(),"Meetings","var(--purple)","Booked + completed") +
+      card(bookedRows.length.toLocaleString(),"Booked","var(--purple)",money(bookedTotal)) +
+      card(collectedRows.length.toLocaleString(),"Collected","var(--green)",money(collectedTotal)) +
+      card(money(remainingTotal),"Remaining","var(--blue)",remainingRows.length+" accounts") +
+      card(upcomingRows.length.toLocaleString(),"Upcoming","var(--cyan)","From sheet status") +
+      card(lateRows.length.toLocaleString(),"Late","var(--amber)","From sheet status") +
+      '</div>';
+
+    master.insertAdjacentHTML("beforeend",html);
+  }
+
+  window.renderRetentionSheetsMainKpis = render;
+
+  function run(){
+    setTimeout(render,100);
+    setTimeout(render,500);
+    setTimeout(render,1200);
+  }
+
+  var oldRenderRetention=window.renderRetention;
+  if(typeof oldRenderRetention==="function"){
+    window.renderRetention=function(){
+      var out=oldRenderRetention.apply(this,arguments);
+      run();
+      return out;
+    };
+    try{renderRetention=window.renderRetention;}catch(e){}
+  }
+
+  var oldSwitchMainPanel=window.switchMainPanel;
+  if(typeof oldSwitchMainPanel==="function"){
+    window.switchMainPanel=function(panel){
+      var out=oldSwitchMainPanel.apply(this,arguments);
+      if(panel==="retention") run();
+      return out;
+    };
+    try{switchMainPanel=window.switchMainPanel;}catch(e){}
+  }
+
+  var oldLoadData=window.loadData;
+  if(typeof oldLoadData==="function"){
+    window.loadData=async function(){
+      var out=await oldLoadData.apply(this,arguments);
+      run();
+      return out;
+    };
+    try{loadData=window.loadData;}catch(e){}
+  }
+
+  run();
+})();
+</script>
 </body>
 </html>
