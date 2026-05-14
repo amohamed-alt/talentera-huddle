@@ -1277,6 +1277,10 @@ body::after{
 
 .ret-fin-comparison-board{background:var(--surface);border:1px solid var(--border);border-top:3px solid var(--blue);border-radius:var(--r-lg);box-shadow:var(--sh);overflow:hidden;margin:0 0 14px}.ret-fin-comparison-hd{padding:13px 18px;background:var(--surface2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.ret-fin-comparison-title{font-size:11px;font-weight:900;color:var(--text2);text-transform:uppercase;letter-spacing:.08em}.ret-fin-comparison-sub{font-size:10px;color:var(--muted);font-weight:700;margin-top:4px}.ret-fin-comparison-filters{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.ret-fin-comparison-kpis{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;padding:14px;border-bottom:1px solid var(--border);background:#fff}.ret-fin-comparison-kpi{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);padding:12px;text-align:center;border-top:3px solid var(--fc,var(--green));box-shadow:var(--sh-xs)}.ret-fin-comparison-kpi-v{font-family:var(--mono);font-size:20px;font-weight:900;color:var(--fc,var(--green));line-height:1}.ret-fin-comparison-kpi-l{font-size:8px;font-weight:900;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-top:7px}.ret-fin-comparison-kpi-s{font-size:9px;color:var(--text2);font-weight:700;margin-top:3px}.ret-fin-comparison-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;padding:14px}.ret-fin-chart-card{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);padding:14px;min-height:340px;box-shadow:var(--sh-xs)}.ret-fin-chart-title{font-size:11px;font-weight:900;color:var(--text2);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px}.ret-fin-chart-card canvas{width:100%!important;height:285px!important}@media(max-width:1200px){.ret-fin-comparison-kpis{grid-template-columns:repeat(3,1fr)}}@media(max-width:800px){.ret-fin-comparison-grid,.ret-fin-comparison-kpis{grid-template-columns:1fr}.ret-fin-comparison-filters,.ret-fin-comparison-filters .ret-sheet-select{width:100%}}
 
+
+.ret-fin-card-icon{width:30px;height:30px;border-radius:11px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.72);border:1px solid rgba(22,64,42,.10);font-size:16px;margin-bottom:9px;box-shadow:var(--sh-xs)}
+.ret-export-btn{border:1px solid var(--green-bd);background:var(--green-bg);color:var(--primary-dk);border-radius:999px;padding:5px 9px;font-size:9px;font-weight:900;cursor:pointer;font-family:var(--font);margin-left:6px;white-space:nowrap}
+.ret-export-btn:hover{background:rgba(22,163,74,.14);transform:translateY(-1px)}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -5057,6 +5061,7 @@ function toggleRetMore(bodyId, btn){
     var ownerGrid = byId('retFinOwnerGrid');
     if(ownerGrid) ownerGrid.style.gridTemplateColumns = '1.15fr .45fr .65fr .85fr .85fr .85fr .85fr';
     setText('retFinOwnerBadge', owners.length + ' sheet owners · ' + monthText);
+    ensureRetExportButton('retFinOwnerBadge','retFinOwnerGrid','retention-owner-financial-summary');
     var ownerHead = ['Owner','Role','Accounts','Renewal','Booked','Collected','Remaining'];
     var ownerHtml = owners.map(function(o){
       return '<div class="ret-fin-owner-cell"><div class="ret-fin-owner-name"><span class="ret-fin-dot" style="--oc:' + (o.role === 'RM' ? 'var(--blue)' : 'var(--cyan)') + '"></span>' + htmlSafe(o.name) + '</div></div>' +
@@ -6663,15 +6668,25 @@ window.__dashboardAutoRefreshTimer = setInterval(function(){
   }
   function budgetStatusRaw(row){
     if(!row) return '';
-    return row.budgetStatusLabel ||
+    return row.accountStatusForFilter ||
+      row.accountStatusLabel ||
+      row.budgetStatusLabel ||
       row.budgetStatusRaw ||
       row.renewalStatusFromSheet ||
       row.statusAbdullah ||
+      row.status_abdullah ||
+      row.abdullahStatus ||
+      row.abdallahStatus ||
       row['Status Abdullah'] ||
       row['status abdullah'] ||
+      row['Abdullah Status'] ||
+      row['Abdallah Status'] ||
+      row['Status Abdallah'] ||
       row['Status عبد الله'] ||
+      row['Account Status'] ||
+      row['Client Status'] ||
       row.budgetStatus ||
-      row.status ||
+      row.accountStatus ||
       '';
   }
   function budgetStatusInfo(row){
@@ -6733,6 +6748,50 @@ window.__dashboardAutoRefreshTimer = setInterval(function(){
     return 'bp';
   }
   function badge(status){ return '<span class="badge ' + statusClass(status) + '">' + safe(status || '—') + '</span>'; }
+  function tableRowsToCsv(tableBodyId){
+    var body = byId(tableBodyId);
+    if(!body) return '';
+    var table = body.closest('table');
+    var rows = [];
+    if(table){
+      var heads = Array.from(table.querySelectorAll('thead th')).map(function(th){ return th.textContent.replace(/\s+/g,' ').trim(); });
+      if(heads.length) rows.push(heads);
+    }
+    Array.from(body.querySelectorAll('tr')).forEach(function(tr){
+      if(tr.classList.contains('ret-hidden')) tr.classList.remove('ret-hidden');
+      var cells = Array.from(tr.querySelectorAll('td')).map(function(td){ return td.textContent.replace(/\s+/g,' ').trim(); });
+      if(cells.length) rows.push(cells);
+    });
+    return rows.map(function(row){
+      return row.map(function(cell){ return '"' + String(cell || '').replace(/"/g,'""') + '"'; }).join(',');
+    }).join('\n');
+  }
+  window.exportRetFinTable = function(tableBodyId, fileName){
+    var csv = tableRowsToCsv(tableBodyId);
+    if(!csv){ alert('No rows to export'); return; }
+    var blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = (fileName || 'retention-export') + '.csv';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 500);
+  };
+  function ensureRetExportButton(anchorId, tableBodyId, fileName){
+    var anchor = byId(anchorId);
+    if(!anchor || !anchor.parentNode) return;
+    var id = 'export-' + tableBodyId;
+    if(byId(id)) return;
+    var btn = document.createElement('button');
+    btn.id = id;
+    btn.type = 'button';
+    btn.className = 'ret-export-btn';
+    btn.textContent = 'Export Excel';
+    btn.onclick = function(e){ e.preventDefault(); e.stopPropagation(); window.exportRetFinTable(tableBodyId, fileName); };
+    anchor.parentNode.appendChild(btn);
+  }
   function productKey(row){
     var p = norm(productOf(row));
     if(p.indexOf('talentera') >= 0) return 'Talentera';
@@ -6881,7 +6940,7 @@ window.__dashboardAutoRefreshTimer = setInterval(function(){
       selectHtml('retFinFilterRm','RM 2026',f.rm || 'All',uniqueOptions(dataRows,rmOf)).replace('RET_FIN_SHEET_FILTERS.rm=this.value','RET_FIN_SHEET_FILTERS.rm=this.value') +
       selectHtml('retFinFilterCsm','CSM',f.csm || 'All',uniqueOptions(dataRows,csmOf)).replace('RET_FIN_SHEET_FILTERS.csm=this.value','RET_FIN_SHEET_FILTERS.csm=this.value') +
       selectHtml('retFinFilterProduct','Product',f.product || 'All',uniqueOptions(dataRows,productOf)).replace('RET_FIN_SHEET_FILTERS.product=this.value','RET_FIN_SHEET_FILTERS.product=this.value') +
-      selectHtml('retFinFilterAccountStatus','Account Status',f.accountStatus || 'All',uniqueOptions(dataRows,accountStatusLabel).filter(function(v,i,a){ return v && a.indexOf(v) === i; })) +
+      selectHtml('retFinFilterAccountStatus','Account Status',f.accountStatus || 'All',Array.from(new Set(['Active','Expected To Be Lost','Lost','Lost From 2025'].concat(uniqueOptions(dataRows,accountStatusLabel)))).filter(function(v){ return v; })) +
       '<button class="ret-sheet-select" style="cursor:pointer;color:var(--red);min-width:auto" onclick="RET_FIN_SHEET_FILTERS={month:\'All\',rm:\'All\',csm:\'All\',product:\'All\',accountStatus:\'All\',status:\'All\'}; renderRetentionFinancialDetails();">Reset</button>' +
       '<span class="ret-sheet-note">Filters apply to cards, owner summary and all tables.</span></div><span class="badge bb">Sheets only</span></div>' +
       '<div class="ret-sheet-source"><span class="ret-sheet-pill">Budget: ' + safe(src.budget || '1- 2026 Budget') + '</span><span class="ret-sheet-pill">Booking: ' + safe(src.booking || 'Retention Accounts Booking') + '</span><span class="ret-sheet-pill">Collection: ' + safe(src.collection || 'Retention Accounts Collection') + '</span><span class="ret-sheet-pill">Last updated: ' + safe(sheets().lastUpdated || (window.R && window.R.generatedAt) || '—') + '</span></div>';
@@ -7043,7 +7102,7 @@ window.__dashboardAutoRefreshTimer = setInterval(function(){
       {k:'remaining',v:money(remainingTotal),l:'Booked Not Cash',s:'Booked - Cash collected · ' + monthText,c:'var(--blue)'},
       {k:'delayed',v:delayedRows.length.toLocaleString(),l:'Delayed Accounts',s:'Excludes Lost / Lost From 2025',c:'var(--red)'},
       {k:'late',v:lateRows.length.toLocaleString(),l:'Renewed Late',s:'Booking after renewal month',c:'var(--amber)'}
-    ].map(function(x){ return '<div class="ret-fin-card ret-click-card" style="--fc:' + x.c + '" onclick="openRetFinSheetDetails(\'' + x.k + '\')" title="Click to open account list"><div class="ret-fin-card-v">' + x.v + '</div><div class="ret-fin-card-l">' + x.l + '</div><div class="ret-fin-card-s">' + x.s + '</div></div>'; }).join(''));
+    ].map(function(x){ var icons={renewal:'💎',booked:'📝',collected:'💵',remaining:'⏳',delayed:'🚨',late:'⚠️'}; return '<div class="ret-fin-card ret-click-card" style="--fc:' + x.c + '" onclick="openRetFinSheetDetails(\'' + x.k + '\')" title="Click to open account list"><div class="ret-fin-card-icon">' + (icons[x.k] || '📊') + '</div><div class="ret-fin-card-v">' + x.v + '</div><div class="ret-fin-card-l">' + x.l + '</div><div class="ret-fin-card-s">' + x.s + '</div></div>'; }).join(''));
 
     var warning = byId('retFinSheetDataWarning');
     if(!warning){
@@ -7067,11 +7126,16 @@ window.__dashboardAutoRefreshTimer = setInterval(function(){
     setText('retFinBookedBadge', bookingRows.length + ' · ' + money(bookedTotal));
     setText('retFinRenewedBadge', rows.length + ' · ' + money(renewalTotal));
     setText('retFinDelayedBadge', actionRows.length + ' action rows');
+    ensureRetExportButton('retFinCashedBadge','retFinCashedBody','retention-collection-from-sheets');
+    ensureRetExportButton('retFinBookedBadge','retFinBookedBody','retention-booked-from-sheets');
+    ensureRetExportButton('retFinRenewedBadge','retFinRenewedBody','retention-renewal-overview-from-sheets');
+    ensureRetExportButton('retFinDelayedBadge','retFinDelayedBody','retention-delayed-renewed-late-from-sheets');
 
     var owners = ownerSummary(rows);
     var ownerGrid = byId('retFinOwnerGrid');
     if(ownerGrid) ownerGrid.style.gridTemplateColumns = '1.1fr .45fr .62fr .78fr .78fr .78fr .78fr';
     setText('retFinOwnerBadge', owners.length + ' sheet owners · ' + monthText);
+    ensureRetExportButton('retFinOwnerBadge','retFinOwnerGrid','retention-owner-financial-summary');
     var ownerHead = ['Owner','Role','Accounts','Renewal','Booked','Collected','Booked Not Cash'];
     var ownerBody = owners.map(function(o){
       return '<div class="ret-fin-owner-cell"><div class="ret-fin-owner-name"><span class="ret-fin-dot" style="--oc:' + (o.role === 'RM' ? 'var(--blue)' : 'var(--cyan)') + '"></span>' + safe(o.name) + '</div></div>' +
