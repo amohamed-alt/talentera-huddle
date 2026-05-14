@@ -7995,10 +7995,20 @@ window.__dashboardAutoRefreshTimer = setInterval(function(){
       return total + Object.keys(bucket||{}).reduce(function(s,k){return s+num(bucket[k]);},0);
     },0);
   }
-  function bookingValue(r,m,p){ var v=nestedMonthProduct(r.bookingByMonth,m,p); if(v) return v; if((!m||m==='All') && (!p||p==='All')) return num(r.bookingSheetValue || r.bookedValue || r.totalBookedValue); return 0; }
+  function bookingValue(r,m,p){
+    var v=nestedMonthProduct(r.bookingByMonth,m,p);
+    if(v !== 0) return v;
+    if((!m||m==='All') && (!p||p==='All')){
+      var fields=['bookingSheetValue','bookedValue','totalBookedValue','bookingValue','bookedAmount','booked'];
+      for(var i=0;i<fields.length;i++){
+        if(r && r[fields[i]] !== undefined && r[fields[i]] !== null && r[fields[i]] !== '') return num(r[fields[i]]);
+      }
+    }
+    return 0;
+  }
   function collectionValue(r,m,p){ var v=nestedMonthProduct(r.collectionByMonth,m,p); if(v) return v; if((!m||m==='All') && (!p||p==='All')) return num(r.collectedValue || r.totalCollectedValue); return 0; }
   function renewalValue(r,m,p){ if(p&&p!=='All'&&productOf(r)!==p) return 0; if(m&&m!=='All'&&r.renewalMonth&&r.renewalMonth!==m) return 0; return num(r.renewalValue2026 || r.renewalValue || r.amount); }
-  function remainingValue(r,m,p){ return Math.max(bookingValue(r,m,p)-collectionValue(r,m,p),0); }
+  function remainingValue(r,m,p){ return bookingValue(r,m,p)-collectionValue(r,m,p); }
   function calculatedStatus(r){
     var acc=accountStatusLabel(r);
     if(acc==='Lost'||acc==='Lost From 2025') return acc;
@@ -8055,7 +8065,17 @@ window.__dashboardAutoRefreshTimer = setInterval(function(){
   function ensureExport(anchorId,bodyId,fileName){ var a=byId(anchorId); if(!a||!a.parentNode||byId('export-final-'+bodyId)) return; var b=document.createElement('button'); b.id='export-final-'+bodyId; b.type='button'; b.className='ret-export-btn'; b.textContent='Export Excel'; b.onclick=function(e){ e.preventDefault(); e.stopPropagation(); exportTable(bodyId,fileName); }; a.parentNode.appendChild(b); }
   function exportTable(bodyId,fileName){ var body=byId(bodyId); if(!body) return; var table=body.closest('table'); var rows=[]; if(table){ rows.push(Array.from(table.querySelectorAll('thead th')).map(function(th){return th.textContent.trim();})); } Array.from(body.querySelectorAll('tr')).forEach(function(tr){ tr.classList.remove('ret-hidden'); var cells=Array.from(tr.querySelectorAll('td')).map(function(td){return td.textContent.replace(/\s+/g,' ').trim();}); if(cells.length) rows.push(cells); }); if(!rows.length){ alert('No rows to export'); return; } var csv=rows.map(function(r){return r.map(function(c){return '"'+String(c||'').replace(/"/g,'""')+'"';}).join(',');}).join('\n'); var blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8;'}); var url=URL.createObjectURL(blob); var a=document.createElement('a'); a.href=url; a.download=(fileName||'retention-export')+'.csv'; document.body.appendChild(a); a.click(); a.remove(); setTimeout(function(){URL.revokeObjectURL(url);},500); }
   window.toggleRetMore = window.toggleRetMore || function(bodyId,btn){ var body=byId(bodyId); if(!body) return; var hidden=Array.from(body.querySelectorAll('.ret-hidden')); var show=hidden.some(function(x){return x.style.display==='none'||!x.style.display;}); hidden.forEach(function(x){x.style.display=show?'table-row':'none';}); if(btn) btn.textContent=show?'▲ Show less':'▼ Show more'; };
-  function selectHtml(id,key,label,value,options){ return '<span class="ret-sheet-label">'+esc(label)+'</span><select class="ret-sheet-select" id="'+esc(id)+'" onchange="RET_FIN_SHEET_FILTERS['+JSON.stringify(key)+']=this.value; renderRetentionFinancialDetails();"><option value="All"'+(value==='All'?' selected':'')+'>All</option>'+options.map(function(x){return '<option value="'+esc(x)+'"'+(value===x?' selected':'')+'>'+esc(x)+'</option>';}).join('')+'</select>'; }
+  window.setRetFinSheetFilter = function(key,value){
+    window.RET_FIN_SHEET_FILTERS = Object.assign({month:'All',rm:'All',csm:'All',product:'All',accountStatus:'All',status:'All'}, window.RET_FIN_SHEET_FILTERS || {});
+    window.RET_FIN_SHEET_FILTERS[key] = value || 'All';
+    if(key === 'accountStatus') window.RET_FIN_SHEET_FILTERS.status = 'All';
+    window.renderRetentionFinancialDetails();
+  };
+  window.resetRetFinSheetFilters = function(){
+    window.RET_FIN_SHEET_FILTERS = {month:'All',rm:'All',csm:'All',product:'All',accountStatus:'All',status:'All'};
+    window.renderRetentionFinancialDetails();
+  };
+  function selectHtml(id,key,label,value,options){ return '<span class="ret-sheet-label">'+esc(label)+'</span><select class="ret-sheet-select" id="'+esc(id)+'" data-ret-fin-filter="'+esc(key)+'" onchange="window.setRetFinSheetFilter('+JSON.stringify(key)+',this.value)"><option value="All"'+(value==='All'?' selected':'')+'>All</option>'+options.map(function(x){return '<option value="'+esc(x)+'"'+(value===x?' selected':'')+'>'+esc(x)+'</option>';}).join('')+'</select>'; }
   function ensureFilter(rows){
     var mount=byId('retFinSheetFilter');
     if(!mount){ var grid=byId('retFinTopGrid'); if(!grid||!grid.parentNode) return; mount=document.createElement('div'); mount.id='retFinSheetFilter'; mount.className='ret-sheet-filter'; grid.parentNode.insertBefore(mount,grid); }
@@ -8096,6 +8116,40 @@ window.__dashboardAutoRefreshTimer = setInterval(function(){
     ensureExport('retFinDelayedBadge','retFinDelayedBody','retention-delayed-renewed-late-from-sheets');
     ensureExport('retFinOwnerBadge','retFinOwnerGrid','retention-owner-financial-summary');
   }
+  function ensureStatusMount(){
+    var grid=byId('retFinTopGrid');
+    if(!grid || !grid.parentNode) return null;
+    var mount=byId('retFinStatusStrip');
+    if(!mount){
+      mount=document.createElement('div');
+      mount.id='retFinStatusStrip';
+      mount.className='ret-fin-status-board';
+      grid.parentNode.insertBefore(mount, grid.nextSibling);
+    }
+    return mount;
+  }
+  function renderStatusStrip(rows,m,p){
+    var mount=ensureStatusMount();
+    if(!mount) return;
+    var statuses=['Active','Expected To Be Lost','Lost','Lost From 2025'];
+    var data=statuses.map(function(st){
+      var list=rows.filter(function(r){ return accountStatusLabel(r)===st; });
+      return {
+        label:st,
+        rows:list,
+        renewal:list.reduce(function(t,r){return t+renewalValue(r,m,p);},0),
+        booked:list.reduce(function(t,r){return t+bookingValue(r,m,p);},0),
+        collected:list.reduce(function(t,r){return t+collectionValue(r,m,p);},0)
+      };
+    });
+    mount.innerHTML='<div class="ret-fin-status-hd"><div><div class="ret-fin-status-title">🧾 Abdullah Account Status</div><div class="ret-fin-status-sub">This is the Budget 2026 status field. Lost / Lost From 2025 are excluded from delayed. Expected To Be Lost still appears as delayed warning.</div></div><span class="badge bb">Filtered view</span></div>'+
+      '<div class="ret-fin-status-grid">'+data.map(function(x){
+        var cls=x.label==='Active'?'bg':(x.label==='Expected To Be Lost'?'ba':'br');
+        var color=x.label==='Active'?'var(--green)':(x.label==='Expected To Be Lost'?'var(--amber)':'var(--red)');
+        return '<div class="ret-fin-status-card" style="--sc:'+color+'"><div class="ret-fin-status-top"><span class="badge '+cls+'">'+esc(x.label)+'</span><strong>'+x.rows.length.toLocaleString()+'</strong></div><div class="ret-fin-status-money"><span>Renewal '+money(x.renewal)+'</span><span>Booked '+money(x.booked)+'</span><span>Cash '+money(x.collected)+'</span></div></div>';
+      }).join('')+'</div>';
+  }
+
   window.renderRetentionFinancialDetails = function(){
     var s=sheets();
     var all=baseAccounts();
@@ -8118,13 +8172,12 @@ window.__dashboardAutoRefreshTimer = setInterval(function(){
     var p=f.product||'All';
     var rows=filteredAccounts();
     var monthTxt=monthName(m);
-    var useRawTotals=(m==='All'&&p==='All'&&(!f.rm||f.rm==='All')&&(!f.csm||f.csm==='All')&&(!f.accountStatus||f.accountStatus==='All'));
     var renewalTotal=rows.reduce(function(t,r){return t+renewalValue(r,m,p);},0);
-    var bookedTotal=useRawTotals?num(s.bookingSheetValue || s.bookedValue || (s.debug&&s.debug.rawBookingSheetTotal)):rows.reduce(function(t,r){return t+bookingValue(r,m,p);},0);
-    var collectedTotal=useRawTotals?num(s.collectedValue || (s.debug&&s.debug.rawCollectionSheetTotal)):rows.reduce(function(t,r){return t+collectionValue(r,m,p);},0);
-    var remainingTotal=useRawTotals?num(s.bookedNotCashValue || s.remainingCollection || (s.debug&&s.debug.rawBookedNotCashTotal)):Math.max(bookedTotal-collectedTotal,0);
-    var bookingRows=rows.filter(function(r){return bookingValue(r,m,p)>0;});
-    var collectionRows=rows.filter(function(r){return collectionValue(r,m,p)>0;});
+    var bookedTotal=rows.reduce(function(t,r){return t+bookingValue(r,m,p);},0);
+    var collectedTotal=rows.reduce(function(t,r){return t+collectionValue(r,m,p);},0);
+    var remainingTotal=bookedTotal-collectedTotal;
+    var bookingRows=rows.filter(function(r){return bookingValue(r,m,p)!==0;});
+    var collectionRows=rows.filter(function(r){return collectionValue(r,m,p)!==0;});
     var delayedRows=rows.filter(function(r){var st=norm(calculatedStatus(r)); return st.indexOf('delayed')>=0 && accountStatusLabel(r)!=='Lost' && accountStatusLabel(r)!=='Lost From 2025';});
     var lateRows=rows.filter(function(r){return norm(calculatedStatus(r)).indexOf('late')>=0;});
     var actionRows=delayedRows.concat(lateRows.filter(function(r){return delayedRows.indexOf(r)<0;}));
@@ -8136,6 +8189,7 @@ window.__dashboardAutoRefreshTimer = setInterval(function(){
       {k:'delayed',v:delayedRows.length.toLocaleString(),l:'Delayed Accounts',s:'Excludes Lost / Lost From 2025',c:'var(--red)',i:'🚨'},
       {k:'late',v:lateRows.length.toLocaleString(),l:'Renewed Late',s:'Booking after renewal month',c:'var(--amber)',i:'⚠️'}
     ].map(function(x){return '<div class="ret-fin-card ret-click-card" style="--fc:'+x.c+'" onclick="if(window.openRetFinSheetDetails)openRetFinSheetDetails(\''+x.k+'\')" title="Click to open account list"><div class="ret-fin-card-icon">'+x.i+'</div><div class="ret-fin-card-v">'+x.v+'</div><div class="ret-fin-card-l">'+x.l+'</div><div class="ret-fin-card-s">'+x.s+'</div></div>';}).join(''));
+    renderStatusStrip(rows,m,p);
     setText('retFinCashedBadge',collectionRows.length+' · '+money(collectedTotal));
     setText('retFinBookedBadge',bookingRows.length+' · '+money(bookedTotal));
     setText('retFinRenewedBadge',rows.length+' · '+money(renewalTotal));
@@ -8173,6 +8227,62 @@ window.__dashboardAutoRefreshTimer = setInterval(function(){
   }
   setTimeout(function(){ if(window.APP_MAIN_PANEL==='retention' && window.APP_RETENTION_VIEW==='financial') window.renderRetentionFinancialDetails(); },100);
   setTimeout(function(){ if(window.APP_MAIN_PANEL==='retention' && window.APP_RETENTION_VIEW==='financial') window.renderRetentionFinancialDetails(); },1000);
+})();
+</script>
+
+
+<style id="retention-final-layout-and-status-fix">
+body.retention-financial-wide .content{max-width:none!important;width:auto!important;padding-left:18px!important;padding-right:18px!important}
+body.retention-financial-wide #panel-retention-financial{width:100%!important;max-width:none!important;margin:0!important}
+body.retention-financial-wide #panel-retention-financial .ret-fin-hero,
+body.retention-financial-wide #panel-retention-financial .ret-sheet-filter,
+body.retention-financial-wide #panel-retention-financial .ret-fin-top-grid,
+body.retention-financial-wide #panel-retention-financial .ret-fin-status-board,
+body.retention-financial-wide #panel-retention-financial .ret-fin-board,
+body.retention-financial-wide #panel-retention-financial .ret-fin-split{max-width:none!important;width:100%!important;margin-left:0!important;margin-right:0!important}
+#panel-retention-financial .ret-fin-top-grid{display:grid!important;grid-template-columns:repeat(6,minmax(150px,1fr))!important;gap:12px!important}
+#panel-retention-financial .ret-fin-card{min-height:132px!important}
+#panel-retention-financial .ret-sheet-filter-inner{align-items:flex-end!important}
+#panel-retention-financial .ret-sheet-filter-left{gap:12px!important}
+#panel-retention-financial .ret-sheet-select{min-width:136px!important;height:36px!important}
+.ret-fin-status-board{background:linear-gradient(180deg,rgba(255,255,255,.76),rgba(255,255,255,.46));border:1px solid rgba(22,64,42,.10);border-top:3px solid var(--amber);border-radius:var(--r-lg);box-shadow:var(--sh);backdrop-filter:blur(18px) saturate(155%);-webkit-backdrop-filter:blur(18px) saturate(155%);overflow:hidden;margin:0 0 14px}
+.ret-fin-status-hd{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 18px;background:rgba(255,255,255,.46);border-bottom:1px solid rgba(22,64,42,.08)}
+.ret-fin-status-title{font-size:11px;font-weight:900;color:var(--text2);text-transform:uppercase;letter-spacing:.08em}
+.ret-fin-status-sub{font-size:10px;color:var(--muted);font-weight:700;margin-top:4px;line-height:1.5}
+.ret-fin-status-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:14px}
+.ret-fin-status-card{background:rgba(255,255,255,.58);border:1px solid rgba(22,64,42,.10);border-radius:16px;padding:12px;border-left:4px solid var(--sc);box-shadow:var(--sh-xs)}
+.ret-fin-status-top{display:flex;align-items:center;justify-content:space-between;gap:8px}.ret-fin-status-top strong{font-family:var(--mono);font-size:20px;color:var(--sc)}
+.ret-fin-status-money{display:grid;gap:4px;margin-top:9px;font-size:10px;font-weight:800;color:var(--text2)}
+#panel-retention-financial .ret-fin-card-v{white-space:nowrap}
+#panel-retention-financial .ret-fin-card-v:has(+ .ret-fin-card-l){direction:ltr}
+@media(max-width:1300px){#panel-retention-financial .ret-fin-top-grid{grid-template-columns:repeat(3,1fr)!important}.ret-fin-status-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:780px){#panel-retention-financial .ret-fin-top-grid,.ret-fin-status-grid{grid-template-columns:1fr!important}#panel-retention-financial .ret-sheet-select{width:100%!important}.ret-fin-status-hd{align-items:flex-start;flex-direction:column}}
+</style>
+<script id="retention-final-filter-layout-runtime-fix">
+(function(){
+  function applyWide(){
+    var active=document.getElementById('panel-retention-financial')&&document.getElementById('panel-retention-financial').classList.contains('active');
+    document.body.classList.toggle('retention-financial-wide',!!active);
+  }
+  var oldSwitch=window.switchRetentionFinancial;
+  if(typeof oldSwitch==='function'){
+    window.switchRetentionFinancial=function(){ var out=oldSwitch.apply(this,arguments); applyWide(); setTimeout(applyWide,50); return out; };
+    try{ switchRetentionFinancial=window.switchRetentionFinancial; }catch(e){}
+  }
+  var oldMain=window.switchMainPanel;
+  if(typeof oldMain==='function'){
+    window.switchMainPanel=function(){ var out=oldMain.apply(this,arguments); applyWide(); setTimeout(applyWide,50); return out; };
+    try{ switchMainPanel=window.switchMainPanel; }catch(e){}
+  }
+  document.addEventListener('change',function(e){
+    var el=e.target;
+    if(!el || !el.matches || !el.matches('#panel-retention-financial [data-ret-fin-filter]')) return;
+    window.RET_FIN_SHEET_FILTERS=Object.assign({month:'All',rm:'All',csm:'All',product:'All',accountStatus:'All',status:'All'},window.RET_FIN_SHEET_FILTERS||{});
+    window.RET_FIN_SHEET_FILTERS[el.getAttribute('data-ret-fin-filter')]=el.value||'All';
+    if(typeof window.renderRetentionFinancialDetails==='function') window.renderRetentionFinancialDetails();
+  },true);
+  setInterval(applyWide,700);
+  setTimeout(applyWide,100);
 })();
 </script>
 
