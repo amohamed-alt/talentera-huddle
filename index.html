@@ -7649,5 +7649,249 @@ window.__dashboardAutoRefreshTimer = setInterval(function(){
   setTimeout(fixRetentionKpis, 1500);
 })();
 </script>
+
+<script>
+(function(){
+  if(window.__RET_FIN_SHEETS_FINAL_FIX_20260514__) return;
+  window.__RET_FIN_SHEETS_FINAL_FIX_20260514__ = true;
+
+  var MONTHS = [
+    {key:'Jan',label:'January',i:1},{key:'Feb',label:'February',i:2},{key:'Mar',label:'March',i:3},{key:'Apr',label:'April',i:4},
+    {key:'May',label:'May',i:5},{key:'Jun',label:'June',i:6},{key:'Jul',label:'July',i:7},{key:'Aug',label:'August',i:8},
+    {key:'Sep',label:'September',i:9},{key:'Oct',label:'October',i:10},{key:'Nov',label:'November',i:11},{key:'Dec',label:'December',i:12}
+  ];
+
+  window.RET_FIN_SHEET_FILTERS = Object.assign({month:'All',rm:'All',csm:'All',product:'All',accountStatus:'All',status:'All'}, window.RET_FIN_SHEET_FILTERS || {});
+
+  function byId(id){ return document.getElementById(id); }
+  function setHtml(id,v){ var el=byId(id); if(el) el.innerHTML=v; }
+  function setText(id,v){ var el=byId(id); if(el) el.textContent=v; }
+  function esc(v){ return String(v==null?'':v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;'); }
+  function arr(v){ return Array.isArray(v)?v:[]; }
+  function num(v){ var n=Number(String(v==null?0:v).replace(/[^0-9.-]/g,'')); return isFinite(n)?n:0; }
+  function money(v){ var n=num(v); return '$' + Math.round(n).toLocaleString('en-US'); }
+  function norm(v){ return String(v||'').trim().toLowerCase().replace(/\s+/g,' '); }
+  function sheets(){ return (window.R && window.R.retentionSheets2026) || {}; }
+  function sourceSheets(){ return sheets().sourceSheets || {}; }
+  function filters(){ return window.RET_FIN_SHEET_FILTERS || {}; }
+  function monthName(k){ if(!k || k==='All') return 'All Months'; var m=MONTHS.find(function(x){return x.key===k;}); return m?m.label:k; }
+  function compactName(v){ return String(v||'').trim(); }
+  function productOf(r){ return compactName(r.product || r.Product || r.productName || r.sheetProduct || 'Unknown') || 'Unknown'; }
+  function rmOf(r){ return compactName(r.rm || r.rm2026 || r['RM 2026'] || r.RM || r.rmOwnerName || r.ownerName || ''); }
+  function csmOf(r){ return compactName(r.csm || r.csmName || r['CSM Name'] || r.CSM || r.csmOwnerName || ''); }
+  function clientOf(r){ return compactName(r.clientName || r.client || r.companyName || r.name || r.dealName || 'Unknown Client'); }
+  function gidOf(r){ return compactName(r.cleanGid || r.gid || r.GID || ''); }
+  function urlOf(r){ return r.companyUrl || r.hubspotUrl || r.url || ''; }
+  function link(label,url){ return url ? '<a class="record-link" target="_blank" href="'+esc(url)+'">'+esc(label)+'</a>' : esc(label); }
+  function clientCell(r){ var sub=[]; if(gidOf(r)) sub.push('GID '+gidOf(r)); if(r.notInBudget2026 || r.budgetNote) sub.push(r.budgetNote || 'Not in Budget 2026'); return '<div style="font-weight:900">'+link(clientOf(r),urlOf(r))+'</div>'+(sub.length?'<div style="font-size:10px;color:var(--muted);margin-top:2px">'+esc(sub.join(' · '))+'</div>':''); }
+  function statusRaw(r){ return compactName(r.accountStatusForFilter || r.accountStatusLabel || r.budgetStatusLabel || r.budgetStatusRaw || r.renewalStatusFromSheet || r.statusAbdullah || r.abdullahStatus || r['Status Abdullah'] || r['Account Status'] || r.accountStatus || r.status || 'Active'); }
+  function accountStatusLabel(r){
+    var s=norm(statusRaw(r));
+    if(s==='lost') return 'Lost';
+    if(s==='lost from 2025' || s==='lost from 25') return 'Lost From 2025';
+    if(s==='expected to be lost' || s==='expected be lost') return 'Expected To Be Lost';
+    if(s==='active') return 'Active';
+    if(s==='renewed') return 'Renewed';
+    return statusRaw(r) || 'Active';
+  }
+  function monthFromIndex(i){ var m=MONTHS.find(function(x){return x.i===Number(i);}); return m?m.key:null; }
+  function currentRiyadhMonth(){ var d=new Date(Date.now()+3*60*60*1000); return d.getUTCMonth()+1; }
+  function monthIndex(r, indexField, monthField){ var n=Number(r && r[indexField]); if(isFinite(n)&&n>0) return n; var raw=compactName(r && r[monthField]); var f=MONTHS.find(function(x){return norm(x.key)===norm(raw)||norm(x.label)===norm(raw);}); return f?f.i:null; }
+  function nestedMonthProduct(map,m,p){
+    if(!map) return 0;
+    if(m && m!=='All'){
+      var bucket=map[m] || map[monthName(m)] || {};
+      if(p && p!=='All') return num(bucket[p]);
+      if(typeof bucket==='number') return num(bucket);
+      return Object.keys(bucket||{}).reduce(function(s,k){return s+num(bucket[k]);},0);
+    }
+    return Object.keys(map||{}).reduce(function(total,mk){
+      var bucket=map[mk];
+      if(p && p!=='All') return total + num(bucket && bucket[p]);
+      if(typeof bucket==='number') return total + num(bucket);
+      return total + Object.keys(bucket||{}).reduce(function(s,k){return s+num(bucket[k]);},0);
+    },0);
+  }
+  function bookingValue(r,m,p){ var v=nestedMonthProduct(r.bookingByMonth,m,p); if(v) return v; if((!m||m==='All') && (!p||p==='All')) return num(r.bookingSheetValue || r.bookedValue || r.totalBookedValue); return 0; }
+  function collectionValue(r,m,p){ var v=nestedMonthProduct(r.collectionByMonth,m,p); if(v) return v; if((!m||m==='All') && (!p||p==='All')) return num(r.collectedValue || r.totalCollectedValue); return 0; }
+  function renewalValue(r,m,p){ if(p&&p!=='All'&&productOf(r)!==p) return 0; if(m&&m!=='All'&&r.renewalMonth&&r.renewalMonth!==m) return 0; return num(r.renewalValue2026 || r.renewalValue || r.amount); }
+  function remainingValue(r,m,p){ return Math.max(bookingValue(r,m,p)-collectionValue(r,m,p),0); }
+  function calculatedStatus(r){
+    var acc=accountStatusLabel(r);
+    if(acc==='Lost'||acc==='Lost From 2025') return acc;
+    var proofB=monthIndex(r,'bookingMonthIndex','bookingMonth');
+    var proofC=monthIndex(r,'collectionMonthIndex','collectionMonth');
+    var renewal=monthIndex(r,'renewalMonthIndex','renewalMonth');
+    var hasBooked=bookingValue(r,'All','All')>0;
+    var hasCollected=collectionValue(r,'All','All')>0;
+    var first=null;
+    if(hasBooked&&proofB) first=proofB;
+    if(hasCollected&&proofC) first=first?Math.min(first,proofC):proofC;
+    var base='';
+    if(first&&renewal) base=first>renewal?'Renewed Late':'Renewed On Time';
+    else if(first) base='Renewed';
+    else if(renewal) base=currentRiyadhMonth()>renewal?'Delayed':'Upcoming';
+    else base=r.status || 'No Renewal Month';
+    if(acc==='Expected To Be Lost') return acc + (base ? ' · ' + base : '');
+    return base;
+  }
+  function statusClass(s){ s=norm(s); if(s.indexOf('expected to be lost')>=0) return 'ba'; if(s==='lost'||s.indexOf('lost from 2025')>=0) return 'br'; if(s.indexOf('delayed')>=0) return 'br'; if(s.indexOf('late')>=0) return 'ba'; if(s.indexOf('renewed')>=0||s.indexOf('cash')>=0) return 'bg'; if(s.indexOf('upcoming')>=0) return 'bb'; return 'bp'; }
+  function badge(s){ return '<span class="badge '+statusClass(s)+'">'+esc(s||'—')+'</span>'; }
+  function unique(list,fn){ var seen={}; return list.map(fn).filter(function(x){ x=compactName(x); if(!x||seen[x]) return false; seen[x]=true; return true; }).sort(); }
+  function baseAccounts(){
+    var s=sheets();
+    var rows=arr(s.accounts).slice();
+    arr(s.sheetOnlyNotInBudgetAccounts).forEach(function(r){ rows.push(r); });
+    var seen={};
+    return rows.filter(function(r){
+      var key=[gidOf(r),clientOf(r),productOf(r),num(r.renewalValue2026),num(r.bookingSheetValue||r.bookedValue),num(r.collectedValue)].join('|');
+      if(seen[key]) return false; seen[key]=true; return true;
+    });
+  }
+  function filteredAccounts(){
+    var f=filters();
+    if(f.status && f.status!=='All' && (!f.accountStatus || f.accountStatus==='All')) f.accountStatus=f.status;
+    f.status='All';
+    return baseAccounts().filter(function(r){
+      if(f.rm && f.rm!=='All' && rmOf(r)!==f.rm) return false;
+      if(f.csm && f.csm!=='All' && csmOf(r)!==f.csm) return false;
+      if(f.product && f.product!=='All' && productOf(r)!==f.product) return false;
+      if(f.accountStatus && f.accountStatus!=='All' && accountStatusLabel(r)!==f.accountStatus) return false;
+      if(f.month && f.month!=='All'){
+        var m=f.month;
+        var has=renewalValue(r,m,f.product)>0 || bookingValue(r,m,f.product)>0 || collectionValue(r,m,f.product)>0 || (r.renewalMonth===m);
+        if(!has) return false;
+      }
+      return true;
+    });
+  }
+  function empty(cols,msg){ return '<tr><td colspan="'+cols+'" class="ret-fin-empty">'+esc(msg)+'</td></tr>'; }
+  function rowClass(i,t){ return i>=10?'ret-hidden ':''; }
+  function cellMoney(v,c){ return '<span style="font-family:var(--mono);font-weight:900;color:'+c+'">'+money(v)+'</span>'; }
+  function ensureHead(id,heads){ var body=byId(id); if(!body) return; var table=body.closest('table'); if(!table) return; var thead=table.querySelector('thead'); if(!thead){ thead=document.createElement('thead'); table.insertBefore(thead,body.parentNode); } thead.innerHTML='<tr>'+heads.map(function(h){return '<th'+(/^c:/.test(h)?' class="c"':'')+'>'+esc(h.replace(/^c:/,''))+'</th>';}).join('')+'</tr>'; }
+  function ensureExport(anchorId,bodyId,fileName){ var a=byId(anchorId); if(!a||!a.parentNode||byId('export-final-'+bodyId)) return; var b=document.createElement('button'); b.id='export-final-'+bodyId; b.type='button'; b.className='ret-export-btn'; b.textContent='Export Excel'; b.onclick=function(e){ e.preventDefault(); e.stopPropagation(); exportTable(bodyId,fileName); }; a.parentNode.appendChild(b); }
+  function exportTable(bodyId,fileName){ var body=byId(bodyId); if(!body) return; var table=body.closest('table'); var rows=[]; if(table){ rows.push(Array.from(table.querySelectorAll('thead th')).map(function(th){return th.textContent.trim();})); } Array.from(body.querySelectorAll('tr')).forEach(function(tr){ tr.classList.remove('ret-hidden'); var cells=Array.from(tr.querySelectorAll('td')).map(function(td){return td.textContent.replace(/\s+/g,' ').trim();}); if(cells.length) rows.push(cells); }); if(!rows.length){ alert('No rows to export'); return; } var csv=rows.map(function(r){return r.map(function(c){return '"'+String(c||'').replace(/"/g,'""')+'"';}).join(',');}).join('\n'); var blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8;'}); var url=URL.createObjectURL(blob); var a=document.createElement('a'); a.href=url; a.download=(fileName||'retention-export')+'.csv'; document.body.appendChild(a); a.click(); a.remove(); setTimeout(function(){URL.revokeObjectURL(url);},500); }
+  window.toggleRetMore = window.toggleRetMore || function(bodyId,btn){ var body=byId(bodyId); if(!body) return; var hidden=Array.from(body.querySelectorAll('.ret-hidden')); var show=hidden.some(function(x){return x.style.display==='none'||!x.style.display;}); hidden.forEach(function(x){x.style.display=show?'table-row':'none';}); if(btn) btn.textContent=show?'▲ Show less':'▼ Show more'; };
+  function selectHtml(id,key,label,value,options){ return '<span class="ret-sheet-label">'+esc(label)+'</span><select class="ret-sheet-select" id="'+esc(id)+'" onchange="RET_FIN_SHEET_FILTERS['+JSON.stringify(key)+']=this.value; renderRetentionFinancialDetails();"><option value="All"'+(value==='All'?' selected':'')+'>All</option>'+options.map(function(x){return '<option value="'+esc(x)+'"'+(value===x?' selected':'')+'>'+esc(x)+'</option>';}).join('')+'</select>'; }
+  function ensureFilter(rows){
+    var mount=byId('retFinSheetFilter');
+    if(!mount){ var grid=byId('retFinTopGrid'); if(!grid||!grid.parentNode) return; mount=document.createElement('div'); mount.id='retFinSheetFilter'; mount.className='ret-sheet-filter'; grid.parentNode.insertBefore(mount,grid); }
+    var f=filters();
+    var monthOpts=MONTHS.map(function(x){return x.key;});
+    var statusOpts=Array.from(new Set(['Active','Lost','Lost From 2025','Expected To Be Lost','Renewed'].concat(unique(rows,accountStatusLabel)))).filter(Boolean);
+    var src=sourceSheets();
+    mount.innerHTML='<div class="ret-sheet-filter-inner"><div class="ret-sheet-filter-left">'+
+      selectHtml('retFinFilterMonth','month','Month',f.month||'All',monthOpts).replace(/>Jan</g,'>January<').replace(/>Feb</g,'>February<').replace(/>Mar</g,'>March<').replace(/>Apr</g,'>April<').replace(/>May</g,'>May<').replace(/>Jun</g,'>June<').replace(/>Jul</g,'>July<').replace(/>Aug</g,'>August<').replace(/>Sep</g,'>September<').replace(/>Oct</g,'>October<').replace(/>Nov</g,'>November<').replace(/>Dec</g,'>December<')+
+      selectHtml('retFinFilterRm','rm','RM 2026',f.rm||'All',unique(rows,rmOf))+
+      selectHtml('retFinFilterCsm','csm','CSM',f.csm||'All',unique(rows,csmOf))+
+      selectHtml('retFinFilterProduct','product','Product',f.product||'All',unique(rows,productOf))+
+      selectHtml('retFinFilterAccountStatus','accountStatus','Account Status',f.accountStatus||'All',statusOpts)+
+      '<button class="ret-sheet-select" style="cursor:pointer;color:var(--red);min-width:auto" onclick="RET_FIN_SHEET_FILTERS={month:\'All\',rm:\'All\',csm:\'All\',product:\'All\',accountStatus:\'All\',status:\'All\'}; renderRetentionFinancialDetails();">Reset</button>'+
+      '<span class="ret-sheet-note">Filters apply to cards, owner summary and all tables.</span></div><span class="badge bb">Sheets only</span></div>'+
+      '<div class="ret-sheet-source"><span class="ret-sheet-pill">Budget: '+esc(src.budget || '1- 2026 Budget / 2026 Budget')+'</span><span class="ret-sheet-pill">Booking: '+esc(src.booking || 'Retention Accounts Booking')+'</span><span class="ret-sheet-pill">Collection: '+esc(src.collection || 'Retention Accounts Collection')+'</span><span class="ret-sheet-pill">Last updated: '+esc(sheets().lastUpdated || (window.R&&window.R.generatedAt) || '—')+'</span></div>';
+  }
+  function ownerSummary(rows,m,p){
+    var map={};
+    rows.forEach(function(r){
+      [['RM',rmOf(r)],['CSM',csmOf(r)]].forEach(function(x){
+        if(!x[1]) return;
+        var key=x[0]+'|'+x[1];
+        if(!map[key]) map[key]={role:x[0],name:x[1],accounts:{},renewal:0,booked:0,collected:0,remaining:0};
+        map[key].accounts[clientOf(r)+'|'+gidOf(r)]=true;
+        map[key].renewal+=renewalValue(r,m,p);
+        map[key].booked+=bookingValue(r,m,p);
+        map[key].collected+=collectionValue(r,m,p);
+        map[key].remaining+=remainingValue(r,m,p);
+      });
+    });
+    return Object.keys(map).map(function(k){ var o=map[k]; o.accountCount=Object.keys(o.accounts).length; return o; }).sort(function(a,b){ return b.renewal-a.renewal; });
+  }
+  function installExportButtons(){
+    ensureExport('retFinCashedBadge','retFinCashedBody','retention-collection-from-sheets');
+    ensureExport('retFinBookedBadge','retFinBookedBody','retention-booked-from-sheets');
+    ensureExport('retFinRenewedBadge','retFinRenewedBody','retention-renewal-overview-from-sheets');
+    ensureExport('retFinDelayedBadge','retFinDelayedBody','retention-delayed-renewed-late-from-sheets');
+    ensureExport('retFinOwnerBadge','retFinOwnerGrid','retention-owner-financial-summary');
+  }
+  window.renderRetentionFinancialDetails = function(){
+    var s=sheets();
+    var all=baseAccounts();
+    ensureFilter(all);
+    ensureHead('retFinCashedBody',['Client','RM 2026','CSM','c:Product','c:Collection Month','c:Collected','c:Booked Not Cash','c:Renewal Status']);
+    ensureHead('retFinBookedBody',['Client','RM 2026','CSM','c:Product','c:Booking Month','c:Booked','c:Booked Not Cash','c:Renewal Status']);
+    ensureHead('retFinRenewedBody',['Client','c:GID','RM 2026','CSM','c:Product','c:Renewal Month','c:Renewal Value','c:Calculated Renewal Status']);
+    ensureHead('retFinDelayedBody',['Client','RM 2026','CSM','c:Product','c:Renewal Month','c:Renewal Value','c:Calculated Renewal Status','Action']);
+    if(!s || !all.length){
+      setHtml('retFinTopGrid','<div class="ret-fin-card" style="--fc:var(--red);grid-column:1/-1"><div class="ret-fin-card-v">No Sheet Data</div><div class="ret-fin-card-l">retentionSheets2026 missing</div><div class="ret-fin-card-s">Run the n8n sheet workflow and make sure data-retention.json contains retentionSheets2026.accounts.</div></div>');
+      setHtml('retFinOwnerGrid','<div class="ret-fin-empty" style="grid-column:1/-1">No owner summary because retentionSheets2026.accounts is empty.</div>');
+      setHtml('retFinCashedBody',empty(8,'No collection rows from sheets.'));
+      setHtml('retFinBookedBody',empty(8,'No booking rows from sheets.'));
+      setHtml('retFinRenewedBody',empty(8,'No renewal rows from sheets.'));
+      setHtml('retFinDelayedBody',empty(8,'No delayed / late rows from sheets.'));
+      return;
+    }
+    var f=filters();
+    var m=f.month||'All';
+    var p=f.product||'All';
+    var rows=filteredAccounts();
+    var monthTxt=monthName(m);
+    var useRawTotals=(m==='All'&&p==='All'&&(!f.rm||f.rm==='All')&&(!f.csm||f.csm==='All')&&(!f.accountStatus||f.accountStatus==='All'));
+    var renewalTotal=rows.reduce(function(t,r){return t+renewalValue(r,m,p);},0);
+    var bookedTotal=useRawTotals?num(s.bookingSheetValue || s.bookedValue || (s.debug&&s.debug.rawBookingSheetTotal)):rows.reduce(function(t,r){return t+bookingValue(r,m,p);},0);
+    var collectedTotal=useRawTotals?num(s.collectedValue || (s.debug&&s.debug.rawCollectionSheetTotal)):rows.reduce(function(t,r){return t+collectionValue(r,m,p);},0);
+    var remainingTotal=useRawTotals?num(s.bookedNotCashValue || s.remainingCollection || (s.debug&&s.debug.rawBookedNotCashTotal)):Math.max(bookedTotal-collectedTotal,0);
+    var bookingRows=rows.filter(function(r){return bookingValue(r,m,p)>0;});
+    var collectionRows=rows.filter(function(r){return collectionValue(r,m,p)>0;});
+    var delayedRows=rows.filter(function(r){var st=norm(calculatedStatus(r)); return st.indexOf('delayed')>=0 && accountStatusLabel(r)!=='Lost' && accountStatusLabel(r)!=='Lost From 2025';});
+    var lateRows=rows.filter(function(r){return norm(calculatedStatus(r)).indexOf('late')>=0;});
+    var actionRows=delayedRows.concat(lateRows.filter(function(r){return delayedRows.indexOf(r)<0;}));
+    setHtml('retFinTopGrid',[
+      {k:'renewal',v:money(renewalTotal),l:'Renewal Value',s:rows.length.toLocaleString()+' accounts · '+monthTxt,c:'var(--cyan)',i:'💎'},
+      {k:'booked',v:money(bookedTotal),l:'Booked Value',s:bookingRows.length.toLocaleString()+' rows · Booking sheet',c:'var(--purple)',i:'📝'},
+      {k:'collected',v:money(collectedTotal),l:'Cash Collected',s:collectionRows.length.toLocaleString()+' rows · Collection sheet',c:'var(--green)',i:'💵'},
+      {k:'remaining',v:money(remainingTotal),l:'Booked Not Cash',s:monthTxt,c:'var(--blue)',i:'⏳'},
+      {k:'delayed',v:delayedRows.length.toLocaleString(),l:'Delayed Accounts',s:'Excludes Lost / Lost From 2025',c:'var(--red)',i:'🚨'},
+      {k:'late',v:lateRows.length.toLocaleString(),l:'Renewed Late',s:'Booking after renewal month',c:'var(--amber)',i:'⚠️'}
+    ].map(function(x){return '<div class="ret-fin-card ret-click-card" style="--fc:'+x.c+'" onclick="if(window.openRetFinSheetDetails)openRetFinSheetDetails(\''+x.k+'\')" title="Click to open account list"><div class="ret-fin-card-icon">'+x.i+'</div><div class="ret-fin-card-v">'+x.v+'</div><div class="ret-fin-card-l">'+x.l+'</div><div class="ret-fin-card-s">'+x.s+'</div></div>';}).join(''));
+    setText('retFinCashedBadge',collectionRows.length+' · '+money(collectedTotal));
+    setText('retFinBookedBadge',bookingRows.length+' · '+money(bookedTotal));
+    setText('retFinRenewedBadge',rows.length+' · '+money(renewalTotal));
+    setText('retFinDelayedBadge',actionRows.length+' action rows');
+    installExportButtons();
+    var owners=ownerSummary(rows,m,p);
+    var ownerGrid=byId('retFinOwnerGrid'); if(ownerGrid) ownerGrid.style.gridTemplateColumns='1.1fr .45fr .62fr .78fr .78fr .78fr .78fr';
+    setText('retFinOwnerBadge',owners.length+' sheet owners · '+monthTxt);
+    setHtml('retFinOwnerGrid',['Owner','Role','Accounts','Renewal','Booked','Collected','Booked Not Cash'].map(function(h){return '<div class="ret-fin-owner-cell ret-fin-owner-head">'+esc(h)+'</div>';}).join('') + (owners.length?owners.map(function(o){return '<div class="ret-fin-owner-cell"><div class="ret-fin-owner-name"><span class="ret-fin-dot" style="--oc:'+(o.role==='RM'?'var(--blue)':'var(--cyan)')+'"></span>'+esc(o.name)+'</div></div><div class="ret-fin-owner-cell"><span class="ret">'+esc(o.role)+'</span></div><div class="ret-fin-owner-cell" style="font-family:var(--mono);font-weight:900">'+o.accountCount.toLocaleString()+'</div><div class="ret-fin-owner-cell" style="font-family:var(--mono);font-weight:900;color:var(--cyan)">'+money(o.renewal)+'</div><div class="ret-fin-owner-cell" style="font-family:var(--mono);font-weight:900;color:var(--purple)">'+money(o.booked)+'</div><div class="ret-fin-owner-cell" style="font-family:var(--mono);font-weight:900;color:var(--green)">'+money(o.collected)+'</div><div class="ret-fin-owner-cell" style="font-family:var(--mono);font-weight:900;color:var(--blue)">'+money(o.remaining)+'</div>';}).join(''):'<div class="ret-fin-empty" style="grid-column:1/-1">No RM/CSM values found after filters.</div>'));
+    function collectionRow(r,i){ return '<tr class="'+rowClass(i,'ok')+'"><td>'+clientCell(r)+'</td><td>'+esc(rmOf(r)||'—')+'</td><td>'+esc(csmOf(r)||'—')+'</td><td class="c">'+esc(productOf(r))+'</td><td class="c">'+esc(m==='All'?(r.collectionMonth||'—'):m)+'</td><td class="c">'+cellMoney(collectionValue(r,m,p),'var(--green)')+'</td><td class="c">'+cellMoney(remainingValue(r,m,p),'var(--blue)')+'</td><td class="c">'+badge(calculatedStatus(r))+'</td></tr>'; }
+    function bookingRow(r,i){ return '<tr class="'+rowClass(i,'warn')+'"><td>'+clientCell(r)+'</td><td>'+esc(rmOf(r)||'—')+'</td><td>'+esc(csmOf(r)||'—')+'</td><td class="c">'+esc(productOf(r))+'</td><td class="c">'+esc(m==='All'?(r.bookingMonth||'—'):m)+'</td><td class="c">'+cellMoney(bookingValue(r,m,p),'var(--purple)')+'</td><td class="c">'+cellMoney(remainingValue(r,m,p),'var(--blue)')+'</td><td class="c">'+badge(calculatedStatus(r))+'</td></tr>'; }
+    function overviewRow(r,i){ return '<tr class="'+rowClass(i,'ok')+'"><td>'+clientCell(r)+'</td><td class="c" style="font-family:var(--mono)">'+esc(gidOf(r)||'—')+'</td><td>'+esc(rmOf(r)||'—')+'</td><td>'+esc(csmOf(r)||'—')+'</td><td class="c">'+esc(productOf(r))+'</td><td class="c">'+esc(r.renewalMonth||'—')+'</td><td class="c">'+cellMoney(renewalValue(r,m,p),'var(--cyan)')+'</td><td class="c">'+badge(calculatedStatus(r))+'</td></tr>'; }
+    function actionRow(r,i){ var st=calculatedStatus(r); var late=norm(st).indexOf('late')>=0; return '<tr class="'+rowClass(i,late?'warn':'risk')+'"><td>'+clientCell(r)+'</td><td>'+esc(rmOf(r)||'—')+'</td><td>'+esc(csmOf(r)||'—')+'</td><td class="c">'+esc(productOf(r))+'</td><td class="c">'+esc(r.renewalMonth||'—')+'</td><td class="c">'+cellMoney(renewalValue(r,m,p),'var(--red)')+'</td><td class="c">'+badge(st)+'</td><td>'+esc(late?'Renewed after due month':(accountStatusLabel(r)==='Expected To Be Lost'?'Expected loss warning':'No booking/collection yet'))+'</td></tr>'; }
+    setHtml('retFinCashedBody',collectionRows.length?collectionRows.map(collectionRow).join(''):empty(8,'No collection rows found from the Collection sheet for the selected filters.'));
+    setHtml('retFinBookedBody',bookingRows.length?bookingRows.map(bookingRow).join(''):empty(8,'No booking rows found from the Booking sheet for the selected filters.'));
+    setHtml('retFinRenewedBody',rows.length?rows.map(overviewRow).join(''):empty(8,'No renewal rows found from 1- 2026 Budget for the selected filters.'));
+    setHtml('retFinDelayedBody',actionRows.length?actionRows.map(actionRow).join(''):empty(8,'No delayed or renewed-late accounts found for the selected filters.'));
+    [['retFinCashedToggle',collectionRows.length],['retFinBookedToggle',bookingRows.length],['retFinRenewedToggle',rows.length],['retFinDelayedToggle',actionRows.length]].forEach(function(x){ var b=byId(x[0]); if(b){ b.style.display=x[1]>10?'block':'none'; b.textContent='▼ Show more'; } });
+  };
+
+  var oldSwitch=window.switchRetentionFinancial;
+  window.switchRetentionFinancial=function(){
+    if(typeof oldSwitch==='function') oldSwitch.apply(this,arguments);
+    window.APP_MAIN_PANEL='retention';
+    window.APP_RETENTION_VIEW='financial';
+    var sub=byId('topbarSub');
+    if(sub) sub.textContent='Sheets only · Budget + Booking + Collection · Month / RM / CSM / Product / Account Status filters';
+    window.renderRetentionFinancialDetails();
+  };
+
+  var oldLoad=window.loadData;
+  if(typeof oldLoad==='function'){
+    window.loadData=async function(){ var out=await oldLoad.apply(this,arguments); setTimeout(window.renderRetentionFinancialDetails,100); setTimeout(window.renderRetentionFinancialDetails,700); return out; };
+    try{ loadData=window.loadData; }catch(e){}
+  }
+  setTimeout(function(){ if(window.APP_MAIN_PANEL==='retention' && window.APP_RETENTION_VIEW==='financial') window.renderRetentionFinancialDetails(); },100);
+  setTimeout(function(){ if(window.APP_MAIN_PANEL==='retention' && window.APP_RETENTION_VIEW==='financial') window.renderRetentionFinancialDetails(); },1000);
+})();
+</script>
+
 </body>
 </html>
