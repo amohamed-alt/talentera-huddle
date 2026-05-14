@@ -4053,6 +4053,75 @@ function renderRetentionOwnerDetails(repId){
   }
 
   const m = details.metrics || {};
+ const kpi = details.kpi || {};
+
+const ky = kpi.yesterday || {};
+const km = kpi.mtd || {};
+const kt = kpi.ytd || {};
+
+function kpiCard(v,l,s,c){
+  return `
+    <div class="ret-mini-kpi" style="--kc:${c}">
+      <div class="ret-mini-kpi-v">${v ?? 0}<span>•</span></div>
+      <div class="ret-mini-kpi-l">${l}</div>
+      <div class="ret-mini-kpi-s">${s}</div>
+    </div>
+  `;
+}
+
+const ownerKpiHtml = `
+<div class="card ret-kpi-master-card">
+  <div class="ret-kpi-master-hd">
+    <div class="ret-kpi-master-title">📌 Yesterday · MTD · YTD</div>
+    <span class="badge bb">Connected calls · Completed meetings · Sheets financials</span>
+  </div>
+
+  <div class="ret-kpi-period-row">
+    <div class="ret-kpi-period-label">
+      <div class="ret-kpi-period-name">YESTERDAY</div>
+      <div class="ret-kpi-period-sub">daily execution</div>
+    </div>
+
+    ${kpiCard(ky.calls,'CALLS','Connected','var(--blue)')}
+    ${kpiCard(ky.meetings,'MEETINGS','Completed','var(--purple)')}
+    ${kpiCard(ky.renewed,'RENEWED','After renewal','var(--green)')}
+    ${kpiCard(ky.booked,'BOOKED','Date entered CY','var(--purple)')}
+    ${kpiCard(ky.cashed,'CASHED','Date entered','var(--green)')}
+    ${kpiCard(ky.churn,'CHURN','Date entered','var(--red)')}
+    ${kpiCard(ky.delayed,'DELAYED','Overdue','var(--amber)')}
+  </div>
+
+  <div class="ret-kpi-period-row">
+    <div class="ret-kpi-period-label">
+      <div class="ret-kpi-period-name">MTD</div>
+      <div class="ret-kpi-period-sub">current month</div>
+    </div>
+
+    ${kpiCard(km.calls,'CALLS','Connected','var(--blue)')}
+    ${kpiCard(km.meetings,'MEETINGS','Completed','var(--purple)')}
+    ${kpiCard(km.renewed,'RENEWED','This month','var(--green)')}
+    ${kpiCard(km.booked,'BOOKED',fmt(km.bookedAmt || 0),'var(--purple)')}
+    ${kpiCard(km.cashed,'CASHED',fmt(km.cashedAmt || 0),'var(--green)')}
+    ${kpiCard(km.churn,'CHURN','Stage churned','var(--red)')}
+    ${kpiCard(km.delayed,'DELAYED','Past date','var(--amber)')}
+  </div>
+
+  <div class="ret-kpi-period-row">
+    <div class="ret-kpi-period-label">
+      <div class="ret-kpi-period-name">YTD</div>
+      <div class="ret-kpi-period-sub">current year</div>
+    </div>
+
+    ${kpiCard(kt.calls,'CALLS','Connected','var(--blue)')}
+    ${kpiCard(kt.meetings,'MEETINGS','Completed','var(--purple)')}
+    ${kpiCard(kt.renewed,'RENEWED','Renewals won','var(--green)')}
+    ${kpiCard(kt.booked,'BOOKED','Date entered CY','var(--purple)')}
+    ${kpiCard(kt.cashed,'CASHED','Date entered CY','var(--green)')}
+    ${kpiCard(kt.churn,'CHURN','Date entered','var(--red)')}
+    ${kpiCard(kt.delayed,'DELAYED','Overdue','var(--amber)')}
+  </div>
+</div>
+`;
   const color = details.color || 'var(--cyan)';
   const safe = v => esc(v ?? '—');
   const riskCount = Number(m.delayed||0) + Number(m.noContact||0) + Number(m.noMeeting||0);
@@ -4243,6 +4312,7 @@ const activityHtml =
         <div style="flex:1;position:relative;z-index:1"><div class="ret-owner-clean-name">${safe(details.name)} <span class="ret">${safe(details.role)}</span></div><div class="ret-owner-clean-sub">Focused owner page: renewals by month, no-touch accounts, Booked / Cashed / Renewed movement, and owned accounts only. Lists show first ${limit} rows.</div></div>
         <div class="ret-owner-clean-actions"><div class="ret-owner-clean-stat"><div class="ret-owner-clean-stat-v" style="color:${riskCount?'var(--red)':'var(--green)'}">${riskCount}</div><div class="ret-owner-clean-stat-l">Actions</div></div><div class="ret-owner-clean-stat"><div class="ret-owner-clean-stat-v" style="color:var(--cyan)">${m.accounts||0}</div><div class="ret-owner-clean-stat-l">Accounts</div></div><div class="ret-owner-clean-stat"><div class="ret-owner-clean-stat-v" style="color:var(--green)">${fmt(revenueValue)}</div><div class="ret-owner-clean-stat-l">Revenue</div></div></div>
       </div>
+      ${ownerKpiHtml}
       <div class="ret-focus-strip">${focus(m.delayed||0,'Delayed Renewals','Renewal passed with no current-year Booked/Cashed','var(--red)','delayed')}${focus(m.noContact||0,'No Touch 30D','Needs connected call or completed meeting','var(--amber)','notouch')}${focus(`${m.booked||0} / ${m.cashed||0}`,'Booked / Cashed','Current-year created deals','var(--purple)','financial')}${focus(m.renewed||0,'Renewed','Same-company renewal movement','var(--green)','renewed')}</div>
       <div id="retOwnerClickPanel" class="ret-drill-panel" style="display:none"></div>
       ${card('⚡ Manager Focus', `${actionRows.length} actions`, `<div class="ret-action-list">${actionList(actionRows)}</div>`, actionRows.length?'var(--red)':'var(--green)')}
