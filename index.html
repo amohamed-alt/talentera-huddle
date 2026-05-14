@@ -7099,7 +7099,7 @@ window.__dashboardAutoRefreshTimer = setInterval(function(){
       {k:'renewal',v:money(renewalTotal),l:'Renewal Value',s:rows.length.toLocaleString() + ' accounts · ' + monthText,c:'var(--cyan)'},
       {k:'booked',v:money(bookedTotal),l:'Booked Value',s:bookingRows.length.toLocaleString() + ' rows · Booking sheet',c:'var(--purple)'},
       {k:'collected',v:money(collectedTotal),l:'Cash Collected',s:collectionRows.length.toLocaleString() + ' rows · Collection sheet',c:'var(--green)'},
-      {k:'remaining',v:money(remainingTotal),l:'Booked Not Cash',s:'Booked - Cash collected · ' + monthText,c:'var(--blue)'},
+      {k:'remaining',v:money(remainingTotal),l:'Booked Not Cash',s:' ' + monthText,c:'var(--blue)'},
       {k:'delayed',v:delayedRows.length.toLocaleString(),l:'Delayed Accounts',s:'Excludes Lost / Lost From 2025',c:'var(--red)'},
       {k:'late',v:lateRows.length.toLocaleString(),l:'Renewed Late',s:'Booking after renewal month',c:'var(--amber)'}
     ].map(function(x){ var icons={renewal:'💎',booked:'📝',collected:'💵',remaining:'⏳',delayed:'🚨',late:'⚠️'}; return '<div class="ret-fin-card ret-click-card" style="--fc:' + x.c + '" onclick="openRetFinSheetDetails(\'' + x.k + '\')" title="Click to open account list"><div class="ret-fin-card-icon">' + (icons[x.k] || '📊') + '</div><div class="ret-fin-card-v">' + x.v + '</div><div class="ret-fin-card-l">' + x.l + '</div><div class="ret-fin-card-s">' + x.s + '</div></div>'; }).join(''));
