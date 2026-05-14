@@ -4058,7 +4058,89 @@ function renderRetentionOwnerDetails(repId){
   const riskCount = Number(m.delayed||0) + Number(m.noContact||0) + Number(m.noMeeting||0);
   const revenueValue = Number(m.renewedAmt||0) + Number(m.cashedAmt||0) + Number(m.bookedAmt||0);
   const limit = 5;
+function asDate(v){
+  const d = new Date(v || "");
+  return isNaN(d) ? null : d;
+}
 
+function inYesterday(v){
+  const d = asDate(v);
+  if(!d) return false;
+  const y = new Date();
+  y.setDate(y.getDate() - 1);
+  return d.getFullYear() === y.getFullYear() && d.getMonth() === y.getMonth() && d.getDate() === y.getDate();
+}
+
+function inMTD(v){
+  const d = asDate(v);
+  const now = new Date();
+  return d && d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth();
+}
+
+function inYTD(v){
+  const d = asDate(v);
+  return d && d.getFullYear() === new Date().getFullYear();
+}
+
+function actDate(a){
+  return a.hs_timestamp || a.createdAt || a.date || a.activityDate || a.callDate || a.meetingDate;
+}
+
+function isConnectedCall(a){
+  const s = String(a.disposition || a.hs_call_disposition || a.callDisposition || a.status || "").toLowerCase();
+  return s.includes("connect") || s.includes("connected");
+}
+
+function isCompletedMeeting(a){
+  const s = String(a.outcome || a.hs_meeting_outcome || a.meetingOutcome || a.status || "").toLowerCase();
+  return s.includes("complete") || s.includes("completed");
+}
+
+const ownerCalls = details.calls || [];
+const ownerMeetings = details.meetings || [];
+
+function activityPeriodStats(check){
+  const calls = ownerCalls.filter(a => check(actDate(a)));
+  const connected = calls.filter(isConnectedCall);
+  const meetings = ownerMeetings.filter(a => check(actDate(a)));
+  const completed = meetings.filter(isCompletedMeeting);
+
+  return {
+    calls: calls.length,
+    connected: connected.length,
+    meetings: meetings.length,
+    completed: completed.length
+  };
+}
+
+function activityCell(v,l,c,s){
+  return '<div class="ret-kpi-compact" style="--rk:'+c+'">' +
+    '<div class="ret-kpi-v">'+v.toLocaleString()+'</div>' +
+    '<div class="ret-kpi-l">'+l+'</div>' +
+    '<div class="ret-kpi-s">'+s+'</div>' +
+  '</div>';
+}
+
+function activityRow(name, sub, color, stats){
+  return '<div class="ret-kpi-period-row" style="--pc:'+color+'">' +
+    '<div class="ret-kpi-period-label"><div class="ret-kpi-period-name">'+name+'</div><div class="ret-kpi-period-sub">'+sub+'</div></div>' +
+    activityCell(stats.calls,'Call Logged','var(--blue)','HubSpot calls') +
+    activityCell(stats.connected,'Connected Calls','var(--green)','Connected only') +
+    activityCell(stats.meetings,'Meeting Logged','var(--purple)','HubSpot meetings') +
+    activityCell(stats.completed,'Completed Meetings','var(--green)','Completed only') +
+  '</div>';
+}
+
+const activityHtml =
+  '<div class="ret-kpi-master-card" style="margin-bottom:14px;border-top-color:'+safe(color)+'">' +
+    '<div class="ret-kpi-master-hd">' +
+      '<div class="ret-kpi-master-title">📞 Activity KPIs · HubSpot</div>' +
+      '<span class="badge bb">'+safe(details.name)+' · '+safe(details.role)+'</span>' +
+    '</div>' +
+    activityRow('Yesterday','daily activity','var(--blue)',activityPeriodStats(inYesterday)) +
+    activityRow('MTD','month to date','var(--amber)',activityPeriodStats(inMTD)) +
+    activityRow('YTD','year to date','var(--green)',activityPeriodStats(inYTD)) +
+  '</div>';
   const byAmountDesc = arr => [...(arr||[])].sort((a,b)=>Number(b.amount||b.renewalValue||0)-Number(a.amount||a.renewalValue||0));
   const byDateAsc = arr => [...(arr||[])].sort((a,b)=>String(a.contractRenewalDate||a.originalContractRenewalDate||a.month||'').localeCompare(String(b.contractRenewalDate||b.originalContractRenewalDate||b.month||'')));
 
