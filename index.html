@@ -7308,6 +7308,46 @@ window.__dashboardAutoRefreshTimer = setInterval(function(){
   setTimeout(init, 1000);
 })();
 </script>
+<script>
+(function(){
+  if(window.__RETENTION_KPI_SHEETS_FULL_ROW__) return;
+  window.__RETENTION_KPI_SHEETS_FULL_ROW__ = true;
 
+  function q(id){ return document.getElementById(id); }
+  function num(v){ return Number(String(v || 0).replace(/[$,]/g,"")) || 0; }
+  function money(v){
+    return new Intl.NumberFormat("en-US", {
+      style:"currency",
+      currency:"USD",
+      maximumFractionDigits:0,
+      minimumFractionDigits:0
+    }).format(num(v));
+  }
+  function rows(){
+    return window.R?.retentionSheets2026?.accounts || [];
+  }
+  function txt(r, keys){
+    for(var i=0;i<keys.length;i++){
+      if(r && r[keys[i]] !== undefined && r[keys[i]] !== null && r[keys[i]] !== "") return r[keys[i]];
+    }
+    return "";
+  }
+  function status(r){
+    return String(txt(r,["calculatedStatus","renewalStatus","status","currentStatus"])).toLowerCase();
+  }
+  function booked(r){ return num(txt(r,["bookedValue","bookingValue","booked","booking","totalBooked"])); }
+  function collected(r){ return num(txt(r,["collectedValue","collectionValue","cashCollected","collected","collection","totalCollected"])); }
+  function renewal(r){ return num(txt(r,["renewalValue2026","renewalValue","value","amount","budgetValue"])); }
+  function remaining(r){
+    var explicit = num(txt(r,["remainingCollection","remaining","remainingValue"]));
+    return explicit || Math.max(renewal(r) - collected(r), 0);
+  }
+  function calls(r){ return num(txt(r,["calls","callsMade","totalCalls","callCount"])); }
+  function connected(r){ return num(txt(r,["connectedCalls","callsConnected","connected","totalConnectedCalls"])); }
+  function meetings(r){ return num(txt(r,["meetings","completedMeetings","meetingCompleted","meetingsCompleted","meetingCount"])); }
+
+  function cell(value,label,color,sub){
+    return '<div class="ret-kpi-compact" style="--rk:'+color+';min-height:78px">' +
+      '<div class="
 </body>
 </html>
