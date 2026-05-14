@@ -4059,178 +4059,102 @@ function renderRetentionOwnerDetails(repId){
   const riskCount = Number(m.delayed||0) + Number(m.noContact||0) + Number(m.noMeeting||0);
   const revenueValue = Number(m.renewedAmt||0) + Number(m.cashedAmt||0) + Number(m.bookedAmt||0);
   const limit = 5;
- function ownerDate(v){
-  const d = new Date(v || "");
-  return isNaN(d) ? null : d;
-}
 
-function isYesterdayDate(v){
-  const d = ownerDate(v);
-  if(!d) return false;
-  const y = new Date();
-  y.setDate(y.getDate() - 1);
-  return d.getFullYear() === y.getFullYear() && d.getMonth() === y.getMonth() && d.getDate() === y.getDate();
-}
+  function ownerActivityDate(row){
+    return row?.dateRaw || row?.date || row?.hs_timestamp || row?.timestamp || row?.createdAt || row?.activityDate || row?.callDate || row?.meetingDate || null;
+  }
 
-function isMtdDate(v){
-  const d = ownerDate(v);
-  const now = new Date();
-  return d && d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth();
-}
+  function ownerDateInRange(value, from, to){
+    if(!value) return false;
+    const ms = new Date(value).getTime();
+    return Number.isFinite(ms) && ms >= from && ms <= to;
+  }
 
-function isYtdDate(v){
-  const d = ownerDate(v);
-  return d && d.getFullYear() === new Date().getFullYear();
-}
+  function ownerDateBoundaries(){
+    const now = new Date();
+    const y = new Date(now);
+    y.setDate(now.getDate() - 1);
+    const yesterdayStart = new Date(y.getFullYear(), y.getMonth(), y.getDate(), 0, 0, 0, 0).getTime();
+    const yesterdayEnd = new Date(y.getFullYear(), y.getMonth(), y.getDate(), 23, 59, 59, 999).getTime();
+    const mtdStart = new Date(now.getFullYear(), now.getMonth(), 1, 0, 0, 0, 0).getTime();
+    const ytdStart = new Date(now.getFullYear(), 0, 1, 0, 0, 0, 0).getTime();
+    return { yesterdayStart, yesterdayEnd, mtdStart, ytdStart, nowMs: now.getTime() };
+  }
 
-function activityDate(a){
-  return a.hs_timestamp || a.timestamp || a.createdAt || a.date || a.activityDate || a.callDate || a.meetingDate;
-}
+  function countOwnerPeriod(rows, from, to){
+    return (Array.isArray(rows) ? rows : []).filter(row => ownerDateInRange(ownerActivityDate(row), from, to)).length;
+  }
 
-function connectedCall(a){
-  const txt = String(a.disposition || a.hs_call_disposition || a.callDisposition || a.status || a.outcome || "").toLowerCase();
-  return txt.includes("connect") || txt.includes("connected");
-}
+  function buildOwnerActivityFallback(){
+    const bounds = ownerDateBoundaries();
+    const loggedCalls = Array.isArray(details.loggedCalls) ? details.loggedCalls : (Array.isArray(details.calls) ? details.calls : []);
+    const connectedCalls = Array.isArray(details.connectedCalls) ? details.connectedCalls : (Array.isArray(details.calls) ? details.calls : []);
+    const loggedMeetings = Array.isArray(details.loggedMeetings) ? details.loggedMeetings : (Array.isArray(details.meetings) ? details.meetings : []);
+    const completedMeetings = Array.isArray(details.completedMeetings) ? details.completedMeetings : (Array.isArray(details.meetings) ? details.meetings : []);
 
-function completedMeeting(a){
-  const txt = String(a.outcome || a.hs_meeting_outcome || a.meetingOutcome || a.status || "").toLowerCase();
-  return txt.includes("complete") || txt.includes("completed");
-}
+    return {
+      yesterday: {
+        callLogged: countOwnerPeriod(loggedCalls, bounds.yesterdayStart, bounds.yesterdayEnd),
+        connectedCalls: countOwnerPeriod(connectedCalls, bounds.yesterdayStart, bounds.yesterdayEnd),
+        meetingLogged: countOwnerPeriod(loggedMeetings, bounds.yesterdayStart, bounds.yesterdayEnd),
+        completedMeetings: countOwnerPeriod(completedMeetings, bounds.yesterdayStart, bounds.yesterdayEnd),
+      },
+      mtd: {
+        callLogged: countOwnerPeriod(loggedCalls, bounds.mtdStart, bounds.nowMs),
+        connectedCalls: countOwnerPeriod(connectedCalls, bounds.mtdStart, bounds.nowMs),
+        meetingLogged: countOwnerPeriod(loggedMeetings, bounds.mtdStart, bounds.nowMs),
+        completedMeetings: countOwnerPeriod(completedMeetings, bounds.mtdStart, bounds.nowMs),
+      },
+      ytd: {
+        callLogged: Number(m.callLogged || loggedCalls.length || 0),
+        connectedCalls: Number(m.connectedCalls || m.calls || connectedCalls.length || 0),
+        meetingLogged: Number(m.meetingLogged || loggedMeetings.length || 0),
+        completedMeetings: Number(m.completedMeetings || m.meetings || completedMeetings.length || 0),
+      }
+    };
+  }
 
-const ownerCalls = Array.isArray(details.calls) ? details.calls : [];
-const ownerMeetings = Array.isArray(details.meetings) ? details.meetings : [];
+  const activityFallback = buildOwnerActivityFallback();
+  const activityKpis = details.activityKpis || {};
+  const akY = activityKpis.yesterday || activityFallback.yesterday;
+  const akM = activityKpis.mtd || activityFallback.mtd;
+  const akT = activityKpis.ytd || activityFallback.ytd;
 
-function periodActivity(check){
-  const calls = ownerCalls.filter(a => check(activityDate(a)));
-  const meetings = ownerMeetings.filter(a => check(activityDate(a)));
+  function ownerActivityCard(value, label, subtitle, colorVar){
+    return `
+      <div class="ret-kpi-compact" style="--rk:${colorVar}">
+        <div class="ret-kpi-v">${Number(value || 0).toLocaleString()}<span>•</span></div>
+        <div class="ret-kpi-l">${safe(label)}</div>
+        <div class="ret-kpi-s">${safe(subtitle)}</div>
+      </div>`;
+  }
 
-  return {
-    callsLogged: calls.length,
-    connectedCalls: calls.filter(connectedCall).length,
-    meetingsLogged: meetings.length,
-    completedMeetings: meetings.filter(completedMeeting).length
-  };
-}
+  function ownerActivityRow(name, sub, colorVar, stats){
+    const row = stats || {};
+    return `
+      <div class="ret-kpi-period-row" style="--pc:${colorVar};grid-template-columns:125px repeat(4,1fr)">
+        <div class="ret-kpi-period-label">
+          <div class="ret-kpi-period-name">${safe(name)}</div>
+          <div class="ret-kpi-period-sub">${safe(sub)}</div>
+        </div>
+        ${ownerActivityCard(row.callLogged, 'CALL LOGGED', 'HubSpot logged', 'var(--blue)')}
+        ${ownerActivityCard(row.connectedCalls, 'CONNECTED CALLS', 'Connected only', 'var(--green)')}
+        ${ownerActivityCard(row.meetingLogged, 'MEETING LOGGED', 'HubSpot logged', 'var(--purple)')}
+        ${ownerActivityCard(row.completedMeetings, 'COMPLETED MEETINGS', 'Completed only', 'var(--green)')}
+      </div>`;
+  }
 
-function ownerActivityCard(v,l,s,c){
-  return `
-    <div class="ret-kpi-compact" style="--rk:${c}">
-      <div class="ret-kpi-v">${Number(v || 0).toLocaleString()}<span>•</span></div>
-      <div class="ret-kpi-l">${l}</div>
-      <div class="ret-kpi-s">${s}</div>
-    </div>
-  `;
-}
-
-function ownerActivityRow(name,sub,color,stats){
-  return `
-    <div class="ret-kpi-period-row" style="--pc:${color};grid-template-columns:125px repeat(4,1fr)">
-      <div class="ret-kpi-period-label">
-        <div class="ret-kpi-period-name">${name}</div>
-        <div class="ret-kpi-period-sub">${sub}</div>
+  const ownerKpiHtml = `
+    <div class="card ret-kpi-master-card" style="margin-bottom:14px;border-top-color:${safe(color)}">
+      <div class="ret-kpi-master-hd">
+        <div class="ret-kpi-master-title">📞 Activity KPIs · HubSpot</div>
+        <span class="badge bb">${safe(details.name)} · ${safe(details.role)}</span>
       </div>
-      ${ownerActivityCard(stats.callsLogged,"Call Logged","HubSpot calls","var(--blue)")}
-      ${ownerActivityCard(stats.connectedCalls,"Connected Calls","Connected only","var(--green)")}
-      ${ownerActivityCard(stats.meetingsLogged,"Meeting Logged","HubSpot meetings","var(--purple)")}
-      ${ownerActivityCard(stats.completedMeetings,"Completed Meetings","Completed only","var(--green)")}
-    </div>
-  `;
-}
+      ${ownerActivityRow('YESTERDAY', 'daily execution', 'var(--blue)', akY)}
+      ${ownerActivityRow('MTD', 'current month', 'var(--amber)', akM)}
+      ${ownerActivityRow('YTD', 'current year', 'var(--green)', akT)}
+    </div>`;
 
-const ownerKpiHtml = `
-  <div class="card ret-kpi-master-card" style="margin-bottom:14px;border-top-color:${safe(color)}">
-    <div class="ret-kpi-master-hd">
-      <div class="ret-kpi-master-title">📞 Activity KPIs · HubSpot</div>
-      <span class="badge bb">${safe(details.name)} · ${safe(details.role)}</span>
-    </div>
-    ${ownerActivityRow("Yesterday","daily execution","var(--blue)",periodActivity(isYesterdayDate))}
-    ${ownerActivityRow("MTD","month to date","var(--amber)",periodActivity(isMtdDate))}
-    ${ownerActivityRow("YTD","year to date","var(--green)",periodActivity(isYtdDate))}
-  </div>
-`;
-function asDate(v){
-  const d = new Date(v || "");
-  return isNaN(d) ? null : d;
-}
-
-function inYesterday(v){
-  const d = asDate(v);
-  if(!d) return false;
-  const y = new Date();
-  y.setDate(y.getDate() - 1);
-  return d.getFullYear() === y.getFullYear() && d.getMonth() === y.getMonth() && d.getDate() === y.getDate();
-}
-
-function inMTD(v){
-  const d = asDate(v);
-  const now = new Date();
-  return d && d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth();
-}
-
-function inYTD(v){
-  const d = asDate(v);
-  return d && d.getFullYear() === new Date().getFullYear();
-}
-
-function actDate(a){
-  return a.hs_timestamp || a.createdAt || a.date || a.activityDate || a.callDate || a.meetingDate;
-}
-
-function isConnectedCall(a){
-  const s = String(a.disposition || a.hs_call_disposition || a.callDisposition || a.status || "").toLowerCase();
-  return s.includes("connect") || s.includes("connected");
-}
-
-function isCompletedMeeting(a){
-  const s = String(a.outcome || a.hs_meeting_outcome || a.meetingOutcome || a.status || "").toLowerCase();
-  return s.includes("complete") || s.includes("completed");
-}
-
-const ownerCalls = details.calls || [];
-const ownerMeetings = details.meetings || [];
-
-function activityPeriodStats(check){
-  const calls = ownerCalls.filter(a => check(actDate(a)));
-  const connected = calls.filter(isConnectedCall);
-  const meetings = ownerMeetings.filter(a => check(actDate(a)));
-  const completed = meetings.filter(isCompletedMeeting);
-
-  return {
-    calls: calls.length,
-    connected: connected.length,
-    meetings: meetings.length,
-    completed: completed.length
-  };
-}
-
-function activityCell(v,l,c,s){
-  return '<div class="ret-kpi-compact" style="--rk:'+c+'">' +
-    '<div class="ret-kpi-v">'+v.toLocaleString()+'</div>' +
-    '<div class="ret-kpi-l">'+l+'</div>' +
-    '<div class="ret-kpi-s">'+s+'</div>' +
-  '</div>';
-}
-
-function activityRow(name, sub, color, stats){
-  return '<div class="ret-kpi-period-row" style="--pc:'+color+'">' +
-    '<div class="ret-kpi-period-label"><div class="ret-kpi-period-name">'+name+'</div><div class="ret-kpi-period-sub">'+sub+'</div></div>' +
-    activityCell(stats.calls,'Call Logged','var(--blue)','HubSpot calls') +
-    activityCell(stats.connected,'Connected Calls','var(--green)','Connected only') +
-    activityCell(stats.meetings,'Meeting Logged','var(--purple)','HubSpot meetings') +
-    activityCell(stats.completed,'Completed Meetings','var(--green)','Completed only') +
-  '</div>';
-}
-
-const activityHtml =
-  '<div class="ret-kpi-master-card" style="margin-bottom:14px;border-top-color:'+safe(color)+'">' +
-    '<div class="ret-kpi-master-hd">' +
-      '<div class="ret-kpi-master-title">📞 Activity KPIs · HubSpot</div>' +
-      '<span class="badge bb">'+safe(details.name)+' · '+safe(details.role)+'</span>' +
-    '</div>' +
-    activityRow('Yesterday','daily activity','var(--blue)',activityPeriodStats(inYesterday)) +
-    activityRow('MTD','month to date','var(--amber)',activityPeriodStats(inMTD)) +
-    activityRow('YTD','year to date','var(--green)',activityPeriodStats(inYTD)) +
-  '</div>';
   const byAmountDesc = arr => [...(arr||[])].sort((a,b)=>Number(b.amount||b.renewalValue||0)-Number(a.amount||a.renewalValue||0));
   const byDateAsc = arr => [...(arr||[])].sort((a,b)=>String(a.contractRenewalDate||a.originalContractRenewalDate||a.month||'').localeCompare(String(b.contractRenewalDate||b.originalContractRenewalDate||b.month||'')));
 
