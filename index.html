@@ -6657,15 +6657,61 @@ window.__dashboardAutoRefreshTimer = setInterval(function(){
     proofs.sort(function(a,b){ return a.monthIndex - b.monthIndex; });
     return proofs[0] || null;
   }
-  function statusOf(row){
+  function budgetStatusRaw(row){
+    if(!row) return '';
+    return row.budgetStatusLabel ||
+      row.budgetStatusRaw ||
+      row.renewalStatusFromSheet ||
+      row.statusAbdullah ||
+      row['Status Abdullah'] ||
+      row['status abdullah'] ||
+      row['Status عبد الله'] ||
+      row.budgetStatus ||
+      row.status ||
+      '';
+  }
+  function budgetStatusInfo(row){
+    var raw = String(budgetStatusRaw(row) || '').trim();
+    var s = norm(raw);
+    var isLost = s === 'lost' || s === 'lost from 2025';
+    var isExpected = s === 'expected to be lost';
+    var label = raw;
+    if(s === 'lost') label = 'Lost';
+    if(s === 'lost from 2025') label = 'Lost From 2025';
+    if(s === 'expected to be lost') label = 'Expected To Be Lost';
+    return {
+      raw: raw,
+      normalized: s,
+      label: label,
+      isFinalLost: isLost,
+      isExpectedToBeLost: isExpected
+    };
+  }
+  function calculatedRenewalStatus(row){
     var renewalIndex = monthIndex(row,'renewalMonthIndex','renewalMonth');
     if(!renewalIndex) return String(row && row.status || 'No Renewal Month').trim() || 'No Renewal Month';
     var proof = firstRenewalProof(row);
     if(proof) return proof.monthIndex > renewalIndex ? 'Renewed Late' : 'Renewed On Time';
     return riyadhMonthIndex() > renewalIndex ? 'Delayed' : 'Upcoming';
   }
+  function statusOf(row){
+    var budget = budgetStatusInfo(row);
+    if(budget.isFinalLost) return budget.label;
+
+    var calculated = calculatedRenewalStatus(row);
+
+    if(budget.isExpectedToBeLost){
+      if(norm(calculated).indexOf('delayed') >= 0) return 'Expected To Be Lost · Delayed';
+      if(norm(calculated).indexOf('upcoming') >= 0) return 'Expected To Be Lost · Upcoming';
+      if(norm(calculated).indexOf('no renewal month') >= 0) return 'Expected To Be Lost · No Renewal Month';
+    }
+
+    return calculated;
+  }
   function statusClass(status){
     var s = norm(status);
+    if(s.indexOf('expected to be lost') >= 0) return 'ba';
+    if(s === 'lost' || s.indexOf('lost from 2025') >= 0) return 'br';
     if(s.indexOf('late') >= 0) return 'ba';
     if(s.indexOf('delayed') >= 0) return 'br';
     if(s.indexOf('cashed') >= 0) return 'bg';
@@ -6754,11 +6800,15 @@ window.__dashboardAutoRefreshTimer = setInterval(function(){
   function empty(cols,msg){ return '<tr><td colspan="' + cols + '" class="ret-fin-empty">' + safe(msg) + '</td></tr>'; }
   function cellMoney(v,color){ return '<span style="font-family:var(--mono);font-weight:900;color:' + color + '">' + money(v) + '</span>'; }
   function clientCell(row){
+    var budget = budgetStatusInfo(row);
     var budgetNote = row && (row.notInBudget2026 || row.isNotInBudget || row.sourceOnlyReason || row.budgetNote)
       ? ' · Not in Budget 2026'
       : '';
+    var budgetBadge = budget.raw
+      ? ' · <span class="badge ' + statusClass(budget.label) + '" style="font-size:8px;padding:2px 6px">Budget: ' + safe(budget.label) + '</span>'
+      : '';
     return '<div style="font-weight:900">' + safe(row.clientName || 'Unknown Client') + '</div>' +
-      '<div style="font-size:10px;color:var(--muted)">GID: ' + safe(row.gid || '—') + ' · ' + safe(row.location || 'No location') + safe(budgetNote) + '</div>';
+      '<div style="font-size:10px;color:var(--muted)">GID: ' + safe(row.gid || '—') + ' · ' + safe(row.location || 'No location') + safe(budgetNote) + budgetBadge + '</div>';
   }
   function ensureStyles(){
     if(byId('retFinSheetsOnlyV2Styles')) return;
@@ -6810,8 +6860,8 @@ window.__dashboardAutoRefreshTimer = setInterval(function(){
     var notes = panel.querySelectorAll('.ret-fin-mini-note');
     if(notes[0]) notes[0].textContent = 'Source = Retention Accounts Collection. Uses month/product cells from the sheet only.';
     if(notes[1]) notes[1].textContent = 'Source = Retention Accounts Booking. Uses month/product cells from the sheet only.';
-    if(notes[2]) notes[2].textContent = 'Source = 1- 2026 Budget. Status is calculated only from Booking / Collection sheets, not from the Budget overview status.';
-    if(notes[3]) notes[3].textContent = 'Delayed = renewal month passed with no booking or collection. Renewed Late = first booking/collection month after renewal month.';
+    if(notes[2]) notes[2].textContent = 'Source = 1- 2026 Budget. Status respects Budget 2026 Status Abdullah: Lost / Lost From 2025 are excluded from delayed; Expected To Be Lost remains delayed when overdue.';
+    if(notes[3]) notes[3].textContent = 'Delayed = renewal month passed with no booking or collection, excluding final lost statuses. Expected To Be Lost stays visible as a warning.';
 
     var heads = {
       retFinCashedBody:['Client','RM 2026','CSM','Product','Collection Month','Collected','Remaining','Status'],
@@ -6841,7 +6891,7 @@ window.__dashboardAutoRefreshTimer = setInterval(function(){
       booked:{title:'Booked Value Accounts', note:'Booking rows still pending collection after the current filters.', valueKey:'booked', color:'var(--purple)'},
       collected:{title:'Cash Collected Accounts', note:'Collection rows from Retention Accounts Collection after the current filters.', valueKey:'collected', color:'var(--green)'},
       remaining:{title:'Remaining Collection Accounts', note:'Booked value minus collected value after the current filters.', valueKey:'remaining', color:'var(--blue)'},
-      delayed:{title:'Delayed Accounts', note:'Renewal month passed and no booking/collection exists.', valueKey:'renewal', color:'var(--red)'},
+      delayed:{title:'Delayed Accounts', note:'Renewal month passed and no booking/collection exists. Lost and Lost From 2025 are excluded.', valueKey:'renewal', color:'var(--red)'},
       late:{title:'Renewed Late Accounts', note:'First booking/collection month is after the renewal month.', valueKey:'renewal', color:'var(--amber)'}
     };
     return map[kind] || map.renewal;
@@ -6956,7 +7006,7 @@ window.__dashboardAutoRefreshTimer = setInterval(function(){
       {k:'booked',v:money(bookedTotal),l:'Booked Value',s:bookingRows.length.toLocaleString() + ' rows · Booking sheet',c:'var(--purple)'},
       {k:'collected',v:money(collectedTotal),l:'Cash Collected',s:collectionRows.length.toLocaleString() + ' rows · Collection sheet',c:'var(--green)'},
       {k:'remaining',v:money(remainingTotal),l:'Remaining Collection',s:'Booked - Collected · ' + monthText,c:'var(--blue)'},
-      {k:'delayed',v:delayedRows.length.toLocaleString(),l:'Delayed Accounts',s:'Due month passed · no booking/collection',c:'var(--red)'},
+      {k:'delayed',v:delayedRows.length.toLocaleString(),l:'Delayed Accounts',s:'Excludes Lost / Lost From 2025',c:'var(--red)'},
       {k:'late',v:lateRows.length.toLocaleString(),l:'Renewed Late',s:'Booking after renewal month',c:'var(--amber)'}
     ].map(function(x){ return '<div class="ret-fin-card ret-click-card" style="--fc:' + x.c + '" onclick="openRetFinSheetDetails(\'' + x.k + '\')" title="Click to open account list"><div class="ret-fin-card-v">' + x.v + '</div><div class="ret-fin-card-l">' + x.l + '</div><div class="ret-fin-card-s">' + x.s + '</div></div>'; }).join(''));
 
