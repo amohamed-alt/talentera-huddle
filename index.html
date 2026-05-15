@@ -9557,5 +9557,387 @@ body.retention-financial-wide #panel-retention-financial .ret-fin-split{max-widt
   }
 })();
 </script>
+ <script id="retention-financial-final-layout-cleanup">
+(function(){
+  if(window.__retFinFinalLayoutCleanup) return;
+  window.__retFinFinalLayoutCleanup = true;
+
+  function byId(id){
+    return document.getElementById(id);
+  }
+
+  function root(){
+    return byId('panel-retention-financial');
+  }
+
+  function closestBlockByBody(bodyId){
+    var body = byId(bodyId);
+    if(!body) return null;
+    return body.closest('.ret-fin-subcard,.ret-fin-board,.card,.ret-clean-card,.compact-section');
+  }
+
+  function closestBlockByInnerId(id){
+    var node = byId(id);
+    if(!node) return null;
+    return node.closest('.ret-fin-board,.ret-fin-subcard,.card,.ret-clean-card,.compact-section');
+  }
+
+  function safeText(text){
+    return String(text == null ? '' : text);
+  }
+
+  function setTextContainsReplace(node){
+    if(!node) return;
+
+    Array.from(node.querySelectorAll('*')).forEach(function(el){
+      if(!el.childNodes || el.childNodes.length !== 1 || el.childNodes[0].nodeType !== 3) return;
+
+      var t = el.textContent || '';
+      var nt = t
+        .replace(/Retention Financial Details — Sheets Only/g, 'Retention Financial Details')
+        .replace(/Sheets only\s*·\s*/gi, '')
+        .replace(/Sheets only/gi, 'Financial view')
+        .replace(/From Sheets/gi, 'This Year')
+        .replace(/from sheets/gi, 'for this year')
+        .replace(/Booking sheet/gi, 'Booked this year')
+        .replace(/Collection sheet/gi, 'Collected this year')
+        .replace(/sheet owners/gi, 'owners')
+        .replace(/No booking rows found from the Booking sheet for the selected filters\./gi, 'No booked rows found for the selected filters.')
+        .replace(/No collection rows found from the Collection sheet for the selected filters\./gi, 'No cash collected rows found for the selected filters.')
+        .replace(/No renewal rows found from 1- 2026 Budget for the selected filters\./gi, 'No renewal rows found for the selected filters.');
+
+      if(nt !== t) el.textContent = nt;
+    });
+  }
+
+  function cleanHeroAndTopbar(){
+    var p = root();
+    if(!p) return;
+
+    var title = p.querySelector('.ret-fin-hero-title');
+    if(title) title.textContent = 'Retention Financial Details';
+
+    var sub = p.querySelector('.ret-fin-hero-sub');
+    if(sub){
+      sub.textContent = 'A clean money view for Customer Success: Renewal value, booked value, cash collected, remaining collection, delayed accounts, and renewed late accounts for this year.';
+    }
+
+    var topbarSub = byId('topbarSub');
+    if(topbarSub && /sheets|booking|collection|budget/i.test(topbarSub.textContent || '')){
+      topbarSub.textContent = 'Budget + Booking + Collection · Month / RM / CSM / Product / Account Status / Renewal Status filters';
+    }
+
+    var filterBadge = p.querySelector('#retFinSheetFilter .badge');
+    if(filterBadge && /sheets/i.test(filterBadge.textContent || '')){
+      filterBadge.textContent = 'Financial view';
+    }
+
+    setTextContainsReplace(p);
+  }
+
+  function renameMainSections(){
+    var booked = closestBlockByBody('retFinBookedBody');
+    var cashed = closestBlockByBody('retFinCashedBody');
+    var renewed = closestBlockByBody('retFinRenewedBody');
+    var delayed = closestBlockByBody('retFinDelayedBody');
+
+    if(booked){
+      var t = booked.querySelector('.ret-fin-subtitle,.card-title,.ret-clean-title');
+      if(t){
+        t.innerHTML = '📝 Booked This Year';
+        t.style.color = 'var(--purple)';
+      }
+      var n = booked.querySelector('.ret-fin-mini-note');
+      if(n) n.textContent = 'Booked value for this year after the current filters.';
+      booked.style.setProperty('--sc', 'var(--purple)');
+    }
+
+    if(cashed){
+      var t2 = cashed.querySelector('.ret-fin-subtitle,.card-title,.ret-clean-title');
+      if(t2){
+        t2.innerHTML = '💵 Cash Collected This Year';
+        t2.style.color = 'var(--green)';
+      }
+      var n2 = cashed.querySelector('.ret-fin-mini-note');
+      if(n2) n2.textContent = 'Cash collected for this year after the current filters.';
+      cashed.style.setProperty('--sc', 'var(--green)');
+    }
+
+    if(renewed){
+      var t3 = renewed.querySelector('.ret-fin-subtitle,.card-title,.ret-clean-title');
+      if(t3) t3.innerHTML = '🔁 Renewed Companies This Year';
+    }
+
+    if(delayed){
+      var t4 = delayed.querySelector('.ret-fin-subtitle,.card-title,.ret-clean-title');
+      if(t4) t4.innerHTML = '🚨 Delayed Renewal Exposure This Year';
+    }
+  }
+
+  function orderTopCards(){
+    var grid = byId('retFinTopGrid');
+    if(!grid) return;
+
+    var cards = Array.from(grid.querySelectorAll('.ret-fin-card'));
+    if(!cards.length) return;
+
+    function findCard(regex){
+      return cards.find(function(card){
+        return regex.test(card.textContent || '');
+      });
+    }
+
+    var renewal = findCard(/renewal value/i);
+    var booked = findCard(/booked value/i);
+    var cash = findCard(/cash collected|collected value/i);
+    var remaining = findCard(/booked not cash/i);
+    var delayed = findCard(/delayed accounts/i);
+    var late = findCard(/renewed late/i);
+
+    [late, delayed, remaining, cash, booked, renewal].forEach(function(card){
+      if(card) grid.insertBefore(card, grid.firstElementChild);
+    });
+
+    if(renewal){
+      var label = renewal.querySelector('.ret-fin-card-l');
+      if(label) label.textContent = 'Renewal Value';
+    }
+
+    if(booked){
+      var label2 = booked.querySelector('.ret-fin-card-l');
+      if(label2) label2.textContent = 'Booked Value';
+      var sub2 = booked.querySelector('.ret-fin-card-s');
+      if(sub2) sub2.textContent = sub2.textContent.replace(/rows\s*·\s*Booking sheet/i, 'rows · This Year');
+    }
+
+    if(cash){
+      var label3 = cash.querySelector('.ret-fin-card-l');
+      if(label3) label3.textContent = 'Cash Collected';
+      var sub3 = cash.querySelector('.ret-fin-card-s');
+      if(sub3) sub3.textContent = sub3.textContent.replace(/rows\s*·\s*Collection sheet/i, 'rows · This Year');
+    }
+  }
+
+  function findOwnerBoard(){
+    return closestBlockByInnerId('retFinOwnerGrid');
+  }
+
+  function findStatusBoard(){
+    var existing = byId('retFinRenewalStatusBoard');
+    if(existing) return existing;
+
+    var p = root();
+    if(!p) return null;
+
+    var boards = Array.from(p.querySelectorAll('.ret-fin-board,.card,.ret-clean-card,.compact-section'));
+    var found = boards.find(function(board){
+      return /renewal status split/i.test(board.textContent || '');
+    });
+
+    if(found){
+      found.id = 'retFinRenewalStatusBoard';
+      return found;
+    }
+
+    var board = document.createElement('div');
+    board.id = 'retFinRenewalStatusBoard';
+    board.className = 'ret-fin-board';
+    board.innerHTML =
+      '<div class="ret-fin-board-hd">' +
+        '<div>' +
+          '<div class="ret-fin-board-title">📌 Renewal Status Split</div>' +
+          '<div class="ret-fin-mini-note">Renewal, booked, collected, and status movement for this year after the current filters.</div>' +
+        '</div>' +
+        '<span class="badge bb">Filtered view</span>' +
+      '</div>' +
+      '<div id="retFinRenewalStatusContent"></div>';
+
+    var owner = findOwnerBoard();
+    if(owner && owner.parentNode) owner.parentNode.insertBefore(board, owner.nextSibling);
+    else p.appendChild(board);
+
+    return board;
+  }
+
+  function ensureStatusContent(statusBoard){
+    if(!statusBoard) return null;
+
+    var content = byId('retFinRenewalStatusContent');
+    if(content && statusBoard.contains(content)) return content;
+
+    var header = statusBoard.querySelector('.ret-fin-board-hd,.card-hd,.ret-clean-hd,.compact-hd');
+    content = document.createElement('div');
+    content.id = 'retFinRenewalStatusContent';
+
+    if(header && header.nextSibling){
+      statusBoard.insertBefore(content, header.nextSibling);
+    }else{
+      statusBoard.appendChild(content);
+    }
+
+    Array.from(statusBoard.children).forEach(function(child){
+      if(child === header || child === content) return;
+      content.appendChild(child);
+    });
+
+    return content;
+  }
+
+  function moveOwnerThenStatus(){
+    var p = root();
+    var owner = findOwnerBoard();
+    var statusBoard = findStatusBoard();
+
+    if(!p || !owner || !statusBoard) return;
+
+    if(owner.nextElementSibling !== statusBoard){
+      owner.parentNode.insertBefore(statusBoard, owner.nextSibling);
+    }
+
+    var title = owner.querySelector('.ret-fin-board-title,.card-title,.ret-clean-title');
+    if(title) title.innerHTML = '📊 Owner Financial Summary';
+
+    var badge = byId('retFinOwnerBadge');
+    if(badge) badge.textContent = safeText(badge.textContent).replace(/sheet owners/gi, 'owners');
+
+    var statusTitle = statusBoard.querySelector('.ret-fin-board-title,.card-title,.ret-clean-title,.compact-title');
+    if(statusTitle) statusTitle.innerHTML = '📌 Renewal Status Split';
+
+    var note = statusBoard.querySelector('.ret-fin-mini-note,.ret-merged-note,.ret-explain');
+    if(note) note.textContent = 'Booked, cash collected, and renewal status movement for this year after the current filters.';
+  }
+
+  function moveBookedCashInsideStatus(){
+    var booked = closestBlockByBody('retFinBookedBody');
+    var cashed = closestBlockByBody('retFinCashedBody');
+    var statusBoard = findStatusBoard();
+
+    if(!booked || !cashed || !statusBoard) return;
+
+    var content = ensureStatusContent(statusBoard);
+    if(!content) return;
+
+    var pair = byId('retFinBookedCashInsideStatus');
+    if(!pair){
+      pair = document.createElement('div');
+      pair.id = 'retFinBookedCashInsideStatus';
+      pair.className = 'ret-fin-split';
+      pair.style.display = 'grid';
+      pair.style.gridTemplateColumns = 'minmax(0,1fr) minmax(0,1fr)';
+      pair.style.gap = '16px';
+      pair.style.margin = '14px';
+      content.insertBefore(pair, content.firstChild);
+    }
+
+    if(booked.parentNode !== pair) pair.appendChild(booked);
+    if(cashed.parentNode !== pair) pair.appendChild(cashed);
+
+    if(pair.firstElementChild !== booked){
+      pair.insertBefore(booked, pair.firstElementChild);
+    }
+
+    if(cashed.previousElementSibling !== booked){
+      pair.insertBefore(cashed, booked.nextSibling);
+    }
+  }
+
+  function cleanSourcePills(){
+    var p = root();
+    if(!p) return;
+
+    Array.from(p.querySelectorAll('.ret-sheet-pill')).forEach(function(pill){
+      pill.textContent = pill.textContent
+        .replace(/^Budget:/i, 'Budget:')
+        .replace(/^Booking:/i, 'Booking:')
+        .replace(/^Collection:/i, 'Collection:');
+    });
+  }
+
+  function ensureStyle(){
+    if(byId('retFinFinalLayoutStyle')) return;
+
+    var style = document.createElement('style');
+    style.id = 'retFinFinalLayoutStyle';
+    style.textContent = [
+      '#panel-retention-financial #retFinBookedCashInsideStatus{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;gap:16px!important;margin:14px!important}',
+      '#panel-retention-financial #retFinBookedCashInsideStatus .ret-fin-subcard{margin-bottom:0!important}',
+      '#panel-retention-financial #retFinRenewalStatusBoard{margin-top:16px!important}',
+      '@media(max-width:900px){#panel-retention-financial #retFinBookedCashInsideStatus{grid-template-columns:1fr!important}}'
+    ].join('');
+    document.head.appendChild(style);
+  }
+
+  function apply(){
+    ensureStyle();
+    cleanHeroAndTopbar();
+    renameMainSections();
+    orderTopCards();
+    moveOwnerThenStatus();
+    moveBookedCashInsideStatus();
+    cleanSourcePills();
+    cleanHeroAndTopbar();
+  }
+
+  var oldRender = window.renderRetentionFinancialDetails;
+  if(typeof oldRender === 'function' && !oldRender.__finalLayoutCleanupWrapped){
+    window.renderRetentionFinancialDetails = function(){
+      var result = oldRender.apply(this, arguments);
+      setTimeout(apply, 0);
+      setTimeout(apply, 150);
+      setTimeout(apply, 500);
+      return result;
+    };
+    window.renderRetentionFinancialDetails.__finalLayoutCleanupWrapped = true;
+
+    try{
+      renderRetentionFinancialDetails = window.renderRetentionFinancialDetails;
+    }catch(e){}
+  }
+
+  var oldSwitch = window.switchRetentionFinancial;
+  if(typeof oldSwitch === 'function' && !oldSwitch.__finalLayoutCleanupWrapped){
+    window.switchRetentionFinancial = function(){
+      var result = oldSwitch.apply(this, arguments);
+      setTimeout(apply, 0);
+      setTimeout(apply, 250);
+      setTimeout(apply, 700);
+      return result;
+    };
+    window.switchRetentionFinancial.__finalLayoutCleanupWrapped = true;
+
+    try{
+      switchRetentionFinancial = window.switchRetentionFinancial;
+    }catch(e){}
+  }
+
+  var debounce = null;
+  var observer = new MutationObserver(function(){
+    clearTimeout(debounce);
+    debounce = setTimeout(apply, 80);
+  });
+
+  function start(){
+    apply();
+
+    var p = root();
+    if(p){
+      observer.observe(p, {childList:true, subtree:true, characterData:true});
+    }
+
+    var i = 0;
+    var interval = setInterval(function(){
+      apply();
+      i += 1;
+      if(i >= 12) clearInterval(interval);
+    }, 500);
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', start);
+  }else{
+    start();
+  }
+})();
+</script>
 </body>
 </html>
