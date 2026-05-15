@@ -8399,32 +8399,49 @@ body.retention-financial-wide #panel-retention-financial .ret-fin-split{max-widt
       return total + Object.keys(bucket || {}).reduce(function(s,k){ return s + num(bucket[k]); },0);
     },0);
   }
-  function bookingValue(r,m,p){
-    var v = nestedMonthProduct(r && r.bookingByMonth,m,p);
-    if(v !== 0) return v;
-    if((!m || m === 'All') && (!p || p === 'All')) return num(first(r,['bookingSheetValue','bookedValue','totalBookedValue','bookingValue','bookedAmount','booked']));
+  function directNumber(r, keys){
+    return num(first(r, keys));
+  }
+  function monthProductValue(r,mapName,m,p,directKeys,monthIndexKey,monthNameKey){
+    var selectedProduct = p && p !== 'All' ? p : productOf(r);
+    if(p && p !== 'All' && productOf(r) !== p) return 0;
+
+    if(!m || m === 'All'){
+      return directNumber(r, directKeys);
+    }
+
+    var bucketMap = r && r[mapName];
+    var bucket = bucketMap ? (bucketMap[m] || bucketMap[monthName(m)] || null) : null;
+
+    if(bucket && typeof bucket === 'object'){
+      if(selectedProduct && bucket[selectedProduct] !== undefined) return num(bucket[selectedProduct]);
+      return 0;
+    }
+
+    if(bucket !== null && bucket !== undefined) return num(bucket);
+
+    var rowMonth = rowMonthIndex(r, monthIndexKey, monthNameKey);
+    var selectedMonth = monthIndexFromValue(m);
+    if(rowMonth && selectedMonth && rowMonth === selectedMonth) return directNumber(r, directKeys);
+
     return 0;
   }
+  function bookingValue(r,m,p){
+    return monthProductValue(r,'bookingByMonth',m,p,['bookingSheetValue','bookedValue','totalBookedValue','bookingValue','bookedAmount','booked'],'bookingMonthIndex','bookingMonth');
+  }
   function collectionValue(r,m,p){
-    var v = nestedMonthProduct(r && r.collectionByMonth,m,p);
-    if(v !== 0) return v;
-    if((!m || m === 'All') && (!p || p === 'All')) return num(first(r,['collectedValue','collectionValue','cashCollected','totalCollectedValue']));
-    return 0;
+    return monthProductValue(r,'collectionByMonth',m,p,['collectedValue','collectionValue','cashCollected','totalCollectedValue'],'collectionMonthIndex','collectionMonth');
   }
   function renewalValue(r,m,p){
     if(p && p !== 'All' && productOf(r) !== p) return 0;
     if(m && m !== 'All'){
-      var mv = nestedMonthProduct(r && r.renewalByMonth,m,p);
-      if(mv !== 0) return mv;
-      if(r && r.renewalMonth && r.renewalMonth !== m) return 0;
+      var rowMonth = rowMonthIndex(r,'renewalMonthIndex','renewalMonth');
+      var selectedMonth = monthIndexFromValue(m);
+      if(rowMonth && selectedMonth && rowMonth !== selectedMonth) return 0;
     }
-    return num(first(r,['renewalValue2026','renewalValue','amount','2026 Value','Value 2026']));
+    return directNumber(r,['renewalValue2026','renewalValue','amount','2026 Value','Value 2026']);
   }
   function bookedNotCashValue(r,m,p){
-    if((!m || m === 'All') && (!p || p === 'All')){
-      var direct = first(r,['bookedNotCashValue','remainingCollection']);
-      if(direct !== '') return Math.max(num(direct), 0);
-    }
     return Math.max(bookingValue(r,m,p) - collectionValue(r,m,p), 0);
   }
   function currentRiyadhMonth(){ var d=new Date(Date.now()+3*60*60*1000); return d.getUTCMonth()+1; }
@@ -8561,10 +8578,14 @@ body.retention-financial-wide #panel-retention-financial .ret-fin-split{max-widt
         map[key].renewal+=renewalValue(r,m,p);
         map[key].booked+=bookingValue(r,m,p);
         map[key].collected+=collectionValue(r,m,p);
-        map[key].remaining+=bookedNotCashValue(r,m,p);
       });
     });
-    return Object.keys(map).map(function(k){ var o=map[k]; o.accountCount=Object.keys(o.accounts).length; return o; }).sort(function(a,b){ return b.renewal-a.renewal || a.name.localeCompare(b.name); });
+    return Object.keys(map).map(function(k){
+      var o=map[k];
+      o.accountCount=Object.keys(o.accounts).length;
+      o.remaining=Math.max(o.booked-o.collected,0);
+      return o;
+    }).sort(function(a,b){ return b.renewal-a.renewal || a.name.localeCompare(b.name); });
   }
   function ensureExport(anchorId,bodyId,fileName){
     var a=byId(anchorId); if(!a || !a.parentNode || byId('export-final-fixed-'+bodyId)) return;
@@ -8691,7 +8712,7 @@ body.retention-financial-wide #panel-retention-financial .ret-fin-split{max-widt
     var renewalTotal=rows.reduce(function(t,r){ return t+renewalValue(r,m,p); },0);
     var bookedTotal=rows.reduce(function(t,r){ return t+bookingValue(r,m,p); },0);
     var collectedTotal=rows.reduce(function(t,r){ return t+collectionValue(r,m,p); },0);
-    var remainingTotal=rows.reduce(function(t,r){ return t+bookedNotCashValue(r,m,p); },0);
+    var remainingTotal=Math.max(bookedTotal-collectedTotal,0);
     var bookingRows=rows.filter(function(r){ return bookingValue(r,m,p) !== 0; });
     var collectionRows=rows.filter(function(r){ return collectionValue(r,m,p) !== 0; });
     var delayedRows=rows.filter(function(r){
