@@ -6982,7 +6982,7 @@ window.__dashboardAutoRefreshTimer = setInterval(function(){
 (function(){
   if(window.__RETENTION_FINANCIAL_CLEAN_V57__) return;
   window.__RETENTION_FINANCIAL_CLEAN_V57__ = true;
-  window.DASHBOARD_CLEAN_VERSION = 'retention-financial-clean-v57';
+  window.DASHBOARD_CLEAN_VERSION = 'retention-financial-clean-v59';
 
   var MONTHS = [
     {key:'All',label:'All Months',i:0},
@@ -7198,24 +7198,34 @@ window.__dashboardAutoRefreshTimer = setInterval(function(){
       return true;
     }).sort(function(a,b){ return String(a).localeCompare(String(b)); });
   }
+  function productMatches(row, product){
+    if(!product || product === 'All') return true;
+    if(productOf(row) === product) return true;
+    if(renewalValue(row,'All',product) !== 0) return true;
+    if(financialEntries([row],'booked','All',product).length) return true;
+    if(financialEntries([row],'cash','All',product).length) return true;
+    return false;
+  }
   function passMonth(row, month, product){
     if(!month || month === 'All') return true;
-    return renewalValue(row,month,product) !== 0 ||
-      bookingValue(row,month,product) !== 0 ||
-      collectionValue(row,month,product) !== 0 ||
-      renewalMonth(row) === month ||
-      bookingMonth(row) === month ||
-      collectionMonth(row) === month;
+    if(renewalValue(row,month,product) !== 0) return true;
+    if(financialEntries([row],'booked',month,product).length) return true;
+    if(financialEntries([row],'cash',month,product).length) return true;
+    if(renewalMonth(row) === month && productMatches(row,product)) return true;
+    if(bookingMonth(row) === month && productMatches(row,product)) return true;
+    if(collectionMonth(row) === month && productMatches(row,product)) return true;
+    return false;
   }
   function filteredAccounts(){
     var f = filters();
     var product = f.product || 'All';
+    var month = f.month || 'All';
     return allAccounts().filter(function(row){
       if(f.rm && f.rm !== 'All' && rmOf(row) !== f.rm) return false;
       if(f.csm && f.csm !== 'All' && csmOf(row) !== f.csm) return false;
-      if(product !== 'All' && productOf(row) !== product) return false;
       if(f.accountStatus && f.accountStatus !== 'All' && accountStatusLabel(row) !== f.accountStatus) return false;
-      if(!passMonth(row, f.month || 'All', product)) return false;
+      if(!productMatches(row, product)) return false;
+      if(!passMonth(row, month, product)) return false;
       return true;
     });
   }
@@ -7405,6 +7415,26 @@ window.__dashboardAutoRefreshTimer = setInterval(function(){
   function selectHtml(id,key,label,value,options){
     return '<span class="ret-sheet-label">'+esc(label)+'</span><select class="ret-sheet-select" id="'+esc(id)+'" onchange="retFinSetFilter('+JSON.stringify(key)+',this.value)">'+optionHtml('All','All',value)+options.map(function(o){ return optionHtml(o,o,value); }).join('')+'</select>';
   }
+  function productOptions(rows){
+    var values = {};
+    rows.forEach(function(row){
+      var p = productOf(row);
+      if(p) values[p] = true;
+      ['booked','cash'].forEach(function(kind){
+        var map = financialMap(row,kind);
+        Object.keys(map || {}).forEach(function(rawMonth){
+          var bucket = map[rawMonth];
+          if(bucket && typeof bucket === 'object'){
+            Object.keys(bucket).forEach(function(rawProduct){
+              var fp = txt(rawProduct);
+              if(fp) values[fp] = true;
+            });
+          }
+        });
+      });
+    });
+    return Object.keys(values).sort(function(a,b){ return String(a).localeCompare(String(b)); });
+  }
   function renderFilters(allRows){
     var f = filters();
     var monthOptions = MONTHS.filter(function(m){ return m.key !== 'All'; }).map(function(m){ return m.key; });
@@ -7417,7 +7447,7 @@ window.__dashboardAutoRefreshTimer = setInterval(function(){
         selectHtml('retFinFilterMonth','month','Month',f.month || 'All',monthOptions)+
         selectHtml('retFinFilterRm','rm','RM 2026',f.rm || 'All',unique(allRows,rmOf))+
         selectHtml('retFinFilterCsm','csm','CSM',f.csm || 'All',unique(allRows,csmOf))+
-        selectHtml('retFinFilterProduct','product','Product',f.product || 'All',unique(allRows,productOf))+
+        selectHtml('retFinFilterProduct','product','Product',f.product || 'All',productOptions(allRows))+
         selectHtml('retFinFilterAccountStatus','accountStatus','Account Status',f.accountStatus || 'All',accountOptions)+
         '<button class="ret-sheet-select" style="cursor:pointer;color:var(--red);min-width:auto" onclick="retFinResetFilters()">Reset</button>'+
         '<span class="ret-sheet-note">Filters apply to cards, owner summary, booked, cash collected, and all status sections.</span>'+
@@ -7755,7 +7785,7 @@ window.__dashboardAutoRefreshTimer = setInterval(function(){
     node.onclick = function(e){ if(e.target === node) node.remove(); };
     node.innerHTML = '<div class="acq-detail-card" style="border-top:4px solid var(--cyan)">'+
       '<div class="acq-detail-hd"><div><div class="acq-detail-title">'+esc(titleMap[kind] || 'Retention Financial Details')+' <span class="badge bb" style="margin-left:8px">'+count.toLocaleString()+' rows</span></div>'+
-      '<div class="acq-detail-sub">Month: '+esc(monthLabel(month))+' · Product: '+esc(product)+' · Account Status: '+esc(f.accountStatus||'All')+'</div></div>'+
+      '<div class="acq-detail-sub">Month: '+esc(monthLabel(month))+' · Product: '+esc(product)+' · RM: '+esc(f.rm||'All')+' · CSM: '+esc(f.csm||'All')+' · Account Status: '+esc(f.accountStatus||'All')+'</div></div>'+
       '<button class="acq-detail-close" onclick="document.getElementById(\'retFinSheetDetailsBackdrop\')?.remove()">×</button></div>'+
       '<div class="acq-detail-body">'+body+'</div></div>';
     document.body.appendChild(node);
