@@ -9343,5 +9343,219 @@ body.retention-financial-wide #panel-retention-financial .ret-fin-split{max-widt
   setTimeout(afterRender, 800);
 })();
 </script>
+ <script id="retention-financial-booked-cashed-first-final">
+(function(){
+  if(window.__retFinBookedCashedFirstFinal) return;
+  window.__retFinBookedCashedFirstFinal = true;
+
+  function byId(id){
+    return document.getElementById(id);
+  }
+
+  function panel(){
+    return byId('panel-retention-financial');
+  }
+
+  function closestSection(bodyId){
+    var body = byId(bodyId);
+    if(!body) return null;
+    return body.closest('.ret-fin-subcard,.ret-fin-board,.card,.ret-clean-card,.compact-section');
+  }
+
+  function setSectionTitle(section, title, color){
+    if(!section) return;
+
+    var titleEl = section.querySelector('.ret-fin-subtitle,.ret-fin-board-title,.card-title,.ret-clean-title,.compact-title');
+    if(titleEl){
+      titleEl.innerHTML = title;
+      if(color) titleEl.style.color = color;
+    }
+
+    var noteEl = section.querySelector('.ret-fin-mini-note,.ret-merged-note,.ret-explain');
+    if(noteEl && /booked/i.test(title)){
+      noteEl.textContent = 'Source = Retention Accounts Booking. Uses month/product cells from the sheet only.';
+    }
+    if(noteEl && /cash|collection/i.test(title)){
+      noteEl.textContent = 'Source = Retention Accounts Collection. Uses month/product cells from the sheet only.';
+    }
+  }
+
+  function removeAbdullahStatus(){
+    var root = panel();
+    if(!root) return;
+
+    var strip = byId('retFinStatusStrip');
+    if(strip) strip.remove();
+
+    root.querySelectorAll('.ret-fin-status-board,#retFinStatusStrip').forEach(function(node){
+      node.remove();
+    });
+
+    root.querySelectorAll('.ret-fin-board,.ret-fin-subcard,.card,.ret-clean-card,.compact-section').forEach(function(block){
+      var txt = String(block.textContent || '').toLowerCase();
+      if(
+        txt.indexOf('abdullah account status') >= 0 ||
+        txt.indexOf('abdllah account status') >= 0 ||
+        txt.indexOf('status abdullah') >= 0 ||
+        txt.indexOf('status عبد الله') >= 0 ||
+        txt.indexOf('status عبدالله') >= 0
+      ){
+        block.remove();
+      }
+    });
+  }
+
+  function moveTopCards(){
+    var grid = byId('retFinTopGrid');
+    if(!grid) return;
+
+    var cards = Array.from(grid.querySelectorAll('.ret-fin-card'));
+    if(!cards.length) return;
+
+    var bookedCard = cards.find(function(card){
+      return /booked value/i.test(card.textContent || '');
+    });
+
+    var cashCard = cards.find(function(card){
+      return /cash collected|collected value|collection/i.test(card.textContent || '');
+    });
+
+    if(bookedCard){
+      grid.insertBefore(bookedCard, grid.firstElementChild);
+    }
+
+    if(bookedCard && cashCard){
+      grid.insertBefore(cashCard, bookedCard.nextElementSibling);
+    }
+  }
+
+  function moveBookedCashedSections(){
+    var root = panel();
+    var topGrid = byId('retFinTopGrid');
+    var booked = closestSection('retFinBookedBody');
+    var cashed = closestSection('retFinCashedBody');
+
+    if(!root || !topGrid || !booked || !cashed) return;
+
+    setSectionTitle(booked, '📝 Booked From Sheets', 'var(--purple)');
+    setSectionTitle(cashed, '💵 Cash Collected From Sheets', 'var(--green)');
+
+    booked.style.setProperty('--sc', 'var(--purple)');
+    cashed.style.setProperty('--sc', 'var(--green)');
+
+    var pair = null;
+
+    if(
+      booked.parentElement &&
+      booked.parentElement === cashed.parentElement &&
+      booked.parentElement.classList.contains('ret-fin-split')
+    ){
+      pair = booked.parentElement;
+    }else{
+      pair = document.createElement('div');
+      pair.className = 'ret-fin-split ret-fin-booked-cashed-first';
+      topGrid.parentNode.insertBefore(pair, topGrid.nextSibling);
+      pair.appendChild(booked);
+      pair.appendChild(cashed);
+    }
+
+    pair.classList.add('ret-fin-booked-cashed-first');
+    pair.style.display = 'grid';
+    pair.style.gridTemplateColumns = 'minmax(0,1fr) minmax(0,1fr)';
+    pair.style.gap = '16px';
+    pair.style.marginBottom = '16px';
+
+    if(pair.firstElementChild !== booked){
+      pair.insertBefore(booked, pair.firstElementChild);
+    }
+
+    if(cashed.previousElementSibling !== booked){
+      pair.insertBefore(cashed, booked.nextElementSibling);
+    }
+
+    if(topGrid.nextElementSibling !== pair){
+      topGrid.parentNode.insertBefore(pair, topGrid.nextSibling);
+    }
+  }
+
+  function ensureResponsiveStyle(){
+    if(byId('retFinBookedCashedFirstStyle')) return;
+
+    var style = document.createElement('style');
+    style.id = 'retFinBookedCashedFirstStyle';
+    style.textContent = [
+      '#panel-retention-financial .ret-fin-booked-cashed-first{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;gap:16px!important;margin-bottom:16px!important}',
+      '#panel-retention-financial .ret-fin-booked-cashed-first .ret-fin-subcard{margin-bottom:0!important}',
+      '@media(max-width:900px){#panel-retention-financial .ret-fin-booked-cashed-first{grid-template-columns:1fr!important}}'
+    ].join('');
+    document.head.appendChild(style);
+  }
+
+  function applyBookedCashedOrder(){
+    ensureResponsiveStyle();
+    removeAbdullahStatus();
+    moveTopCards();
+    moveBookedCashedSections();
+    removeAbdullahStatus();
+  }
+
+  var oldRenderRetentionFinancialDetails = window.renderRetentionFinancialDetails;
+  if(typeof oldRenderRetentionFinancialDetails === 'function' && !oldRenderRetentionFinancialDetails.__bookedCashedFirstWrapped){
+    window.renderRetentionFinancialDetails = function(){
+      var result = oldRenderRetentionFinancialDetails.apply(this, arguments);
+      setTimeout(applyBookedCashedOrder, 0);
+      setTimeout(applyBookedCashedOrder, 150);
+      setTimeout(applyBookedCashedOrder, 500);
+      return result;
+    };
+    window.renderRetentionFinancialDetails.__bookedCashedFirstWrapped = true;
+    try{
+      renderRetentionFinancialDetails = window.renderRetentionFinancialDetails;
+    }catch(e){}
+  }
+
+  var oldSwitchRetentionFinancial = window.switchRetentionFinancial;
+  if(typeof oldSwitchRetentionFinancial === 'function' && !oldSwitchRetentionFinancial.__bookedCashedFirstWrapped){
+    window.switchRetentionFinancial = function(){
+      var result = oldSwitchRetentionFinancial.apply(this, arguments);
+      setTimeout(applyBookedCashedOrder, 0);
+      setTimeout(applyBookedCashedOrder, 250);
+      return result;
+    };
+    window.switchRetentionFinancial.__bookedCashedFirstWrapped = true;
+    try{
+      switchRetentionFinancial = window.switchRetentionFinancial;
+    }catch(e){}
+  }
+
+  var timer = null;
+  var observer = new MutationObserver(function(){
+    clearTimeout(timer);
+    timer = setTimeout(applyBookedCashedOrder, 60);
+  });
+
+  function start(){
+    applyBookedCashedOrder();
+
+    var root = panel();
+    if(root){
+      observer.observe(root, {childList:true, subtree:true});
+    }
+
+    var count = 0;
+    var interval = setInterval(function(){
+      applyBookedCashedOrder();
+      count += 1;
+      if(count >= 20) clearInterval(interval);
+    }, 500);
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', start);
+  }else{
+    start();
+  }
+})();
+</script>
 </body>
 </html>
