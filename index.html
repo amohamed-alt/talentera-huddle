@@ -7226,22 +7226,99 @@ window.__dashboardAutoRefreshTimer = setInterval(function(){
     if(month && month !== 'All') return month;
     return kind === 'cash' ? collectionMonth(row) : bookingMonth(row);
   }
+  function asObject(value){
+    if(!value) return null;
+    if(typeof value === 'object') return value;
+    if(typeof value === 'string'){
+      try{
+        var parsed = JSON.parse(value);
+        return parsed && typeof parsed === 'object' ? parsed : null;
+      }catch(e){
+        return null;
+      }
+    }
+    return null;
+  }
+  function financialMap(row, kind){
+    var raw = kind === 'cash'
+      ? (first(row,['collectionByMonth','cashByMonth','collectedByMonth']) || row.collectionByMonth || row.cashByMonth || row.collectedByMonth)
+      : (first(row,['bookingByMonth','bookedByMonth']) || row.bookingByMonth || row.bookedByMonth);
+    return asObject(raw);
+  }
+  function financialSourceId(row, kind){
+    return txt(first(row, kind === 'cash'
+      ? ['collectionSourceId','collectionRowId','collectionSheetRowId','collectionKey','cashSourceId','cashRowId','sourceCollectionRowId','sourceRowId']
+      : ['bookingSourceId','bookingRowId','bookingSheetRowId','bookingKey','bookedSourceId','bookedRowId','sourceBookingRowId','sourceRowId']
+    ));
+  }
+  function financialEntryKey(entry){
+    var row = entry.row || {};
+    var source = financialSourceId(row, entry.kind);
+    var accountKey = source || norm(gidOf(row) || clientOf(row));
+    var valueKey = String(Math.round(num(entry.value) * 100) / 100);
+    return [entry.kind, accountKey, norm(entry.product || productOf(row)), norm(entry.month || ''), valueKey].join('|');
+  }
+  function financialEntries(rows, kind, month, product){
+    var selectedMonth = month || 'All';
+    var selectedProduct = product || 'All';
+    var entries = [];
+    arr(rows).forEach(function(row){
+      var map = financialMap(row, kind);
+      if(map){
+        Object.keys(map).forEach(function(rawMonth){
+          var m = monthKey(rawMonth) || rawMonth;
+          if(selectedMonth !== 'All' && m !== selectedMonth) return;
+          var bucket = map[rawMonth];
+          if(typeof bucket === 'number' || typeof bucket === 'string'){
+            var fallbackProduct = productOf(row);
+            if(selectedProduct !== 'All' && fallbackProduct !== selectedProduct) return;
+            var directValue = num(bucket);
+            if(directValue !== 0) entries.push({kind:kind,row:row,month:m,product:fallbackProduct,value:directValue});
+            return;
+          }
+          bucket = asObject(bucket) || {};
+          Object.keys(bucket).forEach(function(rawProduct){
+            var p = txt(rawProduct) || productOf(row);
+            if(selectedProduct !== 'All' && p !== selectedProduct) return;
+            var value = num(bucket[rawProduct]);
+            if(value !== 0) entries.push({kind:kind,row:row,month:m,product:p,value:value});
+          });
+        });
+      }else{
+        var fallbackMonth = financialKindMonth(row, kind, selectedMonth);
+        var fallbackProduct = productOf(row);
+        if(selectedMonth !== 'All' && fallbackMonth !== selectedMonth) return;
+        if(selectedProduct !== 'All' && fallbackProduct !== selectedProduct) return;
+        var fallbackValue = financialKindValue(row, kind, selectedMonth, selectedProduct);
+        if(fallbackValue !== 0) entries.push({kind:kind,row:row,month:fallbackMonth,product:fallbackProduct,value:fallbackValue});
+      }
+    });
+
+    var seen = {};
+    return entries.filter(function(entry){
+      var key = financialEntryKey(entry);
+      if(seen[key]) return false;
+      seen[key] = true;
+      return true;
+    });
+  }
   function financialDedupKey(row, kind, month, product){
-    var accountKey = norm(gidOf(row) || clientOf(row));
-    var productKey = norm((product && product !== 'All') ? product : productOf(row));
-    var monthKeyValue = norm(financialKindMonth(row, kind, month));
-    var valueKey = String(Math.round(financialKindValue(row, kind, month, product) * 100) / 100);
-    return [kind, accountKey, productKey, monthKeyValue, valueKey].join('|');
+    return financialEntryKey({kind:kind,row:row,month:financialKindMonth(row,kind,month),product:(product && product !== 'All') ? product : productOf(row),value:financialKindValue(row,kind,month,product)});
   }
   function uniqueFinancialRows(rows, kind, month, product){
     var seen = {};
     return rows.filter(function(row){
-      var value = financialKindValue(row, kind, month, product);
-      if(value === 0) return false;
-      var key = financialDedupKey(row, kind, month, product);
-      if(seen[key]) return false;
-      seen[key] = true;
-      return true;
+      var entries = financialEntries([row], kind, month, product);
+      if(!entries.length) return false;
+      var keep = false;
+      entries.forEach(function(entry){
+        var key = financialEntryKey(entry);
+        if(!seen[key]){
+          seen[key] = true;
+          keep = true;
+        }
+      });
+      return keep;
     });
   }
   function rowClass(index){ return index >= 10 ? 'ret-hidden' : ''; }
@@ -7408,8 +7485,22 @@ window.__dashboardAutoRefreshTimer = setInterval(function(){
     var product = f.product || 'All';
     var rows = filteredAccounts();
 
-    if(kind === 'booked') rows = uniqueFinancialRows(rows,'booked',month,product);
-    if(kind === 'cash') rows = uniqueFinancialRows(rows,'cash',month,product);
+    if(kind === 'booked'){
+      var bookedEntries = financialEntries(rows,'booked',month,product);
+      exportRows('retention-booked-this-year', ['Client','GID','RM 2026','CSM','Product','Booking Month','Booked','Booked Not Cash','Account Status','Renewal Status'], bookedEntries.map(function(entry){
+        var row = entry.row || {};
+        return [clientOf(row),gidOf(row),rmOf(row),csmOf(row),entry.product,entry.month,Math.round(num(entry.value)),Math.round(entryBookedNotCash(entry,month,product)),accountStatusLabel(row),renewalStatus(row)];
+      }));
+      return;
+    }
+    if(kind === 'cash'){
+      var cashEntries = financialEntries(rows,'cash',month,product);
+      exportRows('retention-cash-collected-this-year', ['Client','GID','RM 2026','CSM','Product','Collection Month','Cash Collected','Booked Not Cash','Account Status','Renewal Status'], cashEntries.map(function(entry){
+        var row = entry.row || {};
+        return [clientOf(row),gidOf(row),rmOf(row),csmOf(row),entry.product,entry.month,Math.round(num(entry.value)),Math.round(entryBookedNotCash(entry,month,product)),accountStatusLabel(row),renewalStatus(row)];
+      }));
+      return;
+    }
     if(kind === 'owners'){
       var owners = ownerSummary(rows,month,product);
       exportRows('retention-owner-financial-summary', ['Owner','Role','Accounts','Renewal','Booked','Cash Collected','Booked Not Cash'], owners.map(function(o){ return [o.name,o.role,o.accountCount,Math.round(o.renewal),Math.round(o.booked),Math.round(o.collected),Math.round(o.remaining)]; }));
@@ -7424,18 +7515,18 @@ window.__dashboardAutoRefreshTimer = setInterval(function(){
     var month = f.month || 'All';
     var product = f.product || 'All';
     var renewalTotal = rows.reduce(function(s,row){ return s + renewalValue(row,month,product); },0);
-    var bookedRows = uniqueFinancialRows(rows,'booked',month,product);
-    var cashRows = uniqueFinancialRows(rows,'cash',month,product);
-    var bookedTotal = bookedRows.reduce(function(s,row){ return s + bookingValue(row,month,product); },0);
-    var cashTotal = cashRows.reduce(function(s,row){ return s + collectionValue(row,month,product); },0);
+    var bookedEntries = financialEntries(rows,'booked',month,product);
+    var cashEntries = financialEntries(rows,'cash',month,product);
+    var bookedTotal = bookedEntries.reduce(function(s,entry){ return s + num(entry.value); },0);
+    var cashTotal = cashEntries.reduce(function(s,entry){ return s + num(entry.value); },0);
     var remainingTotal = bookedTotal - cashTotal;
     var delayedRows = rows.filter(function(row){ return renewalStatus(row) === 'Delayed' && accountStatusLabel(row) !== 'Lost' && accountStatusLabel(row) !== 'Lost From 2025'; });
     var lateRows = rows.filter(function(row){ return renewalStatus(row) === 'Renewed Late'; });
 
     var cards = [
       {k:'renewal',v:money(renewalTotal),l:'Renewal Value',s:rows.length.toLocaleString()+' accounts · '+monthLabel(month),c:'var(--cyan)',i:'💎'},
-      {k:'booked',v:money(bookedTotal),l:'Booked Value',s:bookedRows.length.toLocaleString()+' rows · This Year',c:'var(--purple)',i:'📝'},
-      {k:'cash',v:money(cashTotal),l:'Cash Collected',s:cashRows.length.toLocaleString()+' rows · This Year',c:'var(--green)',i:'💵'},
+      {k:'booked',v:money(bookedTotal),l:'Booked Value',s:bookedEntries.length.toLocaleString()+' rows · This Year',c:'var(--purple)',i:'📝'},
+      {k:'cash',v:money(cashTotal),l:'Cash Collected',s:cashEntries.length.toLocaleString()+' rows · This Year',c:'var(--green)',i:'💵'},
       {k:'remaining',v:money(remainingTotal),l:'Booked Not Cash',s:monthLabel(month),c:'var(--blue)',i:'⏳'},
       {k:'delayed',v:delayedRows.length.toLocaleString(),l:'Delayed Accounts',s:'Excludes Lost / Lost From 2025',c:'var(--red)',i:'🚨'},
       {k:'late',v:lateRows.length.toLocaleString(),l:'Renewed Late',s:'Booking after renewal month',c:'var(--amber)',i:'⚠️'}
@@ -7456,23 +7547,21 @@ window.__dashboardAutoRefreshTimer = setInterval(function(){
         map[key].accounts[clientOf(row)+'|'+gidOf(row)] = true;
         map[key].renewal += renewalValue(row,month,product);
 
-        var b = bookingValue(row,month,product);
-        if(b !== 0){
-          var bk = financialDedupKey(row,'booked',month,product);
+        financialEntries([row],'booked',month,product).forEach(function(entry){
+          var bk = financialEntryKey(entry);
           if(!map[key].bookedKeys[bk]){
             map[key].bookedKeys[bk] = true;
-            map[key].booked += b;
+            map[key].booked += num(entry.value);
           }
-        }
+        });
 
-        var c = collectionValue(row,month,product);
-        if(c !== 0){
-          var ck = financialDedupKey(row,'cash',month,product);
+        financialEntries([row],'cash',month,product).forEach(function(entry){
+          var ck = financialEntryKey(entry);
           if(!map[key].cashKeys[ck]){
             map[key].cashKeys[ck] = true;
-            map[key].collected += c;
+            map[key].collected += num(entry.value);
           }
-        }
+        });
       });
     });
     return Object.keys(map).map(function(k){
@@ -7512,20 +7601,28 @@ window.__dashboardAutoRefreshTimer = setInterval(function(){
       }).join('') : '<div class="ret-fin-empty" style="grid-column:1/-1">No RM/CSM values found after filters.</div>')
     );
   }
-  function bookedRow(row,index,month,product){
-    return '<tr class="'+rowClass(index)+'"><td>'+clientCell(row)+'</td><td>'+esc(rmOf(row)||'—')+'</td><td>'+esc(csmOf(row)||'—')+'</td><td class="c">'+esc(productOf(row))+'</td><td class="c">'+esc(month==='All'?bookingMonth(row):month)+'</td><td class="c">'+cellMoney(bookingValue(row,month,product),'var(--purple)')+'</td><td class="c">'+cellMoney(bookedNotCash(row,month,product),'var(--blue)')+'</td><td class="c">'+badge(fullStatus(row))+'</td></tr>';
+  function entryBookedNotCash(entry, month, product){
+    if(!entry) return 0;
+    var row = entry.row || {};
+    if(entry.kind === 'booked') return num(entry.value) - collectionValue(row, entry.month || month, entry.product || product);
+    return bookingValue(row, entry.month || month, entry.product || product) - num(entry.value);
   }
-  function cashRow(row,index,month,product){
-    return '<tr class="'+rowClass(index)+'"><td>'+clientCell(row)+'</td><td>'+esc(rmOf(row)||'—')+'</td><td>'+esc(csmOf(row)||'—')+'</td><td class="c">'+esc(productOf(row))+'</td><td class="c">'+esc(month==='All'?collectionMonth(row):month)+'</td><td class="c">'+cellMoney(collectionValue(row,month,product),'var(--green)')+'</td><td class="c">'+cellMoney(bookedNotCash(row,month,product),'var(--blue)')+'</td><td class="c">'+badge(fullStatus(row))+'</td></tr>';
+  function bookedEntryRow(entry,index,month,product){
+    var row = entry.row || {};
+    return '<tr class="'+rowClass(index)+'"><td>'+clientCell(row)+'</td><td>'+esc(rmOf(row)||'—')+'</td><td>'+esc(csmOf(row)||'—')+'</td><td class="c">'+esc(entry.product || productOf(row))+'</td><td class="c">'+esc(entry.month || (month==='All'?bookingMonth(row):month))+'</td><td class="c">'+cellMoney(entry.value,'var(--purple)')+'</td><td class="c">'+cellMoney(entryBookedNotCash(entry,month,product),'var(--blue)')+'</td><td class="c">'+badge(fullStatus(row))+'</td></tr>';
+  }
+  function cashEntryRow(entry,index,month,product){
+    var row = entry.row || {};
+    return '<tr class="'+rowClass(index)+'"><td>'+clientCell(row)+'</td><td>'+esc(rmOf(row)||'—')+'</td><td>'+esc(csmOf(row)||'—')+'</td><td class="c">'+esc(entry.product || productOf(row))+'</td><td class="c">'+esc(entry.month || (month==='All'?collectionMonth(row):month))+'</td><td class="c">'+cellMoney(entry.value,'var(--green)')+'</td><td class="c">'+cellMoney(entryBookedNotCash(entry,month,product),'var(--blue)')+'</td><td class="c">'+badge(fullStatus(row))+'</td></tr>';
   }
   function renderBookedCash(rows){
     var f = filters();
     var month = f.month || 'All';
     var product = f.product || 'All';
-    var booked = uniqueFinancialRows(rows,'booked',month,product);
-    var cash = uniqueFinancialRows(rows,'cash',month,product);
-    var bookedTotal = booked.reduce(function(s,row){ return s + bookingValue(row,month,product); },0);
-    var cashTotal = cash.reduce(function(s,row){ return s + collectionValue(row,month,product); },0);
+    var booked = financialEntries(rows,'booked',month,product);
+    var cash = financialEntries(rows,'cash',month,product);
+    var bookedTotal = booked.reduce(function(s,entry){ return s + num(entry.value); },0);
+    var cashTotal = cash.reduce(function(s,entry){ return s + num(entry.value); },0);
 
     setText('retFinBookedBadge', booked.length.toLocaleString() + ' · ' + money(bookedTotal));
     setText('retFinCashedBadge', cash.length.toLocaleString() + ' · ' + money(cashTotal));
@@ -7533,8 +7630,8 @@ window.__dashboardAutoRefreshTimer = setInterval(function(){
     ensureExportButton('retFinBookedBadge','booked');
     ensureExportButton('retFinCashedBadge','cash');
 
-    setHtml('retFinBookedBody', booked.length ? booked.map(function(row,i){ return bookedRow(row,i,month,product); }).join('') : empty(8,'No booked rows found for the selected filters.'));
-    setHtml('retFinCashedBody', cash.length ? cash.map(function(row,i){ return cashRow(row,i,month,product); }).join('') : empty(8,'No cash collected rows found for the selected filters.'));
+    setHtml('retFinBookedBody', booked.length ? booked.map(function(entry,i){ return bookedEntryRow(entry,i,month,product); }).join('') : empty(8,'No booked rows found for the selected filters.'));
+    setHtml('retFinCashedBody', cash.length ? cash.map(function(entry,i){ return cashEntryRow(entry,i,month,product); }).join('') : empty(8,'No cash collected rows found for the selected filters.'));
 
     var bt = byId('retFinBookedToggle');
     if(bt){ bt.style.display = booked.length > 10 ? 'block' : 'none'; bt.dataset.open = '0'; bt.textContent = '▼ Show more'; }
@@ -7604,13 +7701,18 @@ window.__dashboardAutoRefreshTimer = setInterval(function(){
     var month = f.month || 'All';
     var product = f.product || 'All';
     var rows = filteredAccounts();
+    var isBookedDetail = kind === 'booked';
+    var isCashDetail = kind === 'cash' || kind === 'collected';
+    var entries = [];
 
-    if(kind === 'booked') rows = uniqueFinancialRows(rows,'booked',month,product);
-    if(kind === 'cash' || kind === 'collected') rows = uniqueFinancialRows(rows,'cash',month,product);
-    if(kind === 'remaining') rows = rows.filter(function(row){ return bookedNotCash(row,month,product) !== 0; });
-    if(kind === 'delayed') rows = rows.filter(function(row){ return renewalStatus(row) === 'Delayed' && accountStatusLabel(row) !== 'Lost' && accountStatusLabel(row) !== 'Lost From 2025'; });
-    if(kind === 'late') rows = rows.filter(function(row){ return renewalStatus(row) === 'Renewed Late'; });
-    if(kind === 'renewal') rows = rows.filter(function(row){ return renewalValue(row,month,product) !== 0; });
+    if(isBookedDetail) entries = financialEntries(rows,'booked',month,product);
+    else if(isCashDetail) entries = financialEntries(rows,'cash',month,product);
+    else {
+      if(kind === 'remaining') rows = rows.filter(function(row){ return bookedNotCash(row,month,product) !== 0; });
+      if(kind === 'delayed') rows = rows.filter(function(row){ return renewalStatus(row) === 'Delayed' && accountStatusLabel(row) !== 'Lost' && accountStatusLabel(row) !== 'Lost From 2025'; });
+      if(kind === 'late') rows = rows.filter(function(row){ return renewalStatus(row) === 'Renewed Late'; });
+      if(kind === 'renewal') rows = rows.filter(function(row){ return renewalValue(row,month,product) !== 0; });
+    }
 
     var old = byId('retFinSheetDetailsBackdrop');
     if(old) old.remove();
@@ -7624,23 +7726,48 @@ window.__dashboardAutoRefreshTimer = setInterval(function(){
       delayed:'Delayed Accounts',
       late:'Renewed Late Accounts'
     };
-    var body = rows.length ?
-      '<div style="overflow-x:auto"><table class="tbl">'+tableHead(['Client','RM 2026','CSM',':Product',':Renewal Month',':Renewal Value',':Booked',':Cash Collected',':Booked Not Cash',':Account Status',':Renewal Status'])+'<tbody>'+
-        rows.slice(0,150).map(function(row,i){ return statusRow(row,i,month,product).replace('class="ret-hidden"',''); }).join('')+
-      '</tbody></table></div>'+(rows.length > 150 ? '<div class="ret-drill-empty" style="padding:12px">Showing first 150 of '+rows.length.toLocaleString()+' rows.</div>' : '')
-      : '<div class="ret-drill-empty">No accounts found for this card with the current filters.</div>';
+
+    var count = (isBookedDetail || isCashDetail) ? entries.length : rows.length;
+    var body;
+    if(isBookedDetail){
+      body = entries.length ?
+        '<div style="overflow-x:auto"><table class="tbl">'+tableHead(['Client','RM 2026','CSM',':Product',':Booking Month',':Booked',':Booked Not Cash',':Account Status',':Renewal Status'])+'<tbody>'+
+          entries.slice(0,150).map(function(entry,i){ return bookedEntryRow(entry,i,month,product).replace('class="ret-hidden"',''); }).join('')+
+        '</tbody></table></div>'+(entries.length > 150 ? '<div class="ret-drill-empty" style="padding:12px">Showing first 150 of '+entries.length.toLocaleString()+' rows.</div>' : '')
+        : '<div class="ret-drill-empty">No booked rows found for this card with the current filters.</div>';
+    }else if(isCashDetail){
+      body = entries.length ?
+        '<div style="overflow-x:auto"><table class="tbl">'+tableHead(['Client','RM 2026','CSM',':Product',':Collection Month',':Cash Collected',':Booked Not Cash',':Account Status',':Renewal Status'])+'<tbody>'+
+          entries.slice(0,150).map(function(entry,i){ return cashEntryRow(entry,i,month,product).replace('class="ret-hidden"',''); }).join('')+
+        '</tbody></table></div>'+(entries.length > 150 ? '<div class="ret-drill-empty" style="padding:12px">Showing first 150 of '+entries.length.toLocaleString()+' rows.</div>' : '')
+        : '<div class="ret-drill-empty">No cash collected rows found for this card with the current filters.</div>';
+    }else{
+      body = rows.length ?
+        '<div style="overflow-x:auto"><table class="tbl">'+tableHead(['Client','RM 2026','CSM',':Product',':Renewal Month',':Renewal Value',':Booked',':Cash Collected',':Booked Not Cash',':Account Status',':Renewal Status'])+'<tbody>'+
+          rows.slice(0,150).map(function(row,i){ return statusRow(row,i,month,product).replace('class="ret-hidden"',''); }).join('')+
+        '</tbody></table></div>'+(rows.length > 150 ? '<div class="ret-drill-empty" style="padding:12px">Showing first 150 of '+rows.length.toLocaleString()+' rows.</div>' : '')
+        : '<div class="ret-drill-empty">No accounts found for this card with the current filters.</div>';
+    }
 
     var node = document.createElement('div');
     node.id = 'retFinSheetDetailsBackdrop';
     node.className = 'acq-detail-backdrop';
     node.onclick = function(e){ if(e.target === node) node.remove(); };
     node.innerHTML = '<div class="acq-detail-card" style="border-top:4px solid var(--cyan)">'+
-      '<div class="acq-detail-hd"><div><div class="acq-detail-title">'+esc(titleMap[kind] || 'Retention Financial Details')+' <span class="badge bb" style="margin-left:8px">'+rows.length.toLocaleString()+' rows</span></div>'+
+      '<div class="acq-detail-hd"><div><div class="acq-detail-title">'+esc(titleMap[kind] || 'Retention Financial Details')+' <span class="badge bb" style="margin-left:8px">'+count.toLocaleString()+' rows</span></div>'+
       '<div class="acq-detail-sub">Month: '+esc(monthLabel(month))+' · Product: '+esc(product)+' · Account Status: '+esc(f.accountStatus||'All')+'</div></div>'+
       '<button class="acq-detail-close" onclick="document.getElementById(\'retFinSheetDetailsBackdrop\')?.remove()">×</button></div>'+
       '<div class="acq-detail-body">'+body+'</div></div>';
     document.body.appendChild(node);
   };
+  function updateSidebarBadge(allRows){
+    var badge = document.querySelector('#side-ret-financial .nav-badge');
+    if(!badge) return;
+    var booked = financialEntries(allRows,'booked','All','All').length;
+    var cash = financialEntries(allRows,'cash','All','All').length;
+    badge.textContent = booked + '/' + cash;
+    badge.title = 'Booked rows / Cash collected rows';
+  }
   function updateSidebarBadge(allRows){
     var badge = document.querySelector('#side-ret-financial .nav-badge');
     if(!badge) return;
@@ -7650,6 +7777,7 @@ window.__dashboardAutoRefreshTimer = setInterval(function(){
     badge.title = 'Booked rows / Cash collected rows';
   }
   window.renderRetentionFinancialDetails = function(){
+    if(document.body) document.body.classList.add('retention-financial-wide');
     ensureLayout();
 
     var all = allAccounts();
@@ -7769,5 +7897,54 @@ body.retention-financial-wide #panel-retention-financial .ret-fin-split{max-widt
 
  
  
+<script id="retention-financial-wide-state-v58">
+(function(){
+  if(window.__retentionFinancialWideStateV58) return;
+  window.__retentionFinancialWideStateV58 = true;
+
+  function syncWideClass(){
+    if(!document.body) return;
+    var active = window.APP_MAIN_PANEL === 'retention' && window.APP_RETENTION_VIEW === 'financial';
+    document.body.classList.toggle('retention-financial-wide', !!active);
+  }
+
+  var oldSwitchMainPanel = window.switchMainPanel;
+  if(typeof oldSwitchMainPanel === 'function' && !oldSwitchMainPanel.__wideStateV58){
+    window.switchMainPanel = function(){
+      var out = oldSwitchMainPanel.apply(this, arguments);
+      setTimeout(syncWideClass, 0);
+      return out;
+    };
+    window.switchMainPanel.__wideStateV58 = true;
+    try{ switchMainPanel = window.switchMainPanel; }catch(e){}
+  }
+
+  var oldSwitchTab = window.switchTab;
+  if(typeof oldSwitchTab === 'function' && !oldSwitchTab.__wideStateV58){
+    window.switchTab = function(){
+      var out = oldSwitchTab.apply(this, arguments);
+      setTimeout(syncWideClass, 0);
+      return out;
+    };
+    window.switchTab.__wideStateV58 = true;
+    try{ switchTab = window.switchTab; }catch(e){}
+  }
+
+  var oldSwitchRetentionFinancial = window.switchRetentionFinancial;
+  if(typeof oldSwitchRetentionFinancial === 'function' && !oldSwitchRetentionFinancial.__wideStateV58){
+    window.switchRetentionFinancial = function(){
+      var out = oldSwitchRetentionFinancial.apply(this, arguments);
+      if(document.body) document.body.classList.add('retention-financial-wide');
+      setTimeout(syncWideClass, 0);
+      return out;
+    };
+    window.switchRetentionFinancial.__wideStateV58 = true;
+    try{ switchRetentionFinancial = window.switchRetentionFinancial; }catch(e){}
+  }
+
+  syncWideClass();
+})();
+</script>
+
 </body>
 </html>
