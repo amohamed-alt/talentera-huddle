@@ -8850,6 +8850,498 @@ body.retention-financial-wide #panel-retention-financial .ret-fin-split{max-widt
   }
 })();
 </script>
+<script>
+(function(){
+  if(window.__retFinBookedFirstRenewalStatusPatch) return;
+  window.__retFinBookedFirstRenewalStatusPatch = true;
 
+  const PANEL_ID = 'panel-retention-financial';
+  const ROW_LIMIT = 10;
+
+  const STATUS_CONFIG = [
+    { key:'Renewed On Time', match:['renewed on time','renewed ontime','on time','renewed'], icon:'✅', badge:'bg', color:'var(--green)' },
+    { key:'Renewed Late', match:['renewed late','late'], icon:'⚠️', badge:'ba', color:'var(--amber)' },
+    { key:'Delayed', match:['delayed','delay'], icon:'🚨', badge:'br', color:'var(--red)' },
+    { key:'Expected To Be Lost', match:['expected to be lost','expected lost','expect to be lost'], icon:'🟠', badge:'ba', color:'var(--amber)' },
+    { key:'Lost From 2025', match:['lost from 2025','lost 2025'], icon:'🔻', badge:'br', color:'var(--red)' },
+    { key:'Lost', match:['lost'], icon:'❌', badge:'br', color:'var(--red)' },
+    { key:'Active', match:['active'], icon:'🟢', badge:'bg', color:'var(--green)' }
+  ];
+
+  function byId(id){ return document.getElementById(id); }
+  function panel(){ return byId(PANEL_ID); }
+
+  function safe(v){
+    return String(v == null ? '' : v)
+      .replace(/&/g,'&amp;')
+      .replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;')
+      .replace(/'/g,'&#039;');
+  }
+
+  function jsArg(v){
+    return JSON.stringify(String(v == null ? '' : v)).replace(/"/g,'&quot;');
+  }
+
+  function norm(v){
+    return String(v == null ? '' : v).trim().toLowerCase().replace(/\s+/g,' ');
+  }
+
+  function number(v){
+    const n = Number(String(v == null ? 0 : v).replace(/[^0-9.-]/g,''));
+    return Number.isFinite(n) ? n : 0;
+  }
+
+  function money(v){
+    return '$' + Math.round(number(v)).toLocaleString();
+  }
+
+  function first(row, keys){
+    const sources = [row, row && row.properties, row && row.fields, row && row.raw].filter(Boolean);
+    for(const key of keys){
+      for(const src of sources){
+        if(Object.prototype.hasOwnProperty.call(src, key)){
+          const val = src[key];
+          if(val !== undefined && val !== null && String(val).trim() !== '') return val;
+        }
+      }
+    }
+    return '';
+  }
+
+  function rowsSource(){
+    const s = (window.R && window.R.retentionSheets2026) || {};
+    if(Array.isArray(s.accounts)) return s.accounts;
+    if(Array.isArray(s.rows)) return s.rows;
+    if(Array.isArray(s.data)) return s.data;
+    return [];
+  }
+
+  function activeMonth(){
+    return (window.RET_FIN_SHEET_FILTERS && window.RET_FIN_SHEET_FILTERS.month) || 'All';
+  }
+
+  function rowRm(row){
+    try{ if(typeof window.rmOf === 'function') return window.rmOf(row) || ''; }catch(e){}
+    return first(row, ['rm2026','rmOwnerName','rm','RM 2026','owner','salesRep','sales_rep']);
+  }
+
+  function rowCsm(row){
+    try{ if(typeof window.csmOf === 'function') return window.csmOf(row) || ''; }catch(e){}
+    return first(row, ['csm','csmOwnerName','CSM','customerSuccessManager']);
+  }
+
+  function rowProduct(row){
+    try{ if(typeof window.productOf === 'function') return window.productOf(row) || ''; }catch(e){}
+    return first(row, ['product','Product','products','solution']);
+  }
+
+  function rowAccountStatus(row){
+    try{ if(typeof window.accountStatusLabel === 'function') return window.accountStatusLabel(row) || ''; }catch(e){}
+    return first(row, ['accountStatus','account_status','abdullahStatus','budgetStatus','Account Status']);
+  }
+
+  function rawRenewalStatus(row){
+    try{ if(typeof window.statusOf === 'function') return window.statusOf(row) || ''; }catch(e){}
+    return first(row, [
+      'calculatedRenewalStatus',
+      'calculated_status',
+      'renewalStatus',
+      'renewal_status',
+      'status',
+      'stageType',
+      'renewalType',
+      'Renewal Status',
+      'Calculated Renewal Status'
+    ]) || rowAccountStatus(row) || 'Active';
+  }
+
+  function renewalStatusKey(row){
+    const s = norm(rawRenewalStatus(row));
+    if(!s) return 'Active';
+
+    for(const cfg of STATUS_CONFIG){
+      if(cfg.key === 'Lost' && (s.includes('expected') || s.includes('2025'))) continue;
+      if(cfg.match.some(m => s.includes(m))) return cfg.key;
+    }
+
+    return rawRenewalStatus(row) || 'Other';
+  }
+
+  function statusCfg(key){
+    return STATUS_CONFIG.find(x => x.key === key) || {
+      key:key,
+      icon:'📌',
+      badge:'bb',
+      color:'var(--blue)'
+    };
+  }
+
+  function rowClient(row){
+    return first(row, ['client','Client','companyName','company','accountName','customer','name']) || '—';
+  }
+
+  function rowGid(row){
+    return first(row, ['gid','GID','companyId','company_id','id','hs_object_id']) || '—';
+  }
+
+  function rowUrl(row){
+    return first(row, ['companyUrl','hubspotUrl','url','recordUrl']) || '';
+  }
+
+  function rowRenewalMonth(row){
+    return first(row, ['renewalMonth','Renewal Month','contractRenewalMonth','month']) || '—';
+  }
+
+  function rowBookingMonth(row){
+    return first(row, ['bookingMonth','Booking Month']) || '—';
+  }
+
+  function rowCollectionMonth(row){
+    return first(row, ['collectionMonth','Collection Month','cashMonth']) || '—';
+  }
+
+  function monthMatches(row, month){
+    if(!month || month === 'All') return true;
+    const m = norm(month);
+    return [rowRenewalMonth(row), rowBookingMonth(row), rowCollectionMonth(row)]
+      .map(norm)
+      .some(x => x === m || x.startsWith(m));
+  }
+
+  function rowRenewalValue(row){
+    try{ if(typeof window.renewalValue === 'function') return window.renewalValue(row, activeMonth()); }catch(e){}
+    return number(first(row, ['renewalValue2026','renewalValue','Renewal Value','renewal_value','amount']));
+  }
+
+  function rowBookedValue(row){
+    try{ if(typeof window.bookingValue === 'function') return window.bookingValue(row, activeMonth()); }catch(e){}
+    return number(first(row, ['bookedValue','bookingValue','Booked','booked','bookingSheetValue']));
+  }
+
+  function rowCollectedValue(row){
+    try{ if(typeof window.monthCellValue === 'function') return window.monthCellValue(row, 'collected', activeMonth()); }catch(e){}
+    return number(first(row, ['collectedValue','Collected','cashCollected','collectionValue','cashedValue']));
+  }
+
+  function rowRemainingValue(row){
+    try{ if(typeof window.remaining === 'function') return window.remaining(row, activeMonth()); }catch(e){}
+    return Math.max(rowBookedValue(row) - rowCollectedValue(row), 0);
+  }
+
+  function rowLink(name, url){
+    if(url && typeof window.recordLink === 'function') return window.recordLink(name, url);
+    return url ? '<a href="' + safe(url) + '" target="_blank" rel="noopener">' + safe(name) + '</a>' : safe(name);
+  }
+
+  function badge(text){
+    const cfg = statusCfg(text);
+    return '<span class="badge ' + cfg.badge + '">' + safe(text) + '</span>';
+  }
+
+  function currentFilteredRows(){
+    const f = window.RET_FIN_SHEET_FILTERS || {};
+    return rowsSource().filter(row => {
+      if((f.month || 'All') !== 'All' && !monthMatches(row, f.month)) return false;
+      if((f.rm || 'All') !== 'All' && String(rowRm(row)) !== String(f.rm)) return false;
+      if((f.csm || 'All') !== 'All' && String(rowCsm(row)) !== String(f.csm)) return false;
+      if((f.product || 'All') !== 'All' && String(rowProduct(row)) !== String(f.product)) return false;
+      if((f.accountStatus || 'All') !== 'All' && String(rowAccountStatus(row)) !== String(f.accountStatus)) return false;
+      if((f.status || 'All') !== 'All' && String(renewalStatusKey(row)) !== String(f.status)) return false;
+      return true;
+    });
+  }
+
+  function statusOptions(){
+    const keys = new Set(STATUS_CONFIG.map(x => x.key));
+    rowsSource().forEach(row => keys.add(renewalStatusKey(row)));
+    return Array.from(keys).filter(Boolean);
+  }
+
+  function ensureRenewalStatusFilter(){
+    const box = byId('retFinSheetFilter');
+    const left = box && box.querySelector('.ret-sheet-filter-left');
+    if(!left || byId('retFinFilterRenewalStatus')) return;
+
+    const span = document.createElement('span');
+    span.className = 'ret-sheet-label';
+    span.textContent = 'Renewal Status';
+
+    const select = document.createElement('select');
+    select.className = 'ret-sheet-select';
+    select.id = 'retFinFilterRenewalStatus';
+
+    const selected = (window.RET_FIN_SHEET_FILTERS && window.RET_FIN_SHEET_FILTERS.status) || 'All';
+
+    select.innerHTML =
+      '<option value="All">All</option>' +
+      statusOptions().map(key =>
+        '<option value="' + safe(key) + '"' + (selected === key ? ' selected' : '') + '>' + safe(key) + '</option>'
+      ).join('');
+
+    select.value = selected;
+
+    select.onchange = function(){
+      window.RET_FIN_SHEET_FILTERS = window.RET_FIN_SHEET_FILTERS || {};
+      window.RET_FIN_SHEET_FILTERS.status = this.value;
+      if(typeof window.renderRetentionFinancialDetails === 'function') window.renderRetentionFinancialDetails();
+    };
+
+    const resetBtn = Array.from(left.querySelectorAll('button')).find(btn => /reset/i.test(btn.textContent || ''));
+    left.insertBefore(span, resetBtn || left.lastElementChild);
+    left.insertBefore(select, resetBtn || left.lastElementChild);
+  }
+
+  function closestSectionByBody(bodyId){
+    const body = byId(bodyId);
+    return body ? body.closest('.ret-fin-subcard,.ret-fin-board,.card,.ret-clean-card,.compact-section') : null;
+  }
+
+  function renameSection(bodyId, title, note){
+    const sec = closestSectionByBody(bodyId);
+    if(!sec) return;
+
+    const titleEl = sec.querySelector('.ret-fin-subtitle,.ret-fin-board-title,.card-title,.ret-clean-title');
+    const noteEl = sec.querySelector('.ret-fin-mini-note,.ret-merged-note,.ret-explain');
+
+    if(titleEl) titleEl.innerHTML = title;
+    if(noteEl && note) noteEl.textContent = note;
+  }
+
+  function reorderBookedBeforeCashed(){
+    const booked = closestSectionByBody('retFinBookedBody');
+    const cashed = closestSectionByBody('retFinCashedBody');
+
+    if(booked && cashed && booked.parentNode === cashed.parentNode && booked.previousElementSibling !== cashed){
+      cashed.parentNode.insertBefore(booked, cashed);
+    }
+
+    renameSection('retFinBookedBody', '📝 Booked From Sheets', 'Source = Retention Accounts Booking. Uses month/product cells from the sheet only.');
+    renameSection('retFinCashedBody', '💵 Collection From Sheets', 'Source = Retention Accounts Collection. Uses month/product cells from the sheet only.');
+  }
+
+  function removeAbdullahStatus(){
+    const root = panel();
+    if(!root) return;
+
+    root.querySelectorAll('.ret-fin-board-title,.ret-fin-subtitle,.card-title,.ret-clean-title,.compact-title').forEach(title => {
+      if(/abdullah\s+account\s+status/i.test(title.textContent || '')){
+        const block = title.closest('.ret-fin-board,.ret-fin-subcard,.card,.ret-clean-card,.compact-section');
+        if(block) block.remove();
+      }
+    });
+  }
+
+  function csvEscape(value){
+    const s = String(value == null ? '' : value);
+    return /[",\n]/.test(s) ? '"' + s.replace(/"/g,'""') + '"' : s;
+  }
+
+  function exportStatusRows(statusKey, rows){
+    const headers = [
+      'Client',
+      'GID',
+      'RM 2026',
+      'CSM',
+      'Product',
+      'Renewal Month',
+      'Booking Month',
+      'Collection Month',
+      'Renewal Value',
+      'Booked',
+      'Collected',
+      'Booked Not Cash',
+      'Account Status',
+      'Renewal Status'
+    ];
+
+    const lines = [headers.join(',')].concat(rows.map(row => [
+      rowClient(row),
+      rowGid(row),
+      rowRm(row),
+      rowCsm(row),
+      rowProduct(row),
+      rowRenewalMonth(row),
+      rowBookingMonth(row),
+      rowCollectionMonth(row),
+      rowRenewalValue(row),
+      rowBookedValue(row),
+      rowCollectedValue(row),
+      rowRemainingValue(row),
+      rowAccountStatus(row),
+      renewalStatusKey(row)
+    ].map(csvEscape).join(',')));
+
+    const blob = new Blob([lines.join('\n')], {type:'text/csv;charset=utf-8;'});
+    const link = document.createElement('a');
+
+    link.href = URL.createObjectURL(blob);
+    link.download = 'retention-renewal-status-' + String(statusKey || 'all').toLowerCase().replace(/[^a-z0-9]+/g,'-') + '.csv';
+
+    document.body.appendChild(link);
+    link.click();
+
+    setTimeout(() => {
+      URL.revokeObjectURL(link.href);
+      link.remove();
+    }, 0);
+  }
+
+  window.exportRetFinRenewalStatus = function(statusKey){
+    const rows = currentFilteredRows().filter(row => statusKey === 'All' || renewalStatusKey(row) === statusKey);
+    exportStatusRows(statusKey, rows);
+  };
+
+  window.toggleRetFinRenewalStatusRows = function(id, btn){
+    const box = byId(id);
+    if(!box || !btn) return;
+
+    const rows = box.querySelectorAll('[data-ret-status-extra="1"]');
+    const open = btn.dataset.open === '1';
+
+    rows.forEach(row => row.style.display = open ? 'none' : '');
+    btn.dataset.open = open ? '0' : '1';
+    btn.textContent = open ? '▼ Show more' : '▲ Show less';
+  };
+
+  function statusRowHtml(row, index){
+    const hidden = index >= ROW_LIMIT;
+    const st = renewalStatusKey(row);
+
+    return '<tr style="' + (hidden ? 'display:none' : '') + '" data-ret-status-extra="' + (hidden ? '1' : '0') + '">' +
+      '<td>' + rowLink(rowClient(row), rowUrl(row)) + '<div style="font-size:10px;color:var(--muted)">GID ' + safe(rowGid(row)) + '</div></td>' +
+      '<td>' + safe(rowRm(row) || '—') + '</td>' +
+      '<td>' + safe(rowCsm(row) || '—') + '</td>' +
+      '<td class="c">' + safe(rowProduct(row) || '—') + '</td>' +
+      '<td class="c">' + safe(rowRenewalMonth(row)) + '</td>' +
+      '<td class="c" style="font-family:var(--mono);font-weight:900;color:var(--cyan)">' + money(rowRenewalValue(row)) + '</td>' +
+      '<td class="c" style="font-family:var(--mono);font-weight:900;color:var(--purple)">' + money(rowBookedValue(row)) + '</td>' +
+      '<td class="c" style="font-family:var(--mono);font-weight:900;color:var(--green)">' + money(rowCollectedValue(row)) + '</td>' +
+      '<td class="c" style="font-family:var(--mono);font-weight:900;color:var(--blue)">' + money(rowRemainingValue(row)) + '</td>' +
+      '<td class="c">' + badge(st) + '</td>' +
+    '</tr>';
+  }
+
+  function renderRenewalStatusSections(){
+    const root = panel();
+    if(!root) return;
+
+    let board = byId('retFinRenewalStatusBoard');
+
+    if(!board){
+      board = document.createElement('div');
+      board.id = 'retFinRenewalStatusBoard';
+      board.className = 'ret-fin-board';
+
+      const ownerGrid = byId('retFinOwnerGrid');
+      const ownerBoard = ownerGrid && ownerGrid.closest('.ret-fin-board,.ret-fin-subcard,.card,.ret-clean-card,.compact-section');
+
+      if(ownerBoard && ownerBoard.parentNode) ownerBoard.parentNode.insertBefore(board, ownerBoard.nextSibling);
+      else root.appendChild(board);
+    }
+
+    const rows = currentFilteredRows();
+    const groups = {};
+
+    rows.forEach(row => {
+      const key = renewalStatusKey(row);
+      if(!groups[key]) groups[key] = [];
+      groups[key].push(row);
+    });
+
+    const order = statusOptions().filter(key => groups[key] && groups[key].length);
+
+    const cards = order.length ? order.map((key, index) => {
+      const cfg = statusCfg(key);
+      const groupRows = groups[key] || [];
+      const total = groupRows.reduce((s,row) => s + rowRenewalValue(row), 0);
+      const tableId = 'retFinRenewalStatusRows' + index;
+
+      return '<div class="ret-fin-subcard" style="border-top:3px solid ' + cfg.color + '">' +
+        '<div class="ret-fin-subhd">' +
+          '<div>' +
+            '<div class="ret-fin-subtitle">' + cfg.icon + ' ' + safe(key) + '</div>' +
+            '<div class="ret-fin-mini-note">Filtered renewal status rows from 1- 2026 Budget + Booking + Collection sheets.</div>' +
+          '</div>' +
+          '<div>' +
+            '<span class="badge ' + cfg.badge + '">' + groupRows.length.toLocaleString() + ' · ' + money(total) + '</span>' +
+            '<button class="ret-export-btn" onclick="exportRetFinRenewalStatus(' + jsArg(key) + ')">ExportExcel</button>' +
+          '</div>' +
+        '</div>' +
+        '<div style="overflow-x:auto">' +
+          '<table class="tbl">' +
+            '<thead>' +
+              '<tr>' +
+                '<th>Client</th>' +
+                '<th>RM 2026</th>' +
+                '<th>CSM</th>' +
+                '<th class="c">Product</th>' +
+                '<th class="c">Renewal Month</th>' +
+                '<th class="c">Renewal Value</th>' +
+                '<th class="c">Booked</th>' +
+                '<th class="c">Collected</th>' +
+                '<th class="c">Booked Not Cash</th>' +
+                '<th class="c">Renewal Status</th>' +
+              '</tr>' +
+            '</thead>' +
+            '<tbody id="' + tableId + '">' + groupRows.map(statusRowHtml).join('') + '</tbody>' +
+          '</table>' +
+        '</div>' +
+        (groupRows.length > ROW_LIMIT ? '<button class="ret-show-btn" onclick="toggleRetFinRenewalStatusRows(' + jsArg(tableId) + ', this)">▼ Show more</button>' : '') +
+      '</div>';
+    }).join('') : '<div class="ret-fin-empty">No renewal status rows found for the selected filters.</div>';
+
+    board.innerHTML =
+      '<div class="ret-fin-board-hd">' +
+        '<div>' +
+          '<div class="ret-fin-board-title">📌 Renewal Status Split</div>' +
+          '<div class="ret-fin-mini-note">All current filters apply here: Month, RM 2026, CSM, Product, Account Status, and Renewal Status.</div>' +
+        '</div>' +
+        '<div>' +
+          '<span class="badge bb">' + rows.length.toLocaleString() + ' filtered accounts</span>' +
+          '<button class="ret-export-btn" onclick="exportRetFinRenewalStatus(' + jsArg('All') + ')">ExportExcel</button>' +
+        '</div>' +
+      '</div>' +
+      '<div class="ret-fin-split" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;padding:14px">' +
+        cards +
+      '</div>';
+  }
+
+  function afterRender(){
+    ensureRenewalStatusFilter();
+    reorderBookedBeforeCashed();
+    removeAbdullahStatus();
+    renderRenewalStatusSections();
+  }
+
+  const oldRender = window.renderRetentionFinancialDetails;
+
+  if(typeof oldRender === 'function' && !oldRender.__retFinBookedFirstRenewalStatusWrapped){
+    window.renderRetentionFinancialDetails = function(){
+      const result = oldRender.apply(this, arguments);
+      setTimeout(afterRender, 0);
+      setTimeout(afterRender, 150);
+      return result;
+    };
+
+    window.renderRetentionFinancialDetails.__retFinBookedFirstRenewalStatusWrapped = true;
+
+    try{
+      renderRetentionFinancialDetails = window.renderRetentionFinancialDetails;
+    }catch(e){}
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', function(){
+      setTimeout(afterRender, 250);
+    });
+  }else{
+    setTimeout(afterRender, 250);
+  }
+
+  setTimeout(afterRender, 800);
+})();
+</script>
 </body>
 </html>
