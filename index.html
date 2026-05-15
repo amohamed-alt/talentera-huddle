@@ -8722,6 +8722,13 @@ body.retention-financial-wide #panel-retention-financial .ret-fin-split{max-widt
     var bookedTotal=rows.reduce(function(t,r){ return t+bookingValue(r,m,p); },0);
     var collectedTotal=rows.reduce(function(t,r){ return t+collectionValue(r,m,p); },0);
     var remainingTotal=Math.max(bookedTotal-collectedTotal,0);
+    var isAllView = (!f.rm || f.rm === 'All') && (!f.csm || f.csm === 'All') && (!f.product || f.product === 'All') && (!f.accountStatus || f.accountStatus === 'All') && (!f.status || f.status === 'All') && (!f.month || f.month === 'All');
+    if(isAllView && s && s.summary){
+      renewalTotal = num(s.summary.totalRenewalValue || s.totalRenewalValue || renewalTotal);
+      bookedTotal = num(s.summary.totalBookedValue || s.summary.totalBookingSheetValue || s.bookingSheetValue || s.bookedValue || bookedTotal);
+      collectedTotal = num(s.summary.totalCollectedValue || s.collectedValue || collectedTotal);
+      remainingTotal = num(s.summary.totalBookedNotCashValue || s.summary.remainingCollection || s.bookedNotCashValue || s.remainingCollection || Math.max(bookedTotal-collectedTotal,0));
+    }
     var bookingRows=rows.filter(function(r){ return bookingValue(r,m,p) !== 0; });
     var collectionRows=rows.filter(function(r){ return collectionValue(r,m,p) !== 0; });
     var delayedRows=rows.filter(function(r){
