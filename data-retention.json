@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-19T19:01:08.167Z",
+  "generatedAt": "2026-05-19T19:06:26.604Z",
   "yesterdayLabel": "Monday, 18 May 2026",
   "view": "retention",
   "logicRules": {
@@ -264164,10 +264164,10 @@
   ],
   "featuresPlanMeta": {
     "rows": 676,
-    "updatedAt": "2026-05-19T19:01:46.857Z"
+    "updatedAt": "2026-05-19T19:07:00.096Z"
   },
   "financeComparison": {
-    "lastUpdated": "2026-05-19T19:01:47.962Z",
+    "lastUpdated": "2026-05-19T19:07:01.104Z",
     "source": "ForReporting",
     "activeMonth": "May",
     "activeMonthIndex": 4,
@@ -265142,7 +265142,7 @@
     }
   },
   "retentionSheets2026": {
-    "lastUpdated": "2026-05-19T19:02:13.747Z",
+    "lastUpdated": "2026-05-19T19:07:29.488Z",
     "sourceSheets": {
       "budget": "1- 2026 Budget / 2026 Budget",
       "booking": "Retention Accounts Booking",
@@ -399070,5 +399070,5 @@
   },
   "aiInsights": [],
   "marketNews": [],
-  "lastUpdated": "2026-05-19T19:02:14.081Z"
+  "lastUpdated": "2026-05-19T19:07:29.791Z"
 }
