@@ -7415,7 +7415,7 @@ window.__dashboardAutoRefreshTimer = setInterval(function(){
     return '<option value="'+esc(value)+'"'+(value===selected?' selected':'')+'>'+esc(label || value)+'</option>';
   }
   function selectHtml(id,key,label,value,options){
-    return '<span class="ret-sheet-label">'+esc(label)+'</span><select class="ret-sheet-select" id="'+esc(id)+'" onchange="retFinSetFilter('+JSON.stringify(key)+',this.value)">'+optionHtml('All','All',value)+options.map(function(o){ return optionHtml(o,o,value); }).join('')+'</select>';
+    return '<span class="ret-sheet-label">'+esc(label)+'</span><select class="ret-sheet-select" id="'+esc(id)+'" data-ret-fin-filter-key="'+esc(key)+'">'+optionHtml('All','All',value)+options.map(function(o){ return optionHtml(o,o,value); }).join('')+'</select>';
   }
   function productOptions(rows){
     var values = {};
@@ -7451,7 +7451,7 @@ window.__dashboardAutoRefreshTimer = setInterval(function(){
         selectHtml('retFinFilterCsm','csm','CSM',f.csm || 'All',unique(allRows,csmOf))+
         selectHtml('retFinFilterProduct','product','Product',f.product || 'All',productOptions(allRows))+
         selectHtml('retFinFilterAccountStatus','accountStatus','Account Status',f.accountStatus || 'All',accountOptions)+
-        '<button class="ret-sheet-select" style="cursor:pointer;color:var(--red);min-width:auto" onclick="retFinResetFilters()">Reset</button>'+
+        '<button class="ret-sheet-select" style="cursor:pointer;color:var(--red);min-width:auto" onclick="window.retFinResetFilters()">Reset</button>'+
         '<span class="ret-sheet-note">Filters apply to cards, owner summary, booked, cash collected, and all status sections.</span>'+
       '</div><span class="badge bb">Financial view</span></div>'+
       '<div class="ret-sheet-source"><span class="ret-sheet-pill">Budget: '+esc(src.budget || '1- 2026 Budget / 2026 Budget')+'</span><span class="ret-sheet-pill">Booking: '+esc(src.booking || 'Retention Accounts Booking')+'</span><span class="ret-sheet-pill">Collection: '+esc(src.collection || 'Retention Accounts Collection')+'</span><span class="ret-sheet-pill">Last updated: '+esc(sheets().lastUpdated || (window.R && window.R.generatedAt) || '—')+'</span></div>'
@@ -7809,6 +7809,9 @@ window.__dashboardAutoRefreshTimer = setInterval(function(){
     badge.title = 'Booked rows / Cash collected rows';
   }
   window.renderRetentionFinancialDetails = function(){
+    keepRetentionFinancialView();
+    var auditBoard = byId('retFinAuditBoard');
+    if(auditBoard) auditBoard.remove();
     if(document.body) document.body.classList.add('retention-financial-wide');
     ensureLayout();
 
@@ -9097,7 +9100,7 @@ body.retention-financial-wide #panel-retention-financial .ret-fin-split{max-widt
     );
   }
   function optionHtml(value,label,selected){ return '<option value="'+esc(value)+'"'+(value===selected?' selected':'')+'>'+esc(label || value)+'</option>'; }
-  function selectHtml(id,key,label,value,options){ return '<span class="ret-sheet-label">'+esc(label)+'</span><select class="ret-sheet-select" id="'+esc(id)+'" onchange="retFinSetFilter('+JSON.stringify(key)+',this.value)">'+optionHtml('All','All',value)+options.map(function(o){ return optionHtml(o,o,value); }).join('')+'</select>'; }
+  function selectHtml(id,key,label,value,options){ return '<span class="ret-sheet-label">'+esc(label)+'</span><select class="ret-sheet-select" id="'+esc(id)+'" data-ret-fin-filter-key="'+esc(key)+'">'+optionHtml('All','All',value)+options.map(function(o){ return optionHtml(o,o,value); }).join('')+'</select>'; }
   function productOptions(rows){ var values = {}; rows.forEach(function(row){ var p = productOf(row); if(p) values[p] = true; }); return Object.keys(values).sort(); }
   function renderFilters(allRows){
     var f = filters();
@@ -9113,7 +9116,7 @@ body.retention-financial-wide #panel-retention-financial .ret-fin-split{max-widt
         selectHtml('retFinFilterCsm','csm','CSM',f.csm || 'All',unique(allRows,csmOf))+
         selectHtml('retFinFilterProduct','product','Product',f.product || 'All',productOptions(allRows))+
         selectHtml('retFinFilterAccountStatus','accountStatus','Account Status',f.accountStatus || 'All',accountOptions)+
-        '<button class="ret-sheet-select" style="cursor:pointer;color:var(--red);min-width:auto" onclick="retFinResetFilters()">Reset</button>'+
+        '<button class="ret-sheet-select" style="cursor:pointer;color:var(--red);min-width:auto" onclick="window.retFinResetFilters()">Reset</button>'+
         '<span class="ret-sheet-note">Filters apply to cards, owner summary, booked, cash collected, and status sections.</span>'+
       '</div><span class="badge bb">Financial view</span></div>'+
       '<div class="ret-sheet-source"><span class="ret-sheet-pill">Budget: '+esc(src.budget || '1- 2026 Budget / 2026 Budget')+'</span><span class="ret-sheet-pill">Booking: '+esc(src.booking || 'Retention Accounts Booking')+'</span><span class="ret-sheet-pill">Collection: '+esc(src.collection || 'Retention Accounts Collection')+'</span><span class="ret-sheet-pill">Last updated: '+esc(sheets().lastUpdated || (window.R && window.R.generatedAt) || '—')+'</span></div>'
@@ -9359,6 +9362,8 @@ body.retention-financial-wide #panel-retention-financial .ret-fin-split{max-widt
   window.renderRetentionFinancialDetails = function(){
     if(document.body) document.body.classList.add('retention-financial-wide');
     ensureLayout();
+    var auditBoardAfterLayout = byId('retFinAuditBoard');
+    if(auditBoardAfterLayout) auditBoardAfterLayout.remove();
     var all = allAccounts();
     renderFilters(all);
     updateSidebarBadge(all);
@@ -9669,9 +9674,9 @@ body.retention-financial-wide #panel-retention-financial .ret-fin-split{max-widt
   }
   function rowPassBase(row){
     var f = filters();
-    if(f.rm && f.rm !== 'All' && rmOf(row) !== f.rm) return false;
-    if(f.csm && f.csm !== 'All' && csmOf(row) !== f.csm) return false;
-    if(f.accountStatus && f.accountStatus !== 'All' && accountStatusLabel(row) !== f.accountStatus) return false;
+    if(f.rm && f.rm !== 'All' && norm(rmOf(row)) !== norm(f.rm)) return false;
+    if(f.csm && f.csm !== 'All' && norm(csmOf(row)) !== norm(f.csm)) return false;
+    if(f.accountStatus && f.accountStatus !== 'All' && norm(accountStatusLabel(row)) !== norm(f.accountStatus)) return false;
     if(f.product && f.product !== 'All' && !productMatches(row,f.product)) return false;
     return true;
   }
@@ -9787,7 +9792,6 @@ body.retention-financial-wide #panel-retention-financial .ret-fin-split{max-widt
     hero.insertAdjacentHTML('afterend',
       '<div id="retFinDynamicLayoutV64">'+
         '<div id="retFinSheetFilter" class="ret-sheet-filter"></div>'+
-        '<div class="ret-fin-board" id="retFinAuditBoard" style="display:none;border-top:3px solid var(--amber)"><div class="ret-fin-board-hd"><div><div class="ret-fin-board-title">🧹 Duplicate Financial Rows Detected</div><div class="ret-fin-mini-note" style="border:0;background:transparent;padding:4px 0 0">Duplicate rows are excluded from totals by client + product + month + value, even when GID is different.</div></div><span class="badge ba" id="retFinAuditBadge">0 duplicates</span></div><div id="retFinAuditBody"></div></div>'+ 
         '<div class="ret-fin-top-grid" id="retFinTopGrid"></div>'+
         '<div class="ret-fin-board" id="retFinOwnerBoard"><div class="ret-fin-board-hd"><div><div class="ret-fin-board-title">📊 Owner Financial Summary</div><div class="ret-fin-mini-note" style="border:0;background:transparent;padding:4px 0 0">Renewal, booked total, cash collected, and booked-not-cash by RM / CSM after the current filters.</div></div><span class="badge bb" id="retFinOwnerBadge">0 owners</span></div><div class="ret-fin-owner-grid" id="retFinOwnerGrid"></div></div>'+
         '<div class="ret-fin-board" id="retFinStatusBoard"><div class="ret-fin-board-hd"><div><div class="ret-fin-board-title">📌 Renewal Status Split</div><div class="ret-fin-mini-note" style="border:0;background:transparent;padding:4px 0 0">Renewal statuses by renewal month after the current filters. Booked total and cash tables below use their own booking / collection month.</div></div><span class="badge bb" id="retFinStatusBadge">0 accounts</span></div>'+
@@ -9798,7 +9802,7 @@ body.retention-financial-wide #panel-retention-financial .ret-fin-split{max-widt
     );
   }
   function optionHtml(value,label,selected){ return '<option value="'+esc(value)+'"'+(value===selected?' selected':'')+'>'+esc(label || value)+'</option>'; }
-  function selectHtml(id,key,label,value,options){ return '<span class="ret-sheet-label">'+esc(label)+'</span><select class="ret-sheet-select" id="'+esc(id)+'" onchange="retFinSetFilter('+JSON.stringify(key)+',this.value)">'+optionHtml('All','All',value)+options.map(function(o){ return optionHtml(o,o,value); }).join('')+'</select>'; }
+  function selectHtml(id,key,label,value,options){ return '<span class="ret-sheet-label">'+esc(label)+'</span><select class="ret-sheet-select" id="'+esc(id)+'" data-ret-fin-filter-key="'+esc(key)+'">'+optionHtml('All','All',value)+options.map(function(o){ return optionHtml(o,o,value); }).join('')+'</select>'; }
   function renderFilters(allRows){
     var f = filters();
     var monthOptions = MONTHS.filter(function(m){ return m.key !== 'All'; }).map(function(m){ return m.key; });
@@ -9812,7 +9816,7 @@ body.retention-financial-wide #panel-retention-financial .ret-fin-split{max-widt
         selectHtml('retFinFilterCsm','csm','CSM',f.csm || 'All',unique(allRows,csmOf))+
         selectHtml('retFinFilterProduct','product','Product',f.product || 'All',productOptions(allRows))+
         selectHtml('retFinFilterAccountStatus','accountStatus','Account Status',f.accountStatus || 'All',accountOptions)+
-        '<button class="ret-sheet-select" style="cursor:pointer;color:var(--red);min-width:auto" onclick="retFinResetFilters()">Reset</button>'+ 
+        '<button class="ret-sheet-select" style="cursor:pointer;color:var(--red);min-width:auto" onclick="window.retFinResetFilters()">Reset</button>'+ 
         '<span class="ret-sheet-note">Filters recalculate every number below without moving the page.</span>'+ 
       '</div><span class="badge bb">Financial view</span></div>'+ 
       '<div class="ret-sheet-source"><span class="ret-sheet-pill">Budget: '+esc(src.budget || '1- 2026 Budget / 2026 Budget')+'</span><span class="ret-sheet-pill">Booking: '+esc(src.booking || 'Retention Accounts Booking')+'</span><span class="ret-sheet-pill">Collection: '+esc(src.collection || 'Retention Accounts Collection')+'</span><span class="ret-sheet-pill">Last updated: '+esc(sheets().lastUpdated || currentR().generatedAt || '—')+'</span></div>'
@@ -9926,8 +9930,22 @@ body.retention-financial-wide #panel-retention-financial .ret-fin-split{max-widt
     rows.forEach(function(row){ row.style.display = open ? 'none' : 'table-row'; });
     if(btn){ btn.dataset.open = open ? '0' : '1'; btn.textContent = open ? '▼ Show more' : '▲ Show less'; }
   };
+  function keepRetentionFinancialView(){
+    window.APP_MAIN_PANEL = 'retention';
+    window.APP_RETENTION_VIEW = 'financial';
+    window.APP_RETENTION_OWNER_ID = null;
+    try{ APP_MAIN_PANEL = 'retention'; APP_RETENTION_VIEW = 'financial'; APP_RETENTION_OWNER_ID = null; }catch(e){}
+    document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+    var panel = byId('panel-retention-financial'); if(panel) panel.classList.add('active');
+    var tabs = byId('tabsBar'); if(tabs) tabs.style.display = 'none';
+    document.querySelectorAll('.nav-item').forEach(function(n){ n.classList.remove('active'); });
+    var ret = byId('side-retention'); if(ret) ret.classList.add('active');
+    var fin = byId('side-ret-financial'); if(fin) fin.classList.add('active');
+    var title = byId('topbarTitle'); if(title) title.textContent = 'Retention · Financial Details';
+  }
   window.retFinSetFilter = function(key,value){
     var y = window.scrollY;
+    keepRetentionFinancialView();
     window.RET_FIN_SHEET_FILTERS = Object.assign({month:'All',rm:'All',csm:'All',product:'All',accountStatus:'All'}, window.RET_FIN_SHEET_FILTERS || {});
     window.RET_FIN_SHEET_FILTERS[key] = value || 'All';
     window.renderRetentionFinancialDetails();
@@ -9935,6 +9953,7 @@ body.retention-financial-wide #panel-retention-financial .ret-fin-split{max-widt
   };
   window.retFinResetFilters = function(){
     var y = window.scrollY;
+    keepRetentionFinancialView();
     window.RET_FIN_SHEET_FILTERS = {month:'All',rm:'All',csm:'All',product:'All',accountStatus:'All'};
     window.renderRetentionFinancialDetails();
     requestAnimationFrame(function(){ window.scrollTo(0,y); });
@@ -9972,7 +9991,7 @@ body.retention-financial-wide #panel-retention-financial .ret-fin-split{max-widt
     renderFilters(all);
     var rows = filteredAccounts();
     var f = filters();
-    renderDuplicateAudit(rawFilteredAccounts(), f.month || 'All', f.product || 'All');
+    // Duplicate audit UI intentionally disabled by request. Totals still use the existing de-duplicated account logic.
     if(!all.length){
       setHtml('retFinTopGrid','<div class="ret-fin-card" style="--fc:var(--red);grid-column:1/-1"><div class="ret-fin-card-v">No Data</div><div class="ret-fin-card-l">Retention financial source is empty</div><div class="ret-fin-card-s">Run the retention n8n workflow and make sure data-retention.json contains retentionSheets2026.accounts.</div></div>');
       setHtml('retFinOwnerGrid','<div class="ret-fin-empty" style="grid-column:1/-1">No owner summary because retention financial data is empty.</div>');
@@ -10161,6 +10180,138 @@ body.retention-financial-wide #panel-retention-financial .ret-fin-split{max-widt
   }
   if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else setTimeout(init, 0);
+})();
+</script>
+
+
+<script id="retention-financial-final-guard-no-audit-patch">
+(function(){
+  if(window.__RETENTION_FINANCIAL_FINAL_GUARD_NO_AUDIT_PATCH__) return;
+  window.__RETENTION_FINANCIAL_FINAL_GUARD_NO_AUDIT_PATCH__ = true;
+
+  function byId(id){ return document.getElementById(id); }
+  function keepFinancialActive(){
+    window.APP_MAIN_PANEL = 'retention';
+    window.APP_RETENTION_VIEW = 'financial';
+    window.APP_RETENTION_OWNER_ID = null;
+    try{ APP_MAIN_PANEL = 'retention'; APP_RETENTION_VIEW = 'financial'; APP_RETENTION_OWNER_ID = null; }catch(e){}
+    document.querySelectorAll('.panel').forEach(function(panel){ panel.classList.remove('active'); });
+    var financialPanel = byId('panel-retention-financial');
+    if(financialPanel) financialPanel.classList.add('active');
+    var tabs = byId('tabsBar');
+    if(tabs) tabs.style.display = 'none';
+    document.querySelectorAll('.nav-item').forEach(function(item){ item.classList.remove('active'); });
+    var retentionMain = byId('side-retention');
+    if(retentionMain) retentionMain.classList.add('active');
+    var retentionFinancial = byId('side-ret-financial');
+    if(retentionFinancial) retentionFinancial.classList.add('active');
+    var title = byId('topbarTitle');
+    if(title) title.textContent = 'Retention · Financial Details';
+  }
+  function removeAudit(){
+    document.querySelectorAll('#retFinAuditBoard').forEach(function(el){ el.remove(); });
+  }
+  function bindFilters(){
+    var map = {
+      retFinFilterMonth:'month',
+      retFinFilterRm:'rm',
+      retFinFilterCsm:'csm',
+      retFinFilterProduct:'product',
+      retFinFilterAccountStatus:'accountStatus'
+    };
+    Object.keys(map).forEach(function(id){
+      var el = byId(id);
+      if(!el || el.__retFinFinalBound) return;
+      el.__retFinFinalBound = true;
+      el.addEventListener('change', function(){
+        if(typeof window.retFinSetFilter === 'function') window.retFinSetFilter(map[id], el.value || 'All');
+      });
+    });
+  }
+
+  var oldRender = window.renderRetentionFinancialDetails;
+  if(typeof oldRender === 'function' && !oldRender.__retFinFinalGuardNoAudit){
+    window.renderRetentionFinancialDetails = function(){
+      keepFinancialActive();
+      var out = oldRender.apply(this, arguments);
+      removeAudit();
+      bindFilters();
+      keepFinancialActive();
+      return out;
+    };
+    window.renderRetentionFinancialDetails.__retFinFinalGuardNoAudit = true;
+    try{ renderRetentionFinancialDetails = window.renderRetentionFinancialDetails; }catch(e){}
+  }
+
+  var oldSwitch = window.switchRetentionFinancial;
+  if(typeof oldSwitch === 'function' && !oldSwitch.__retFinFinalGuardNoAudit){
+    window.switchRetentionFinancial = function(){
+      keepFinancialActive();
+      var out = oldSwitch.apply(this, arguments);
+      setTimeout(function(){
+        keepFinancialActive();
+        removeAudit();
+        bindFilters();
+      }, 0);
+      return out;
+    };
+    window.switchRetentionFinancial.__retFinFinalGuardNoAudit = true;
+    try{ switchRetentionFinancial = window.switchRetentionFinancial; }catch(e){}
+  }
+
+  var oldRestore = window.restoreCurrentView;
+  if(typeof oldRestore === 'function' && !oldRestore.__retFinFinalGuardNoAudit){
+    window.restoreCurrentView = function(){
+      if(window.APP_MAIN_PANEL === 'retention' && window.APP_RETENTION_VIEW === 'financial'){
+        keepFinancialActive();
+        if(typeof window.renderRetentionFinancialDetails === 'function') window.renderRetentionFinancialDetails();
+        return;
+      }
+      return oldRestore.apply(this, arguments);
+    };
+    window.restoreCurrentView.__retFinFinalGuardNoAudit = true;
+    try{ restoreCurrentView = window.restoreCurrentView; }catch(e){}
+  }
+
+  var oldLoad = window.loadData;
+  if(typeof oldLoad === 'function' && !oldLoad.__retFinFinalGuardNoAudit){
+    window.loadData = async function(){
+      var wasFinancial = window.APP_MAIN_PANEL === 'retention' && window.APP_RETENTION_VIEW === 'financial';
+      var scrollY = window.scrollY;
+      var out = oldLoad.apply(this, arguments);
+      if(out && typeof out.then === 'function') await out;
+      if(wasFinancial || (window.APP_MAIN_PANEL === 'retention' && window.APP_RETENTION_VIEW === 'financial')){
+        keepFinancialActive();
+        if(typeof window.renderRetentionFinancialDetails === 'function') window.renderRetentionFinancialDetails();
+        requestAnimationFrame(function(){ window.scrollTo(0, scrollY); });
+      }
+      removeAudit();
+      bindFilters();
+      return out;
+    };
+    window.loadData.__retFinFinalGuardNoAudit = true;
+    try{ loadData = window.loadData; }catch(e){}
+  }
+
+  document.addEventListener('change', function(e){
+    var id = e.target && e.target.id;
+    var map = {
+      retFinFilterMonth:'month',
+      retFinFilterRm:'rm',
+      retFinFilterCsm:'csm',
+      retFinFilterProduct:'product',
+      retFinFilterAccountStatus:'accountStatus'
+    };
+    if(map[id] && typeof window.retFinSetFilter === 'function'){
+      keepFinancialActive();
+    }
+  }, true);
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', function(){ removeAudit(); bindFilters(); });
+  }else{
+    setTimeout(function(){ removeAudit(); bindFilters(); }, 0);
+  }
 })();
 </script>
 
