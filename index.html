@@ -9400,11 +9400,11 @@ body.retention-financial-wide #panel-retention-financial .ret-fin-split{max-widt
 </script>
 
 
-<script id="retention-financial-dynamic-filters-v63">
+<script id="retention-financial-dynamic-filters-v64">
 (function(){
-  if(window.__RETENTION_FINANCIAL_DYNAMIC_FILTERS_V63__) return;
-  window.__RETENTION_FINANCIAL_DYNAMIC_FILTERS_V63__ = true;
-  window.DASHBOARD_CLEAN_VERSION = 'retention-financial-dynamic-filters-v63';
+  if(window.__RETENTION_FINANCIAL_DYNAMIC_FILTERS_V64__) return;
+  window.__RETENTION_FINANCIAL_DYNAMIC_FILTERS_V64__ = true;
+  window.DASHBOARD_CLEAN_VERSION = 'retention-financial-dynamic-filters-v64';
 
   var MONTHS = [
     {key:'All',label:'All Months',i:0},
@@ -9684,28 +9684,15 @@ body.retention-financial-wide #panel-retention-financial .ret-fin-split{max-widt
     return Object.keys(groups).map(function(k){ var g = groups[k]; g.remaining = Math.max(g.booked - g.cash,0); return g; }).filter(function(g){ return g.remaining > 0; });
   }
   function topTotals(rows, month, product){
-    if(filtersAreDefault()){
-      var s = summary();
-      return {
-        renewal:num(s.totalRenewalValue || sheets().renewalValue),
-        booked:num(s.totalBookedValue || s.totalBookingSheetValue || sheets().bookedValue || sheets().bookingSheetValue),
-        cash:num(s.totalCollectedValue || sheets().collectedValue),
-        remaining:num(s.remainingCollection || s.totalBookedNotCashValue || sheets().remainingCollection || sheets().bookedNotCashValue),
-        delayed:num(s.delayedAccounts),
-        late:num(s.renewedLateAccounts),
-        accounts:num(s.totalAccounts) || rows.length,
-        bookedRows:num(s.bookedAccounts || s.bookingSheetAccounts) || financialEntries(rows,'booked','All','All').length,
-        cashRows:num(s.collectedAccounts) || financialEntries(rows,'cash','All','All').length
-      };
-    }
     var booked = financialEntries(rows,'booked',month,product);
     var cash = financialEntries(rows,'cash',month,product);
     var due = dueAccounts(rows,month,product);
+    var rem = remainingGroups(rows,month,product);
     return {
       renewal:due.reduce(function(sum,row){ return sum + renewalValue(row,month,product); },0),
       booked:booked.reduce(function(sum,e){ return sum + num(e.value); },0),
       cash:cash.reduce(function(sum,e){ return sum + num(e.value); },0),
-      remaining:remainingGroups(rows,month,product).reduce(function(sum,g){ return sum + num(g.remaining); },0),
+      remaining:rem.reduce(function(sum,g){ return sum + num(g.remaining); },0),
       delayed:due.filter(function(row){ return renewalStatus(row) === 'Delayed' && !finalLost(row); }).length,
       late:due.filter(function(row){ return renewalStatus(row) === 'Renewed Late'; }).length,
       accounts:due.length || rows.length,
@@ -9744,16 +9731,16 @@ body.retention-financial-wide #panel-retention-financial .ret-fin-split{max-widt
     var sub = hero.querySelector('.ret-fin-hero-sub');
     if(title) title.textContent = 'Retention Financial Details';
     if(sub) sub.textContent = 'Budget + Booking + Collection sheets. Month, RM 2026, CSM, Product, and Account Status filters recalculate all cards, owner summary, booked rows, cash rows, and renewal status split.';
-    var layout = byId('retFinDynamicLayoutV63');
+    var layout = byId('retFinDynamicLayoutV64');
     if(layout) return;
     Array.from(panel.children).forEach(function(child){ if(child !== hero) child.remove(); });
     hero.insertAdjacentHTML('afterend',
-      '<div id="retFinDynamicLayoutV63">'+
+      '<div id="retFinDynamicLayoutV64">'+
         '<div id="retFinSheetFilter" class="ret-sheet-filter"></div>'+
         '<div class="ret-fin-top-grid" id="retFinTopGrid"></div>'+
-        '<div class="ret-fin-board" id="retFinOwnerBoard"><div class="ret-fin-board-hd"><div><div class="ret-fin-board-title">📊 Owner Financial Summary</div><div class="ret-fin-mini-note" style="border:0;background:transparent;padding:4px 0 0">Renewal, booked, cash collected, and booked not cash by RM / CSM after the current filters.</div></div><span class="badge bb" id="retFinOwnerBadge">0 owners</span></div><div class="ret-fin-owner-grid" id="retFinOwnerGrid"></div></div>'+
-        '<div class="ret-fin-board" id="retFinStatusBoard"><div class="ret-fin-board-hd"><div><div class="ret-fin-board-title">📌 Renewal Status Split</div><div class="ret-fin-mini-note" style="border:0;background:transparent;padding:4px 0 0">Renewal statuses by renewal month after the current filters. Booked and cash tables below use their own booking / collection month.</div></div><span class="badge bb" id="retFinStatusBadge">0 accounts</span></div>'+
-          '<div class="ret-fin-main-split"><div class="ret-fin-subcard" style="--sc:var(--purple)"><div class="ret-fin-subhd"><div class="ret-fin-subtitle" style="color:var(--purple)">📝 Booked Value</div><span class="badge bp" id="retFinBookedBadge"></span></div><div class="ret-fin-mini-note">Filtered by booking month and product from Retention Accounts Booking.</div><div style="overflow-x:auto"><table class="tbl" id="retFinBookedTable">'+tableHead(['Client','RM 2026','CSM',':Product',':Booking Month',':Booked',':Booked Not Cash',':Renewal Status'])+'<tbody id="retFinBookedBody"></tbody></table></div><button class="ret-show-btn" id="retFinBookedToggle" onclick="retFinToggleRows(\'retFinBookedBody\',this)">▼ Show more</button></div>'+
+        '<div class="ret-fin-board" id="retFinOwnerBoard"><div class="ret-fin-board-hd"><div><div class="ret-fin-board-title">📊 Owner Financial Summary</div><div class="ret-fin-mini-note" style="border:0;background:transparent;padding:4px 0 0">Renewal, booked total, cash collected, and booked-not-cash by RM / CSM after the current filters.</div></div><span class="badge bb" id="retFinOwnerBadge">0 owners</span></div><div class="ret-fin-owner-grid" id="retFinOwnerGrid"></div></div>'+
+        '<div class="ret-fin-board" id="retFinStatusBoard"><div class="ret-fin-board-hd"><div><div class="ret-fin-board-title">📌 Renewal Status Split</div><div class="ret-fin-mini-note" style="border:0;background:transparent;padding:4px 0 0">Renewal statuses by renewal month after the current filters. Booked total and cash tables below use their own booking / collection month.</div></div><span class="badge bb" id="retFinStatusBadge">0 accounts</span></div>'+
+          '<div class="ret-fin-main-split"><div class="ret-fin-subcard" style="--sc:var(--purple)"><div class="ret-fin-subhd"><div class="ret-fin-subtitle" style="color:var(--purple)">📝 Booked Value Total</div><span class="badge bp" id="retFinBookedBadge"></span></div><div class="ret-fin-mini-note">Filtered by booking month and product from Retention Accounts Booking.</div><div style="overflow-x:auto"><table class="tbl" id="retFinBookedTable">'+tableHead(['Client','RM 2026','CSM',':Product',':Booking Month',':Booked',':Booked Not Cash',':Renewal Status'])+'<tbody id="retFinBookedBody"></tbody></table></div><button class="ret-show-btn" id="retFinBookedToggle" onclick="retFinToggleRows(\'retFinBookedBody\',this)">▼ Show more</button></div>'+
           '<div class="ret-fin-subcard" style="--sc:var(--green)"><div class="ret-fin-subhd"><div class="ret-fin-subtitle" style="color:var(--green)">💵 Cash Collected</div><span class="badge bg" id="retFinCashedBadge"></span></div><div class="ret-fin-mini-note">Filtered by collection month and product from Retention Accounts Collection.</div><div style="overflow-x:auto"><table class="tbl" id="retFinCashedTable">'+tableHead(['Client','RM 2026','CSM',':Product',':Collection Month',':Cash Collected',':Booked Not Cash',':Renewal Status'])+'<tbody id="retFinCashedBody"></tbody></table></div><button class="ret-show-btn" id="retFinCashedToggle" onclick="retFinToggleRows(\'retFinCashedBody\',this)">▼ Show more</button></div></div>'+
           '<div class="ret-fin-status-grid-clean" id="retFinStatusGrid"></div></div>'+ 
       '</div>'
@@ -9785,9 +9772,9 @@ body.retention-financial-wide #panel-retention-financial .ret-fin-split{max-widt
     var t = topTotals(rows,month,product);
     var cards = [
       {k:'renewal',v:money(t.renewal),l:'Renewal Value',s:t.accounts.toLocaleString()+' accounts · '+monthLabel(month),c:'var(--cyan)',i:'💎'},
-      {k:'booked',v:money(t.booked),l:'Booked Value',s:t.bookedRows.toLocaleString()+' rows · '+monthLabel(month),c:'var(--purple)',i:'📝'},
-      {k:'cash',v:money(t.cash),l:'Cash Collected',s:t.cashRows.toLocaleString()+' rows · '+monthLabel(month),c:'var(--green)',i:'💵'},
-      {k:'remaining',v:money(t.remaining),l:'Booked Not Cash',s:'Booked - Cash, never below zero',c:'var(--blue)',i:'⏳'},
+      {k:'booked',v:money(t.booked),l:'Booked Value Total',s:t.bookedRows.toLocaleString()+' booking rows · '+monthLabel(month),c:'var(--purple)',i:'📝'},
+      {k:'cash',v:money(t.cash),l:'Cash Collected',s:t.cashRows.toLocaleString()+' collection rows · '+monthLabel(month),c:'var(--green)',i:'💵'},
+      {k:'remaining',v:money(t.remaining),l:'Booked Not Cash',s:'Per account/product: booked - cash, never below zero',c:'var(--blue)',i:'⏳'},
       {k:'delayed',v:t.delayed.toLocaleString(),l:'Delayed Accounts',s:'Due in '+monthLabel(month)+' · excludes lost',c:'var(--red)',i:'🚨'},
       {k:'late',v:t.late.toLocaleString(),l:'Renewed Late',s:'Due in '+monthLabel(month),c:'var(--amber)',i:'⚠️'}
     ];
@@ -9806,7 +9793,7 @@ body.retention-financial-wide #panel-retention-financial .ret-fin-split{max-widt
   function renderOwnerSummary(rows){
     var f = filters(), month = f.month || 'All', product = f.product || 'All';
     var owners = ownerSummary(rows,month,product);
-    var head = ['Owner','Role','Accounts','Renewal','Booked','Cash Collected','Booked Not Cash'];
+    var head = ['Owner','Role','Accounts','Renewal','Booked Total','Cash Collected','Booked Not Cash'];
     setText('retFinOwnerBadge', owners.length.toLocaleString() + ' owners · ' + monthLabel(month));
     ensureExportButton('retFinOwnerBadge','owners');
     setHtml('retFinOwnerGrid', head.map(function(h){ return '<div class="ret-fin-owner-cell ret-fin-owner-head">'+esc(h)+'</div>'; }).join('') + (owners.length ? owners.map(function(o){
@@ -9832,7 +9819,6 @@ body.retention-financial-wide #panel-retention-financial .ret-fin-split{max-widt
     var cash = financialEntries(rows,'cash',month,product);
     var bookedTotal = booked.reduce(function(s,e){ return s + num(e.value); },0);
     var cashTotal = cash.reduce(function(s,e){ return s + num(e.value); },0);
-    if(filtersAreDefault()){ var s = summary(); bookedTotal = num(s.totalBookedValue || s.totalBookingSheetValue || bookedTotal); cashTotal = num(s.totalCollectedValue || cashTotal); }
     setText('retFinBookedBadge', booked.length.toLocaleString() + ' · ' + money(bookedTotal));
     setText('retFinCashedBadge', cash.length.toLocaleString() + ' · ' + money(cashTotal));
     ensureExportButton('retFinBookedBadge','booked');
@@ -9852,7 +9838,7 @@ body.retention-financial-wide #panel-retention-financial .ret-fin-split{max-widt
     Object.keys(grouped).forEach(function(st){ if(order.indexOf(st) < 0) order.push(st); });
     setText('retFinStatusBadge', statusRows.length.toLocaleString() + ' renewal rows');
     setHtml('retFinStatusGrid', order.filter(function(st){ return grouped[st] && grouped[st].length; }).map(function(st,index){
-      var list = grouped[st], color = statusColor(st), bodyId = 'retFinStatusBodyV63'+index;
+      var list = grouped[st], color = statusColor(st), bodyId = 'retFinStatusBodyV64'+index;
       var total = list.reduce(function(sum,row){ return sum + renewalValue(row,month,product); },0);
       var more = list.length > 10 ? '<button class="ret-show-btn" onclick="retFinToggleRows(\''+bodyId+'\',this)">▼ Show more</button>' : '';
       return '<div class="ret-fin-subcard" data-ret-status-card="1" style="--sc:'+color+'"><div class="ret-fin-subhd"><div class="ret-fin-subtitle" style="color:'+color+'">📌 '+esc(st)+'</div><span class="badge '+statusClass(st)+'">'+list.length.toLocaleString()+' · '+money(total)+'</span></div><div class="ret-fin-mini-note">Renewal month: '+esc(monthLabel(month))+'</div><div style="overflow-x:auto"><table class="tbl">'+tableHead(['Client','RM 2026','CSM',':Product',':Renewal Month',':Renewal Value',':Booked',':Cash Collected',':Booked Not Cash',':Account Status',':Renewal Status'])+'<tbody id="'+bodyId+'">'+list.map(function(row,i){ return statusRow(row,i,month,product); }).join('')+'</tbody></table></div><div style="display:flex;justify-content:flex-end;padding:8px 12px;border-top:1px solid var(--border)"><button class="ret-export-btn" onclick="retFinExport(\'status\','+JSON.stringify(st).replace(/"/g,'&quot;')+')">Export Excel</button></div>'+more+'</div>';
@@ -9869,7 +9855,7 @@ body.retention-financial-wide #panel-retention-financial .ret-fin-split{max-widt
     var f = filters(), month = f.month || 'All', product = f.product || 'All', rows = filteredAccounts();
     if(kind === 'booked'){
       var booked = financialEntries(rows,'booked',month,product);
-      exportRows('retention-booked-value',['Client','GID','RM 2026','CSM','Product','Booking Month','Booked','Booked Not Cash','Account Status','Renewal Status'],booked.map(function(e){ return [clientOf(e.row),gidOf(e.row),rmOf(e.row),csmOf(e.row),e.product,e.month,Math.round(e.value),Math.round(bookedNotCashForEntry(e,month,product)),accountStatusLabel(e.row),renewalStatus(e.row)]; })); return;
+      exportRows('retention-booked-value',['Client','GID','RM 2026','CSM','Product','Booking Month','Booked Total','Booked Not Cash','Account Status','Renewal Status'],booked.map(function(e){ return [clientOf(e.row),gidOf(e.row),rmOf(e.row),csmOf(e.row),e.product,e.month,Math.round(e.value),Math.round(bookedNotCashForEntry(e,month,product)),accountStatusLabel(e.row),renewalStatus(e.row)]; })); return;
     }
     if(kind === 'cash'){
       var cash = financialEntries(rows,'cash',month,product);
@@ -9877,10 +9863,10 @@ body.retention-financial-wide #panel-retention-financial .ret-fin-split{max-widt
     }
     if(kind === 'owners'){
       var owners = ownerSummary(rows,month,product);
-      exportRows('retention-owner-financial-summary',['Owner','Role','Accounts','Renewal','Booked','Cash Collected','Booked Not Cash'],owners.map(function(o){ return [o.name,o.role,o.accountCount,Math.round(o.renewal),Math.round(o.booked),Math.round(o.cash),Math.round(o.remaining)]; })); return;
+      exportRows('retention-owner-financial-summary',['Owner','Role','Accounts','Renewal','Booked Total','Cash Collected','Booked Not Cash'],owners.map(function(o){ return [o.name,o.role,o.accountCount,Math.round(o.renewal),Math.round(o.booked),Math.round(o.cash),Math.round(o.remaining)]; })); return;
     }
     if(kind === 'status' && status) rows = dueAccounts(rows,month,product).filter(function(row){ return renewalStatus(row) === status; });
-    exportRows('retention-'+kind+(status?'-'+String(status).toLowerCase().replace(/[^a-z0-9]+/g,'-'):''),['Client','GID','RM 2026','CSM','Product','Renewal Month','Booking Month','Collection Month','Renewal Value','Booked','Cash Collected','Booked Not Cash','Account Status','Renewal Status'],rows.map(function(row){ return rawExportRow(row,month,product); }));
+    exportRows('retention-'+kind+(status?'-'+String(status).toLowerCase().replace(/[^a-z0-9]+/g,'-'):''),['Client','GID','RM 2026','CSM','Product','Renewal Month','Booking Month','Collection Month','Renewal Value','Booked Total','Cash Collected','Booked Not Cash','Account Status','Renewal Status'],rows.map(function(row){ return rawExportRow(row,month,product); }));
   };
   window.retFinToggleRows = function(bodyId,btn){
     var body = byId(bodyId); if(!body) return;
@@ -9904,7 +9890,7 @@ body.retention-financial-wide #panel-retention-financial .ret-fin-split{max-widt
   };
   window.openRetFinSheetDetails = function(kind){
     var f = filters(), month = f.month || 'All', product = f.product || 'All', rows = filteredAccounts();
-    var titleMap = {renewal:'Renewal Value Accounts',booked:'Booked Value Accounts',cash:'Cash Collected Accounts',remaining:'Booked Not Cash Accounts',delayed:'Delayed Accounts',late:'Renewed Late Accounts'};
+    var titleMap = {renewal:'Renewal Value Accounts',booked:'Booked Value Total Accounts',cash:'Cash Collected Accounts',remaining:'Booked Not Cash Accounts',delayed:'Delayed Accounts',late:'Renewed Late Accounts'};
     var body = '', count = 0;
     if(kind === 'booked'){
       var booked = financialEntries(rows,'booked',month,product); count = booked.length;
@@ -9949,7 +9935,7 @@ body.retention-financial-wide #panel-retention-financial .ret-fin-split{max-widt
     var topbarSub = byId('topbarSub');
     if(topbarSub && window.APP_MAIN_PANEL === 'retention' && window.APP_RETENTION_VIEW === 'financial') topbarSub.textContent = 'Budget + Booking + Collection · dynamic filters are applied to every number below';
     var sideBadge = document.querySelector('#side-ret-financial .nav-badge');
-    if(sideBadge){ var s = summary(); sideBadge.textContent = (num(s.bookedAccounts || s.bookingSheetAccounts) || financialEntries(all,'booked','All','All').length) + '/' + (num(s.collectedAccounts) || financialEntries(all,'cash','All','All').length); }
+    if(sideBadge){ sideBadge.textContent = financialEntries(all,'booked','All','All').length + '/' + financialEntries(all,'cash','All','All').length; }
   };
   var previousSwitchRetentionFinancial = window.switchRetentionFinancial;
   window.switchRetentionFinancial = function(){
@@ -9960,7 +9946,7 @@ body.retention-financial-wide #panel-retention-financial .ret-fin-split{max-widt
   };
   try{ switchRetentionFinancial = window.switchRetentionFinancial; }catch(e){}
   var previousLoadData = window.loadData;
-  if(typeof previousLoadData === 'function' && !previousLoadData.__retFinDynamicFiltersV63){
+  if(typeof previousLoadData === 'function' && !previousLoadData.__retFinDynamicFiltersV64){
     window.loadData = async function(){
       var out = previousLoadData.apply(this,arguments);
       if(out && typeof out.then === 'function') await out;
@@ -9968,7 +9954,7 @@ body.retention-financial-wide #panel-retention-financial .ret-fin-split{max-widt
       if(window.APP_MAIN_PANEL === 'retention' && window.APP_RETENTION_VIEW === 'financial') setTimeout(window.renderRetentionFinancialDetails,0);
       return out;
     };
-    window.loadData.__retFinDynamicFiltersV63 = true;
+    window.loadData.__retFinDynamicFiltersV64 = true;
     try{ loadData = window.loadData; }catch(e){}
   }
   if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded',function(){ if(window.APP_MAIN_PANEL === 'retention' && window.APP_RETENTION_VIEW === 'financial') window.renderRetentionFinancialDetails(); });
