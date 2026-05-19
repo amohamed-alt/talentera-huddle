@@ -1579,7 +1579,8 @@ body::after{
     </div>
     <div class="sidebar-section">Main</div>
     <button class="nav-item active" id="side-acquisition" onclick="switchMainPanel('acquisition')"><span class="nav-icon">&#128202;</span> Acquisition</button>
-    <button class="nav-item" id="side-retention" onclick="switchMainPanel('retention')"><span class="qcq-logo">🛡️</span> Retention</button>
+<button class="nav-item" id="side-retention" onclick="switchMainPanel('retention')"><span class="qcq-logo">🛡️</span> Retention</button>
+<button class="nav-item" id="side-revenue-analysis-main" onclick="switchRetentionRevenueAnalysis()"><span class="nav-icon" style="color:var(--blue)">📊</span> Revenue Analysis</button>
     <div class="sidebar-section" id="repsSectionTitle">Acquisition Reps</div>
     <div id="sideRepLinks"></div>
     <div class="sidebar-bottom">
@@ -6791,8 +6792,9 @@ window.__dashboardAutoRefreshTimer = setInterval(function(){
   }
 
   function ensureRevenueNav(active){
-    var side = byId('sideRepLinks');
-    if(!side) return;
+  var mainBtn = byId('side-revenue-analysis-main');
+  if(mainBtn) mainBtn.classList.toggle('active', !!active);
+}
     var existing = byId('side-ret-revenue-analysis');
     if(!existing){
       var btn = document.createElement('button');
@@ -8659,8 +8661,9 @@ body.retention-financial-wide #panel-retention-financial .ret-fin-split{max-widt
     return panel;
   }
   function ensureNav(active){
-    var side = byId('sideRepLinks');
-    if(!side) return;
+  var mainBtn = byId('side-revenue-analysis-main');
+  if(mainBtn) mainBtn.classList.toggle('active', !!active);
+}
     var existing = byId('side-ret-revenue-analysis');
     if(!existing){
       existing = document.createElement('button');
@@ -8735,11 +8738,11 @@ body.retention-financial-wide #panel-retention-financial .ret-fin-split{max-widt
     ensureRevenuePanel();
     document.querySelectorAll('.tab-btn,.panel,.nav-item').forEach(function(x){ x.classList.remove('active'); });
     var tabs = byId('tabsBar'); if(tabs) tabs.style.display = 'none';
-    var side = byId('side-retention'); if(side) side.classList.add('active');
+    var side = byId('side-revenue-analysis-main'); if(side) side.classList.add('active');
     var panel = byId('panel-retention-revenue'); if(panel) panel.classList.add('active');
     if(typeof window.renderRetentionSidebar === 'function') window.renderRetentionSidebar('revenue');
     ensureNav(true);
-    var title = byId('topbarTitle'); if(title) title.textContent = 'Retention · Revenue Analysis';
+    var title = byId('topbarTitle'); if(title) title.textContent = 'Revenue Analysis';
     var sub = byId('topbarSub'); if(sub) sub.textContent = 'Revenue filters · 2025 full year · 2026 actual to date · Monthly view';
     renderLoading();
     renderTimer = setTimeout(function(){ renderRevenue(true); }, 320);
