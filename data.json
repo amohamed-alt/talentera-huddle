@@ -1,8 +1,8 @@
 {
-  "yesterdayLabel": "Monday, 18 May 2026",
+  "yesterdayLabel": "Tuesday, 19 May 2026",
   "meta": {
-    "yesterdayLabel": "Monday, 18 May 2026",
-    "generatedAt": "09:12 PM"
+    "yesterdayLabel": "Tuesday, 19 May 2026",
+    "generatedAt": "02:08 AM"
   },
   "debug": {
     "total_ranked": 838,
@@ -83,14 +83,14 @@
   },
   "kpi": {
     "yesterday": {
-      "calls": 36,
-      "connected": 19,
-      "connRate": 53,
-      "meetings": 2,
-      "openDeals": 0,
+      "calls": 46,
+      "connected": 25,
+      "connRate": 54,
+      "meetings": 4,
+      "openDeals": 4,
       "openDealsSnap": 242,
       "pipeline": 4746970.213191181,
-      "leads": 2,
+      "leads": 5,
       "wonAmt": 0,
       "wonDeals": 0,
       "lost": 0,
@@ -126,13 +126,13 @@
     }
   },
   "team": {
-    "callsYest": 36,
-    "callsConn": 19,
+    "callsYest": 46,
+    "callsConn": 25,
     "callsMTD": 641,
     "callsMTDConn": 283,
     "callsYTD": 5919,
     "callsYTDConn": 2314,
-    "meetings": 2,
+    "meetings": 4,
     "meetingsMTD": 41,
     "meetingsYTD": 417,
     "openDeals": 242,
@@ -149,24 +149,24 @@
     "lostAmtYest": 0,
     "lostYTD": 112,
     "lostAmtYTD": 800248.81153,
-    "leadsYest": 2,
+    "leadsYest": 5,
     "leadsYestInbound": 2,
-    "leadsYestOutbound": 0,
+    "leadsYestOutbound": 3,
     "leadsMTD": 81,
     "leadsMTDInbound": 17,
     "leadsMTDOutbound": 64,
     "leadsYTD": 784,
     "leadsYTDInbound": 119,
     "leadsYTDOutbound": 665,
-    "connRateYest": 53,
+    "connRateYest": 54,
     "connRateMTD": 44,
     "connRateYTD": 39
   },
   "teamLeadActivities": {
-    "callsYest": 36,
+    "callsYest": 46,
     "callsMTD": 641,
     "callsYTD": 5919,
-    "meetingsYest": 2,
+    "meetingsYest": 4,
     "meetingsMTD": 41,
     "meetingsYTD": 417
   },
@@ -1129,7 +1129,7 @@
         },
         {
           "name": "Bellevue Medical Center- New Deal",
-          "days": 54,
+          "days": 55,
           "amount": 10075,
           "ownerName": "Marita Chedid",
           "hubspotUrl": null
@@ -1143,7 +1143,7 @@
         },
         {
           "name": "Hallab 1881 - New Deal",
-          "days": 54,
+          "days": 55,
           "amount": 5850,
           "ownerName": "Marita Chedid",
           "hubspotUrl": null
@@ -1182,6 +1182,34 @@
           "amount": 7300,
           "ownerName": "Marita Chedid",
           "hubspotUrl": null
+        },
+        {
+          "name": "شركة تنسيق العقارية - New Deal",
+          "days": 20,
+          "amount": 14000,
+          "ownerName": "Marita Chedid",
+          "hubspotUrl": null
+        },
+        {
+          "name": "SHADE - New Deal",
+          "days": 19,
+          "amount": 27489.977151,
+          "ownerName": "Marita Chedid",
+          "hubspotUrl": null
+        },
+        {
+          "name": "Saudi Arabian Development Co. Ltd (SADC) - New Deal",
+          "days": 15,
+          "amount": 2013.0516,
+          "ownerName": "Marita Chedid",
+          "hubspotUrl": null
+        },
+        {
+          "name": "Bankers - New Deal",
+          "days": 14,
+          "amount": 2000,
+          "ownerName": "Marita Chedid",
+          "hubspotUrl": null
         }
       ],
       "cold": [
@@ -1196,6 +1224,13 @@
           "name": " شركة الركيزة لخدمات التشغيل - New Deal",
           "days": 33,
           "amount": 6000,
+          "ownerName": "Marita Chedid",
+          "hubspotUrl": null
+        },
+        {
+          "name": "CIT Group - New Deal",
+          "days": 19,
+          "amount": 6750,
           "ownerName": "Marita Chedid",
           "hubspotUrl": null
         },
@@ -1231,6 +1266,13 @@
           "name": "Meptico - New Deal",
           "days": 22,
           "amount": 5000,
+          "ownerName": "Marita Chedid",
+          "hubspotUrl": null
+        },
+        {
+          "name": "PepsiKuwait - New Deal",
+          "days": 15,
+          "amount": 11500,
           "ownerName": "Marita Chedid",
           "hubspotUrl": null
         }
@@ -1296,6 +1338,7 @@
           "name": "CIT Group - New Deal",
           "amount": 6750,
           "reasons": [
+            "No activity for 19 days",
             "Stuck in stage for 89 days"
           ],
           "ownerName": "Marita Chedid",
@@ -1380,7 +1423,7 @@
           "name": "Bellevue Medical Center- New Deal",
           "amount": 10075,
           "reasons": [
-            "Stuck in stage for 54 days"
+            "Stuck in stage for 55 days"
           ],
           "ownerName": "Marita Chedid",
           "hubspotUrl": null
@@ -1399,7 +1442,7 @@
           "name": "Hallab 1881 - New Deal",
           "amount": 5850,
           "reasons": [
-            "Stuck in stage for 54 days"
+            "Stuck in stage for 55 days"
           ],
           "ownerName": "Marita Chedid",
           "hubspotUrl": null
@@ -1436,6 +1479,7 @@
           "name": "PepsiKuwait - New Deal",
           "amount": 11500,
           "reasons": [
+            "No activity for 15 days",
             "Stuck in stage for 26 days"
           ],
           "ownerName": "Marita Chedid",
@@ -1446,6 +1490,42 @@
           "amount": 7300,
           "reasons": [
             "Stuck in stage for 28 days"
+          ],
+          "ownerName": "Marita Chedid",
+          "hubspotUrl": null
+        },
+        {
+          "name": "شركة تنسيق العقارية - New Deal",
+          "amount": 14000,
+          "reasons": [
+            "Stuck in stage for 20 days"
+          ],
+          "ownerName": "Marita Chedid",
+          "hubspotUrl": null
+        },
+        {
+          "name": "SHADE - New Deal",
+          "amount": 27489.977151,
+          "reasons": [
+            "Stuck in stage for 19 days"
+          ],
+          "ownerName": "Marita Chedid",
+          "hubspotUrl": null
+        },
+        {
+          "name": "Saudi Arabian Development Co. Ltd (SADC) - New Deal",
+          "amount": 2013.0516,
+          "reasons": [
+            "Stuck in stage for 15 days"
+          ],
+          "ownerName": "Marita Chedid",
+          "hubspotUrl": null
+        },
+        {
+          "name": "Bankers - New Deal",
+          "amount": 2000,
+          "reasons": [
+            "Stuck in stage for 14 days"
           ],
           "ownerName": "Marita Chedid",
           "hubspotUrl": null
@@ -1507,7 +1587,7 @@
           "amount": 27489.977151,
           "stage": "Quotation Sent",
           "nextActivity": null,
-          "isStuck": false,
+          "isStuck": true,
           "isCold": false
         },
         {
@@ -1537,7 +1617,7 @@
           "amount": 14000,
           "stage": "Quotation Sent",
           "nextActivity": null,
-          "isStuck": false,
+          "isStuck": true,
           "isCold": false
         },
         {
@@ -1558,7 +1638,7 @@
           "stage": "Quotation Sent",
           "nextActivity": null,
           "isStuck": true,
-          "isCold": false
+          "isCold": true
         },
         {
           "id": "482728338646",
@@ -1597,14 +1677,14 @@
       "color": "#1d4ed8",
       "type": "acq",
       "calls": {
-        "yest": 6,
-        "yestConn": 3,
+        "yest": 1,
+        "yestConn": 1,
         "mtd": 45,
         "mtdConn": 29,
         "ytd": 240,
         "ytdConn": 162
       },
-      "connRateYest": 50,
+      "connRateYest": 100,
       "connRateMTD": 64,
       "connRateYTD": 68,
       "meetings": {
@@ -2588,7 +2668,7 @@
       "stuck": [
         {
           "name": "Green building solutions company | Abdullah Alsughaier | ",
-          "days": 475,
+          "days": 476,
           "amount": 0,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -2639,6 +2719,13 @@
           "name": "SAUDIA REAL ESTATE - New Deal",
           "days": 365,
           "amount": 14951.86875,
+          "ownerName": "Zein Fares",
+          "hubspotUrl": null
+        },
+        {
+          "name": "Al Jazeera Paints Limited - New Deal",
+          "days": 14,
+          "amount": 15000,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
@@ -3084,9 +3171,44 @@
           "hubspotUrl": null
         },
         {
+          "name": "اصل البرجر - New Deal",
+          "days": 14,
+          "amount": 11000,
+          "ownerName": "Zein Fares",
+          "hubspotUrl": null
+        },
+        {
+          "name": "CLA - New Deal",
+          "days": 14,
+          "amount": 3300,
+          "ownerName": "Zein Fares",
+          "hubspotUrl": null
+        },
+        {
           "name": "Ifg holding- New Deal",
           "days": 27,
           "amount": 8000,
+          "ownerName": "Zein Fares",
+          "hubspotUrl": null
+        },
+        {
+          "name": "هيئة تطوير الأحساء- New Deal",
+          "days": 14,
+          "amount": 48000,
+          "ownerName": "Zein Fares",
+          "hubspotUrl": null
+        },
+        {
+          "name": "Mawhiba - New Deal",
+          "days": 14,
+          "amount": 13000,
+          "ownerName": "Zein Fares",
+          "hubspotUrl": null
+        },
+        {
+          "name": "وزارة السياحة - ATS",
+          "days": 14,
+          "amount": 15468.6,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         }
@@ -3145,6 +3267,13 @@
           "name": "MGC - New Deal",
           "days": 233,
           "amount": 11121.39,
+          "ownerName": "Zein Fares",
+          "hubspotUrl": null
+        },
+        {
+          "name": "IBN ROSHD Educational Holding Company - New Deal",
+          "days": 15,
+          "amount": 8321.04,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
@@ -3254,6 +3383,13 @@
           "hubspotUrl": null
         },
         {
+          "name": "Front End Limited Company - New Deal",
+          "days": 16,
+          "amount": 16000,
+          "ownerName": "Zein Fares",
+          "hubspotUrl": null
+        },
+        {
           "name": "Humain AI - New Deal",
           "days": 118,
           "amount": 19469.1,
@@ -3345,8 +3481,22 @@
           "hubspotUrl": null
         },
         {
+          "name": "Infinite pl - New Deal",
+          "days": 15,
+          "amount": 13333,
+          "ownerName": "Zein Fares",
+          "hubspotUrl": null
+        },
+        {
           "name": "Kaza-meza",
           "days": 173,
+          "amount": 2000,
+          "ownerName": "Zein Fares",
+          "hubspotUrl": null
+        },
+        {
+          "name": "Ghanem - New Deal",
+          "days": 15,
           "amount": 2000,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3436,6 +3586,13 @@
           "hubspotUrl": null
         },
         {
+          "name": "Red Sea Global Hospitality- New Deal",
+          "days": 19,
+          "amount": 0,
+          "ownerName": "Zein Fares",
+          "hubspotUrl": null
+        },
+        {
           "name": "Bureau Veritas- New Deal",
           "days": 41,
           "amount": 0,
@@ -3490,7 +3647,7 @@
           "name": "Green building solutions company | Abdullah Alsughaier | ",
           "amount": 0,
           "reasons": [
-            "Stuck in stage for 475 days"
+            "Stuck in stage for 476 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3563,6 +3720,15 @@
           "hubspotUrl": null
         },
         {
+          "name": "Al Jazeera Paints Limited - New Deal",
+          "amount": 15000,
+          "reasons": [
+            "Stuck in stage for 14 days"
+          ],
+          "ownerName": "Zein Fares",
+          "hubspotUrl": null
+        },
+        {
           "name": "Coca Cola Bottling Co. Of Saudi Arabia - New Deal",
           "amount": 13335,
           "reasons": [
@@ -3615,6 +3781,7 @@
           "name": "IBN ROSHD Educational Holding Company - New Deal",
           "amount": 8321.04,
           "reasons": [
+            "No activity for 15 days",
             "Stuck in stage for 357 days"
           ],
           "ownerName": "Zein Fares",
@@ -3837,6 +4004,7 @@
           "name": "Front End Limited Company - New Deal",
           "amount": 16000,
           "reasons": [
+            "No activity for 16 days",
             "Stuck in stage for 233 days"
           ],
           "ownerName": "Zein Fares",
@@ -3985,6 +4153,7 @@
           "name": "Infinite pl - New Deal",
           "amount": 13333,
           "reasons": [
+            "No activity for 15 days",
             "Stuck in stage for 181 days"
           ],
           "ownerName": "Zein Fares",
@@ -4013,6 +4182,7 @@
           "name": "Ghanem - New Deal",
           "amount": 2000,
           "reasons": [
+            "No activity for 15 days",
             "Stuck in stage for 173 days"
           ],
           "ownerName": "Zein Fares",
@@ -4191,6 +4361,15 @@
           "hubspotUrl": null
         },
         {
+          "name": "Red Sea Global Hospitality- New Deal",
+          "amount": 0,
+          "reasons": [
+            "No activity for 19 days"
+          ],
+          "ownerName": "Zein Fares",
+          "hubspotUrl": null
+        },
+        {
           "name": "Bureau Veritas- New Deal",
           "amount": 0,
           "reasons": [
@@ -4203,7 +4382,8 @@
           "name": "اصل البرجر - New Deal",
           "amount": 11000,
           "reasons": [
-            "No activity for 103 days"
+            "No activity for 103 days",
+            "Stuck in stage for 14 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -4212,7 +4392,8 @@
           "name": "CLA - New Deal",
           "amount": 3300,
           "reasons": [
-            "No activity for 106 days"
+            "No activity for 106 days",
+            "Stuck in stage for 14 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -4236,6 +4417,15 @@
           "hubspotUrl": null
         },
         {
+          "name": "هيئة تطوير الأحساء- New Deal",
+          "amount": 48000,
+          "reasons": [
+            "Stuck in stage for 14 days"
+          ],
+          "ownerName": "Zein Fares",
+          "hubspotUrl": null
+        },
+        {
           "name": "Aster Hospitals & Clinics - KSA - New Deal",
           "amount": 32004,
           "reasons": [
@@ -4245,10 +4435,20 @@
           "hubspotUrl": null
         },
         {
+          "name": "Mawhiba - New Deal",
+          "amount": 13000,
+          "reasons": [
+            "Stuck in stage for 14 days"
+          ],
+          "ownerName": "Zein Fares",
+          "hubspotUrl": null
+        },
+        {
           "name": "وزارة السياحة - ATS",
           "amount": 15468.6,
           "reasons": [
-            "No activity for 23 days"
+            "No activity for 23 days",
+            "Stuck in stage for 14 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -4263,8 +4463,8 @@
           "hubspotUrl": null
         }
       ],
-      "leadsYest": 2,
-      "leadsYestInbound": 2,
+      "leadsYest": 0,
+      "leadsYestInbound": 0,
       "leadsYestOutbound": 0,
       "leadsMTD": 7,
       "leadsMTDInbound": 4,
@@ -4273,7 +4473,7 @@
       "leadsYTDInbound": 43,
       "leadsYTDOutbound": 53,
       "leadActivities": {
-        "callsYest": 6,
+        "callsYest": 1,
         "callsMTD": 45,
         "callsYTD": 240,
         "meetingsYest": 1,
@@ -4339,7 +4539,7 @@
           "amount": 48000,
           "stage": "Quotation Sent",
           "nextActivity": null,
-          "isStuck": false,
+          "isStuck": true,
           "isCold": false
         },
         {
@@ -4409,14 +4609,14 @@
       "color": "#be185d",
       "type": "acq",
       "calls": {
-        "yest": 20,
-        "yestConn": 12,
+        "yest": 25,
+        "yestConn": 11,
         "mtd": 136,
         "mtdConn": 75,
         "ytd": 1321,
         "ytdConn": 572
       },
-      "connRateYest": 60,
+      "connRateYest": 44,
       "connRateMTD": 55,
       "connRateYTD": 43,
       "meetings": {
@@ -6014,6 +6214,13 @@
           "hubspotUrl": null
         },
         {
+          "name": "D360 Bank - New Deal",
+          "days": 16,
+          "amount": 26670,
+          "ownerName": "Ursula Waked",
+          "hubspotUrl": null
+        },
+        {
           "name": "MSI - Renewal",
           "days": 321,
           "amount": 4666,
@@ -6028,6 +6235,13 @@
           "hubspotUrl": null
         },
         {
+          "name": "Abdulla Al Ghurair Foundation - Evalufy",
+          "days": 15,
+          "amount": 2000,
+          "ownerName": "Ursula Waked",
+          "hubspotUrl": null
+        },
+        {
           "name": "Omega Electrical Industries - New Deal",
           "days": 23,
           "amount": 5000,
@@ -6038,6 +6252,13 @@
           "name": "Agrimatco - New Deal",
           "days": 27,
           "amount": 7500,
+          "ownerName": "Ursula Waked",
+          "hubspotUrl": null
+        },
+        {
+          "name": "Napco Palestine - New Deal",
+          "days": 20,
+          "amount": 4725,
           "ownerName": "Ursula Waked",
           "hubspotUrl": null
         },
@@ -6063,6 +6284,20 @@
           "hubspotUrl": null
         },
         {
+          "name": "Teyseer Motors - New Deal",
+          "days": 15,
+          "amount": 14000,
+          "ownerName": "Ursula Waked",
+          "hubspotUrl": null
+        },
+        {
+          "name": "Cairo3A Poultry Careers - New Deal",
+          "days": 15,
+          "amount": 14500,
+          "ownerName": "Ursula Waked",
+          "hubspotUrl": null
+        },
+        {
           "name": "Khidmah / Aldar ",
           "days": 33,
           "amount": 7624,
@@ -6084,6 +6319,13 @@
           "hubspotUrl": null
         },
         {
+          "name": "Bayari - New Deal",
+          "days": 20,
+          "amount": 17699,
+          "ownerName": "Ursula Waked",
+          "hubspotUrl": null
+        },
+        {
           "name": "Midis Group - New Deal",
           "days": 36,
           "amount": 4000,
@@ -6094,6 +6336,13 @@
           "name": "Presidential Flight - New Deal",
           "days": 21,
           "amount": 40000,
+          "ownerName": "Ursula Waked",
+          "hubspotUrl": null
+        },
+        {
+          "name": "MENA WATER FZC - New Deal",
+          "days": 20,
+          "amount": 4500,
           "ownerName": "Ursula Waked",
           "hubspotUrl": null
         },
@@ -6136,6 +6385,13 @@
           "name": "Al Ain Farms Group - New Deal",
           "days": 34,
           "amount": 37250,
+          "ownerName": "Ursula Waked",
+          "hubspotUrl": null
+        },
+        {
+          "name": "Mannesmann Energy - New Deal",
+          "days": 20,
+          "amount": 6850,
           "ownerName": "Ursula Waked",
           "hubspotUrl": null
         },
@@ -6225,6 +6481,7 @@
           "name": "D360 Bank - New Deal",
           "amount": 26670,
           "reasons": [
+            "No activity for 16 days",
             "Stuck in stage for 454 days"
           ],
           "ownerName": "Ursula Waked",
@@ -6344,6 +6601,7 @@
           "name": "Abdulla Al Ghurair Foundation - Evalufy",
           "amount": 2000,
           "reasons": [
+            "No activity for 15 days",
             "Stuck in stage for 76 days"
           ],
           "ownerName": "Ursula Waked",
@@ -6409,6 +6667,7 @@
           "name": "Napco Palestine - New Deal",
           "amount": 4725,
           "reasons": [
+            "No activity for 20 days",
             "Stuck in stage for 76 days"
           ],
           "ownerName": "Ursula Waked",
@@ -6466,6 +6725,7 @@
           "name": "Teyseer Motors - New Deal",
           "amount": 14000,
           "reasons": [
+            "No activity for 15 days",
             "Stuck in stage for 76 days"
           ],
           "ownerName": "Ursula Waked",
@@ -6484,6 +6744,7 @@
           "name": "Cairo3A Poultry Careers - New Deal",
           "amount": 14500,
           "reasons": [
+            "No activity for 15 days",
             "Stuck in stage for 76 days"
           ],
           "ownerName": "Ursula Waked",
@@ -6568,6 +6829,7 @@
           "name": "Bayari - New Deal",
           "amount": 17699,
           "reasons": [
+            "No activity for 20 days",
             "Stuck in stage for 76 days"
           ],
           "ownerName": "Ursula Waked",
@@ -6615,6 +6877,7 @@
           "name": "MENA WATER FZC - New Deal",
           "amount": 4500,
           "reasons": [
+            "No activity for 20 days",
             "Stuck in stage for 76 days"
           ],
           "ownerName": "Ursula Waked",
@@ -6720,6 +6983,7 @@
           "name": "Mannesmann Energy - New Deal",
           "amount": 6850,
           "reasons": [
+            "No activity for 20 days",
             "Stuck in stage for 76 days"
           ],
           "ownerName": "Ursula Waked",
@@ -6943,9 +7207,9 @@
           "hubspotUrl": null
         }
       ],
-      "leadsYest": 0,
-      "leadsYestInbound": 0,
-      "leadsYestOutbound": 0,
+      "leadsYest": 3,
+      "leadsYestInbound": 1,
+      "leadsYestOutbound": 2,
       "leadsMTD": 23,
       "leadsMTDInbound": 4,
       "leadsMTDOutbound": 19,
@@ -6953,7 +7217,7 @@
       "leadsYTDInbound": 36,
       "leadsYTDOutbound": 132,
       "leadActivities": {
-        "callsYest": 20,
+        "callsYest": 25,
         "callsMTD": 136,
         "callsYTD": 1321,
         "meetingsYest": 1,
@@ -7060,7 +7324,7 @@
           "stage": "Proposal Shared",
           "nextActivity": null,
           "isStuck": true,
-          "isCold": false
+          "isCold": true
         },
         {
           "id": "333176431841",
@@ -7089,18 +7353,18 @@
       "color": "#b45309",
       "type": "acq",
       "calls": {
-        "yest": 10,
-        "yestConn": 4,
+        "yest": 20,
+        "yestConn": 13,
         "mtd": 167,
         "mtdConn": 93,
         "ytd": 712,
         "ytdConn": 389
       },
-      "connRateYest": 40,
+      "connRateYest": 65,
       "connRateMTD": 56,
       "connRateYTD": 55,
       "meetings": {
-        "yest": 0,
+        "yest": 2,
         "mtd": 6,
         "ytd": 19
       },
@@ -7328,12 +7592,30 @@
           "rankBNotContacted": 0
         }
       },
-      "stuck": [],
+      "stuck": [
+        {
+          "name": "Innova Pharmacy , Innova Healthcare  - New Deal",
+          "days": 16,
+          "amount": 45872.4,
+          "ownerName": "Ahmad Khawajah",
+          "hubspotUrl": null
+        }
+      ],
       "cold": [],
-      "needsAttention": [],
-      "leadsYest": 0,
-      "leadsYestInbound": 0,
-      "leadsYestOutbound": 0,
+      "needsAttention": [
+        {
+          "name": "Innova Pharmacy , Innova Healthcare  - New Deal",
+          "amount": 45872.4,
+          "reasons": [
+            "Stuck in stage for 16 days"
+          ],
+          "ownerName": "Ahmad Khawajah",
+          "hubspotUrl": null
+        }
+      ],
+      "leadsYest": 2,
+      "leadsYestInbound": 1,
+      "leadsYestOutbound": 1,
       "leadsMTD": 15,
       "leadsMTDInbound": 7,
       "leadsMTDOutbound": 8,
@@ -7341,10 +7623,10 @@
       "leadsYTDInbound": 13,
       "leadsYTDOutbound": 89,
       "leadActivities": {
-        "callsYest": 10,
+        "callsYest": 20,
         "callsMTD": 167,
         "callsYTD": 712,
-        "meetingsYest": 0,
+        "meetingsYest": 2,
         "meetingsMTD": 6,
         "meetingsYTD": 19
       },
@@ -7387,7 +7669,7 @@
           "amount": 45872.4,
           "stage": "Quotation Sent",
           "nextActivity": null,
-          "isStuck": false,
+          "isStuck": true,
           "isCold": false
         },
         {
@@ -8270,7 +8552,7 @@
         },
         {
           "name": "Mohamed Yousuf Naghi Group.",
-          "days": 203,
+          "days": 204,
           "amount": 8001,
           "ownerName": "Jehad Al-Barqawi",
           "hubspotUrl": null
@@ -8284,7 +8566,7 @@
         },
         {
           "name": "ACWA Power - TALENTERA ENTERPEISE - ATS ",
-          "days": 203,
+          "days": 204,
           "amount": 368000,
           "ownerName": "Jehad Al-Barqawi",
           "hubspotUrl": null
@@ -8658,7 +8940,7 @@
           "amount": 8001,
           "reasons": [
             "No activity for 197 days",
-            "Stuck in stage for 203 days"
+            "Stuck in stage for 204 days"
           ],
           "ownerName": "Jehad Al-Barqawi",
           "hubspotUrl": null
@@ -8678,7 +8960,7 @@
           "amount": 368000,
           "reasons": [
             "No activity for 71 days",
-            "Stuck in stage for 203 days"
+            "Stuck in stage for 204 days"
           ],
           "ownerName": "Jehad Al-Barqawi",
           "hubspotUrl": null
@@ -9237,23 +9519,23 @@
   "autoRecs": [
     {
       "type": "green",
-      "text": "Strong connected rate at 53% ✓ — above 50% target."
+      "text": "Strong connected rate at 54% ✓ — above 50% target."
     },
     {
       "type": "red",
-      "text": "197 deals stuck in stage for 21+ days — immediate pipeline review needed."
+      "text": "208 deals stuck in stage for 14+ days — immediate pipeline review needed."
     },
     {
       "type": "red",
-      "text": "116 cold deals (no activity 21+ days) — re-engage before they go dark."
+      "text": "131 cold deals (no activity 14+ days) — re-engage before they go dark."
     },
     {
       "type": "red",
-      "text": "206 deals have no next activity scheduled — reps must log next steps immediately."
+      "text": "215 deals have no next activity scheduled — reps must log next steps immediately."
     },
     {
-      "type": "warn",
-      "text": "Only 2 meeting(s) logged yesterday — below expected pace."
+      "type": "green",
+      "text": "4 meetings logged yesterday ✓"
     },
     {
       "type": "green",
@@ -30464,8 +30746,8 @@
     },
     {
       "key": "pipeline_risk",
-      "title": "Check 519 pipeline risk signals",
-      "count": 519,
+      "title": "Check 554 pipeline risk signals",
+      "count": 554,
       "severity": "high",
       "description": "Includes cold deals, stuck deals, and missing next activities."
     }
@@ -31458,10 +31740,10 @@
   },
   "slaBreaches": {
     "summary": {
-      "total": 1140,
+      "total": 1175,
       "onlineLeadBreaches": 3,
       "offlineLeadBreaches": 138,
-      "pipelineBreaches": 519,
+      "pipelineBreaches": 554,
       "rankBreaches": 480
     },
     "onlineLeadBreaches": [
@@ -32022,6 +32304,16 @@
       {
         "type": "cold_deal",
         "severity": "medium",
+        "title": "CIT Group - New Deal",
+        "ownerName": "Marita Chedid",
+        "ageDays": 19,
+        "amount": 6750,
+        "message": "Cold deal with no recent activity for 19 days",
+        "hubspotUrl": null
+      },
+      {
+        "type": "cold_deal",
+        "severity": "medium",
         "title": "Tanmia- New Deal",
         "ownerName": "Marita Chedid",
         "ageDays": 70,
@@ -32067,6 +32359,16 @@
         "ageDays": 22,
         "amount": 5000,
         "message": "Cold deal with no recent activity for 22 days",
+        "hubspotUrl": null
+      },
+      {
+        "type": "cold_deal",
+        "severity": "medium",
+        "title": "PepsiKuwait - New Deal",
+        "ownerName": "Marita Chedid",
+        "ageDays": 15,
+        "amount": 11500,
+        "message": "Cold deal with no recent activity for 15 days",
         "hubspotUrl": null
       },
       {
@@ -32224,9 +32526,9 @@
         "severity": "high",
         "title": "Bellevue Medical Center- New Deal",
         "ownerName": "Marita Chedid",
-        "ageDays": 54,
+        "ageDays": 55,
         "amount": 10075,
-        "message": "Deal stuck in stage for 54 days",
+        "message": "Deal stuck in stage for 55 days",
         "hubspotUrl": null
       },
       {
@@ -32244,9 +32546,9 @@
         "severity": "high",
         "title": "Hallab 1881 - New Deal",
         "ownerName": "Marita Chedid",
-        "ageDays": 54,
+        "ageDays": 55,
         "amount": 5850,
-        "message": "Deal stuck in stage for 54 days",
+        "message": "Deal stuck in stage for 55 days",
         "hubspotUrl": null
       },
       {
@@ -32297,6 +32599,46 @@
         "ageDays": 28,
         "amount": 7300,
         "message": "Deal stuck in stage for 28 days",
+        "hubspotUrl": null
+      },
+      {
+        "type": "stuck_deal",
+        "severity": "high",
+        "title": "شركة تنسيق العقارية - New Deal",
+        "ownerName": "Marita Chedid",
+        "ageDays": 20,
+        "amount": 14000,
+        "message": "Deal stuck in stage for 20 days",
+        "hubspotUrl": null
+      },
+      {
+        "type": "stuck_deal",
+        "severity": "high",
+        "title": "SHADE - New Deal",
+        "ownerName": "Marita Chedid",
+        "ageDays": 19,
+        "amount": 27489.977151,
+        "message": "Deal stuck in stage for 19 days",
+        "hubspotUrl": null
+      },
+      {
+        "type": "stuck_deal",
+        "severity": "high",
+        "title": "Saudi Arabian Development Co. Ltd (SADC) - New Deal",
+        "ownerName": "Marita Chedid",
+        "ageDays": 15,
+        "amount": 2013.0516,
+        "message": "Deal stuck in stage for 15 days",
+        "hubspotUrl": null
+      },
+      {
+        "type": "stuck_deal",
+        "severity": "high",
+        "title": "Bankers - New Deal",
+        "ownerName": "Marita Chedid",
+        "ageDays": 14,
+        "amount": 2000,
+        "message": "Deal stuck in stage for 14 days",
         "hubspotUrl": null
       },
       {
@@ -32422,60 +32764,6 @@
         "title": "Imseeh Jewelry- New Deal",
         "ownerName": "Marita Chedid",
         "amount": 5580,
-        "message": "Open deal has no next activity scheduled",
-        "hubspotUrl": null
-      },
-      {
-        "type": "no_next_activity",
-        "severity": "high",
-        "title": "Bikhazi Medical Group- New Deal",
-        "ownerName": "Marita Chedid",
-        "amount": 5225,
-        "message": "Open deal has no next activity scheduled",
-        "hubspotUrl": null
-      },
-      {
-        "type": "no_next_activity",
-        "severity": "high",
-        "title": "Bellevue Medical Center- New Deal",
-        "ownerName": "Marita Chedid",
-        "amount": 10075,
-        "message": "Open deal has no next activity scheduled",
-        "hubspotUrl": null
-      },
-      {
-        "type": "no_next_activity",
-        "severity": "high",
-        "title": "District Company- New Deal",
-        "ownerName": "Marita Chedid",
-        "amount": 0,
-        "message": "Open deal has no next activity scheduled",
-        "hubspotUrl": null
-      },
-      {
-        "type": "no_next_activity",
-        "severity": "high",
-        "title": "Hallab 1881 - New Deal",
-        "ownerName": "Marita Chedid",
-        "amount": 5850,
-        "message": "Open deal has no next activity scheduled",
-        "hubspotUrl": null
-      },
-      {
-        "type": "no_next_activity",
-        "severity": "high",
-        "title": "Turbo United Trading Com- New Deal",
-        "ownerName": "Marita Chedid",
-        "amount": 0,
-        "message": "Open deal has no next activity scheduled",
-        "hubspotUrl": null
-      },
-      {
-        "type": "no_next_activity",
-        "severity": "high",
-        "title": "Meptico - New Deal",
-        "ownerName": "Marita Chedid",
-        "amount": 5000,
         "message": "Open deal has no next activity scheduled",
         "hubspotUrl": null
       }
@@ -32958,9 +33246,9 @@
         "severity": "high",
         "title": "Green building solutions company | Abdullah Alsughaier | ",
         "ownerName": "Zein Fares",
-        "ageDays": 475,
+        "ageDays": 476,
         "amount": 0,
-        "message": "Deal stuck in stage for 475 days",
+        "message": "Deal stuck in stage for 476 days",
         "hubspotUrl": null
       },
       {
@@ -36133,7 +36421,7 @@
       },
       "rankAUntouched": 35,
       "rankBUntouched": 55,
-      "pipelineRisks": 53,
+      "pipelineRisks": 63,
       "actions": [
         {
           "type": "lead_outreach",
@@ -36152,7 +36440,7 @@
         },
         {
           "type": "pipeline_hygiene",
-          "label": "Schedule next activity for 23 deals",
+          "label": "Schedule next activity for 27 deals",
           "priority": "high"
         }
       ]
@@ -36174,7 +36462,7 @@
       },
       "rankAUntouched": 44,
       "rankBUntouched": 104,
-      "pipelineRisks": 209,
+      "pipelineRisks": 224,
       "actions": [
         {
           "type": "lead_outreach",
@@ -36193,7 +36481,7 @@
         },
         {
           "type": "pipeline_hygiene",
-          "label": "Schedule next activity for 81 deals",
+          "label": "Schedule next activity for 85 deals",
           "priority": "high"
         }
       ]
@@ -36215,7 +36503,7 @@
       },
       "rankAUntouched": 44,
       "rankBUntouched": 94,
-      "pipelineRisks": 185,
+      "pipelineRisks": 193,
       "actions": [
         {
           "type": "lead_outreach",
@@ -36256,7 +36544,7 @@
       },
       "rankAUntouched": 2,
       "rankBUntouched": 19,
-      "pipelineRisks": 0,
+      "pipelineRisks": 2,
       "actions": [
         {
           "type": "lead_outreach",
@@ -36272,6 +36560,11 @@
           "type": "rank_b",
           "label": "Review 19 untouched Rank B accounts",
           "priority": "medium"
+        },
+        {
+          "type": "pipeline_hygiene",
+          "label": "Schedule next activity for 1 deals",
+          "priority": "high"
         }
       ]
     },
@@ -36586,63 +36879,11 @@
     "calls": {
       "yesterday": [
         {
-          "id": "491900384448",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/491900384448",
+          "id": "492182797507",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492182797507",
           "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
-          "disposition": "73a0d17f-1163-4015-bdd5-ec830791da20",
-          "status": "Not Connected",
-          "isConnected": false,
-          "ownerId": "76369997",
-          "ownerName": "Ursula Waked",
-          "ownerColor": "#be185d"
-        },
-        {
-          "id": "492068181217",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492068181217",
-          "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
-          "disposition": "f240bbac-87c9-4f6e-bf70-924b57d47db7",
-          "status": "Connected",
-          "isConnected": true,
-          "ownerId": "32332250",
-          "ownerName": "Ahmad Khawajah",
-          "ownerColor": "#b45309"
-        },
-        {
-          "id": "492076252396",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492076252396",
-          "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
-          "disposition": "73a0d17f-1163-4015-bdd5-ec830791da20",
-          "status": "Not Connected",
-          "isConnected": false,
-          "ownerId": "32332250",
-          "ownerName": "Ahmad Khawajah",
-          "ownerColor": "#b45309"
-        },
-        {
-          "id": "492076324027",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492076324027",
-          "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
-          "disposition": "73a0d17f-1163-4015-bdd5-ec830791da20",
-          "status": "Not Connected",
-          "isConnected": false,
-          "ownerId": "32332250",
-          "ownerName": "Ahmad Khawajah",
-          "ownerColor": "#b45309"
-        },
-        {
-          "id": "491898228978",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/491898228978",
-          "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
           "disposition": "f240bbac-87c9-4f6e-bf70-924b57d47db7",
           "status": "Connected",
           "isConnected": true,
@@ -36651,115 +36892,63 @@
           "ownerColor": "#1d4ed8"
         },
         {
-          "id": "492077589739",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492077589739",
+          "id": "492212933832",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492212933832",
           "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
+          "disposition": "73a0d17f-1163-4015-bdd5-ec830791da20",
+          "status": "Not Connected",
+          "isConnected": false,
+          "ownerId": "76369997",
+          "ownerName": "Ursula Waked",
+          "ownerColor": "#be185d"
+        },
+        {
+          "id": "492208653513",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492208653513",
+          "name": "Call",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
+          "disposition": "73a0d17f-1163-4015-bdd5-ec830791da20",
+          "status": "Not Connected",
+          "isConnected": false,
+          "ownerId": "76369997",
+          "ownerName": "Ursula Waked",
+          "ownerColor": "#be185d"
+        },
+        {
+          "id": "492213355739",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492213355739",
+          "name": "Call",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
+          "disposition": "73a0d17f-1163-4015-bdd5-ec830791da20",
+          "status": "Not Connected",
+          "isConnected": false,
+          "ownerId": "76369997",
+          "ownerName": "Ursula Waked",
+          "ownerColor": "#be185d"
+        },
+        {
+          "id": "492209284315",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492209284315",
+          "name": "Call",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
           "disposition": "f240bbac-87c9-4f6e-bf70-924b57d47db7",
           "status": "Connected",
           "isConnected": true,
-          "ownerId": "31558980",
-          "ownerName": "Zein Fares",
-          "ownerColor": "#1d4ed8"
+          "ownerId": "76369997",
+          "ownerName": "Ursula Waked",
+          "ownerColor": "#be185d"
         },
         {
-          "id": "492077977829",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492077977829",
+          "id": "492214121711",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492214121711",
           "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
-          "disposition": "73a0d17f-1163-4015-bdd5-ec830791da20",
-          "status": "Not Connected",
-          "isConnected": false,
-          "ownerId": "32332250",
-          "ownerName": "Ahmad Khawajah",
-          "ownerColor": "#b45309"
-        },
-        {
-          "id": "492078586075",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492078586075",
-          "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
-          "disposition": "73a0d17f-1163-4015-bdd5-ec830791da20",
-          "status": "Not Connected",
-          "isConnected": false,
-          "ownerId": "32332250",
-          "ownerName": "Ahmad Khawajah",
-          "ownerColor": "#b45309"
-        },
-        {
-          "id": "492085587175",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492085587175",
-          "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
-          "disposition": "f240bbac-87c9-4f6e-bf70-924b57d47db7",
-          "status": "Connected",
-          "isConnected": true,
-          "ownerId": "32332250",
-          "ownerName": "Ahmad Khawajah",
-          "ownerColor": "#b45309"
-        },
-        {
-          "id": "492085799111",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492085799111",
-          "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
-          "disposition": "73a0d17f-1163-4015-bdd5-ec830791da20",
-          "status": "Not Connected",
-          "isConnected": false,
-          "ownerId": "31558980",
-          "ownerName": "Zein Fares",
-          "ownerColor": "#1d4ed8"
-        },
-        {
-          "id": "492085967050",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492085967050",
-          "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
-          "disposition": "f240bbac-87c9-4f6e-bf70-924b57d47db7",
-          "status": "Connected",
-          "isConnected": true,
-          "ownerId": "31558980",
-          "ownerName": "Zein Fares",
-          "ownerColor": "#1d4ed8"
-        },
-        {
-          "id": "492086030528",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492086030528",
-          "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
-          "disposition": "73a0d17f-1163-4015-bdd5-ec830791da20",
-          "status": "Not Connected",
-          "isConnected": false,
-          "ownerId": "31558980",
-          "ownerName": "Zein Fares",
-          "ownerColor": "#1d4ed8"
-        },
-        {
-          "id": "492086809807",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492086809807",
-          "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
-          "disposition": "73a0d17f-1163-4015-bdd5-ec830791da20",
-          "status": "Not Connected",
-          "isConnected": false,
-          "ownerId": "32332250",
-          "ownerName": "Ahmad Khawajah",
-          "ownerColor": "#b45309"
-        },
-        {
-          "id": "492086944963",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492086944963",
-          "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
           "disposition": "f240bbac-87c9-4f6e-bf70-924b57d47db7",
           "status": "Connected",
           "isConnected": true,
@@ -36768,24 +36957,11 @@
           "ownerColor": "#b45309"
         },
         {
-          "id": "492125878496",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492125878496",
+          "id": "492210135249",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492210135249",
           "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
-          "disposition": "f240bbac-87c9-4f6e-bf70-924b57d47db7",
-          "status": "Connected",
-          "isConnected": true,
-          "ownerId": "32332250",
-          "ownerName": "Ahmad Khawajah",
-          "ownerColor": "#b45309"
-        },
-        {
-          "id": "492125663419",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492125663419",
-          "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
           "disposition": "f240bbac-87c9-4f6e-bf70-924b57d47db7",
           "status": "Connected",
           "isConnected": true,
@@ -36794,37 +36970,11 @@
           "ownerColor": "#be185d"
         },
         {
-          "id": "492126002397",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492126002397",
+          "id": "492214953163",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492214953163",
           "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
-          "disposition": "f240bbac-87c9-4f6e-bf70-924b57d47db7",
-          "status": "Connected",
-          "isConnected": true,
-          "ownerId": "76369997",
-          "ownerName": "Ursula Waked",
-          "ownerColor": "#be185d"
-        },
-        {
-          "id": "492126117053",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492126117053",
-          "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
-          "disposition": "f240bbac-87c9-4f6e-bf70-924b57d47db7",
-          "status": "Connected",
-          "isConnected": true,
-          "ownerId": "76369997",
-          "ownerName": "Ursula Waked",
-          "ownerColor": "#be185d"
-        },
-        {
-          "id": "492126352593",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492126352593",
-          "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
           "disposition": "73a0d17f-1163-4015-bdd5-ec830791da20",
           "status": "Not Connected",
           "isConnected": false,
@@ -36833,24 +36983,11 @@
           "ownerColor": "#b45309"
         },
         {
-          "id": "492136734934",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492136734934",
+          "id": "492214964427",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492214964427",
           "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
-          "disposition": "73a0d17f-1163-4015-bdd5-ec830791da20",
-          "status": "Not Connected",
-          "isConnected": false,
-          "ownerId": "31558980",
-          "ownerName": "Zein Fares",
-          "ownerColor": "#1d4ed8"
-        },
-        {
-          "id": "492138933457",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492138933457",
-          "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
           "disposition": "f240bbac-87c9-4f6e-bf70-924b57d47db7",
           "status": "Connected",
           "isConnected": true,
@@ -36859,11 +36996,11 @@
           "ownerColor": "#be185d"
         },
         {
-          "id": "492140594406",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492140594406",
+          "id": "492210115832",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492210115832",
           "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
           "disposition": "73a0d17f-1163-4015-bdd5-ec830791da20",
           "status": "Not Connected",
           "isConnected": false,
@@ -36872,11 +37009,50 @@
           "ownerColor": "#be185d"
         },
         {
-          "id": "492138757355",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492138757355",
+          "id": "492210124988",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492210124988",
           "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
+          "disposition": "f240bbac-87c9-4f6e-bf70-924b57d47db7",
+          "status": "Connected",
+          "isConnected": true,
+          "ownerId": "32332250",
+          "ownerName": "Ahmad Khawajah",
+          "ownerColor": "#b45309"
+        },
+        {
+          "id": "492215751907",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492215751907",
+          "name": "Call",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
+          "disposition": "f240bbac-87c9-4f6e-bf70-924b57d47db7",
+          "status": "Connected",
+          "isConnected": true,
+          "ownerId": "32332250",
+          "ownerName": "Ahmad Khawajah",
+          "ownerColor": "#b45309"
+        },
+        {
+          "id": "492300837102",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492300837102",
+          "name": "Call",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
+          "disposition": "73a0d17f-1163-4015-bdd5-ec830791da20",
+          "status": "Not Connected",
+          "isConnected": false,
+          "ownerId": "32332250",
+          "ownerName": "Ahmad Khawajah",
+          "ownerColor": "#b45309"
+        },
+        {
+          "id": "492211537106",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492211537106",
+          "name": "Call",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
           "disposition": "f240bbac-87c9-4f6e-bf70-924b57d47db7",
           "status": "Connected",
           "isConnected": true,
@@ -36885,11 +37061,24 @@
           "ownerColor": "#be185d"
         },
         {
-          "id": "492138984634",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492138984634",
+          "id": "492211574978",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492211574978",
           "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
+          "disposition": "f240bbac-87c9-4f6e-bf70-924b57d47db7",
+          "status": "Connected",
+          "isConnected": true,
+          "ownerId": "32332250",
+          "ownerName": "Ahmad Khawajah",
+          "ownerColor": "#b45309"
+        },
+        {
+          "id": "492211702991",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492211702991",
+          "name": "Call",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
           "disposition": "f240bbac-87c9-4f6e-bf70-924b57d47db7",
           "status": "Connected",
           "isConnected": true,
@@ -36898,11 +37087,11 @@
           "ownerColor": "#be185d"
         },
         {
-          "id": "492140649693",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492140649693",
+          "id": "492211836095",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492211836095",
           "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
           "disposition": "73a0d17f-1163-4015-bdd5-ec830791da20",
           "status": "Not Connected",
           "isConnected": false,
@@ -36911,11 +37100,89 @@
           "ownerColor": "#be185d"
         },
         {
-          "id": "492140912844",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492140912844",
+          "id": "492301351153",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492301351153",
           "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
+          "disposition": "f240bbac-87c9-4f6e-bf70-924b57d47db7",
+          "status": "Connected",
+          "isConnected": true,
+          "ownerId": "76369997",
+          "ownerName": "Ursula Waked",
+          "ownerColor": "#be185d"
+        },
+        {
+          "id": "492308296944",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492308296944",
+          "name": "Call",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
+          "disposition": "f240bbac-87c9-4f6e-bf70-924b57d47db7",
+          "status": "Connected",
+          "isConnected": true,
+          "ownerId": "32332250",
+          "ownerName": "Ahmad Khawajah",
+          "ownerColor": "#b45309"
+        },
+        {
+          "id": "492307992766",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492307992766",
+          "name": "Call",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
+          "disposition": "f240bbac-87c9-4f6e-bf70-924b57d47db7",
+          "status": "Connected",
+          "isConnected": true,
+          "ownerId": "32332250",
+          "ownerName": "Ahmad Khawajah",
+          "ownerColor": "#b45309"
+        },
+        {
+          "id": "492331497715",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492331497715",
+          "name": "Call",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
+          "disposition": "f240bbac-87c9-4f6e-bf70-924b57d47db7",
+          "status": "Connected",
+          "isConnected": true,
+          "ownerId": "32332250",
+          "ownerName": "Ahmad Khawajah",
+          "ownerColor": "#b45309"
+        },
+        {
+          "id": "492331460827",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492331460827",
+          "name": "Call",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
+          "disposition": "73a0d17f-1163-4015-bdd5-ec830791da20",
+          "status": "Not Connected",
+          "isConnected": false,
+          "ownerId": "32332250",
+          "ownerName": "Ahmad Khawajah",
+          "ownerColor": "#b45309"
+        },
+        {
+          "id": "492341191882",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492341191882",
+          "name": "Call",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
+          "disposition": "f240bbac-87c9-4f6e-bf70-924b57d47db7",
+          "status": "Connected",
+          "isConnected": true,
+          "ownerId": "76369997",
+          "ownerName": "Ursula Waked",
+          "ownerColor": "#be185d"
+        },
+        {
+          "id": "492332006590",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492332006590",
+          "name": "Call",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
           "disposition": "73a0d17f-1163-4015-bdd5-ec830791da20",
           "status": "Not Connected",
           "isConnected": false,
@@ -36924,11 +37191,24 @@
           "ownerColor": "#be185d"
         },
         {
-          "id": "492140178629",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492140178629",
+          "id": "492341211347",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492341211347",
           "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
+          "disposition": "f240bbac-87c9-4f6e-bf70-924b57d47db7",
+          "status": "Connected",
+          "isConnected": true,
+          "ownerId": "32332250",
+          "ownerName": "Ahmad Khawajah",
+          "ownerColor": "#b45309"
+        },
+        {
+          "id": "492341397706",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492341397706",
+          "name": "Call",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
           "disposition": "f240bbac-87c9-4f6e-bf70-924b57d47db7",
           "status": "Connected",
           "isConnected": true,
@@ -36937,11 +37217,24 @@
           "ownerColor": "#be185d"
         },
         {
-          "id": "492139158731",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492139158731",
+          "id": "492331949287",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492331949287",
           "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
+          "disposition": "73a0d17f-1163-4015-bdd5-ec830791da20",
+          "status": "Not Connected",
+          "isConnected": false,
+          "ownerId": "32332250",
+          "ownerName": "Ahmad Khawajah",
+          "ownerColor": "#b45309"
+        },
+        {
+          "id": "492341429461",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492341429461",
+          "name": "Call",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
           "disposition": "73a0d17f-1163-4015-bdd5-ec830791da20",
           "status": "Not Connected",
           "isConnected": false,
@@ -36950,11 +37243,37 @@
           "ownerColor": "#be185d"
         },
         {
-          "id": "492141091006",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492141091006",
+          "id": "492341654717",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492341654717",
           "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
+          "disposition": "73a0d17f-1163-4015-bdd5-ec830791da20",
+          "status": "Not Connected",
+          "isConnected": false,
+          "ownerId": "32332250",
+          "ownerName": "Ahmad Khawajah",
+          "ownerColor": "#b45309"
+        },
+        {
+          "id": "492333643971",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492333643971",
+          "name": "Call",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
+          "disposition": "f240bbac-87c9-4f6e-bf70-924b57d47db7",
+          "status": "Connected",
+          "isConnected": true,
+          "ownerId": "32332250",
+          "ownerName": "Ahmad Khawajah",
+          "ownerColor": "#b45309"
+        },
+        {
+          "id": "492334588102",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492334588102",
+          "name": "Call",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
           "disposition": "f240bbac-87c9-4f6e-bf70-924b57d47db7",
           "status": "Connected",
           "isConnected": true,
@@ -36963,11 +37282,11 @@
           "ownerColor": "#be185d"
         },
         {
-          "id": "492141327595",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492141327595",
+          "id": "492341477585",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492341477585",
           "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
           "disposition": "73a0d17f-1163-4015-bdd5-ec830791da20",
           "status": "Not Connected",
           "isConnected": false,
@@ -36976,11 +37295,24 @@
           "ownerColor": "#be185d"
         },
         {
-          "id": "492164743408",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492164743408",
+          "id": "492341838060",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492341838060",
           "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
+          "disposition": "73a0d17f-1163-4015-bdd5-ec830791da20",
+          "status": "Not Connected",
+          "isConnected": false,
+          "ownerId": "32332250",
+          "ownerName": "Ahmad Khawajah",
+          "ownerColor": "#b45309"
+        },
+        {
+          "id": "492341814503",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492341814503",
+          "name": "Call",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
           "disposition": "73a0d17f-1163-4015-bdd5-ec830791da20",
           "status": "Not Connected",
           "isConnected": false,
@@ -36989,50 +37321,11 @@
           "ownerColor": "#be185d"
         },
         {
-          "id": "492141997302",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492141997302",
+          "id": "492334553322",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492334553322",
           "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
-          "disposition": "f240bbac-87c9-4f6e-bf70-924b57d47db7",
-          "status": "Connected",
-          "isConnected": true,
-          "ownerId": "76369997",
-          "ownerName": "Ursula Waked",
-          "ownerColor": "#be185d"
-        },
-        {
-          "id": "492142004458",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492142004458",
-          "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
-          "disposition": "f240bbac-87c9-4f6e-bf70-924b57d47db7",
-          "status": "Connected",
-          "isConnected": true,
-          "ownerId": "76369997",
-          "ownerName": "Ursula Waked",
-          "ownerColor": "#be185d"
-        },
-        {
-          "id": "492165121217",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492165121217",
-          "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
-          "disposition": "f240bbac-87c9-4f6e-bf70-924b57d47db7",
-          "status": "Connected",
-          "isConnected": true,
-          "ownerId": "76369997",
-          "ownerName": "Ursula Waked",
-          "ownerColor": "#be185d"
-        },
-        {
-          "id": "492180140258",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492180140258",
-          "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
           "disposition": "73a0d17f-1163-4015-bdd5-ec830791da20",
           "status": "Not Connected",
           "isConnected": false,
@@ -37041,14 +37334,144 @@
           "ownerColor": "#be185d"
         },
         {
-          "id": "492180146379",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492180146379",
+          "id": "492334803163",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492334803163",
           "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
           "disposition": "f240bbac-87c9-4f6e-bf70-924b57d47db7",
           "status": "Connected",
           "isConnected": true,
+          "ownerId": "76369997",
+          "ownerName": "Ursula Waked",
+          "ownerColor": "#be185d"
+        },
+        {
+          "id": "492342138103",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492342138103",
+          "name": "Call",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
+          "disposition": "73a0d17f-1163-4015-bdd5-ec830791da20",
+          "status": "Not Connected",
+          "isConnected": false,
+          "ownerId": "76369997",
+          "ownerName": "Ursula Waked",
+          "ownerColor": "#be185d"
+        },
+        {
+          "id": "492335052014",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492335052014",
+          "name": "Call",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
+          "disposition": "73a0d17f-1163-4015-bdd5-ec830791da20",
+          "status": "Not Connected",
+          "isConnected": false,
+          "ownerId": "76369997",
+          "ownerName": "Ursula Waked",
+          "ownerColor": "#be185d"
+        },
+        {
+          "id": "492335378627",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492335378627",
+          "name": "Call",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
+          "disposition": "f240bbac-87c9-4f6e-bf70-924b57d47db7",
+          "status": "Connected",
+          "isConnected": true,
+          "ownerId": "76369997",
+          "ownerName": "Ursula Waked",
+          "ownerColor": "#be185d"
+        },
+        {
+          "id": "492342389947",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492342389947",
+          "name": "Call",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
+          "disposition": "73a0d17f-1163-4015-bdd5-ec830791da20",
+          "status": "Not Connected",
+          "isConnected": false,
+          "ownerId": "32332250",
+          "ownerName": "Ahmad Khawajah",
+          "ownerColor": "#b45309"
+        },
+        {
+          "id": "492342124777",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492342124777",
+          "name": "Call",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
+          "disposition": "f240bbac-87c9-4f6e-bf70-924b57d47db7",
+          "status": "Connected",
+          "isConnected": true,
+          "ownerId": "32332250",
+          "ownerName": "Ahmad Khawajah",
+          "ownerColor": "#b45309"
+        },
+        {
+          "id": "492357214431",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492357214431",
+          "name": "Call",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
+          "disposition": "f240bbac-87c9-4f6e-bf70-924b57d47db7",
+          "status": "Connected",
+          "isConnected": true,
+          "ownerId": "32332250",
+          "ownerName": "Ahmad Khawajah",
+          "ownerColor": "#b45309"
+        },
+        {
+          "id": "492367999192",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492367999192",
+          "name": "Call",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
+          "disposition": "f240bbac-87c9-4f6e-bf70-924b57d47db7",
+          "status": "Connected",
+          "isConnected": true,
+          "ownerId": "32332250",
+          "ownerName": "Ahmad Khawajah",
+          "ownerColor": "#b45309"
+        },
+        {
+          "id": "492368745680",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492368745680",
+          "name": "Call",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
+          "disposition": "f240bbac-87c9-4f6e-bf70-924b57d47db7",
+          "status": "Connected",
+          "isConnected": true,
+          "ownerId": "32332250",
+          "ownerName": "Ahmad Khawajah",
+          "ownerColor": "#b45309"
+        },
+        {
+          "id": "492358832355",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492358832355",
+          "name": "Call",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
+          "disposition": "73a0d17f-1163-4015-bdd5-ec830791da20",
+          "status": "Not Connected",
+          "isConnected": false,
+          "ownerId": "76369997",
+          "ownerName": "Ursula Waked",
+          "ownerColor": "#be185d"
+        },
+        {
+          "id": "492359060670",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492359060670",
+          "name": "Call",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
+          "disposition": "73a0d17f-1163-4015-bdd5-ec830791da20",
+          "status": "Not Connected",
+          "isConnected": false,
           "ownerId": "76369997",
           "ownerName": "Ursula Waked",
           "ownerColor": "#be185d"
@@ -122340,24 +122763,11 @@
       ],
       "connectedYesterday": [
         {
-          "id": "492068181217",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492068181217",
+          "id": "492182797507",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492182797507",
           "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
-          "disposition": "f240bbac-87c9-4f6e-bf70-924b57d47db7",
-          "status": "Connected",
-          "isConnected": true,
-          "ownerId": "32332250",
-          "ownerName": "Ahmad Khawajah",
-          "ownerColor": "#b45309"
-        },
-        {
-          "id": "491898228978",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/491898228978",
-          "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
           "disposition": "f240bbac-87c9-4f6e-bf70-924b57d47db7",
           "status": "Connected",
           "isConnected": true,
@@ -122366,24 +122776,24 @@
           "ownerColor": "#1d4ed8"
         },
         {
-          "id": "492077589739",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492077589739",
+          "id": "492209284315",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492209284315",
           "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
           "disposition": "f240bbac-87c9-4f6e-bf70-924b57d47db7",
           "status": "Connected",
           "isConnected": true,
-          "ownerId": "31558980",
-          "ownerName": "Zein Fares",
-          "ownerColor": "#1d4ed8"
+          "ownerId": "76369997",
+          "ownerName": "Ursula Waked",
+          "ownerColor": "#be185d"
         },
         {
-          "id": "492085587175",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492085587175",
+          "id": "492214121711",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492214121711",
           "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
           "disposition": "f240bbac-87c9-4f6e-bf70-924b57d47db7",
           "status": "Connected",
           "isConnected": true,
@@ -122392,24 +122802,37 @@
           "ownerColor": "#b45309"
         },
         {
-          "id": "492085967050",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492085967050",
+          "id": "492210135249",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492210135249",
           "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
           "disposition": "f240bbac-87c9-4f6e-bf70-924b57d47db7",
           "status": "Connected",
           "isConnected": true,
-          "ownerId": "31558980",
-          "ownerName": "Zein Fares",
-          "ownerColor": "#1d4ed8"
+          "ownerId": "76369997",
+          "ownerName": "Ursula Waked",
+          "ownerColor": "#be185d"
         },
         {
-          "id": "492086944963",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492086944963",
+          "id": "492214964427",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492214964427",
           "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
+          "disposition": "f240bbac-87c9-4f6e-bf70-924b57d47db7",
+          "status": "Connected",
+          "isConnected": true,
+          "ownerId": "76369997",
+          "ownerName": "Ursula Waked",
+          "ownerColor": "#be185d"
+        },
+        {
+          "id": "492210124988",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492210124988",
+          "name": "Call",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
           "disposition": "f240bbac-87c9-4f6e-bf70-924b57d47db7",
           "status": "Connected",
           "isConnected": true,
@@ -122418,11 +122841,11 @@
           "ownerColor": "#b45309"
         },
         {
-          "id": "492125878496",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492125878496",
+          "id": "492215751907",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492215751907",
           "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
           "disposition": "f240bbac-87c9-4f6e-bf70-924b57d47db7",
           "status": "Connected",
           "isConnected": true,
@@ -122431,11 +122854,11 @@
           "ownerColor": "#b45309"
         },
         {
-          "id": "492125663419",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492125663419",
+          "id": "492211537106",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492211537106",
           "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
           "disposition": "f240bbac-87c9-4f6e-bf70-924b57d47db7",
           "status": "Connected",
           "isConnected": true,
@@ -122444,11 +122867,24 @@
           "ownerColor": "#be185d"
         },
         {
-          "id": "492126002397",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492126002397",
+          "id": "492211574978",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492211574978",
           "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
+          "disposition": "f240bbac-87c9-4f6e-bf70-924b57d47db7",
+          "status": "Connected",
+          "isConnected": true,
+          "ownerId": "32332250",
+          "ownerName": "Ahmad Khawajah",
+          "ownerColor": "#b45309"
+        },
+        {
+          "id": "492211702991",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492211702991",
+          "name": "Call",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
           "disposition": "f240bbac-87c9-4f6e-bf70-924b57d47db7",
           "status": "Connected",
           "isConnected": true,
@@ -122457,11 +122893,11 @@
           "ownerColor": "#be185d"
         },
         {
-          "id": "492126117053",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492126117053",
+          "id": "492301351153",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492301351153",
           "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
           "disposition": "f240bbac-87c9-4f6e-bf70-924b57d47db7",
           "status": "Connected",
           "isConnected": true,
@@ -122470,11 +122906,50 @@
           "ownerColor": "#be185d"
         },
         {
-          "id": "492138933457",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492138933457",
+          "id": "492308296944",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492308296944",
           "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
+          "disposition": "f240bbac-87c9-4f6e-bf70-924b57d47db7",
+          "status": "Connected",
+          "isConnected": true,
+          "ownerId": "32332250",
+          "ownerName": "Ahmad Khawajah",
+          "ownerColor": "#b45309"
+        },
+        {
+          "id": "492307992766",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492307992766",
+          "name": "Call",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
+          "disposition": "f240bbac-87c9-4f6e-bf70-924b57d47db7",
+          "status": "Connected",
+          "isConnected": true,
+          "ownerId": "32332250",
+          "ownerName": "Ahmad Khawajah",
+          "ownerColor": "#b45309"
+        },
+        {
+          "id": "492331497715",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492331497715",
+          "name": "Call",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
+          "disposition": "f240bbac-87c9-4f6e-bf70-924b57d47db7",
+          "status": "Connected",
+          "isConnected": true,
+          "ownerId": "32332250",
+          "ownerName": "Ahmad Khawajah",
+          "ownerColor": "#b45309"
+        },
+        {
+          "id": "492341191882",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492341191882",
+          "name": "Call",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
           "disposition": "f240bbac-87c9-4f6e-bf70-924b57d47db7",
           "status": "Connected",
           "isConnected": true,
@@ -122483,11 +122958,24 @@
           "ownerColor": "#be185d"
         },
         {
-          "id": "492138757355",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492138757355",
+          "id": "492341211347",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492341211347",
           "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
+          "disposition": "f240bbac-87c9-4f6e-bf70-924b57d47db7",
+          "status": "Connected",
+          "isConnected": true,
+          "ownerId": "32332250",
+          "ownerName": "Ahmad Khawajah",
+          "ownerColor": "#b45309"
+        },
+        {
+          "id": "492341397706",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492341397706",
+          "name": "Call",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
           "disposition": "f240bbac-87c9-4f6e-bf70-924b57d47db7",
           "status": "Connected",
           "isConnected": true,
@@ -122496,11 +122984,24 @@
           "ownerColor": "#be185d"
         },
         {
-          "id": "492138984634",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492138984634",
+          "id": "492333643971",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492333643971",
           "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
+          "disposition": "f240bbac-87c9-4f6e-bf70-924b57d47db7",
+          "status": "Connected",
+          "isConnected": true,
+          "ownerId": "32332250",
+          "ownerName": "Ahmad Khawajah",
+          "ownerColor": "#b45309"
+        },
+        {
+          "id": "492334588102",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492334588102",
+          "name": "Call",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
           "disposition": "f240bbac-87c9-4f6e-bf70-924b57d47db7",
           "status": "Connected",
           "isConnected": true,
@@ -122509,11 +123010,11 @@
           "ownerColor": "#be185d"
         },
         {
-          "id": "492140178629",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492140178629",
+          "id": "492334803163",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492334803163",
           "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
           "disposition": "f240bbac-87c9-4f6e-bf70-924b57d47db7",
           "status": "Connected",
           "isConnected": true,
@@ -122522,11 +123023,11 @@
           "ownerColor": "#be185d"
         },
         {
-          "id": "492141091006",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492141091006",
+          "id": "492335378627",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492335378627",
           "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
           "disposition": "f240bbac-87c9-4f6e-bf70-924b57d47db7",
           "status": "Connected",
           "isConnected": true,
@@ -122535,56 +123036,56 @@
           "ownerColor": "#be185d"
         },
         {
-          "id": "492141997302",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492141997302",
+          "id": "492342124777",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492342124777",
           "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
           "disposition": "f240bbac-87c9-4f6e-bf70-924b57d47db7",
           "status": "Connected",
           "isConnected": true,
-          "ownerId": "76369997",
-          "ownerName": "Ursula Waked",
-          "ownerColor": "#be185d"
+          "ownerId": "32332250",
+          "ownerName": "Ahmad Khawajah",
+          "ownerColor": "#b45309"
         },
         {
-          "id": "492142004458",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492142004458",
+          "id": "492357214431",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492357214431",
           "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
           "disposition": "f240bbac-87c9-4f6e-bf70-924b57d47db7",
           "status": "Connected",
           "isConnected": true,
-          "ownerId": "76369997",
-          "ownerName": "Ursula Waked",
-          "ownerColor": "#be185d"
+          "ownerId": "32332250",
+          "ownerName": "Ahmad Khawajah",
+          "ownerColor": "#b45309"
         },
         {
-          "id": "492165121217",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492165121217",
+          "id": "492367999192",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492367999192",
           "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
           "disposition": "f240bbac-87c9-4f6e-bf70-924b57d47db7",
           "status": "Connected",
           "isConnected": true,
-          "ownerId": "76369997",
-          "ownerName": "Ursula Waked",
-          "ownerColor": "#be185d"
+          "ownerId": "32332250",
+          "ownerName": "Ahmad Khawajah",
+          "ownerColor": "#b45309"
         },
         {
-          "id": "492180146379",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492180146379",
+          "id": "492368745680",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492368745680",
           "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
           "disposition": "f240bbac-87c9-4f6e-bf70-924b57d47db7",
           "status": "Connected",
           "isConnected": true,
-          "ownerId": "76369997",
-          "ownerName": "Ursula Waked",
-          "ownerColor": "#be185d"
+          "ownerId": "32332250",
+          "ownerName": "Ahmad Khawajah",
+          "ownerColor": "#b45309"
         }
       ],
       "connectedMTD": [
@@ -156354,11 +156855,11 @@
       ],
       "missedYesterday": [
         {
-          "id": "491900384448",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/491900384448",
+          "id": "492212933832",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492212933832",
           "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
           "disposition": "73a0d17f-1163-4015-bdd5-ec830791da20",
           "status": "Not Connected",
           "isConnected": false,
@@ -156367,11 +156868,37 @@
           "ownerColor": "#be185d"
         },
         {
-          "id": "492076252396",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492076252396",
+          "id": "492208653513",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492208653513",
           "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
+          "disposition": "73a0d17f-1163-4015-bdd5-ec830791da20",
+          "status": "Not Connected",
+          "isConnected": false,
+          "ownerId": "76369997",
+          "ownerName": "Ursula Waked",
+          "ownerColor": "#be185d"
+        },
+        {
+          "id": "492213355739",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492213355739",
+          "name": "Call",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
+          "disposition": "73a0d17f-1163-4015-bdd5-ec830791da20",
+          "status": "Not Connected",
+          "isConnected": false,
+          "ownerId": "76369997",
+          "ownerName": "Ursula Waked",
+          "ownerColor": "#be185d"
+        },
+        {
+          "id": "492214953163",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492214953163",
+          "name": "Call",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
           "disposition": "73a0d17f-1163-4015-bdd5-ec830791da20",
           "status": "Not Connected",
           "isConnected": false,
@@ -156380,11 +156907,24 @@
           "ownerColor": "#b45309"
         },
         {
-          "id": "492076324027",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492076324027",
+          "id": "492210115832",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492210115832",
           "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
+          "disposition": "73a0d17f-1163-4015-bdd5-ec830791da20",
+          "status": "Not Connected",
+          "isConnected": false,
+          "ownerId": "76369997",
+          "ownerName": "Ursula Waked",
+          "ownerColor": "#be185d"
+        },
+        {
+          "id": "492300837102",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492300837102",
+          "name": "Call",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
           "disposition": "73a0d17f-1163-4015-bdd5-ec830791da20",
           "status": "Not Connected",
           "isConnected": false,
@@ -156393,11 +156933,24 @@
           "ownerColor": "#b45309"
         },
         {
-          "id": "492077977829",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492077977829",
+          "id": "492211836095",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492211836095",
           "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
+          "disposition": "73a0d17f-1163-4015-bdd5-ec830791da20",
+          "status": "Not Connected",
+          "isConnected": false,
+          "ownerId": "76369997",
+          "ownerName": "Ursula Waked",
+          "ownerColor": "#be185d"
+        },
+        {
+          "id": "492331460827",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492331460827",
+          "name": "Call",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
           "disposition": "73a0d17f-1163-4015-bdd5-ec830791da20",
           "status": "Not Connected",
           "isConnected": false,
@@ -156406,11 +156959,24 @@
           "ownerColor": "#b45309"
         },
         {
-          "id": "492078586075",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492078586075",
+          "id": "492332006590",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492332006590",
           "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
+          "disposition": "73a0d17f-1163-4015-bdd5-ec830791da20",
+          "status": "Not Connected",
+          "isConnected": false,
+          "ownerId": "76369997",
+          "ownerName": "Ursula Waked",
+          "ownerColor": "#be185d"
+        },
+        {
+          "id": "492331949287",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492331949287",
+          "name": "Call",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
           "disposition": "73a0d17f-1163-4015-bdd5-ec830791da20",
           "status": "Not Connected",
           "isConnected": false,
@@ -156419,37 +156985,24 @@
           "ownerColor": "#b45309"
         },
         {
-          "id": "492085799111",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492085799111",
+          "id": "492341429461",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492341429461",
           "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
           "disposition": "73a0d17f-1163-4015-bdd5-ec830791da20",
           "status": "Not Connected",
           "isConnected": false,
-          "ownerId": "31558980",
-          "ownerName": "Zein Fares",
-          "ownerColor": "#1d4ed8"
+          "ownerId": "76369997",
+          "ownerName": "Ursula Waked",
+          "ownerColor": "#be185d"
         },
         {
-          "id": "492086030528",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492086030528",
+          "id": "492341654717",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492341654717",
           "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
-          "disposition": "73a0d17f-1163-4015-bdd5-ec830791da20",
-          "status": "Not Connected",
-          "isConnected": false,
-          "ownerId": "31558980",
-          "ownerName": "Zein Fares",
-          "ownerColor": "#1d4ed8"
-        },
-        {
-          "id": "492086809807",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492086809807",
-          "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
           "disposition": "73a0d17f-1163-4015-bdd5-ec830791da20",
           "status": "Not Connected",
           "isConnected": false,
@@ -156458,11 +157011,24 @@
           "ownerColor": "#b45309"
         },
         {
-          "id": "492126352593",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492126352593",
+          "id": "492341477585",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492341477585",
           "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
+          "disposition": "73a0d17f-1163-4015-bdd5-ec830791da20",
+          "status": "Not Connected",
+          "isConnected": false,
+          "ownerId": "76369997",
+          "ownerName": "Ursula Waked",
+          "ownerColor": "#be185d"
+        },
+        {
+          "id": "492341838060",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492341838060",
+          "name": "Call",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
           "disposition": "73a0d17f-1163-4015-bdd5-ec830791da20",
           "status": "Not Connected",
           "isConnected": false,
@@ -156471,24 +157037,11 @@
           "ownerColor": "#b45309"
         },
         {
-          "id": "492136734934",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492136734934",
+          "id": "492341814503",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492341814503",
           "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
-          "disposition": "73a0d17f-1163-4015-bdd5-ec830791da20",
-          "status": "Not Connected",
-          "isConnected": false,
-          "ownerId": "31558980",
-          "ownerName": "Zein Fares",
-          "ownerColor": "#1d4ed8"
-        },
-        {
-          "id": "492140594406",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492140594406",
-          "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
           "disposition": "73a0d17f-1163-4015-bdd5-ec830791da20",
           "status": "Not Connected",
           "isConnected": false,
@@ -156497,11 +157050,11 @@
           "ownerColor": "#be185d"
         },
         {
-          "id": "492140649693",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492140649693",
+          "id": "492334553322",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492334553322",
           "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
           "disposition": "73a0d17f-1163-4015-bdd5-ec830791da20",
           "status": "Not Connected",
           "isConnected": false,
@@ -156510,11 +157063,11 @@
           "ownerColor": "#be185d"
         },
         {
-          "id": "492140912844",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492140912844",
+          "id": "492342138103",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492342138103",
           "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
           "disposition": "73a0d17f-1163-4015-bdd5-ec830791da20",
           "status": "Not Connected",
           "isConnected": false,
@@ -156523,11 +157076,11 @@
           "ownerColor": "#be185d"
         },
         {
-          "id": "492139158731",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492139158731",
+          "id": "492335052014",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492335052014",
           "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
           "disposition": "73a0d17f-1163-4015-bdd5-ec830791da20",
           "status": "Not Connected",
           "isConnected": false,
@@ -156536,11 +157089,24 @@
           "ownerColor": "#be185d"
         },
         {
-          "id": "492141327595",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492141327595",
+          "id": "492342389947",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492342389947",
           "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
+          "disposition": "73a0d17f-1163-4015-bdd5-ec830791da20",
+          "status": "Not Connected",
+          "isConnected": false,
+          "ownerId": "32332250",
+          "ownerName": "Ahmad Khawajah",
+          "ownerColor": "#b45309"
+        },
+        {
+          "id": "492358832355",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492358832355",
+          "name": "Call",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
           "disposition": "73a0d17f-1163-4015-bdd5-ec830791da20",
           "status": "Not Connected",
           "isConnected": false,
@@ -156549,24 +157115,11 @@
           "ownerColor": "#be185d"
         },
         {
-          "id": "492164743408",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492164743408",
+          "id": "492359060670",
+          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492359060670",
           "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
-          "disposition": "73a0d17f-1163-4015-bdd5-ec830791da20",
-          "status": "Not Connected",
-          "isConnected": false,
-          "ownerId": "76369997",
-          "ownerName": "Ursula Waked",
-          "ownerColor": "#be185d"
-        },
-        {
-          "id": "492180140258",
-          "hubspotUrl": "https://app-eu1.hubspot.com/calls/145742477/review/492180140258",
-          "name": "Call",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
           "disposition": "73a0d17f-1163-4015-bdd5-ec830791da20",
           "status": "Not Connected",
           "isConnected": false,
@@ -208102,11 +208655,11 @@
     "meetings": {
       "yesterday": [
         {
-          "id": "492078135482",
-          "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/activity/492078135482",
+          "id": "492213132510",
+          "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/activity/492213132510",
           "name": "Meeting",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
           "outcome": "COMPLETED",
           "status": "COMPLETED",
           "ownerId": "31558980",
@@ -208114,11 +208667,35 @@
           "ownerColor": "#1d4ed8"
         },
         {
-          "id": "492125776064",
-          "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/activity/492125776064",
+          "id": "492209420520",
+          "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/activity/492209420520",
           "name": "Meeting",
-          "date": "2026-05-18",
-          "activityDate": "2026-05-18",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
+          "outcome": "COMPLETED",
+          "status": "COMPLETED",
+          "ownerId": "32332250",
+          "ownerName": "Ahmad Khawajah",
+          "ownerColor": "#b45309"
+        },
+        {
+          "id": "492209682619",
+          "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/activity/492209682619",
+          "name": "Meeting",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
+          "outcome": "COMPLETED",
+          "status": "COMPLETED",
+          "ownerId": "32332250",
+          "ownerName": "Ahmad Khawajah",
+          "ownerColor": "#b45309"
+        },
+        {
+          "id": "492367710429",
+          "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/activity/492367710429",
+          "name": "Meeting",
+          "date": "2026-05-19",
+          "activityDate": "2026-05-19",
           "outcome": "COMPLETED",
           "status": "COMPLETED",
           "ownerId": "76369997",
@@ -213630,32 +214207,74 @@
     "leads": {
       "yesterday": [
         {
-          "id": "780277276909",
-          "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/780277276909",
-          "name": "780277276909",
+          "id": "780551611626",
+          "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/780551611626",
+          "name": "780551611626",
           "email": null,
           "leadStatus": "ATTEMPTED_TO_CONTACT",
-          "source": "ORGANIC_SEARCH",
-          "sourceBucket": "inbound",
-          "createdAt": "2026-05-18",
-          "date": "2026-05-18",
-          "ownerId": "31558980",
-          "ownerName": "Zein Fares",
-          "ownerColor": "#1d4ed8"
+          "source": "OFFLINE",
+          "sourceBucket": "outbound",
+          "createdAt": "2026-05-19",
+          "date": "2026-05-19",
+          "ownerId": "76369997",
+          "ownerName": "Ursula Waked",
+          "ownerColor": "#be185d"
         },
         {
-          "id": "780321383634",
-          "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/780321383634",
-          "name": "780321383634",
+          "id": "780768880841",
+          "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/780768880841",
+          "name": "780768880841",
           "email": null,
           "leadStatus": "IN_PROGRESS",
-          "source": "OTHER_CAMPAIGNS",
+          "source": "ORGANIC_SEARCH",
           "sourceBucket": "inbound",
-          "createdAt": "2026-05-18",
-          "date": "2026-05-18",
-          "ownerId": "31558980",
-          "ownerName": "Zein Fares",
-          "ownerColor": "#1d4ed8"
+          "createdAt": "2026-05-19",
+          "date": "2026-05-19",
+          "ownerId": "76369997",
+          "ownerName": "Ursula Waked",
+          "ownerColor": "#be185d"
+        },
+        {
+          "id": "780802662632",
+          "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/780802662632",
+          "name": "780802662632",
+          "email": null,
+          "leadStatus": null,
+          "source": "DIRECT_TRAFFIC",
+          "sourceBucket": "inbound",
+          "createdAt": "2026-05-19",
+          "date": "2026-05-19",
+          "ownerId": "32332250",
+          "ownerName": "Ahmad Khawajah",
+          "ownerColor": "#b45309"
+        },
+        {
+          "id": "781033977027",
+          "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/781033977027",
+          "name": "781033977027",
+          "email": null,
+          "leadStatus": "IN_PROGRESS",
+          "source": "OFFLINE",
+          "sourceBucket": "outbound",
+          "createdAt": "2026-05-19",
+          "date": "2026-05-19",
+          "ownerId": "76369997",
+          "ownerName": "Ursula Waked",
+          "ownerColor": "#be185d"
+        },
+        {
+          "id": "781107810543",
+          "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-1/781107810543",
+          "name": "781107810543",
+          "email": null,
+          "leadStatus": "IN_PROGRESS",
+          "source": "OFFLINE",
+          "sourceBucket": "outbound",
+          "createdAt": "2026-05-19",
+          "date": "2026-05-19",
+          "ownerId": "32332250",
+          "ownerName": "Ahmad Khawajah",
+          "ownerColor": "#b45309"
         }
       ],
       "mtd": [
@@ -234953,7 +235572,84 @@
           "ownerColor": "#0e7490"
         }
       ],
-      "createdYesterday": [],
+      "createdYesterday": [
+        {
+          "id": "503136148725",
+          "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/503136148725",
+          "name": "Evalufy New Deal -Gulf international Bank  ",
+          "amount": 7300,
+          "value": 7300,
+          "stage": "1435517125",
+          "stageLabel": "1435517125",
+          "dealstage": "1435517125",
+          "date": "2026-05-19",
+          "createdAt": "2026-05-19",
+          "closeDate": "2026-05-19",
+          "actionDate": "2026-05-19",
+          "status": "Created Yesterday",
+          "nextActivity": null,
+          "ownerId": "76370000",
+          "ownerName": "Jehad Al-Barqawi",
+          "ownerColor": "#0e7490"
+        },
+        {
+          "id": "503136152792",
+          "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/503136152792",
+          "name": "Talentera 2026 -Jordan Ahli Bank",
+          "amount": 7819.99,
+          "value": 7819.99,
+          "stage": "1435517125",
+          "stageLabel": "1435517125",
+          "dealstage": "1435517125",
+          "date": "2026-05-19",
+          "createdAt": "2026-05-19",
+          "closeDate": "2026-05-19",
+          "actionDate": "2026-05-19",
+          "status": "Created Yesterday",
+          "nextActivity": null,
+          "ownerId": "76370000",
+          "ownerName": "Jehad Al-Barqawi",
+          "ownerColor": "#0e7490"
+        },
+        {
+          "id": "503139981520",
+          "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/503139981520",
+          "name": "Cairo Amman Bank - Evalufy 2026",
+          "amount": 2120.7,
+          "value": 2120.7,
+          "stage": "1435517125",
+          "stageLabel": "1435517125",
+          "dealstage": "1435517125",
+          "date": "2026-05-19",
+          "createdAt": "2026-05-19",
+          "closeDate": "2026-05-19",
+          "actionDate": "2026-05-19",
+          "status": "Created Yesterday",
+          "nextActivity": null,
+          "ownerId": "76370000",
+          "ownerName": "Jehad Al-Barqawi",
+          "ownerColor": "#0e7490"
+        },
+        {
+          "id": "503144836318",
+          "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-3/503144836318",
+          "name": "Saudia Technic 2026",
+          "amount": 113400,
+          "value": 113400,
+          "stage": "1435517125",
+          "stageLabel": "1435517125",
+          "dealstage": "1435517125",
+          "date": "2026-05-19",
+          "createdAt": "2026-05-19",
+          "closeDate": "2026-05-19",
+          "actionDate": "2026-05-19",
+          "status": "Created Yesterday",
+          "nextActivity": null,
+          "ownerId": "76370000",
+          "ownerName": "Jehad Al-Barqawi",
+          "ownerColor": "#0e7490"
+        }
+      ],
       "createdMTD": [
         {
           "id": "501635645643",
@@ -252444,6 +253140,12 @@
           "rep": "Marita Chedid"
         },
         {
+          "name": "CIT Group - New Deal",
+          "days": 19,
+          "amount": 6750,
+          "rep": "Marita Chedid"
+        },
+        {
           "name": "Tanmia- New Deal",
           "days": 70,
           "amount": 6900,
@@ -252474,21 +253176,15 @@
           "rep": "Marita Chedid"
         },
         {
+          "name": "PepsiKuwait - New Deal",
+          "days": 15,
+          "amount": 11500,
+          "rep": "Marita Chedid"
+        },
+        {
           "name": "almoosahospital.com.sa - New Deal",
           "days": 212,
           "amount": 20000,
-          "rep": "Zein Fares"
-        },
-        {
-          "name": "Al- Othman Holding - New Deal",
-          "days": 258,
-          "amount": 8667.75,
-          "rep": "Zein Fares"
-        },
-        {
-          "name": "MARCO - New Deal",
-          "days": 101,
-          "amount": 10401.3,
           "rep": "Zein Fares"
         }
       ],
@@ -252547,6 +253243,7 @@
           "name": "CIT Group - New Deal",
           "amount": 6750,
           "reasons": [
+            "No activity for 19 days",
             "Stuck in stage for 89 days"
           ],
           "rep": "Marita Chedid"
@@ -252580,31 +253277,31 @@
     },
     "priority": [
       "Follow up 5 signed deal(s) not cashed yet",
-      "Add next activity for 206 open deal(s)",
+      "Add next activity for 215 open deal(s)",
       "Contact top 10 priority lead(s)"
     ]
   },
   "claudeInput": {
     "lostSummary": "- Timing and Project Issues: 3 deals, $25400\n- Contact-ability Issues: 2 deals, $49184\n- Other: 4 deals, $3000",
     "repLostSummary": "- Zein Fares: 3 lost ($49184), 0 won ($0), conn rate 64%\n- Ursula Waked: 4 lost ($28400), 3 won ($9800), conn rate 55%\n- Ahmad Khawajah: 2 lost ($0), 0 won ($0), conn rate 56%",
-    "stuckColdSummary": "- Marita Chedid: 23 stuck, 7 cold deals\n- Zein Fares: 72 stuck, 56 cold deals\n- Ursula Waked: 78 stuck, 29 cold deals\n- Jehad Al-Barqawi: 24 stuck, 24 cold deals",
+    "stuckColdSummary": "- Marita Chedid: 27 stuck, 9 cold deals\n- Zein Fares: 78 stuck, 61 cold deals\n- Ursula Waked: 78 stuck, 37 cold deals\n- Ahmad Khawajah: 1 stuck, 0 cold deals\n- Jehad Al-Barqawi: 24 stuck, 24 cold deals",
     "leadActivitySummary": "Marketing Leads: 119 total, 0 contacted (0%), 117 converted (98%) | Unqualified: 0 | Existing Clients: 342",
     "kpiLine": "MTD: 641 calls (44% connected), 41 meetings, 5 won ($213K), 9 lost ($78K), pipeline $4.7M"
   },
   "aiInsights": {
-    "summary": "Critical pipeline health crisis: 197 stuck deals and 116 cold deals risk $4.7M pipeline with only 44% connect rate",
+    "summary": "Pipeline severely clogged with 208 stuck deals and 131 cold opportunities requiring immediate action to protect $4.7M",
     "patterns": [
-      "Connection rate at 44% is significantly underperforming - Zein at 64% shows best practice but team average drags performance",
-      "Contactability issues caused $49K in losses (2 deals) - largest single loss category indicating lead quality or follow-up problems",
-      "Ursula shows 4:3 lost-to-won ratio but Zein has 3 losses with $49K and zero wins - urgent coaching needed on deal qualification"
+      "Zein Fares lost all 3 deals worth $49K despite 64% connection rate - highest loss value on team indicates qualification or closing issues",
+      "Contact-ability caused $49K in losses (2 deals) - nearly 63% of total lost value suggests lead quality or outreach timing problems",
+      "Ahmad Khawajah shows cleanest pipeline (1 stuck, 0 cold) but zero conversions - possible over-qualification or risk aversion in deal acceptance"
     ],
     "quick_wins": [
-      "Zein: Immediately qualify and progress 20 of 72 stuck deals using proven methods - leverage 64% connect rate advantage to rescue pipeline",
-      "Ursula: Document winning playbook from 3 closed deals ($9.8K) and share with team by Wednesday for Friday enablement session"
+      "Zein: Schedule qualification training by Wednesday and review lost deal post-mortems with VP Sales to address $49K loss pattern",
+      "Marita & Ursula: Blitz 20 highest-value stuck deals each by Friday using new contact methods - focus on the 115 combined stuck opportunities"
     ],
     "risks": [
-      "197 stuck deals across team represent severe pipeline health risk - without immediate action, Q2 targets in jeopardy with current $213K MTD vs $4.7M pipeline",
-      "Contactability losses ($49K) suggest CRM data quality issues or poor lead routing - could indicate 15-20% of pipeline is unreachable"
+      "56% connection rate trending below industry benchmark - only 282 of 641 calls connected, limiting pipeline generation capacity",
+      "Contact-ability issues caused 63% of lost deal value ($49K of $78K total) - signals CRM data quality crisis or wrong buyer targeting"
     ]
   },
   "marketNews": [
@@ -252613,21 +253310,21 @@
       "tag": "Regulation",
       "color": "#D97706",
       "source": "HRSD Saudi",
-      "text": "Saudi Arabia announces stricter Nitaqat compliance audits starting Q3 2026, requiring real-time workforce reporting through approved ATS platforms"
+      "text": "Saudi Arabia announces new Nitaqat scoring system effective Q3 2026, requiring real-time hiring data integration from all ATS platforms operating in the Kingdom"
     },
     {
       "icon": "📊",
       "tag": "M&A",
       "color": "#7C3AED",
       "source": "Bloomberg",
-      "text": "Oracle acquires regional HR tech startup Tawzef for $120M, signaling intensified competition for enterprise ATS contracts in UAE and Saudi markets"
+      "text": "LinkedIn Talent Solutions acquires Dubai-based HCM startup for $47M, expanding MENA enterprise footprint and threatening regional ATS market share"
     },
     {
       "icon": "⚡",
       "tag": "Trend",
       "color": "#2563EB",
       "source": "Gartner",
-      "text": "GCC enterprises increase HR tech budgets by 34% in 2026, with 68% prioritizing AI-powered recruitment tools and compliance automation"
+      "text": "GCC enterprises increased ATS budgets by 34% in Q1 2026 driven by Emiratization compliance needs and Vision 2030 workforce nationalization targets"
     }
   ]
 }
