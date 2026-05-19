@@ -1580,7 +1580,7 @@ body::after{
     <div class="sidebar-section">Main</div>
     <button class="nav-item active" id="side-acquisition" onclick="switchMainPanel('acquisition')"><span class="nav-icon">&#128202;</span> Acquisition</button>
 <button class="nav-item" id="side-retention" onclick="switchMainPanel('retention')"><span class="qcq-logo">🛡️</span> Retention</button>
-<button class="nav-item" id="side-revenue-analysis-main" onclick="switchRetentionRevenueAnalysis()"><span class="nav-icon" style="color:var(--blue)">📊</span> Revenue Analysis</button>
+<button class="nav-item" id="side-revenue-analysis-main" onclick="switchRetentionRevenueAnalysis()"><span class="nav-icon" style="color:var(--blue)">📊</span> P&amp;L</button>
     <div class="sidebar-section" id="repsSectionTitle">Acquisition Reps</div>
     <div id="sideRepLinks"></div>
     <div class="sidebar-bottom">
@@ -9973,6 +9973,155 @@ body.retention-financial-wide #panel-retention-financial .ret-fin-split{max-widt
   }
   if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded',function(){ if(window.APP_MAIN_PANEL === 'retention' && window.APP_RETENTION_VIEW === 'financial') window.renderRetentionFinancialDetails(); });
   else setTimeout(function(){ if(window.APP_MAIN_PANEL === 'retention' && window.APP_RETENTION_VIEW === 'financial') window.renderRetentionFinancialDetails(); },0);
+})();
+</script>
+
+
+
+<script id="pnl-main-nav-final-patch">
+(function(){
+  if(window.__PNL_MAIN_NAV_FINAL_PATCH__) return;
+  window.__PNL_MAIN_NAV_FINAL_PATCH__ = true;
+
+  function byId(id){ return document.getElementById(id); }
+  function removeActive(selector){ document.querySelectorAll(selector).forEach(function(el){ el.classList.remove('active'); }); }
+  function show(el, display){ if(el) el.style.display = display; }
+
+  function cleanPnlNav(active){
+    var mainBtn = byId('side-revenue-analysis-main');
+    if(mainBtn){
+      mainBtn.innerHTML = '<span class="nav-icon" style="color:var(--blue)">📊</span> P&amp;L';
+      mainBtn.setAttribute('onclick','switchRetentionRevenueAnalysis()');
+      mainBtn.classList.toggle('active', !!active);
+    }
+    document.querySelectorAll('#side-ret-revenue-analysis').forEach(function(el){ el.remove(); });
+  }
+
+  function ensurePnlPanel(){
+    var panel = byId('panel-retention-revenue');
+    if(!panel){
+      panel = document.createElement('div');
+      panel.className = 'panel';
+      panel.id = 'panel-retention-revenue';
+      panel.innerHTML = '<div class="ret-fin-hero" style="border-left-color:var(--blue)"><div class="ret-fin-hero-icon" style="background:var(--blue-bg);border-color:var(--blue-bd)">📊</div><div><div class="ret-fin-hero-title">P&amp;L</div><div class="ret-fin-hero-sub">Executive dynamic view from ForReporting with revenue, booking, cashing, cost, and break-even charts.</div></div></div><div id="retRevenueAnalysisMount"></div>';
+      var dash = byId('dashMain') || document.querySelector('.content');
+      if(dash) dash.appendChild(panel);
+    }
+    var heroTitle = panel.querySelector('.ret-fin-hero-title');
+    if(heroTitle) heroTitle.innerHTML = 'P&amp;L';
+    var heroSub = panel.querySelector('.ret-fin-hero-sub');
+    if(heroSub) heroSub.textContent = 'Executive dynamic view from ForReporting with revenue, booking, cashing, cost, and break-even charts.';
+    var mount = byId('retRevenueAnalysisMount');
+    if(!mount){
+      mount = document.createElement('div');
+      mount.id = 'retRevenueAnalysisMount';
+      panel.appendChild(mount);
+    }
+    return panel;
+  }
+
+  function moveRevenueBlockToPnl(){
+    var panel = ensurePnlPanel();
+    var mount = byId('retRevenueAnalysisMount');
+    var block = byId('retFinanceComparisonBlock');
+    if(block && mount && block.parentElement !== mount) mount.appendChild(block);
+    return panel;
+  }
+
+  function renderPnlCharts(){
+    if(typeof window.renderFinanceComparisonCharts === 'function'){
+      try{ window.renderFinanceComparisonCharts(); }catch(e){ console.warn('P&L chart render skipped:', e); }
+    }
+    moveRevenueBlockToPnl();
+  }
+
+  function activatePnl(skipScroll){
+    window.APP_MAIN_PANEL = 'retention';
+    window.APP_RETENTION_VIEW = 'revenue';
+    window.APP_RETENTION_OWNER_ID = null;
+    window.RET_SELECTED_OWNER_ID = null;
+    window.RETENTION_SUBVIEW = 'revenue';
+    try{
+      APP_MAIN_PANEL = 'retention';
+      APP_RETENTION_VIEW = 'revenue';
+      APP_RETENTION_OWNER_ID = null;
+      RET_SELECTED_OWNER_ID = null;
+      RETENTION_SUBVIEW = 'revenue';
+    }catch(e){}
+
+    ensurePnlPanel();
+    removeActive('.tab-btn');
+    removeActive('.panel');
+    removeActive('.nav-item');
+    show(byId('tabsBar'), 'none');
+
+    var panel = byId('panel-retention-revenue');
+    if(panel) panel.classList.add('active');
+
+    if(typeof window.renderRetentionSidebar === 'function'){
+      try{ window.renderRetentionSidebar('revenue'); }catch(e){}
+    }
+    cleanPnlNav(true);
+
+    var title = byId('topbarTitle');
+    if(title) title.textContent = 'P&L · Revenue Analysis';
+    var sub = byId('topbarSub');
+    if(sub) sub.textContent = 'Revenue filters · 2025 full year · 2026 actual to date · Monthly view';
+
+    renderPnlCharts();
+    if(!skipScroll) window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  var oldRenderRetentionSidebar = window.renderRetentionSidebar;
+  if(typeof oldRenderRetentionSidebar === 'function' && !oldRenderRetentionSidebar.__pnlMainNavFinalPatch){
+    window.renderRetentionSidebar = function(activeMode){
+      var result = oldRenderRetentionSidebar.apply(this, arguments);
+      cleanPnlNav(activeMode === 'revenue' || window.APP_RETENTION_VIEW === 'revenue');
+      return result;
+    };
+    window.renderRetentionSidebar.__pnlMainNavFinalPatch = true;
+    try{ renderRetentionSidebar = window.renderRetentionSidebar; }catch(e){}
+  }
+
+  var oldRestoreCurrentView = window.restoreCurrentView;
+  if(typeof oldRestoreCurrentView === 'function' && !oldRestoreCurrentView.__pnlMainNavFinalPatch){
+    window.restoreCurrentView = function(){
+      if(window.APP_MAIN_PANEL === 'retention' && window.APP_RETENTION_VIEW === 'revenue'){
+        activatePnl(true);
+        return;
+      }
+      return oldRestoreCurrentView.apply(this, arguments);
+    };
+    window.restoreCurrentView.__pnlMainNavFinalPatch = true;
+    try{ restoreCurrentView = window.restoreCurrentView; }catch(e){}
+  }
+
+  var oldLoadData = window.loadData;
+  if(typeof oldLoadData === 'function' && !oldLoadData.__pnlMainNavFinalPatch){
+    window.loadData = async function(){
+      var wasPnl = window.APP_MAIN_PANEL === 'retention' && window.APP_RETENTION_VIEW === 'revenue';
+      var out = oldLoadData.apply(this, arguments);
+      if(out && typeof out.then === 'function') await out;
+      if(wasPnl || (window.APP_MAIN_PANEL === 'retention' && window.APP_RETENTION_VIEW === 'revenue')){
+        setTimeout(function(){ activatePnl(true); }, 0);
+      }else{
+        cleanPnlNav(false);
+      }
+      return out;
+    };
+    window.loadData.__pnlMainNavFinalPatch = true;
+    try{ loadData = window.loadData; }catch(e){}
+  }
+
+  window.switchRetentionRevenueAnalysis = function(){ activatePnl(false); };
+  try{ switchRetentionRevenueAnalysis = window.switchRetentionRevenueAnalysis; }catch(e){}
+
+  function init(){
+    cleanPnlNav(window.APP_RETENTION_VIEW === 'revenue');
+    if(window.APP_MAIN_PANEL === 'retention' && window.APP_RETENTION_VIEW === 'revenue') activatePnl(true);
+  }
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else setTimeout(init, 0);
 })();
 </script>
 
