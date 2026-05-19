@@ -9400,11 +9400,11 @@ body.retention-financial-wide #panel-retention-financial .ret-fin-split{max-widt
 </script>
 
 
-<script id="retention-financial-dynamic-filters-v64">
+<script id="retention-financial-dynamic-filters-v65">
 (function(){
-  if(window.__RETENTION_FINANCIAL_DYNAMIC_FILTERS_V64__) return;
-  window.__RETENTION_FINANCIAL_DYNAMIC_FILTERS_V64__ = true;
-  window.DASHBOARD_CLEAN_VERSION = 'retention-financial-dynamic-filters-v64';
+  if(window.__RETENTION_FINANCIAL_DYNAMIC_FILTERS_V65__) return;
+  window.__RETENTION_FINANCIAL_DYNAMIC_FILTERS_V65__ = true;
+  window.DASHBOARD_CLEAN_VERSION = 'retention-financial-dynamic-filters-v65-negative-dedupe-filters';
 
   var MONTHS = [
     {key:'All',label:'All Months',i:0},
@@ -9423,13 +9423,17 @@ body.retention-financial-wide #panel-retention-financial .ret-fin-split{max-widt
   function num(v){
     if(v == null || v === '') return 0;
     if(typeof v === 'number') return Number.isFinite(v) ? v : 0;
-    var s = String(v).replace(/,/g,'').replace(/\$/g,'').trim();
-    var negative = /^-/.test(s) || /-$/.test(s) || (s.indexOf('(') >= 0 && s.indexOf(')') >= 0);
+    var s = String(v).replace(/,/g,'').replace(/\$/g,'').replace(/[−–—]/g,'-').trim();
+    var negative = /^-/.test(s) || /-$/.test(s) || /\([^)]*\)/.test(s) || /(^|[^0-9])-\s*\d/.test(s);
     s = s.replace(/[()\s-]/g,'').replace(/[^0-9.]/g,'');
     var n = Number(s);
     return Number.isFinite(n) ? (negative ? -n : n) : 0;
   }
-  function money(v){ return '$' + Math.round(num(v)).toLocaleString('en-US'); }
+  function money(v){
+    var n = num(v);
+    var abs = Math.round(Math.abs(n)).toLocaleString('en-US');
+    return (n < 0 ? '-$' : '$') + abs;
+  }
   function currentR(){ try{ if(typeof R !== 'undefined' && R) return R; }catch(e){} return window.R || {}; }
   function sheets(){ var r = currentR(); return r.retentionSheets2026 || r.sheets2026 || (r.sheetData && r.sheetData.retentionSheets2026) || {}; }
   function summary(){ return sheets().summary || {}; }
@@ -9556,7 +9560,9 @@ body.retention-financial-wide #panel-retention-financial .ret-fin-split{max-widt
   }
   function entryKey(entry){
     var row = entry.row || {};
-    return [entry.kind, accountKey(row), norm(clientOf(row)), norm(entry.product), norm(entry.month), Math.round(num(entry.value) * 100) / 100].join('|');
+    var clientKey = norm(clientOf(row));
+    var safeAccountKey = clientKey && clientKey !== 'unknown client' ? clientKey : accountKey(row);
+    return [entry.kind, safeAccountKey, norm(entry.product), norm(entry.month), Math.round(num(entry.value) * 100) / 100].join('|');
   }
   function financialEntries(rows, kind, month, product){
     var seen = {};
@@ -9646,12 +9652,16 @@ body.retention-financial-wide #panel-retention-financial .ret-fin-split{max-widt
     var link = url ? '<a class="record-link" href="'+esc(url)+'" target="_blank" rel="noopener">'+esc(name)+'</a>' : esc(name);
     return '<div style="font-weight:900">'+link+'</div>' + (bits.length ? '<div style="font-size:10px;color:var(--muted);margin-top:2px">'+esc(bits.join(' · '))+'</div>' : '');
   }
-  function allAccounts(){
+  function rawAccounts(){
     var s = sheets();
-    var rows = arr(s.accounts).concat(arr(s.sheetOnlyNotInBudgetAccounts));
+    return arr(s.accounts).concat(arr(s.sheetOnlyNotInBudgetAccounts));
+  }
+  function allAccounts(){
     var seen = {};
-    return rows.filter(function(row){
-      var key = [gidOf(row),norm(clientOf(row)),productOf(row),renewalMonth(row),bookingMonth(row),collectionMonth(row),rawValue(row,'booked'),rawValue(row,'cash'),renewalValue(row,'All','All'),first(row,['notInBudget2026']) || first(row,['budgetNote']) ? 'nb' : 'b'].join('|');
+    return rawAccounts().filter(function(row){
+      var clientKey = norm(clientOf(row));
+      var safeAccountKey = clientKey && clientKey !== 'unknown client' ? clientKey : gidOf(row);
+      var key = [safeAccountKey,productOf(row),renewalMonth(row),bookingMonth(row),collectionMonth(row),rawValue(row,'booked'),rawValue(row,'cash'),renewalValue(row,'All','All'),first(row,['notInBudget2026']) || first(row,['budgetNote']) ? 'nb' : 'b'].join('|');
       if(seen[key]) return false;
       seen[key] = true;
       return true;
@@ -9673,7 +9683,47 @@ body.retention-financial-wide #panel-retention-financial .ret-fin-split{max-widt
     return false;
   }
   function filteredAccounts(){ var f = filters(); return allAccounts().filter(function(row){ return rowPassBase(row) && passMonth(row,f.month || 'All',f.product || 'All'); }); }
+  function rawFilteredAccounts(){ var f = filters(); return rawAccounts().filter(function(row){ return rowPassBase(row) && passMonth(row,f.month || 'All',f.product || 'All'); }); }
   function dueAccounts(rows, month, product){ return rows.filter(function(row){ return renewalValue(row,month || 'All',product || 'All') !== 0; }); }
+  function duplicateFinancialGroups(rows, month, product){
+    var groups = {};
+    function add(entry){
+      var row = entry.row || {};
+      var clientKey = norm(clientOf(row));
+      if(!clientKey || clientKey === 'unknown client') return;
+      var key = [entry.kind, clientKey, norm(entry.product), norm(entry.month), Math.round(num(entry.value) * 100) / 100].join('|');
+      if(!groups[key]) groups[key] = {kind:entry.kind, client:clientOf(row), product:entry.product, month:entry.month, value:num(entry.value), rows:[], gids:{}, owners:{}};
+      groups[key].rows.push(row);
+      var gid = gidOf(row); if(gid) groups[key].gids[gid] = true;
+      var owner = rmOf(row) || csmOf(row); if(owner) groups[key].owners[owner] = true;
+    }
+    arr(rows).forEach(function(row){
+      mapEntriesForRow(row,'booked',month || 'All',product || 'All').forEach(add);
+      mapEntriesForRow(row,'cash',month || 'All',product || 'All').forEach(add);
+    });
+    return Object.keys(groups).map(function(k){ return groups[k]; }).filter(function(g){ return g.rows.length > 1; }).sort(function(a,b){ return b.rows.length - a.rows.length || Math.abs(b.value) - Math.abs(a.value); });
+  }
+  function renderDuplicateAudit(rawRows, month, product){
+    var board = byId('retFinAuditBoard');
+    var body = byId('retFinAuditBody');
+    var badgeEl = byId('retFinAuditBadge');
+    if(!board || !body) return;
+    var groups = duplicateFinancialGroups(rawRows, month || 'All', product || 'All');
+    if(!groups.length){
+      board.style.display = 'none';
+      body.innerHTML = '';
+      if(badgeEl) badgeEl.textContent = '0 duplicates';
+      return;
+    }
+    board.style.display = 'block';
+    if(badgeEl) badgeEl.textContent = groups.length.toLocaleString() + ' duplicate groups excluded from totals';
+    body.innerHTML = '<div class="ret-fin-mini-note">These rows have the same client + product + month + value, so the dashboard counts them once even if the GID is different. This catches cases like duplicate Human Resources / 365 entries.</div>'+
+      '<div style="overflow-x:auto"><table class="tbl">'+tableHead(['Type','Client',':Product',':Month',':Value',':Repeated',':GIDs / Owners'])+'<tbody>'+groups.slice(0,20).map(function(g){
+        var gids = Object.keys(g.gids).join(', ') || '—';
+        var owners = Object.keys(g.owners).join(', ') || '—';
+        return '<tr><td><span class="badge '+(g.kind === 'cash' ? 'bg' : 'bp')+'">'+esc(g.kind === 'cash' ? 'Cash' : 'Booked')+'</span></td><td><div style="font-weight:900">'+esc(g.client)+'</div></td><td class="c">'+esc(g.product || '—')+'</td><td class="c">'+esc(g.month || '—')+'</td><td class="c">'+cellMoney(g.value, g.value < 0 ? 'var(--red)' : (g.kind === 'cash' ? 'var(--green)' : 'var(--purple)'))+'</td><td class="c"><span class="badge ba">'+g.rows.length+'x</span></td><td class="c"><div style="font-size:10px;color:var(--muted)">'+esc(gids)+'<br>'+esc(owners)+'</div></td></tr>';
+      }).join('')+'</tbody></table></div>'+(groups.length > 20 ? '<div class="ret-drill-empty" style="padding:12px">Showing first 20 of '+groups.length.toLocaleString()+' duplicate groups.</div>' : '');
+  }
   function unique(rows, fn){ var seen = {}; return arr(rows).map(fn).filter(function(v){ v = txt(v); if(!v || seen[v]) return false; seen[v] = true; return true; }).sort(function(a,b){ return String(a).localeCompare(String(b)); }); }
   function productOptions(rows){ var values = {}; rows.forEach(function(row){ allProductsFromRow(row).forEach(function(p){ if(p && p !== 'Unknown') values[p] = true; }); }); return Object.keys(values).sort(); }
   function remainingGroups(rows, month, product){
@@ -9737,6 +9787,7 @@ body.retention-financial-wide #panel-retention-financial .ret-fin-split{max-widt
     hero.insertAdjacentHTML('afterend',
       '<div id="retFinDynamicLayoutV64">'+
         '<div id="retFinSheetFilter" class="ret-sheet-filter"></div>'+
+        '<div class="ret-fin-board" id="retFinAuditBoard" style="display:none;border-top:3px solid var(--amber)"><div class="ret-fin-board-hd"><div><div class="ret-fin-board-title">🧹 Duplicate Financial Rows Detected</div><div class="ret-fin-mini-note" style="border:0;background:transparent;padding:4px 0 0">Duplicate rows are excluded from totals by client + product + month + value, even when GID is different.</div></div><span class="badge ba" id="retFinAuditBadge">0 duplicates</span></div><div id="retFinAuditBody"></div></div>'+ 
         '<div class="ret-fin-top-grid" id="retFinTopGrid"></div>'+
         '<div class="ret-fin-board" id="retFinOwnerBoard"><div class="ret-fin-board-hd"><div><div class="ret-fin-board-title">📊 Owner Financial Summary</div><div class="ret-fin-mini-note" style="border:0;background:transparent;padding:4px 0 0">Renewal, booked total, cash collected, and booked-not-cash by RM / CSM after the current filters.</div></div><span class="badge bb" id="retFinOwnerBadge">0 owners</span></div><div class="ret-fin-owner-grid" id="retFinOwnerGrid"></div></div>'+
         '<div class="ret-fin-board" id="retFinStatusBoard"><div class="ret-fin-board-hd"><div><div class="ret-fin-board-title">📌 Renewal Status Split</div><div class="ret-fin-mini-note" style="border:0;background:transparent;padding:4px 0 0">Renewal statuses by renewal month after the current filters. Booked total and cash tables below use their own booking / collection month.</div></div><span class="badge bb" id="retFinStatusBadge">0 accounts</span></div>'+
@@ -9920,6 +9971,8 @@ body.retention-financial-wide #panel-retention-financial .ret-fin-split{max-widt
     var all = allAccounts();
     renderFilters(all);
     var rows = filteredAccounts();
+    var f = filters();
+    renderDuplicateAudit(rawFilteredAccounts(), f.month || 'All', f.product || 'All');
     if(!all.length){
       setHtml('retFinTopGrid','<div class="ret-fin-card" style="--fc:var(--red);grid-column:1/-1"><div class="ret-fin-card-v">No Data</div><div class="ret-fin-card-l">Retention financial source is empty</div><div class="ret-fin-card-s">Run the retention n8n workflow and make sure data-retention.json contains retentionSheets2026.accounts.</div></div>');
       setHtml('retFinOwnerGrid','<div class="ret-fin-empty" style="grid-column:1/-1">No owner summary because retention financial data is empty.</div>');
@@ -9946,7 +9999,7 @@ body.retention-financial-wide #panel-retention-financial .ret-fin-split{max-widt
   };
   try{ switchRetentionFinancial = window.switchRetentionFinancial; }catch(e){}
   var previousLoadData = window.loadData;
-  if(typeof previousLoadData === 'function' && !previousLoadData.__retFinDynamicFiltersV64){
+  if(typeof previousLoadData === 'function' && !previousLoadData.__retFinDynamicFiltersV65){
     window.loadData = async function(){
       var out = previousLoadData.apply(this,arguments);
       if(out && typeof out.then === 'function') await out;
@@ -9954,7 +10007,7 @@ body.retention-financial-wide #panel-retention-financial .ret-fin-split{max-widt
       if(window.APP_MAIN_PANEL === 'retention' && window.APP_RETENTION_VIEW === 'financial') setTimeout(window.renderRetentionFinancialDetails,0);
       return out;
     };
-    window.loadData.__retFinDynamicFiltersV64 = true;
+    window.loadData.__retFinDynamicFiltersV65 = true;
     try{ loadData = window.loadData; }catch(e){}
   }
   if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded',function(){ if(window.APP_MAIN_PANEL === 'retention' && window.APP_RETENTION_VIEW === 'financial') window.renderRetentionFinancialDetails(); });
