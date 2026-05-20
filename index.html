@@ -3886,9 +3886,6 @@ renderManagerAddons();
             ${[{v:r.openDeals||0,l:"Open Deals",c:"var(--amber)"},{v:fmt(r.pipeAmt||0),l:"Pipeline",c:"var(--cyan)"},{v:r.won||0,l:"Won MTD",c:"var(--green)"},{v:r.lost||0,l:"Lost MTD",c:"var(--red)"}].map(s=>`<div style="text-align:center"><div class="hstat-v" style="color:${s.c}">${s.v}</div><div class="hstat-l">${s.l}</div></div>`).join("")}
           </div>
         </div>
-        <div class="stat-chips">
-          ${[{v:r.openDeals||0,l:"Open Deals",c:"var(--amber)"},{v:fmt(r.pipeAmt||0),l:"Pipeline Value",c:"var(--cyan)"},{v:r.won||0,l:"Won MTD",c:"var(--green)"},{v:r.lost||0,l:"Lost MTD",c:"var(--red)"}].map(s=>`<div class="schip" style="--sc2:${s.c}"><div class="schip-accent"></div><div class="schip-v">${s.v}</div><div class="schip-l">${s.l}</div></div>`).join("")}
-        </div>
         ${repWon.length?`<div class="card" style="margin-bottom:14px"><div class="card-hd" style="border-left:3px solid var(--green)"><div class="card-title" style="color:var(--green)">&#127942; Closed Won MTD</div><span class="badge bg">${repWon.length} &middot; ${fmt(repWon.reduce((s,d)=>s+(d.amount||0),0))}</span></div><div>${repWon.map(d=>dealRow(d,"var(--green)",false)).join("")}</div></div>`:""}
         ${repLost.length?`<div class="card" style="margin-bottom:14px"><div class="card-hd" style="border-left:3px solid var(--red)"><div class="card-title" style="color:var(--red)">&#10060; Closed Lost MTD</div><span class="badge br">${repLost.length} &middot; ${fmt(repLost.reduce((s,d)=>s+(d.amount||0),0))}</span></div><div>${repLost.map(d=>dealRow(d,"var(--red)",true)).join("")}</div></div>`:""}
         <div class="card"><div class="card-hd"><div class="card-title"><div class="card-title-icon" style="background:var(--blue-bg)">&#128188;</div>Open Deals</div><span class="badge bb">${r.openDeals||0} &middot; ${fmt(r.pipeAmt||0)}</span></div>
@@ -3907,9 +3904,6 @@ renderManagerAddons();
         <div class="rep-hero-stats">
           ${[{v:calls,l:"Calls",c:calls<5?"var(--red)":"var(--blue)"},{v:rate+"%",l:"Rate",c:rc},{v:mtgs,l:"Meetings",c:"var(--purple)"},{v:fmt(r.pipeAmt||0),l:"Pipeline",c:"var(--cyan)"}].map(s=>`<div style="text-align:center"><div class="hstat-v" style="color:${s.c}">${s.v}</div><div class="hstat-l">${s.l}</div></div>`).join("")}
         </div>
-      </div>
-      <div class="stat-chips">
-        ${[{v:calls,l:"Calls Yesterday",c:calls<5?"var(--red)":"var(--blue)"},{v:rate+"%",l:"Connection Rate",c:rc},{v:mtgs,l:"Meetings Yesterday",c:"var(--purple)"},{v:r.openDeals||0,l:"Open Deals",c:"var(--amber)"}].map(s=>`<div class="schip" style="--sc2:${s.c}"><div class="schip-accent"></div><div class="schip-v">${s.v}</div><div class="schip-l">${s.l}</div></div>`).join("")}
       </div>
       
       ${renderRepAiCoachingCard(r, needsAtt)}
@@ -6795,7 +6789,7 @@ window.__dashboardAutoRefreshTimer = setInterval(function(){
     const emailOrPhone = contactEmail(row) || contactPhone(row) || 'No email in exported data';
     const source = firstValue(row, ['source','hs_analytics_source','sourceBucket']) || (bucket === 'online' ? 'ONLINE' : 'OFFLINE');
     const d = daysValue(row);
-    return `<div class="mini-row acq-need-row ${isHidden ? 'acq-hidden-row' : ''}" data-acq-need-extra="${bucket}">
+    return `<div class="mini-row acq-need-row ${isHidden ? 'acq-hidden-row' : ''}" data-acq-need-extra="${bucket}" style="${isHidden ? 'display:none' : ''}">
       <div class="mini-main">
         <div class="mini-name">${label}</div>
         <div class="mini-meta">${safe(emailOrPhone)} · ${safe(source)}${createdDate(row) ? ' · Created ' + safe(createdDate(row)) : ''}</div>
