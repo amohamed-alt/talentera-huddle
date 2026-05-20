@@ -531,6 +531,23 @@ body{font-family:var(--font);background:var(--page-bg);color:var(--text);-webkit
 /* FINAL ACQUISITION TRACKING UI — country filters + split leads */
 .acq-follow-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:14px 0}
 .acq-follow-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--sh);overflow:hidden;border-top:3px solid var(--fc,var(--green))}
+
+/* ACQ Rank A/B country coverage — Acquisition only */
+.acq-rank-country-panel{border-bottom:1px solid var(--border);background:linear-gradient(135deg,#fff 0%,#fbfdfc 100%)}
+.acq-rank-country-head{padding:12px 18px 8px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.acq-rank-country-title{font-size:10px;font-weight:900;color:var(--text2);text-transform:uppercase;letter-spacing:.1em;display:flex;align-items:center;gap:7px}
+.acq-rank-country-sub{font-size:10px;color:var(--muted);font-weight:700}
+.acq-rank-country-metrics{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;padding:0 18px 12px}
+.acq-rank-country-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-sm);padding:10px;text-align:center;box-shadow:var(--sh-xs);border-top:3px solid var(--rc,var(--green))}
+.acq-rank-country-v{font-family:var(--mono);font-size:18px;font-weight:900;color:var(--rc,var(--text));line-height:1}
+.acq-rank-country-l{font-size:7px;font-weight:900;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-top:6px}
+.acq-rank-country-table{padding:0 18px 14px;overflow-x:auto}
+.acq-rank-summary-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}
+.acq-rank-summary-box{background:#fff;border:1px solid var(--border);border-radius:10px;padding:9px;text-align:center;box-shadow:var(--sh-xs);border-top:3px solid var(--rc,var(--green))}
+.acq-rank-summary-v{font-family:var(--mono);font-size:16px;font-weight:900;color:var(--rc,var(--green));line-height:1}
+.acq-rank-summary-l{font-size:7px;font-weight:900;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-top:5px}
+@media(max-width:1100px){.acq-rank-country-metrics{grid-template-columns:repeat(3,1fr)}.acq-rank-summary-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:700px){.acq-rank-country-metrics,.acq-rank-summary-grid{grid-template-columns:1fr}}
 .acq-follow-hd{padding:12px 16px;background:var(--surface2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:10px}.acq-follow-title{font-size:11px;font-weight:900;color:var(--text2);text-transform:uppercase;letter-spacing:.08em;display:flex;align-items:center;gap:7px}.acq-follow-sub{font-size:10px;color:var(--muted);font-weight:700;line-height:1.5;padding:10px 14px;border-bottom:1px solid var(--border)}.acq-country-tools{padding:10px 14px;border-bottom:1px solid var(--border);background:#fbfdfc}.acq-country-row{display:flex;gap:7px;flex-wrap:wrap;align-items:center}.acq-country-chip{border:1px solid var(--border);background:#fff;border-radius:999px;padding:5px 9px;font-size:10px;font-weight:800;color:var(--text2);cursor:pointer;font-family:var(--font);transition:.12s all}.acq-country-chip:hover{border-color:var(--green);color:var(--green)}.acq-country-chip.active,.acq-country-chip.clear.active{background:var(--green-bg);border-color:var(--green-bd);color:var(--green)}.acq-lead-split{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:14px;background:var(--surface2)}.acq-mini-table{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh-xs)}.acq-mini-hd{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 12px;background:var(--surface2);border-bottom:1px solid var(--border)}.acq-mini-title{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.08em}.acq-source-pill{font-size:8px;font-weight:900;padding:3px 8px;border-radius:999px;border:1px solid var(--border)}.acq-source-online{background:var(--blue-bg);color:var(--blue);border-color:var(--blue-bd)}.acq-source-offline{background:var(--amber-bg);color:var(--amber);border-color:var(--amber-bd)}.acq-empty{padding:18px!important;text-align:center;color:var(--muted);font-size:11px;font-style:italic}.acq-show-btn{width:100%;padding:8px;text-align:center;font-size:10px;font-weight:900;color:var(--green);border:none;border-top:1px solid var(--border);background:var(--surface);cursor:pointer;font-family:var(--font)}.acq-show-btn:hover{background:var(--surface2)}.acq-muted-note{font-size:10px;color:var(--muted);font-weight:800}@media(max-width:1100px){.acq-follow-grid,.acq-lead-split{grid-template-columns:1fr}}
 
 
@@ -1844,6 +1861,22 @@ body::after{
               <div class="card-title"><div class="card-title-icon" style="background:var(--red-bg)">&#127919;</div>Rank A/B Coverage</div>
               <div style="display:flex;gap:5px" id="rankBadgeRow"></div>
             </div>
+            <div class="acq-rank-country-panel" id="rankCountryCoveragePanel">
+              <div class="acq-rank-country-head">
+                <div>
+                  <div class="acq-rank-country-title">🌍 Coverage by Country</div>
+                  <div class="acq-rank-country-sub" id="rankCountryCoverageSub">Contacted vs not contacted for Rank A/B accounts.</div>
+                </div>
+                <div class="acq-country-row" id="rankCountryCoverageChips"></div>
+              </div>
+              <div class="acq-rank-country-metrics" id="rankCountryCoverageMetrics"></div>
+              <div class="acq-rank-country-table">
+                <table class="tbl">
+                  <thead><tr><th>Rep</th><th class="c">A Contacted</th><th class="c">A Not Contacted</th><th class="c">B Contacted</th><th class="c">B Not Contacted</th><th class="c">Coverage</th></tr></thead>
+                  <tbody id="rankCountryCoverageRows"></tbody>
+                </table>
+              </div>
+            </div>
             <div style="overflow-x:auto"><table class="tbl">
               <thead><tr>
                 <th>Rep</th><th class="c">Rank A</th><th class="c" style="color:var(--green);font-size:8px">&#10003; A Contacted</th>
@@ -2392,6 +2425,57 @@ function acqRankCompanyUrl(row){
   return row.hubspotUrl || row.url || (id && typeof hubspotRecordUrl === "function" ? hubspotRecordUrl("company", id) : null);
 }
 
+function acqEmptyRankStats(label){
+  return { label: label || "All countries", rankA:0, rankAContacted:0, rankANotContacted:0, rankB:0, rankBContacted:0, rankBNotContacted:0 };
+}
+
+function acqMergeRankStats(target, source){
+  if(!source) return target;
+  ["rankA","rankAContacted","rankANotContacted","rankB","rankBContacted","rankBNotContacted"].forEach(k => target[k] += Number(source[k] || 0));
+  return target;
+}
+
+function acqRankCoverageRate(stats){
+  const total = Number(stats.rankA || 0) + Number(stats.rankB || 0);
+  const contacted = Number(stats.rankAContacted || 0) + Number(stats.rankBContacted || 0);
+  return total ? Math.round((contacted / total) * 100) : 0;
+}
+
+function acqRankStatsForRepCountry(rep, country){
+  const label = country === "all" ? "All countries" : country;
+  const stats = acqEmptyRankStats(label);
+  if(country === "all"){
+    stats.rankA = Number(rep.rankA || 0);
+    stats.rankAContacted = Number(rep.rankAContacted || 0);
+    stats.rankANotContacted = Number(rep.rankANotContacted || 0);
+    stats.rankB = Number(rep.rankB || 0);
+    stats.rankBContacted = Number(rep.rankBContacted || 0);
+    stats.rankBNotContacted = Number(rep.rankBNotContacted || 0);
+    return stats;
+  }
+  acqMergeRankStats(stats, rep.rankAByCountry?.[country]);
+  acqMergeRankStats(stats, rep.rankBByCountry?.[country]);
+  return stats;
+}
+
+function acqRankCountryMetricBox(label, value, color){
+  return `<div class="acq-rank-country-box" style="--rc:${color}"><div class="acq-rank-country-v">${Number(value || 0).toLocaleString()}</div><div class="acq-rank-country-l">${esc(label)}</div></div>`;
+}
+
+function acqRankSummaryBox(label, value, color){
+  return `<div class="acq-rank-summary-box" style="--rc:${color}"><div class="acq-rank-summary-v">${Number(value || 0).toLocaleString()}</div><div class="acq-rank-summary-l">${esc(label)}</div></div>`;
+}
+
+function renderAcqRankCountrySummary(stats){
+  const rate = acqRankCoverageRate(stats);
+  return `
+    ${acqRankSummaryBox("A Contacted", stats.rankAContacted, "var(--green)")}
+    ${acqRankSummaryBox("A Not Contacted", stats.rankANotContacted, "var(--red)")}
+    ${acqRankSummaryBox("B Contacted", stats.rankBContacted, "var(--green)")}
+    ${acqRankSummaryBox("B Not Contacted", stats.rankBNotContacted, "var(--amber)")}
+    <div style="grid-column:1/-1;font-size:10px;color:var(--muted);font-weight:800;text-align:center">${esc(stats.label)} coverage: <span style="color:${rate < 50 ? "var(--red)" : rate < 75 ? "var(--amber)" : "var(--green)"};font-family:var(--mono);font-weight:900">${rate}%</span> · Total A/B: ${(Number(stats.rankA || 0) + Number(stats.rankB || 0)).toLocaleString()}</div>`;
+}
+
 function renderRepRankRows(rows, id, rank, color){
   if(!rows.length){
     return `<div class="acq-empty">All Rank ${rank} accounts contacted.</div>`;
@@ -2399,7 +2483,7 @@ function renderRepRankRows(rows, id, rank, color){
 
   return rows.map((row,i) => {
     const hidden = i >= 5 ? "display:none" : "";
-    return `<div class="mini-row" data-rank-row="${id}" data-country="${acqUiSlug(row._country)}" style="${hidden}">
+    return `<div class="mini-row" data-rank-row="${id}" data-country="${acqUiSlug(row._country)}" data-visible-by-filter="1" style="${hidden}">
       <div class="mini-main">
         <div class="mini-name">${recordLink(acqRankCompanyName(row), acqRankCompanyUrl(row))}</div>
         <div class="mini-meta">Rank ${rank} · ${esc(row._country)}</div>
@@ -2415,17 +2499,22 @@ function renderRepRankCoverageCard(rep, rankA, rankB){
   const aRows = (Array.isArray(rankA) ? rankA : []).map(x => ({ ...x, _rank:"A", _country:acqRankCountry(x) }));
   const bRows = (Array.isArray(rankB) ? rankB : []).map(x => ({ ...x, _rank:"B", _country:acqRankCountry(x) }));
   const allRows = [...aRows, ...bRows];
+  const countries = new Set();
+  allRows.forEach(row => countries.add(row._country));
+  Object.keys(rep.rankAByCountry || {}).forEach(c => countries.add(c));
+  Object.keys(rep.rankBByCountry || {}).forEach(c => countries.add(c));
 
-  const countryCounts = allRows.reduce((m,row) => {
-    m[row._country] = (m[row._country] || 0) + 1;
-    return m;
-  }, {});
+  const countryStats = { all: acqRankStatsForRepCountry(rep, "all") };
+  Array.from(countries).forEach(country => countryStats[acqUiSlug(country)] = acqRankStatsForRepCountry(rep, country));
+  window.__repRankCountryStats = window.__repRankCountryStats || {};
+  window.__repRankCountryStats[id] = countryStats;
 
   const chips = [
     `<button class="acq-country-chip active" onclick="filterRepRankCoverage('${id}','all',this)">All ${allRows.length}</button>`,
-    ...Object.entries(countryCounts)
-      .sort((a,b) => b[1] - a[1])
-      .map(([country,count]) => `<button class="acq-country-chip" onclick="filterRepRankCoverage('${id}','${acqUiSlug(country)}',this)">${esc(country)} ${count}</button>`)
+    ...Array.from(countries)
+      .map(country => ({ country, total:(countryStats[acqUiSlug(country)]?.rankA || 0) + (countryStats[acqUiSlug(country)]?.rankB || 0) }))
+      .sort((a,b) => b.total - a.total)
+      .map(({country,total}) => `<button class="acq-country-chip" onclick="filterRepRankCoverage('${id}','${acqUiSlug(country)}',this)">${esc(country)} ${total}</button>`)
   ].join("");
 
   return `<div class="card" style="margin-bottom:0">
@@ -2439,6 +2528,7 @@ function renderRepRankCoverageCard(rep, rankA, rankB){
 
     <div class="acq-country-tools">
       <div class="acq-country-row" data-rank-chip-row="${id}">${chips}</div>
+      <div class="acq-rank-summary-grid" id="${id}-summary">${renderAcqRankCountrySummary(countryStats.all)}</div>
     </div>
 
     <div style="padding:12px 18px">
@@ -2474,11 +2564,19 @@ function filterRepRankCoverage(id, countryKey, btn){
   }
   if(btn) btn.classList.add("active");
 
+  const stats = window.__repRankCountryStats?.[id]?.[countryKey] || window.__repRankCountryStats?.[id]?.all || acqEmptyRankStats();
+  const summary = document.getElementById(`${id}-summary`);
+  if(summary) summary.innerHTML = renderAcqRankCountrySummary(stats);
+
   [`${id}-a`, `${id}-b`].forEach(sectionId => {
     const rows = Array.from(document.querySelectorAll(`[data-rank-row="${sectionId}"]`));
     const matched = rows.filter(row => countryKey === "all" || row.dataset.country === countryKey);
 
-    rows.forEach(row => row.style.display = "none");
+    rows.forEach(row => {
+      const isMatch = countryKey === "all" || row.dataset.country === countryKey;
+      row.dataset.visibleByFilter = isMatch ? "1" : "0";
+      row.style.display = "none";
+    });
     matched.forEach((row,i) => row.style.display = i < 5 ? "" : "none");
 
     const btnEl = document.getElementById(`${sectionId}-btn`);
@@ -2492,24 +2590,91 @@ function filterRepRankCoverage(id, countryKey, btn){
 }
 
 function toggleRepRankCoverageRows(sectionId, btn){
-  const rows = Array.from(document.querySelectorAll(`[data-rank-row="${sectionId}"]`)).filter(row => row.style.display !== "none" || row.dataset.visibleByFilter !== "0");
-  const allRows = Array.from(document.querySelectorAll(`[data-rank-row="${sectionId}"]`));
+  const rows = Array.from(document.querySelectorAll(`[data-rank-row="${sectionId}"]`)).filter(row => row.dataset.visibleByFilter !== "0");
   const open = btn.dataset.open === "1";
 
   if(open){
-    allRows.forEach((row,i) => {
-      if(row.style.display !== "none" || i < 5) row.style.display = i < 5 ? "" : "none";
-    });
+    rows.forEach((row,i) => row.style.display = i < 5 ? "" : "none");
     btn.dataset.open = "0";
-    btn.textContent = `▼ Show ${Math.max(allRows.length - 5, 0)} more`;
+    btn.textContent = `▼ Show ${Math.max(rows.length - 5, 0)} more`;
   }else{
-    allRows.forEach(row => {
-      if(row.style.display !== "none") row.style.display = "";
-    });
+    rows.forEach(row => row.style.display = "");
     btn.dataset.open = "1";
     btn.textContent = "▲ Show less";
   }
 }
+
+function buildRankCountryCoverageState(reps){
+  const safeReps = Array.isArray(reps) ? reps.filter(r => r && r.type !== "ret") : [];
+  const countries = new Set();
+  safeReps.forEach(rep => {
+    Object.keys(rep.rankAByCountry || {}).forEach(c => countries.add(c));
+    Object.keys(rep.rankBByCountry || {}).forEach(c => countries.add(c));
+    Object.keys(rep.countryBreakdown || {}).forEach(c => countries.add(c));
+  });
+  const state = { reps: safeReps, countries:Array.from(countries), statsByKey:{} };
+  state.statsByKey.all = safeReps.reduce((acc,rep) => acqMergeRankStats(acc, acqRankStatsForRepCountry(rep,"all")), acqEmptyRankStats("All countries"));
+  state.countries.forEach(country => {
+    state.statsByKey[acqUiSlug(country)] = safeReps.reduce((acc,rep) => acqMergeRankStats(acc, acqRankStatsForRepCountry(rep,country)), acqEmptyRankStats(country));
+  });
+  return state;
+}
+
+function renderRankCountryCoverage(reps){
+  const panel = $("rankCountryCoveragePanel");
+  if(!panel) return;
+  const state = buildRankCountryCoverageState(reps);
+  window.__rankCountryCoverageState = state;
+  const chips = [
+    `<button class="acq-country-chip active" onclick="filterRankCountryCoverage('all',this)">All ${(state.statsByKey.all.rankA + state.statsByKey.all.rankB).toLocaleString()}</button>`,
+    ...state.countries.map(country => ({ country, key:acqUiSlug(country), total:(state.statsByKey[acqUiSlug(country)]?.rankA || 0) + (state.statsByKey[acqUiSlug(country)]?.rankB || 0) }))
+      .filter(x => x.total > 0)
+      .sort((a,b) => b.total - a.total)
+      .map(({country,key,total}) => `<button class="acq-country-chip" onclick="filterRankCountryCoverage('${key}',this)">${esc(country)} ${total.toLocaleString()}</button>`)
+  ].join("");
+  $("rankCountryCoverageChips").innerHTML = chips;
+  filterRankCountryCoverage("all", null, true);
+}
+
+function filterRankCountryCoverage(countryKey, btn, silent){
+  const state = window.__rankCountryCoverageState;
+  if(!state) return;
+  const chipWrap = $("rankCountryCoverageChips");
+  if(chipWrap && !silent){
+    chipWrap.querySelectorAll(".acq-country-chip").forEach(x => x.classList.remove("active"));
+    if(btn) btn.classList.add("active");
+  }
+  const stats = state.statsByKey[countryKey] || state.statsByKey.all || acqEmptyRankStats();
+  const rate = acqRankCoverageRate(stats);
+  const total = Number(stats.rankA || 0) + Number(stats.rankB || 0);
+  const contacted = Number(stats.rankAContacted || 0) + Number(stats.rankBContacted || 0);
+  const notContacted = Number(stats.rankANotContacted || 0) + Number(stats.rankBNotContacted || 0);
+  $("rankCountryCoverageSub").textContent = `${stats.label}: ${contacted.toLocaleString()} contacted · ${notContacted.toLocaleString()} not contacted · ${rate}% coverage`;
+  $("rankCountryCoverageMetrics").innerHTML = [
+    acqRankCountryMetricBox("Rank A Total", stats.rankA, "var(--red)"),
+    acqRankCountryMetricBox("A Contacted", stats.rankAContacted, "var(--green)"),
+    acqRankCountryMetricBox("A Not Contacted", stats.rankANotContacted, "var(--red)"),
+    acqRankCountryMetricBox("Rank B Total", stats.rankB, "var(--amber)"),
+    acqRankCountryMetricBox("B Contacted", stats.rankBContacted, "var(--green)"),
+    acqRankCountryMetricBox("B Not Contacted", stats.rankBNotContacted, "var(--amber)")
+  ].join("");
+  const rows = state.reps.map(rep => {
+    const repStats = countryKey === "all" ? acqRankStatsForRepCountry(rep,"all") : acqRankStatsForRepCountry(rep, stats.label);
+    const repTotal = Number(repStats.rankA || 0) + Number(repStats.rankB || 0);
+    if(countryKey !== "all" && !repTotal) return "";
+    const repRate = acqRankCoverageRate(repStats);
+    return `<tr>
+      <td><div style="display:flex;align-items:center;gap:8px"><div class="av" style="background:${rep.color}20;color:${rep.color}">${esc((rep.name||"?")[0])}</div><span style="font-weight:700">${esc(rep.name || "Unknown")}</span></div></td>
+      <td class="c"><span style="font-family:var(--mono);font-weight:900;color:var(--green)">${Number(repStats.rankAContacted || 0).toLocaleString()}</span></td>
+      <td class="c"><span style="font-family:var(--mono);font-weight:900;color:var(--red)">${Number(repStats.rankANotContacted || 0).toLocaleString()}</span></td>
+      <td class="c"><span style="font-family:var(--mono);font-weight:900;color:var(--green)">${Number(repStats.rankBContacted || 0).toLocaleString()}</span></td>
+      <td class="c"><span style="font-family:var(--mono);font-weight:900;color:var(--amber)">${Number(repStats.rankBNotContacted || 0).toLocaleString()}</span></td>
+      <td class="c"><span style="font-family:var(--mono);font-weight:900;color:${repRate < 50 ? "var(--red)" : repRate < 75 ? "var(--amber)" : "var(--green)"}">${repRate}%</span></td>
+    </tr>`;
+  }).filter(Boolean).join("");
+  $("rankCountryCoverageRows").innerHTML = rows || `<tr><td colspan="6" style="text-align:center;color:var(--muted);font-style:italic;padding:14px">No Rank A/B accounts found for this country.</td></tr>`;
+}
+
 function renderFinancialDetails(){
   const card = $("financialDetailsCard");
   if(!card) return;
@@ -3457,6 +3622,8 @@ renderManagerAddons();
   const rd=D.topInactiveRankAccounts||[],rt=D.rankTotals||{};
   /* ── Render Outreach Coverage under Leads Overview ── */
   renderOutreach();
+
+  renderRankCountryCoverage(activeReps);
 
   $("rankBadgeRow").innerHTML=`<span class="rank-a">${rt.A||0} A</span><span class="rank-b">${rt.B||0} B</span><span class="badge bg">&#10003; ${rt.AContacted||0}A / ${rt.BContacted||0}B</span><span class="badge br">&#10007; ${rt.ANotContacted||0}A / ${rt.BNotContacted||0}B</span>`;
   $("rankRepBody").innerHTML=activeReps.map(r=>{
