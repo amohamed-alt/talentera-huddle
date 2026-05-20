@@ -2520,25 +2520,114 @@ function acqRankStatsForRepCountry(rep, country){
   return stats;
 }
 
-function acqRankCountryMetricBox(label, value, color){
-  return `<div class="acq-rank-country-box" style="--rc:${color}"><div class="acq-rank-country-v">${Number(value || 0).toLocaleString()}</div><div class="acq-rank-country-l">${esc(label)}</div></div>`;
+function acqRankCountryMetricBox(label, value, color, onclick){
+  const clickAttr = onclick ? ` onclick="${onclick}" title="Open meeting completed details"` : "";
+  const clickClass = onclick ? " metric-clickable" : "";
+  return `<div class="acq-rank-country-box${clickClass}" style="--rc:${color}"${clickAttr}><div class="acq-rank-country-v">${Number(value || 0).toLocaleString()}</div><div class="acq-rank-country-l">${esc(label)}</div></div>`;
 }
 
 function acqRankSummaryBox(label, value, color){
   return `<div class="acq-rank-summary-box" style="--rc:${color}"><div class="acq-rank-summary-v">${Number(value || 0).toLocaleString()}</div><div class="acq-rank-summary-l">${esc(label)}</div></div>`;
 }
 
-function renderAcqRankCountrySummary(stats){
+function acqOwnerKeyFromRep(rep){
+  return acqNormKey(rep?.ownerName || rep?.name || rep?.ownerId || rep?.id || "");
+}
+
+function acqCompletedMeetingCompanyRows(repKey, countryKey, rankKey){
+  const index = buildAcqCompletedMeetingCompanyIndex();
+  const oc = (typeof D !== "undefined" && D && D.outreachCoverage) ? D.outreachCoverage : {};
+  const contacts = [
+    ...((oc.contacts && Array.isArray(oc.contacts.contactedList)) ? oc.contacts.contactedList : []),
+    ...((oc.contacts && Array.isArray(oc.contacts.notContactedList)) ? oc.contacts.notContactedList : [])
+  ];
+  const wantedRep = acqNormKey(repKey || "all");
+  const wantedCountry = String(countryKey || "all");
+  const wantedRank = String(rankKey || "all").trim().toUpperCase();
+  const groups = {};
+
+  contacts.forEach(ct => {
+    if(!ct || !ct.hasCompletedMeeting) return;
+    (Array.isArray(ct.companyIds) ? ct.companyIds : []).forEach(companyId => {
+      const co = index.byCompanyId[String(companyId)];
+      if(!co) return;
+      const rank = String(co.rank || "").trim().toUpperCase();
+      if(rank !== "A" && rank !== "B") return;
+      const country = co.country || "Unknown";
+      const ownerKey = acqNormKey(co.ownerName || ct.ownerName || co.ownerId || ct.ownerId);
+      if(wantedRep !== "all" && ownerKey !== wantedRep) return;
+      if(wantedCountry !== "all" && acqUiSlug(country) !== wantedCountry) return;
+      if(wantedRank !== "ALL" && rank !== wantedRank) return;
+
+      const key = String(companyId);
+      if(!groups[key]){
+        groups[key] = {
+          id:key,
+          name:acqRankCompanyName(co),
+          url:acqRankCompanyUrl(co),
+          country,
+          rank,
+          ownerName:co.ownerName || ct.ownerName || "—",
+          contacts:[],
+          latestDate:null
+        };
+      }
+      groups[key].contacts.push({
+        name:ct.name || ct.email || ct.id || "Contact",
+        email:ct.email || "",
+        url:ct.hubspotUrl || null,
+        date:ct.lastActivityDate || ct.createdAt || "—",
+        ownerName:ct.ownerName || "—"
+      });
+      const d = ct.lastActivityDate || ct.createdAt || null;
+      if(d && (!groups[key].latestDate || String(d) > String(groups[key].latestDate))) groups[key].latestDate = d;
+    });
+  });
+
+  return Object.values(groups).sort((a,b) => String(b.latestDate || "").localeCompare(String(a.latestDate || "")) || String(a.name || "").localeCompare(String(b.name || "")));
+}
+
+function openAcqCompletedMeetingDetails(repKey, countryKey, rankKey, label){
+  const rows = acqCompletedMeetingCompanyRows(repKey, countryKey, rankKey);
+  const title = label || "Completed meeting details";
+  const rowHtml = rows.length ? rows.slice(0,120).map(row => {
+    const contacts = row.contacts || [];
+    const contactText = contacts.slice(0,3).map(c => recordLink(c.name || c.email || "Contact", c.url)).join(" · ") || "Completed meeting touch";
+    const more = contacts.length > 3 ? ` +${contacts.length - 3} more` : "";
+    const latest = row.latestDate || contacts[0]?.date || "—";
+    return `<div class="acq-detail-row">
+      <div class="acq-detail-name">${recordLink(row.name, row.url)}<div class="acq-detail-meta">${esc(row.country)} · Rank ${esc(row.rank)} · latest completed meeting touch: ${esc(latest)}</div></div>
+      <div>${esc(row.ownerName || "—")}</div>
+      <div><span class="acq-detail-pill">${contacts.length.toLocaleString()} meeting contact${contacts.length === 1 ? "" : "s"}</span></div>
+      <div style="font-size:11px;font-weight:800;color:var(--text2);text-align:right">${contactText}${esc(more)}</div>
+    </div>`;
+  }).join("") : `<div class="acq-detail-empty">No completed meeting rows found for this filter in the current data.json.</div>`;
+  const more = rows.length > 120 ? `<div class="acq-detail-empty" style="padding:12px">Showing first 120 of ${rows.length.toLocaleString()} companies.</div>` : "";
+  document.getElementById("acqCompletedMeetingsBackdrop")?.remove();
+  const node = document.createElement("div");
+  node.id = "acqCompletedMeetingsBackdrop";
+  node.className = "acq-detail-backdrop";
+  node.onclick = e => { if(e.target === node) node.remove(); };
+  node.innerHTML = `<div class="acq-detail-card"><div class="acq-detail-hd"><div><div class="acq-detail-title">${esc(title)} <span class="badge bp" style="margin-left:8px">${rows.length.toLocaleString()} companies</span></div><div class="acq-detail-sub">Companies with at least one completed meeting touch under the selected owner / country / rank. Names open in HubSpot when links are available.</div></div><button class="acq-detail-close" onclick="document.getElementById('acqCompletedMeetingsBackdrop')?.remove()">×</button></div><div class="acq-detail-body">${rowHtml}${more}</div></div>`;
+  document.body.appendChild(node);
+}
+
+function acqMeetingClick(repKey, countryKey, rankKey, label){
+  return `openAcqCompletedMeetingDetails('${esc(String(repKey || "all"))}','${esc(String(countryKey || "all"))}','${esc(String(rankKey || "all"))}','${esc(String(label || "Completed meetings"))}')`;
+}
+
+function renderAcqRankCountrySummary(stats, repKey="all"){
   const rate = acqRankCoverageRate(stats);
   const meetingsCompleted = Number(stats.rankAMeetingsCompleted || 0) + Number(stats.rankBMeetingsCompleted || 0);
+  const countryKey = stats.label === "All countries" ? "all" : acqUiSlug(stats.label);
   return `
     ${acqRankSummaryBox("A Touched", stats.rankAContacted, "var(--green)")}
     ${acqRankSummaryBox("A Untouched", stats.rankANotContacted, "var(--red)")}
-    ${acqRankSummaryBox("A Meetings", stats.rankAMeetingsCompleted, "var(--purple)")}
+    ${acqRankCountryMetricBox("A Meetings", stats.rankAMeetingsCompleted, "var(--purple)", acqMeetingClick(repKey, countryKey, "A", `${stats.label} · Rank A completed meetings`))}
     ${acqRankSummaryBox("B Touched", stats.rankBContacted, "var(--green)")}
     ${acqRankSummaryBox("B Untouched", stats.rankBNotContacted, "var(--amber)")}
-    ${acqRankSummaryBox("B Meetings", stats.rankBMeetingsCompleted, "var(--purple)")}
-    <div style="grid-column:1/-1;font-size:10px;color:var(--muted);font-weight:800;text-align:center">${esc(stats.label)} coverage: <span style="color:${rate < 50 ? "var(--red)" : rate < 75 ? "var(--amber)" : "var(--green)"};font-family:var(--mono);font-weight:900">${rate}%</span> · Total A/B: ${(Number(stats.rankA || 0) + Number(stats.rankB || 0)).toLocaleString()} · Meetings completed on touched accounts: <span style="color:var(--purple);font-family:var(--mono);font-weight:900">${meetingsCompleted.toLocaleString()}</span></div>`;
+    ${acqRankCountryMetricBox("B Meetings", stats.rankBMeetingsCompleted, "var(--purple)", acqMeetingClick(repKey, countryKey, "B", `${stats.label} · Rank B completed meetings`))}
+    <div class="metric-clickable" onclick="${acqMeetingClick(repKey, countryKey, "all", `${stats.label} · all completed meetings`)}" title="Open meeting completed details" style="grid-column:1/-1;font-size:10px;color:var(--muted);font-weight:800;text-align:center">${esc(stats.label)} coverage: <span style="color:${rate < 50 ? "var(--red)" : rate < 75 ? "var(--amber)" : "var(--green)"};font-family:var(--mono);font-weight:900">${rate}%</span> · Total A/B: ${(Number(stats.rankA || 0) + Number(stats.rankB || 0)).toLocaleString()} · Meetings completed on touched accounts: <span style="color:var(--purple);font-family:var(--mono);font-weight:900">${meetingsCompleted.toLocaleString()}</span></div>`;
 }
 
 function renderRepRankRows(rows, id, rank, color){
@@ -2560,6 +2649,7 @@ function renderRepRankRows(rows, id, rank, color){
 
 function renderRepRankCoverageCard(rep, rankA, rankB){
   const id = `rank-coverage-${acqUiSlug(rep.id || rep.name)}`;
+  const repKey = acqOwnerKeyFromRep(rep);
 
   const aRows = (Array.isArray(rankA) ? rankA : []).map(x => ({ ...x, _rank:"A", _country:acqRankCountry(x) }));
   const bRows = (Array.isArray(rankB) ? rankB : []).map(x => ({ ...x, _rank:"B", _country:acqRankCountry(x) }));
@@ -2572,7 +2662,9 @@ function renderRepRankCoverageCard(rep, rankA, rankB){
   const countryStats = { all: acqRankStatsForRepCountry(rep, "all") };
   Array.from(countries).forEach(country => countryStats[acqUiSlug(country)] = acqRankStatsForRepCountry(rep, country));
   window.__repRankCountryStats = window.__repRankCountryStats || {};
+  window.__repRankCountryRepKey = window.__repRankCountryRepKey || {};
   window.__repRankCountryStats[id] = countryStats;
+  window.__repRankCountryRepKey[id] = repKey;
 
   const chips = [
     `<button class="acq-country-chip active" onclick="filterRepRankCoverage('${id}','all',this)">All ${allRows.length}</button>`,
@@ -2593,7 +2685,7 @@ function renderRepRankCoverageCard(rep, rankA, rankB){
 
     <div class="acq-country-tools">
       <div class="acq-country-row" data-rank-chip-row="${id}">${chips}</div>
-      <div class="acq-rank-summary-grid" id="${id}-summary">${renderAcqRankCountrySummary(countryStats.all)}</div>
+      <div class="acq-rank-summary-grid" id="${id}-summary">${renderAcqRankCountrySummary(countryStats.all, repKey)}</div>
     </div>
 
     <div style="padding:12px 18px">
@@ -2601,7 +2693,7 @@ function renderRepRankCoverageCard(rep, rankA, rankB){
         <span style="font-size:10px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.08em">Rank A — ${rep.rankA || 0}</span>
         <div style="display:flex;gap:8px;font-size:10px;font-weight:600">
           <span style="color:var(--green)">✓ ${rep.rankAContacted || 0} touched</span>
-          <span style="color:var(--purple)">☑ ${countryStats.all.rankAMeetingsCompleted || 0} meetings</span>
+          <span class="metric-clickable" onclick="${acqMeetingClick(repKey, 'all', 'A', `${rep.name || 'Rep'} · Rank A completed meetings`)}" style="color:var(--purple)">☑ ${countryStats.all.rankAMeetingsCompleted || 0} meetings</span>
           <span style="color:var(--red)">✗ ${rep.rankANotContacted || 0} untouched</span>
         </div>
       </div>
@@ -2613,7 +2705,7 @@ function renderRepRankCoverageCard(rep, rankA, rankB){
         <span style="font-size:10px;font-weight:700;color:var(--amber);text-transform:uppercase;letter-spacing:.08em">Rank B — ${rep.rankB || 0}</span>
         <div style="display:flex;gap:8px;font-size:10px;font-weight:600">
           <span style="color:var(--green)">✓ ${rep.rankBContacted || 0} touched</span>
-          <span style="color:var(--purple)">☑ ${countryStats.all.rankBMeetingsCompleted || 0} meetings</span>
+          <span class="metric-clickable" onclick="${acqMeetingClick(repKey, 'all', 'B', `${rep.name || 'Rep'} · Rank B completed meetings`)}" style="color:var(--purple)">☑ ${countryStats.all.rankBMeetingsCompleted || 0} meetings</span>
           <span style="color:var(--amber)">✗ ${rep.rankBNotContacted || 0} untouched</span>
         </div>
       </div>
@@ -2633,7 +2725,7 @@ function filterRepRankCoverage(id, countryKey, btn){
 
   const stats = window.__repRankCountryStats?.[id]?.[countryKey] || window.__repRankCountryStats?.[id]?.all || acqEmptyRankStats();
   const summary = document.getElementById(`${id}-summary`);
-  if(summary) summary.innerHTML = renderAcqRankCountrySummary(stats);
+  if(summary) summary.innerHTML = renderAcqRankCountrySummary(stats, window.__repRankCountryRepKey?.[id] || "all");
 
   [`${id}-a`, `${id}-b`].forEach(sectionId => {
     const rows = Array.from(document.querySelectorAll(`[data-rank-row="${sectionId}"]`));
@@ -2722,11 +2814,11 @@ function filterRankCountryCoverage(countryKey, btn, silent){
     acqRankCountryMetricBox("Rank A Total", stats.rankA, "var(--red)"),
     acqRankCountryMetricBox("A Touched", stats.rankAContacted, "var(--green)"),
     acqRankCountryMetricBox("A Untouched", stats.rankANotContacted, "var(--red)"),
-    acqRankCountryMetricBox("A Meetings Completed", stats.rankAMeetingsCompleted, "var(--purple)"),
+    acqRankCountryMetricBox("A Meetings Completed", stats.rankAMeetingsCompleted, "var(--purple)", acqMeetingClick("all", countryKey, "A", `${stats.label} · Rank A completed meetings`)),
     acqRankCountryMetricBox("Rank B Total", stats.rankB, "var(--amber)"),
     acqRankCountryMetricBox("B Touched", stats.rankBContacted, "var(--green)"),
     acqRankCountryMetricBox("B Untouched", stats.rankBNotContacted, "var(--amber)"),
-    acqRankCountryMetricBox("B Meetings Completed", stats.rankBMeetingsCompleted, "var(--purple)")
+    acqRankCountryMetricBox("B Meetings Completed", stats.rankBMeetingsCompleted, "var(--purple)", acqMeetingClick("all", countryKey, "B", `${stats.label} · Rank B completed meetings`))
   ].join("");
   const rows = state.reps.map(rep => {
     const repStats = countryKey === "all" ? acqRankStatsForRepCountry(rep,"all") : acqRankStatsForRepCountry(rep, stats.label);
@@ -2737,10 +2829,10 @@ function filterRankCountryCoverage(countryKey, btn, silent){
       <td><div style="display:flex;align-items:center;gap:8px"><div class="av" style="background:${rep.color}20;color:${rep.color}">${esc((rep.name||"?")[0])}</div><span style="font-weight:700">${esc(rep.name || "Unknown")}</span></div></td>
       <td class="c"><span style="font-family:var(--mono);font-weight:900;color:var(--green)">${Number(repStats.rankAContacted || 0).toLocaleString()}</span></td>
       <td class="c"><span style="font-family:var(--mono);font-weight:900;color:var(--red)">${Number(repStats.rankANotContacted || 0).toLocaleString()}</span></td>
-      <td class="c"><span style="font-family:var(--mono);font-weight:900;color:var(--purple)">${Number(repStats.rankAMeetingsCompleted || 0).toLocaleString()}</span></td>
+      <td class="c"><span class="metric-clickable" onclick="${acqMeetingClick(acqOwnerKeyFromRep(rep), countryKey, 'A', `${rep.name || 'Rep'} · ${stats.label} · Rank A completed meetings`)}" style="font-family:var(--mono);font-weight:900;color:var(--purple)">${Number(repStats.rankAMeetingsCompleted || 0).toLocaleString()}</span></td>
       <td class="c"><span style="font-family:var(--mono);font-weight:900;color:var(--green)">${Number(repStats.rankBContacted || 0).toLocaleString()}</span></td>
       <td class="c"><span style="font-family:var(--mono);font-weight:900;color:var(--amber)">${Number(repStats.rankBNotContacted || 0).toLocaleString()}</span></td>
-      <td class="c"><span style="font-family:var(--mono);font-weight:900;color:var(--purple)">${Number(repStats.rankBMeetingsCompleted || 0).toLocaleString()}</span></td>
+      <td class="c"><span class="metric-clickable" onclick="${acqMeetingClick(acqOwnerKeyFromRep(rep), countryKey, 'B', `${rep.name || 'Rep'} · ${stats.label} · Rank B completed meetings`)}" style="font-family:var(--mono);font-weight:900;color:var(--purple)">${Number(repStats.rankBMeetingsCompleted || 0).toLocaleString()}</span></td>
       <td class="c"><span style="font-family:var(--mono);font-weight:900;color:${repRate < 50 ? "var(--red)" : repRate < 75 ? "var(--amber)" : "var(--green)"}">${repRate}%</span></td>
     </tr>`;
   }).filter(Boolean).join("");
