@@ -537,16 +537,16 @@ body{font-family:var(--font);background:var(--page-bg);color:var(--text);-webkit
 .acq-rank-country-head{padding:12px 18px 8px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
 .acq-rank-country-title{font-size:10px;font-weight:900;color:var(--text2);text-transform:uppercase;letter-spacing:.1em;display:flex;align-items:center;gap:7px}
 .acq-rank-country-sub{font-size:10px;color:var(--muted);font-weight:700}
-.acq-rank-country-metrics{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;padding:0 18px 12px}
+.acq-rank-country-metrics{display:grid;grid-template-columns:repeat(8,1fr);gap:8px;padding:0 18px 12px}
 .acq-rank-country-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-sm);padding:10px;text-align:center;box-shadow:var(--sh-xs);border-top:3px solid var(--rc,var(--green))}
 .acq-rank-country-v{font-family:var(--mono);font-size:18px;font-weight:900;color:var(--rc,var(--text));line-height:1}
 .acq-rank-country-l{font-size:7px;font-weight:900;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-top:6px}
 .acq-rank-country-table{padding:0 18px 14px;overflow-x:auto}
-.acq-rank-summary-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}
+.acq-rank-summary-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-top:10px}
 .acq-rank-summary-box{background:#fff;border:1px solid var(--border);border-radius:10px;padding:9px;text-align:center;box-shadow:var(--sh-xs);border-top:3px solid var(--rc,var(--green))}
 .acq-rank-summary-v{font-family:var(--mono);font-size:16px;font-weight:900;color:var(--rc,var(--green));line-height:1}
 .acq-rank-summary-l{font-size:7px;font-weight:900;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-top:5px}
-@media(max-width:1100px){.acq-rank-country-metrics{grid-template-columns:repeat(3,1fr)}.acq-rank-summary-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:1100px){.acq-rank-country-metrics{grid-template-columns:repeat(4,1fr)}.acq-rank-summary-grid{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:700px){.acq-rank-country-metrics,.acq-rank-summary-grid{grid-template-columns:1fr}}
 .acq-follow-hd{padding:12px 16px;background:var(--surface2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:10px}.acq-follow-title{font-size:11px;font-weight:900;color:var(--text2);text-transform:uppercase;letter-spacing:.08em;display:flex;align-items:center;gap:7px}.acq-follow-sub{font-size:10px;color:var(--muted);font-weight:700;line-height:1.5;padding:10px 14px;border-bottom:1px solid var(--border)}.acq-country-tools{padding:10px 14px;border-bottom:1px solid var(--border);background:#fbfdfc}.acq-country-row{display:flex;gap:7px;flex-wrap:wrap;align-items:center}.acq-country-chip{border:1px solid var(--border);background:#fff;border-radius:999px;padding:5px 9px;font-size:10px;font-weight:800;color:var(--text2);cursor:pointer;font-family:var(--font);transition:.12s all}.acq-country-chip:hover{border-color:var(--green);color:var(--green)}.acq-country-chip.active,.acq-country-chip.clear.active{background:var(--green-bg);border-color:var(--green-bd);color:var(--green)}.acq-lead-split{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:14px;background:var(--surface2)}.acq-mini-table{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh-xs)}.acq-mini-hd{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 12px;background:var(--surface2);border-bottom:1px solid var(--border)}.acq-mini-title{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.08em}.acq-source-pill{font-size:8px;font-weight:900;padding:3px 8px;border-radius:999px;border:1px solid var(--border)}.acq-source-online{background:var(--blue-bg);color:var(--blue);border-color:var(--blue-bd)}.acq-source-offline{background:var(--amber-bg);color:var(--amber);border-color:var(--amber-bd)}.acq-empty{padding:18px!important;text-align:center;color:var(--muted);font-size:11px;font-style:italic}.acq-show-btn{width:100%;padding:8px;text-align:center;font-size:10px;font-weight:900;color:var(--green);border:none;border-top:1px solid var(--border);background:var(--surface);cursor:pointer;font-family:var(--font)}.acq-show-btn:hover{background:var(--surface2)}.acq-muted-note{font-size:10px;color:var(--muted);font-weight:800}@media(max-width:1100px){.acq-follow-grid,.acq-lead-split{grid-template-columns:1fr}}
 
@@ -1872,7 +1872,7 @@ body::after{
               <div class="acq-rank-country-metrics" id="rankCountryCoverageMetrics"></div>
               <div class="acq-rank-country-table">
                 <table class="tbl">
-                  <thead><tr><th>Rep</th><th class="c">A Contacted</th><th class="c">A Not Contacted</th><th class="c">B Contacted</th><th class="c">B Not Contacted</th><th class="c">Coverage</th></tr></thead>
+                  <thead><tr><th>Rep</th><th class="c">A Touched</th><th class="c">A Untouched</th><th class="c">A Meetings Completed</th><th class="c">B Touched</th><th class="c">B Untouched</th><th class="c">B Meetings Completed</th><th class="c">Coverage</th></tr></thead>
                   <tbody id="rankCountryCoverageRows"></tbody>
                 </table>
               </div>
@@ -2425,13 +2425,71 @@ function acqRankCompanyUrl(row){
   return row.hubspotUrl || row.url || (id && typeof hubspotRecordUrl === "function" ? hubspotRecordUrl("company", id) : null);
 }
 
+function acqNormKey(v){
+  return String(v || "").trim().toLowerCase();
+}
+
+function buildAcqCompletedMeetingCompanyIndex(){
+  if(window.__acqCompletedMeetingCompanyIndex) return window.__acqCompletedMeetingCompanyIndex;
+  const idx = { byOwnerCountry:{}, byCompanyId:{} };
+  const oc = (typeof D !== "undefined" && D && D.outreachCoverage) ? D.outreachCoverage : {};
+  const companies = [
+    ...((oc.companies && Array.isArray(oc.companies.contactedList)) ? oc.companies.contactedList : []),
+    ...((oc.companies && Array.isArray(oc.companies.notContactedList)) ? oc.companies.notContactedList : [])
+  ];
+  companies.forEach(co => {
+    const id = String(co.id || co.hs_object_id || co.companyId || "");
+    if(id) idx.byCompanyId[id] = co;
+  });
+
+  const touchedCompanyIds = new Set();
+  const contacts = [
+    ...((oc.contacts && Array.isArray(oc.contacts.contactedList)) ? oc.contacts.contactedList : []),
+    ...((oc.contacts && Array.isArray(oc.contacts.notContactedList)) ? oc.contacts.notContactedList : [])
+  ];
+
+  contacts.forEach(ct => {
+    if(!ct || !ct.hasCompletedMeeting) return;
+    (Array.isArray(ct.companyIds) ? ct.companyIds : []).forEach(companyId => {
+      const co = idx.byCompanyId[String(companyId)];
+      if(!co) return;
+      const rank = String(co.rank || "").trim().toUpperCase();
+      if(rank !== "A" && rank !== "B") return;
+      const owner = acqNormKey(co.ownerName || ct.ownerName || co.ownerId || ct.ownerId);
+      const country = co.country || "Unknown";
+      const key = `${owner}||${acqUiSlug(country)}||${rank}`;
+      idx.byOwnerCountry[key] = idx.byOwnerCountry[key] || new Set();
+      idx.byOwnerCountry[key].add(String(companyId));
+      touchedCompanyIds.add(String(companyId));
+    });
+  });
+
+  const finalIdx = { byOwnerCountry:{}, byCompanyId:idx.byCompanyId, touchedCompanyIds };
+  Object.keys(idx.byOwnerCountry).forEach(key => finalIdx.byOwnerCountry[key] = idx.byOwnerCountry[key].size);
+  window.__acqCompletedMeetingCompanyIndex = finalIdx;
+  return finalIdx;
+}
+
+function acqCompletedMeetingCountFor(rep, country, rank){
+  const index = buildAcqCompletedMeetingCompanyIndex();
+  const owner = acqNormKey(rep.ownerName || rep.name || rep.ownerId || rep.id);
+  const rankKey = String(rank || "").trim().toUpperCase();
+  if(country === "all"){
+    return Object.keys(index.byOwnerCountry).reduce((sum,key) => {
+      const parts = key.split("||");
+      return parts[0] === owner && parts[2] === rankKey ? sum + Number(index.byOwnerCountry[key] || 0) : sum;
+    },0);
+  }
+  return Number(index.byOwnerCountry[`${owner}||${acqUiSlug(country)}||${rankKey}`] || 0);
+}
+
 function acqEmptyRankStats(label){
-  return { label: label || "All countries", rankA:0, rankAContacted:0, rankANotContacted:0, rankB:0, rankBContacted:0, rankBNotContacted:0 };
+  return { label: label || "All countries", rankA:0, rankAContacted:0, rankANotContacted:0, rankAMeetingsCompleted:0, rankB:0, rankBContacted:0, rankBNotContacted:0, rankBMeetingsCompleted:0 };
 }
 
 function acqMergeRankStats(target, source){
   if(!source) return target;
-  ["rankA","rankAContacted","rankANotContacted","rankB","rankBContacted","rankBNotContacted"].forEach(k => target[k] += Number(source[k] || 0));
+  ["rankA","rankAContacted","rankANotContacted","rankAMeetingsCompleted","rankB","rankBContacted","rankBNotContacted","rankBMeetingsCompleted"].forEach(k => target[k] += Number(source[k] || 0));
   return target;
 }
 
@@ -2451,10 +2509,14 @@ function acqRankStatsForRepCountry(rep, country){
     stats.rankB = Number(rep.rankB || 0);
     stats.rankBContacted = Number(rep.rankBContacted || 0);
     stats.rankBNotContacted = Number(rep.rankBNotContacted || 0);
+    stats.rankAMeetingsCompleted = acqCompletedMeetingCountFor(rep, "all", "A");
+    stats.rankBMeetingsCompleted = acqCompletedMeetingCountFor(rep, "all", "B");
     return stats;
   }
   acqMergeRankStats(stats, rep.rankAByCountry?.[country]);
   acqMergeRankStats(stats, rep.rankBByCountry?.[country]);
+  stats.rankAMeetingsCompleted = acqCompletedMeetingCountFor(rep, country, "A");
+  stats.rankBMeetingsCompleted = acqCompletedMeetingCountFor(rep, country, "B");
   return stats;
 }
 
@@ -2468,12 +2530,15 @@ function acqRankSummaryBox(label, value, color){
 
 function renderAcqRankCountrySummary(stats){
   const rate = acqRankCoverageRate(stats);
+  const meetingsCompleted = Number(stats.rankAMeetingsCompleted || 0) + Number(stats.rankBMeetingsCompleted || 0);
   return `
-    ${acqRankSummaryBox("A Contacted", stats.rankAContacted, "var(--green)")}
-    ${acqRankSummaryBox("A Not Contacted", stats.rankANotContacted, "var(--red)")}
-    ${acqRankSummaryBox("B Contacted", stats.rankBContacted, "var(--green)")}
-    ${acqRankSummaryBox("B Not Contacted", stats.rankBNotContacted, "var(--amber)")}
-    <div style="grid-column:1/-1;font-size:10px;color:var(--muted);font-weight:800;text-align:center">${esc(stats.label)} coverage: <span style="color:${rate < 50 ? "var(--red)" : rate < 75 ? "var(--amber)" : "var(--green)"};font-family:var(--mono);font-weight:900">${rate}%</span> · Total A/B: ${(Number(stats.rankA || 0) + Number(stats.rankB || 0)).toLocaleString()}</div>`;
+    ${acqRankSummaryBox("A Touched", stats.rankAContacted, "var(--green)")}
+    ${acqRankSummaryBox("A Untouched", stats.rankANotContacted, "var(--red)")}
+    ${acqRankSummaryBox("A Meetings", stats.rankAMeetingsCompleted, "var(--purple)")}
+    ${acqRankSummaryBox("B Touched", stats.rankBContacted, "var(--green)")}
+    ${acqRankSummaryBox("B Untouched", stats.rankBNotContacted, "var(--amber)")}
+    ${acqRankSummaryBox("B Meetings", stats.rankBMeetingsCompleted, "var(--purple)")}
+    <div style="grid-column:1/-1;font-size:10px;color:var(--muted);font-weight:800;text-align:center">${esc(stats.label)} coverage: <span style="color:${rate < 50 ? "var(--red)" : rate < 75 ? "var(--amber)" : "var(--green)"};font-family:var(--mono);font-weight:900">${rate}%</span> · Total A/B: ${(Number(stats.rankA || 0) + Number(stats.rankB || 0)).toLocaleString()} · Meetings completed on touched accounts: <span style="color:var(--purple);font-family:var(--mono);font-weight:900">${meetingsCompleted.toLocaleString()}</span></div>`;
 }
 
 function renderRepRankRows(rows, id, rank, color){
@@ -2535,8 +2600,9 @@ function renderRepRankCoverageCard(rep, rankA, rankB){
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
         <span style="font-size:10px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.08em">Rank A — ${rep.rankA || 0}</span>
         <div style="display:flex;gap:8px;font-size:10px;font-weight:600">
-          <span style="color:var(--green)">✓ ${rep.rankAContacted || 0}</span>
-          <span style="color:var(--red)">✗ ${rep.rankANotContacted || 0}</span>
+          <span style="color:var(--green)">✓ ${rep.rankAContacted || 0} touched</span>
+          <span style="color:var(--purple)">☑ ${countryStats.all.rankAMeetingsCompleted || 0} meetings</span>
+          <span style="color:var(--red)">✗ ${rep.rankANotContacted || 0} untouched</span>
         </div>
       </div>
 
@@ -2546,8 +2612,9 @@ function renderRepRankCoverageCard(rep, rankA, rankB){
       <div style="display:flex;align-items:center;justify-content:space-between;margin:14px 0 8px">
         <span style="font-size:10px;font-weight:700;color:var(--amber);text-transform:uppercase;letter-spacing:.08em">Rank B — ${rep.rankB || 0}</span>
         <div style="display:flex;gap:8px;font-size:10px;font-weight:600">
-          <span style="color:var(--green)">✓ ${rep.rankBContacted || 0}</span>
-          <span style="color:var(--amber)">✗ ${rep.rankBNotContacted || 0}</span>
+          <span style="color:var(--green)">✓ ${rep.rankBContacted || 0} touched</span>
+          <span style="color:var(--purple)">☑ ${countryStats.all.rankBMeetingsCompleted || 0} meetings</span>
+          <span style="color:var(--amber)">✗ ${rep.rankBNotContacted || 0} untouched</span>
         </div>
       </div>
 
@@ -2649,14 +2716,17 @@ function filterRankCountryCoverage(countryKey, btn, silent){
   const total = Number(stats.rankA || 0) + Number(stats.rankB || 0);
   const contacted = Number(stats.rankAContacted || 0) + Number(stats.rankBContacted || 0);
   const notContacted = Number(stats.rankANotContacted || 0) + Number(stats.rankBNotContacted || 0);
-  $("rankCountryCoverageSub").textContent = `${stats.label}: ${contacted.toLocaleString()} contacted · ${notContacted.toLocaleString()} not contacted · ${rate}% coverage`;
+  const meetingsCompleted = Number(stats.rankAMeetingsCompleted || 0) + Number(stats.rankBMeetingsCompleted || 0);
+  $("rankCountryCoverageSub").textContent = `${stats.label}: ${contacted.toLocaleString()} touched/contacted · ${notContacted.toLocaleString()} untouched · ${meetingsCompleted.toLocaleString()} meetings completed on touched accounts · ${rate}% coverage`;
   $("rankCountryCoverageMetrics").innerHTML = [
     acqRankCountryMetricBox("Rank A Total", stats.rankA, "var(--red)"),
-    acqRankCountryMetricBox("A Contacted", stats.rankAContacted, "var(--green)"),
-    acqRankCountryMetricBox("A Not Contacted", stats.rankANotContacted, "var(--red)"),
+    acqRankCountryMetricBox("A Touched", stats.rankAContacted, "var(--green)"),
+    acqRankCountryMetricBox("A Untouched", stats.rankANotContacted, "var(--red)"),
+    acqRankCountryMetricBox("A Meetings Completed", stats.rankAMeetingsCompleted, "var(--purple)"),
     acqRankCountryMetricBox("Rank B Total", stats.rankB, "var(--amber)"),
-    acqRankCountryMetricBox("B Contacted", stats.rankBContacted, "var(--green)"),
-    acqRankCountryMetricBox("B Not Contacted", stats.rankBNotContacted, "var(--amber)")
+    acqRankCountryMetricBox("B Touched", stats.rankBContacted, "var(--green)"),
+    acqRankCountryMetricBox("B Untouched", stats.rankBNotContacted, "var(--amber)"),
+    acqRankCountryMetricBox("B Meetings Completed", stats.rankBMeetingsCompleted, "var(--purple)")
   ].join("");
   const rows = state.reps.map(rep => {
     const repStats = countryKey === "all" ? acqRankStatsForRepCountry(rep,"all") : acqRankStatsForRepCountry(rep, stats.label);
@@ -2667,12 +2737,14 @@ function filterRankCountryCoverage(countryKey, btn, silent){
       <td><div style="display:flex;align-items:center;gap:8px"><div class="av" style="background:${rep.color}20;color:${rep.color}">${esc((rep.name||"?")[0])}</div><span style="font-weight:700">${esc(rep.name || "Unknown")}</span></div></td>
       <td class="c"><span style="font-family:var(--mono);font-weight:900;color:var(--green)">${Number(repStats.rankAContacted || 0).toLocaleString()}</span></td>
       <td class="c"><span style="font-family:var(--mono);font-weight:900;color:var(--red)">${Number(repStats.rankANotContacted || 0).toLocaleString()}</span></td>
+      <td class="c"><span style="font-family:var(--mono);font-weight:900;color:var(--purple)">${Number(repStats.rankAMeetingsCompleted || 0).toLocaleString()}</span></td>
       <td class="c"><span style="font-family:var(--mono);font-weight:900;color:var(--green)">${Number(repStats.rankBContacted || 0).toLocaleString()}</span></td>
       <td class="c"><span style="font-family:var(--mono);font-weight:900;color:var(--amber)">${Number(repStats.rankBNotContacted || 0).toLocaleString()}</span></td>
+      <td class="c"><span style="font-family:var(--mono);font-weight:900;color:var(--purple)">${Number(repStats.rankBMeetingsCompleted || 0).toLocaleString()}</span></td>
       <td class="c"><span style="font-family:var(--mono);font-weight:900;color:${repRate < 50 ? "var(--red)" : repRate < 75 ? "var(--amber)" : "var(--green)"}">${repRate}%</span></td>
     </tr>`;
   }).filter(Boolean).join("");
-  $("rankCountryCoverageRows").innerHTML = rows || `<tr><td colspan="6" style="text-align:center;color:var(--muted);font-style:italic;padding:14px">No Rank A/B accounts found for this country.</td></tr>`;
+  $("rankCountryCoverageRows").innerHTML = rows || `<tr><td colspan="8" style="text-align:center;color:var(--muted);font-style:italic;padding:14px">No Rank A/B accounts found for this country.</td></tr>`;
 }
 
 function renderFinancialDetails(){
