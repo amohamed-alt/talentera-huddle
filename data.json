@@ -2,7 +2,7 @@
   "yesterdayLabel": "Friday, 22 May 2026",
   "meta": {
     "yesterdayLabel": "Friday, 22 May 2026",
-    "generatedAt": "12:59 PM"
+    "generatedAt": "02:31 PM"
   },
   "debug": {
     "total_ranked": 856,
@@ -11,7 +11,7 @@
     "has_hs_sales_email_replied": 0,
     "has_notes_last_updated": 0,
     "has_any_contact_signal": 825,
-    "new_logic_contacted_ranked": 341,
+    "new_logic_contacted_ranked": 346,
     "first_company_property_keys": [
       "country",
       "createdate",
@@ -1334,7 +1334,7 @@
         },
         {
           "name": "B D Holding - New Deal",
-          "days": 88,
+          "days": 89,
           "amount": 7600,
           "ownerName": "Marita Chedid",
           "hubspotUrl": null
@@ -1425,14 +1425,14 @@
         },
         {
           "name": "شركة تنسيق العقارية - New Deal",
-          "days": 23,
+          "days": 24,
           "amount": 14000,
           "ownerName": "Marita Chedid",
           "hubspotUrl": null
         },
         {
           "name": "SHADE - New Deal",
-          "days": 22,
+          "days": 23,
           "amount": 27489.977151,
           "ownerName": "Marita Chedid",
           "hubspotUrl": null
@@ -1448,7 +1448,7 @@
         },
         {
           "name": " شركة الركيزة لخدمات التشغيل - New Deal",
-          "days": 36,
+          "days": 37,
           "amount": 6000,
           "ownerName": "Marita Chedid",
           "hubspotUrl": null
@@ -1547,7 +1547,7 @@
           "name": " شركة الركيزة لخدمات التشغيل - New Deal",
           "amount": 6000,
           "reasons": [
-            "No activity for 36 days",
+            "No activity for 37 days",
             "Stuck in stage for 93 days"
           ],
           "ownerName": "Marita Chedid",
@@ -1595,7 +1595,7 @@
           "name": "B D Holding - New Deal",
           "amount": 7600,
           "reasons": [
-            "Stuck in stage for 88 days"
+            "Stuck in stage for 89 days"
           ],
           "ownerName": "Marita Chedid",
           "hubspotUrl": null
@@ -1716,7 +1716,7 @@
           "name": "شركة تنسيق العقارية - New Deal",
           "amount": 14000,
           "reasons": [
-            "Stuck in stage for 23 days"
+            "Stuck in stage for 24 days"
           ],
           "ownerName": "Marita Chedid",
           "hubspotUrl": null
@@ -1725,7 +1725,7 @@
           "name": "SHADE - New Deal",
           "amount": 27489.977151,
           "reasons": [
-            "Stuck in stage for 22 days"
+            "Stuck in stage for 23 days"
           ],
           "ownerName": "Marita Chedid",
           "hubspotUrl": null
@@ -1907,8 +1907,8 @@
       "lostYTD": 4,
       "lostAmtYTD": 49183.8307,
       "rankA": 49,
-      "rankAContacted": 5,
-      "rankANotContacted": 44,
+      "rankAContacted": 6,
+      "rankANotContacted": 43,
       "rankAUntouched": [
         {
           "id": "80976499912",
@@ -1932,12 +1932,6 @@
           "id": "80351354053",
           "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-2/80351354053",
           "name": "Ministry of Economy and Planning",
-          "country": "Saudi Arabia"
-        },
-        {
-          "id": "132316237042",
-          "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-2/132316237042",
-          "name": "Tatweer Education Holding Co.",
           "country": "Saudi Arabia"
         },
         {
@@ -2824,8 +2818,8 @@
       "rankAByCountry": {
         "Saudi Arabia": {
           "rankA": 39,
-          "rankAContacted": 5,
-          "rankANotContacted": 34,
+          "rankAContacted": 6,
+          "rankANotContacted": 33,
           "rankB": 0,
           "rankBContacted": 0,
           "rankBNotContacted": 0
@@ -2875,7 +2869,7 @@
         },
         {
           "name": "Saudi National Bank SNB - New Deal",
-          "days": 471,
+          "days": 472,
           "amount": 23069.55,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -2896,7 +2890,7 @@
         },
         {
           "name": "almoosahospital.com.sa - New Deal",
-          "days": 457,
+          "days": 458,
           "amount": 20000,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -2994,7 +2988,7 @@
         },
         {
           "name": "fad international company - New Deal",
-          "days": 341,
+          "days": 342,
           "amount": 7200,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3036,7 +3030,7 @@
         },
         {
           "name": "Applus - New Deal",
-          "days": 274,
+          "days": 275,
           "amount": 23000,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3057,7 +3051,7 @@
         },
         {
           "name": "Saudi Manpower Solutions Co - New Deal",
-          "days": 264,
+          "days": 265,
           "amount": 50000,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3071,14 +3065,14 @@
         },
         {
           "name": "General Authority of Civil Aviation (GACA) - New Deal",
-          "days": 122,
+          "days": 123,
           "amount": 58813.7508,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "tree - New Deal",
-          "days": 122,
+          "days": 123,
           "amount": 26000,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3099,28 +3093,28 @@
         },
         {
           "name": "Alsalama Hospital - New Deal",
-          "days": 243,
+          "days": 244,
           "amount": 0,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "ITSC - New Deal",
-          "days": 240,
+          "days": 241,
           "amount": 20000,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "Dr. Mohammed Alfagih Hospital - New Deal",
-          "days": 239,
+          "days": 240,
           "amount": 40000,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
         },
         {
           "name": "Front End Limited Company - New Deal",
-          "days": 236,
+          "days": 237,
           "amount": 16000,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3162,7 +3156,7 @@
         },
         {
           "name": "سارمكس,صروح المشاريع - New Deal",
-          "days": 222,
+          "days": 223,
           "amount": 20000,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3183,7 +3177,7 @@
         },
         {
           "name": "InPro - New Deal",
-          "days": 204,
+          "days": 205,
           "amount": 5075.92,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3225,7 +3219,7 @@
         },
         {
           "name": "Infinite pl - New Deal",
-          "days": 184,
+          "days": 185,
           "amount": 13333,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3330,7 +3324,7 @@
         },
         {
           "name": "American Academy - Talentera",
-          "days": 137,
+          "days": 138,
           "amount": 14000,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3358,7 +3352,7 @@
         },
         {
           "name": "SAJA- New Deal",
-          "days": 45,
+          "days": 46,
           "amount": 27733,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3374,7 +3368,7 @@
       "cold": [
         {
           "name": "almoosahospital.com.sa - New Deal",
-          "days": 215,
+          "days": 216,
           "amount": 20000,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3402,7 +3396,7 @@
         },
         {
           "name": "MEMF Electrical Industries Co - New Deal",
-          "days": 236,
+          "days": 237,
           "amount": 9467.85,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3430,7 +3424,7 @@
         },
         {
           "name": "المركز الوطني للتنافسية - New Deal",
-          "days": 240,
+          "days": 241,
           "amount": 8133,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3479,7 +3473,7 @@
         },
         {
           "name": "abc - New Deal",
-          "days": 228,
+          "days": 229,
           "amount": 5600.7,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3493,7 +3487,7 @@
         },
         {
           "name": "tree - New Deal",
-          "days": 44,
+          "days": 45,
           "amount": 26000,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3549,7 +3543,7 @@
         },
         {
           "name": "fives group - New Deal",
-          "days": 219,
+          "days": 220,
           "amount": 5000,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3570,7 +3564,7 @@
         },
         {
           "name": "سارمكس,صروح المشاريع - New Deal",
-          "days": 222,
+          "days": 223,
           "amount": 20000,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3682,7 +3676,7 @@
         },
         {
           "name": "AhmedDaoud - New Deal",
-          "days": 86,
+          "days": 87,
           "amount": 0,
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3765,7 +3759,7 @@
           "name": "Saudi National Bank SNB - New Deal",
           "amount": 23069.55,
           "reasons": [
-            "Stuck in stage for 471 days"
+            "Stuck in stage for 472 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3792,8 +3786,8 @@
           "name": "almoosahospital.com.sa - New Deal",
           "amount": 20000,
           "reasons": [
-            "No activity for 215 days",
-            "Stuck in stage for 457 days"
+            "No activity for 216 days",
+            "Stuck in stage for 458 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3841,7 +3835,7 @@
           "name": "MEMF Electrical Industries Co - New Deal",
           "amount": 9467.85,
           "reasons": [
-            "No activity for 236 days",
+            "No activity for 237 days",
             "Stuck in stage for 369 days"
           ],
           "ownerName": "Zein Fares",
@@ -3899,7 +3893,7 @@
           "name": "المركز الوطني للتنافسية - New Deal",
           "amount": 8133,
           "reasons": [
-            "No activity for 240 days",
+            "No activity for 241 days",
             "Stuck in stage for 356 days"
           ],
           "ownerName": "Zein Fares",
@@ -3930,7 +3924,7 @@
           "amount": 7200,
           "reasons": [
             "No activity for 271 days",
-            "Stuck in stage for 341 days"
+            "Stuck in stage for 342 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -3987,7 +3981,7 @@
           "amount": 23000,
           "reasons": [
             "No activity for 137 days",
-            "Stuck in stage for 274 days"
+            "Stuck in stage for 275 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -4005,7 +3999,7 @@
           "name": "abc - New Deal",
           "amount": 5600.7,
           "reasons": [
-            "No activity for 228 days",
+            "No activity for 229 days",
             "Stuck in stage for 271 days"
           ],
           "ownerName": "Zein Fares",
@@ -4015,7 +4009,7 @@
           "name": "Saudi Manpower Solutions Co - New Deal",
           "amount": 50000,
           "reasons": [
-            "Stuck in stage for 264 days"
+            "Stuck in stage for 265 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -4034,7 +4028,7 @@
           "amount": 58813.7508,
           "reasons": [
             "No activity for 201 days",
-            "Stuck in stage for 122 days"
+            "Stuck in stage for 123 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -4043,8 +4037,8 @@
           "name": "tree - New Deal",
           "amount": 26000,
           "reasons": [
-            "No activity for 44 days",
-            "Stuck in stage for 122 days"
+            "No activity for 45 days",
+            "Stuck in stage for 123 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -4074,7 +4068,7 @@
           "amount": 0,
           "reasons": [
             "No activity for 223 days",
-            "Stuck in stage for 243 days"
+            "Stuck in stage for 244 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -4084,7 +4078,7 @@
           "amount": 20000,
           "reasons": [
             "No activity for 226 days",
-            "Stuck in stage for 240 days"
+            "Stuck in stage for 241 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -4094,7 +4088,7 @@
           "amount": 40000,
           "reasons": [
             "No activity for 34 days",
-            "Stuck in stage for 239 days"
+            "Stuck in stage for 240 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -4103,7 +4097,7 @@
           "name": "Front End Limited Company - New Deal",
           "amount": 16000,
           "reasons": [
-            "Stuck in stage for 236 days"
+            "Stuck in stage for 237 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -4132,7 +4126,7 @@
           "name": "fives group - New Deal",
           "amount": 5000,
           "reasons": [
-            "No activity for 219 days",
+            "No activity for 220 days",
             "Stuck in stage for 216 days"
           ],
           "ownerName": "Zein Fares",
@@ -4162,8 +4156,8 @@
           "name": "سارمكس,صروح المشاريع - New Deal",
           "amount": 20000,
           "reasons": [
-            "No activity for 222 days",
-            "Stuck in stage for 222 days"
+            "No activity for 223 days",
+            "Stuck in stage for 223 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -4192,7 +4186,7 @@
           "amount": 5075.92,
           "reasons": [
             "No activity for 198 days",
-            "Stuck in stage for 204 days"
+            "Stuck in stage for 205 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -4250,7 +4244,7 @@
           "name": "Infinite pl - New Deal",
           "amount": 13333,
           "reasons": [
-            "Stuck in stage for 184 days"
+            "Stuck in stage for 185 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -4394,7 +4388,7 @@
           "name": "American Academy - Talentera",
           "amount": 14000,
           "reasons": [
-            "Stuck in stage for 137 days"
+            "Stuck in stage for 138 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -4403,7 +4397,7 @@
           "name": "AhmedDaoud - New Deal",
           "amount": 0,
           "reasons": [
-            "No activity for 86 days"
+            "No activity for 87 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -4449,7 +4443,7 @@
           "name": "SAJA- New Deal",
           "amount": 27733,
           "reasons": [
-            "Stuck in stage for 45 days"
+            "Stuck in stage for 46 days"
           ],
           "ownerName": "Zein Fares",
           "hubspotUrl": null
@@ -4703,8 +4697,8 @@
       "lostYTD": 94,
       "lostAmtYTD": 700277.72,
       "rankA": 84,
-      "rankAContacted": 31,
-      "rankANotContacted": 53,
+      "rankAContacted": 32,
+      "rankANotContacted": 52,
       "rankAUntouched": [
         {
           "id": "80969304310",
@@ -5013,12 +5007,6 @@
           "country": "United Arab Emirates"
         },
         {
-          "id": "260233561278",
-          "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-2/260233561278",
-          "name": "Primary Health Care Corporation",
-          "country": "Qatar"
-        },
-        {
           "id": "262350642393",
           "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-2/262350642393",
           "name": "Human Capital Group",
@@ -5026,8 +5014,8 @@
         }
       ],
       "rankB": 162,
-      "rankBContacted": 65,
-      "rankBNotContacted": 97,
+      "rankBContacted": 66,
+      "rankBNotContacted": 96,
       "rankBUntouched": [
         {
           "id": "80784339131",
@@ -5390,12 +5378,6 @@
           "country": "Oman"
         },
         {
-          "id": "161779519735",
-          "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-2/161779519735",
-          "name": "German University of Technology in Oman",
-          "country": "Oman"
-        },
-        {
           "id": "161779679427",
           "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-2/161779679427",
           "name": "rameda pharma",
@@ -5688,8 +5670,8 @@
         },
         "Qatar": {
           "rankA": 12,
-          "rankAContacted": 8,
-          "rankANotContacted": 4,
+          "rankAContacted": 9,
+          "rankANotContacted": 3,
           "rankB": 0,
           "rankBContacted": 0,
           "rankBNotContacted": 0
@@ -5765,8 +5747,8 @@
           "rankAContacted": 0,
           "rankANotContacted": 0,
           "rankB": 18,
-          "rankBContacted": 5,
-          "rankBNotContacted": 13
+          "rankBContacted": 6,
+          "rankBNotContacted": 12
         },
         "Lebanon": {
           "rankA": 0,
@@ -6210,14 +6192,14 @@
         },
         {
           "name": "Synergi BPO - Evalufy New Deal",
-          "days": 88,
+          "days": 89,
           "amount": 4000,
           "ownerName": "Ursula Waked",
           "hubspotUrl": null
         },
         {
           "name": "Eva Pharma - Evalufy New Deal",
-          "days": 80,
+          "days": 81,
           "amount": 3000,
           "ownerName": "Ursula Waked",
           "hubspotUrl": null
@@ -6231,7 +6213,7 @@
         },
         {
           "name": "Org Luxury - New Deal",
-          "days": 78,
+          "days": 79,
           "amount": 7000,
           "ownerName": "Ursula Waked",
           "hubspotUrl": null
@@ -6245,7 +6227,7 @@
         },
         {
           "name": "Sedco - New Deal",
-          "days": 74,
+          "days": 75,
           "amount": 7425,
           "ownerName": "Ursula Waked",
           "hubspotUrl": null
@@ -6280,7 +6262,7 @@
         },
         {
           "name": "Human Impact - New Deal",
-          "days": 45,
+          "days": 46,
           "amount": 3685,
           "ownerName": "Ursula Waked",
           "hubspotUrl": null
@@ -6294,7 +6276,7 @@
         },
         {
           "name": "Etihad Rail - New Deal",
-          "days": 37,
+          "days": 38,
           "amount": 17365,
           "ownerName": "Ursula Waked",
           "hubspotUrl": null
@@ -6315,7 +6297,7 @@
         },
         {
           "name": "Arab Loss Adjusters - New Deal",
-          "days": 36,
+          "days": 37,
           "amount": 3000.06525,
           "ownerName": "Ursula Waked",
           "hubspotUrl": null
@@ -6394,7 +6376,7 @@
         },
         {
           "name": "EtihadWE - New Deal",
-          "days": 29,
+          "days": 30,
           "amount": 5075.92,
           "ownerName": "Ursula Waked",
           "hubspotUrl": null
@@ -6492,7 +6474,7 @@
         },
         {
           "name": "Aljazeera Media Network - New Deal",
-          "days": 29,
+          "days": 30,
           "amount": 14200,
           "ownerName": "Ursula Waked",
           "hubspotUrl": null
@@ -6749,7 +6731,7 @@
           "name": "EtihadWE - New Deal",
           "amount": 5075.92,
           "reasons": [
-            "No activity for 29 days",
+            "No activity for 30 days",
             "Stuck in stage for 79 days"
           ],
           "ownerName": "Ursula Waked",
@@ -7042,7 +7024,7 @@
           "name": "Aljazeera Media Network - New Deal",
           "amount": 14200,
           "reasons": [
-            "No activity for 29 days",
+            "No activity for 30 days",
             "Stuck in stage for 79 days"
           ],
           "ownerName": "Ursula Waked",
@@ -7061,7 +7043,7 @@
           "name": "Synergi BPO - Evalufy New Deal",
           "amount": 4000,
           "reasons": [
-            "Stuck in stage for 88 days"
+            "Stuck in stage for 89 days"
           ],
           "ownerName": "Ursula Waked",
           "hubspotUrl": null
@@ -7070,7 +7052,7 @@
           "name": "Eva Pharma - Evalufy New Deal",
           "amount": 3000,
           "reasons": [
-            "Stuck in stage for 80 days"
+            "Stuck in stage for 81 days"
           ],
           "ownerName": "Ursula Waked",
           "hubspotUrl": null
@@ -7088,7 +7070,7 @@
           "name": "Org Luxury - New Deal",
           "amount": 7000,
           "reasons": [
-            "Stuck in stage for 78 days"
+            "Stuck in stage for 79 days"
           ],
           "ownerName": "Ursula Waked",
           "hubspotUrl": null
@@ -7106,7 +7088,7 @@
           "name": "Sedco - New Deal",
           "amount": 7425,
           "reasons": [
-            "Stuck in stage for 74 days"
+            "Stuck in stage for 75 days"
           ],
           "ownerName": "Ursula Waked",
           "hubspotUrl": null
@@ -7152,7 +7134,7 @@
           "amount": 3685,
           "reasons": [
             "No activity for 38 days",
-            "Stuck in stage for 45 days"
+            "Stuck in stage for 46 days"
           ],
           "ownerName": "Ursula Waked",
           "hubspotUrl": null
@@ -7171,7 +7153,7 @@
           "amount": 17365,
           "reasons": [
             "No activity for 30 days",
-            "Stuck in stage for 37 days"
+            "Stuck in stage for 38 days"
           ],
           "ownerName": "Ursula Waked",
           "hubspotUrl": null
@@ -7198,7 +7180,7 @@
           "name": "Arab Loss Adjusters - New Deal",
           "amount": 3000.06525,
           "reasons": [
-            "Stuck in stage for 36 days"
+            "Stuck in stage for 37 days"
           ],
           "ownerName": "Ursula Waked",
           "hubspotUrl": null
@@ -8277,21 +8259,9 @@
       "lostYTD": 0,
       "lostAmtYTD": 0,
       "rankA": 3,
-      "rankAContacted": 0,
-      "rankANotContacted": 3,
+      "rankAContacted": 2,
+      "rankANotContacted": 1,
       "rankAUntouched": [
-        {
-          "id": "427950837976",
-          "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-2/427950837976",
-          "name": "Saudia Catering",
-          "country": "Saudi Arabia"
-        },
-        {
-          "id": "97782966510",
-          "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-2/97782966510",
-          "name": "King Faisal Specialist Hospital & Research Center",
-          "country": "Saudi Arabia"
-        },
         {
           "id": "116472260810",
           "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-2/116472260810",
@@ -8350,8 +8320,8 @@
       "rankAByCountry": {
         "Saudi Arabia": {
           "rankA": 3,
-          "rankAContacted": 0,
-          "rankANotContacted": 3,
+          "rankAContacted": 2,
+          "rankANotContacted": 1,
           "rankB": 0,
           "rankBContacted": 0,
           "rankBNotContacted": 0
@@ -8440,7 +8410,7 @@
         },
         {
           "name": "saudire - New Deal",
-          "days": 282,
+          "days": 283,
           "amount": 0,
           "ownerName": "Jehad Al-Barqawi",
           "hubspotUrl": null
@@ -8454,7 +8424,7 @@
         },
         {
           "name": "Batterjee Medical College - New Deal",
-          "days": 204,
+          "days": 205,
           "amount": 0,
           "ownerName": "Jehad Al-Barqawi",
           "hubspotUrl": null
@@ -8652,7 +8622,7 @@
         },
         {
           "name": "enjaz",
-          "days": 107,
+          "days": 108,
           "amount": 50006.25,
           "ownerName": "Jehad Al-Barqawi",
           "hubspotUrl": null
@@ -8813,7 +8783,7 @@
           "amount": 0,
           "reasons": [
             "No activity for 25 days",
-            "Stuck in stage for 282 days"
+            "Stuck in stage for 283 days"
           ],
           "ownerName": "Jehad Al-Barqawi",
           "hubspotUrl": null
@@ -8833,7 +8803,7 @@
           "amount": 0,
           "reasons": [
             "No activity for 201 days",
-            "Stuck in stage for 204 days"
+            "Stuck in stage for 205 days"
           ],
           "ownerName": "Jehad Al-Barqawi",
           "hubspotUrl": null
@@ -8872,7 +8842,7 @@
           "name": "enjaz",
           "amount": 50006.25,
           "reasons": [
-            "No activity for 107 days",
+            "No activity for 108 days",
             "Stuck in stage for 212 days"
           ],
           "ownerName": "Jehad Al-Barqawi",
@@ -9479,11 +9449,11 @@
   ],
   "rankTotals": {
     "A": 263,
-    "AContacted": 111,
-    "ANotContacted": 152,
+    "AContacted": 115,
+    "ANotContacted": 148,
     "B": 593,
-    "BContacted": 230,
-    "BNotContacted": 363,
+    "BContacted": 231,
+    "BNotContacted": 362,
     "AB": 856,
     "total": 2577
   },
@@ -9521,8 +9491,8 @@
       "rank": "B",
       "rep": "Jehad Al-Barqawi",
       "repColor": "#0e7490",
-      "daysSinceActivity": 467,
-      "lastActivityLabel": "467d ago",
+      "daysSinceActivity": 468,
+      "lastActivityLabel": "468d ago",
       "employees": "900",
       "country": "Saudi Arabia",
       "contacted": false
@@ -9541,6 +9511,19 @@
       "contacted": false
     },
     {
+      "id": "80351354052",
+      "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-2/80351354052",
+      "name": "Saudi Company for Artificial Intelligence SCAI",
+      "rank": "A",
+      "rep": "Zein Fares",
+      "repColor": "#1d4ed8",
+      "daysSinceActivity": 461,
+      "lastActivityLabel": "461d ago",
+      "employees": "120",
+      "country": "Saudi Arabia",
+      "contacted": false
+    },
+    {
       "id": "96534260934",
       "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-2/96534260934",
       "name": "الهيئة العليا للأمن الصناعي",
@@ -9550,19 +9533,6 @@
       "daysSinceActivity": 461,
       "lastActivityLabel": "461d ago",
       "employees": "—",
-      "country": "Saudi Arabia",
-      "contacted": false
-    },
-    {
-      "id": "80351354052",
-      "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-2/80351354052",
-      "name": "Saudi Company for Artificial Intelligence SCAI",
-      "rank": "A",
-      "rep": "Zein Fares",
-      "repColor": "#1d4ed8",
-      "daysSinceActivity": 460,
-      "lastActivityLabel": "460d ago",
-      "employees": "120",
       "country": "Saudi Arabia",
       "contacted": false
     },
@@ -19815,9 +19785,9 @@
     },
     "companies": {
       "total": 856,
-      "contacted": 341,
-      "notContacted": 515,
-      "contactedRate": 39.8,
+      "contacted": 346,
+      "notContacted": 510,
+      "contactedRate": 40.4,
       "contactedList": [
         {
           "id": "422921017583",
@@ -20704,6 +20674,19 @@
           "lastActivityDate": "2026-04-19"
         },
         {
+          "id": "260233561278",
+          "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-2/260233561278",
+          "name": "Primary Health Care Corporation",
+          "domain": null,
+          "ownerId": "76369997",
+          "ownerName": "Ursula Waked",
+          "ownerColor": "#be185d",
+          "country": "Qatar",
+          "rank": "A",
+          "createdAt": "2025-10-13",
+          "lastActivityDate": "2026-03-17"
+        },
+        {
           "id": "258933146849",
           "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-2/258933146849",
           "name": "Apex Health",
@@ -21014,6 +20997,19 @@
           "rank": "B",
           "createdAt": "2025-05-26",
           "lastActivityDate": "2026-02-25"
+        },
+        {
+          "id": "161779519735",
+          "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-2/161779519735",
+          "name": "German University of Technology in Oman",
+          "domain": null,
+          "ownerId": "76369997",
+          "ownerName": "Ursula Waked",
+          "ownerColor": "#be185d",
+          "country": "Oman",
+          "rank": "B",
+          "createdAt": "2025-05-26",
+          "lastActivityDate": "2026-04-20"
         },
         {
           "id": "160758331604",
@@ -23252,6 +23248,19 @@
           "lastActivityDate": "2026-05-20"
         },
         {
+          "id": "97782966510",
+          "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-2/97782966510",
+          "name": "King Faisal Specialist Hospital & Research Center",
+          "domain": null,
+          "ownerId": "76370000",
+          "ownerName": "Jehad Al-Barqawi",
+          "ownerColor": "#0e7490",
+          "country": "Saudi Arabia",
+          "rank": "A",
+          "createdAt": "2025-02-16",
+          "lastActivityDate": "2026-03-04"
+        },
+        {
           "id": "97869712596",
           "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-2/97869712596",
           "name": "King's College Hospital London - Jeddah",
@@ -23681,6 +23690,19 @@
           "lastActivityDate": "2026-05-11"
         },
         {
+          "id": "427950837976",
+          "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-2/427950837976",
+          "name": "Saudia Catering",
+          "domain": null,
+          "ownerId": "76370000",
+          "ownerName": "Jehad Al-Barqawi",
+          "ownerColor": "#0e7490",
+          "country": "Saudi Arabia",
+          "rank": "A",
+          "createdAt": "2025-01-20",
+          "lastActivityDate": "2026-04-13"
+        },
+        {
           "id": "81942651119",
           "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-2/81942651119",
           "name": "DLPS",
@@ -23991,6 +24013,19 @@
           "rank": "A",
           "createdAt": "2025-01-16",
           "lastActivityDate": "2026-04-19"
+        },
+        {
+          "id": "132316237042",
+          "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-2/132316237042",
+          "name": "Tatweer Education Holding Co.",
+          "domain": null,
+          "ownerId": "31558980",
+          "ownerName": "Zein Fares",
+          "ownerColor": "#1d4ed8",
+          "country": "Saudi Arabia",
+          "rank": "A",
+          "createdAt": "2025-01-16",
+          "lastActivityDate": "2026-05-14"
         },
         {
           "id": "112452729024",
@@ -24591,19 +24626,6 @@
           "rank": "B",
           "createdAt": "2025-10-14",
           "lastActivityDate": "2025-11-03"
-        },
-        {
-          "id": "260233561278",
-          "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-2/260233561278",
-          "name": "Primary Health Care Corporation",
-          "domain": null,
-          "ownerId": "76369997",
-          "ownerName": "Ursula Waked",
-          "ownerColor": "#be185d",
-          "country": "Qatar",
-          "rank": "A",
-          "createdAt": "2025-10-13",
-          "lastActivityDate": "2026-03-17"
         },
         {
           "id": "258840799422",
@@ -25319,19 +25341,6 @@
           "rank": "A",
           "createdAt": "2025-05-26",
           "lastActivityDate": "2026-04-16"
-        },
-        {
-          "id": "161779519735",
-          "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-2/161779519735",
-          "name": "German University of Technology in Oman",
-          "domain": null,
-          "ownerId": "76369997",
-          "ownerName": "Ursula Waked",
-          "ownerColor": "#be185d",
-          "country": "Oman",
-          "rank": "B",
-          "createdAt": "2025-05-26",
-          "lastActivityDate": "2026-04-20"
         },
         {
           "id": "160758265044",
@@ -28389,19 +28398,6 @@
           "lastActivityDate": "2025-06-15"
         },
         {
-          "id": "97782966510",
-          "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-2/97782966510",
-          "name": "King Faisal Specialist Hospital & Research Center",
-          "domain": null,
-          "ownerId": "76370000",
-          "ownerName": "Jehad Al-Barqawi",
-          "ownerColor": "#0e7490",
-          "country": "Saudi Arabia",
-          "rank": "A",
-          "createdAt": "2025-02-16",
-          "lastActivityDate": "2026-03-04"
-        },
-        {
           "id": "97782967543",
           "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-2/97782967543",
           "name": "United Doctors Hospital",
@@ -29182,19 +29178,6 @@
           "lastActivityDate": "2025-11-05"
         },
         {
-          "id": "427950837976",
-          "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-2/427950837976",
-          "name": "Saudia Catering",
-          "domain": null,
-          "ownerId": "76370000",
-          "ownerName": "Jehad Al-Barqawi",
-          "ownerColor": "#0e7490",
-          "country": "Saudi Arabia",
-          "rank": "A",
-          "createdAt": "2025-01-20",
-          "lastActivityDate": "2026-04-13"
-        },
-        {
           "id": "82403356866",
           "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-2/82403356866",
           "name": "Davita Inc",
@@ -29648,19 +29631,6 @@
           "rank": "B",
           "createdAt": "2025-01-16",
           "lastActivityDate": "2025-09-18"
-        },
-        {
-          "id": "132316237042",
-          "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-2/132316237042",
-          "name": "Tatweer Education Holding Co.",
-          "domain": null,
-          "ownerId": "31558980",
-          "ownerName": "Zein Fares",
-          "ownerColor": "#1d4ed8",
-          "country": "Saudi Arabia",
-          "rank": "A",
-          "createdAt": "2025-01-16",
-          "lastActivityDate": "2026-05-14"
         },
         {
           "id": "80994031828",
@@ -30999,9 +30969,9 @@
         },
         "companies": {
           "total": 167,
-          "contacted": 19,
-          "notContacted": 148,
-          "rate": 11.4
+          "contacted": 20,
+          "notContacted": 147,
+          "rate": 12
         }
       },
       {
@@ -31016,9 +30986,9 @@
         },
         "companies": {
           "total": 246,
-          "contacted": 96,
-          "notContacted": 150,
-          "rate": 39
+          "contacted": 98,
+          "notContacted": 148,
+          "rate": 39.8
         }
       },
       {
@@ -31067,9 +31037,9 @@
         },
         "companies": {
           "total": 11,
-          "contacted": 2,
-          "notContacted": 9,
-          "rate": 18.2
+          "contacted": 4,
+          "notContacted": 7,
+          "rate": 36.4
         }
       }
     ]
@@ -31084,8 +31054,8 @@
     },
     {
       "key": "rank_coverage",
-      "title": "Review 515 untouched Rank A/B accounts",
-      "count": 515,
+      "title": "Review 510 untouched Rank A/B accounts",
+      "count": 510,
       "severity": "high",
       "description": "Accounts are untouched under association-based outreach logic."
     },
@@ -32079,11 +32049,11 @@
   },
   "slaBreaches": {
     "summary": {
-      "total": 1171,
+      "total": 1166,
       "onlineLeadBreaches": 4,
       "offlineLeadBreaches": 137,
       "pipelineBreaches": 515,
-      "rankBreaches": 515
+      "rankBreaches": 510
     },
     "onlineLeadBreaches": [
       {
@@ -32645,9 +32615,9 @@
         "severity": "medium",
         "title": " شركة الركيزة لخدمات التشغيل - New Deal",
         "ownerName": "Marita Chedid",
-        "ageDays": 36,
+        "ageDays": 37,
         "amount": 6000,
-        "message": "Cold deal with no recent activity for 36 days",
+        "message": "Cold deal with no recent activity for 37 days",
         "hubspotUrl": null
       },
       {
@@ -32815,9 +32785,9 @@
         "severity": "high",
         "title": "B D Holding - New Deal",
         "ownerName": "Marita Chedid",
-        "ageDays": 88,
+        "ageDays": 89,
         "amount": 7600,
-        "message": "Deal stuck in stage for 88 days",
+        "message": "Deal stuck in stage for 89 days",
         "hubspotUrl": null
       },
       {
@@ -32945,9 +32915,9 @@
         "severity": "high",
         "title": "شركة تنسيق العقارية - New Deal",
         "ownerName": "Marita Chedid",
-        "ageDays": 23,
+        "ageDays": 24,
         "amount": 14000,
-        "message": "Deal stuck in stage for 23 days",
+        "message": "Deal stuck in stage for 24 days",
         "hubspotUrl": null
       },
       {
@@ -32955,9 +32925,9 @@
         "severity": "high",
         "title": "SHADE - New Deal",
         "ownerName": "Marita Chedid",
-        "ageDays": 22,
+        "ageDays": 23,
         "amount": 27489.977151,
-        "message": "Deal stuck in stage for 22 days",
+        "message": "Deal stuck in stage for 23 days",
         "hubspotUrl": null
       },
       {
@@ -33602,9 +33572,9 @@
         "severity": "high",
         "title": "Saudi National Bank SNB - New Deal",
         "ownerName": "Zein Fares",
-        "ageDays": 471,
+        "ageDays": 472,
         "amount": 23069.55,
-        "message": "Deal stuck in stage for 471 days",
+        "message": "Deal stuck in stage for 472 days",
         "hubspotUrl": null
       },
       {
@@ -33615,6 +33585,16 @@
         "ageDays": 470,
         "amount": 7733,
         "message": "Deal stuck in stage for 470 days",
+        "hubspotUrl": null
+      },
+      {
+        "type": "stuck_deal",
+        "severity": "high",
+        "title": "almoosahospital.com.sa - New Deal",
+        "ownerName": "Zein Fares",
+        "ageDays": 458,
+        "amount": 20000,
+        "message": "Deal stuck in stage for 458 days",
         "hubspotUrl": null
       },
       {
@@ -33635,16 +33615,6 @@
         "ageDays": 458,
         "amount": 41650,
         "message": "Deal stuck in stage for 458 days",
-        "hubspotUrl": null
-      },
-      {
-        "type": "stuck_deal",
-        "severity": "high",
-        "title": "almoosahospital.com.sa - New Deal",
-        "ownerName": "Zein Fares",
-        "ageDays": 457,
-        "amount": 20000,
-        "message": "Deal stuck in stage for 457 days",
         "hubspotUrl": null
       },
       {
@@ -33772,8 +33742,8 @@
   "rankCoverageBreakdown": {
     "A": {
       "total": 263,
-      "contacted": 111,
-      "untouched": 152,
+      "contacted": 115,
+      "untouched": 148,
       "untouchedByRep": [
         {
           "name": "Marita Chedid",
@@ -34085,7 +34055,7 @@
         {
           "name": "Zein Fares",
           "color": "#1d4ed8",
-          "count": 44,
+          "count": 43,
           "accounts": [
             {
               "id": "80976499912",
@@ -34109,12 +34079,6 @@
               "id": "80351354053",
               "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-2/80351354053",
               "name": "Ministry of Economy and Planning",
-              "country": "Saudi Arabia"
-            },
-            {
-              "id": "132316237042",
-              "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-2/132316237042",
-              "name": "Tatweer Education Holding Co.",
               "country": "Saudi Arabia"
             },
             {
@@ -34356,7 +34320,7 @@
         {
           "name": "Ursula Waked",
           "color": "#be185d",
-          "count": 53,
+          "count": 52,
           "accounts": [
             {
               "id": "80969304310",
@@ -34665,12 +34629,6 @@
               "country": "United Arab Emirates"
             },
             {
-              "id": "260233561278",
-              "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-2/260233561278",
-              "name": "Primary Health Care Corporation",
-              "country": "Qatar"
-            },
-            {
               "id": "262350642393",
               "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-2/262350642393",
               "name": "Human Capital Group",
@@ -34700,20 +34658,8 @@
         {
           "name": "Jehad Al-Barqawi",
           "color": "#0e7490",
-          "count": 3,
+          "count": 1,
           "accounts": [
-            {
-              "id": "427950837976",
-              "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-2/427950837976",
-              "name": "Saudia Catering",
-              "country": "Saudi Arabia"
-            },
-            {
-              "id": "97782966510",
-              "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-2/97782966510",
-              "name": "King Faisal Specialist Hospital & Research Center",
-              "country": "Saudi Arabia"
-            },
             {
               "id": "116472260810",
               "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-2/116472260810",
@@ -34726,8 +34672,8 @@
     },
     "B": {
       "total": 593,
-      "contacted": 230,
-      "untouched": 363,
+      "contacted": 231,
+      "untouched": 362,
       "untouchedByRep": [
         {
           "name": "Marita Chedid",
@@ -35850,7 +35796,7 @@
         {
           "name": "Ursula Waked",
           "color": "#be185d",
-          "count": 97,
+          "count": 96,
           "accounts": [
             {
               "id": "80784339131",
@@ -36210,12 +36156,6 @@
               "id": "152707759344",
               "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-2/152707759344",
               "name": "Daleel Petroleum LLC",
-              "country": "Oman"
-            },
-            {
-              "id": "161779519735",
-              "hubspotUrl": "https://app-eu1.hubspot.com/contacts/145742477/record/0-2/161779519735",
-              "name": "German University of Technology in Oman",
               "country": "Oman"
             },
             {
@@ -37005,11 +36945,11 @@
       },
       "companies": {
         "total": 167,
-        "contacted": 19,
-        "notContacted": 148,
-        "rate": 11.4
+        "contacted": 20,
+        "notContacted": 147,
+        "rate": 12
       },
-      "rankAUntouched": 44,
+      "rankAUntouched": 43,
       "rankBUntouched": 104,
       "pipelineRisks": 207,
       "actions": [
@@ -37020,7 +36960,7 @@
         },
         {
           "type": "rank_a",
-          "label": "Review 44 untouched Rank A accounts",
+          "label": "Review 43 untouched Rank A accounts",
           "priority": "high"
         },
         {
@@ -37046,12 +36986,12 @@
       },
       "companies": {
         "total": 246,
-        "contacted": 96,
-        "notContacted": 150,
-        "rate": 39
+        "contacted": 98,
+        "notContacted": 148,
+        "rate": 39.8
       },
-      "rankAUntouched": 53,
-      "rankBUntouched": 97,
+      "rankAUntouched": 52,
+      "rankBUntouched": 96,
       "pipelineRisks": 178,
       "actions": [
         {
@@ -37061,12 +37001,12 @@
         },
         {
           "type": "rank_a",
-          "label": "Review 53 untouched Rank A accounts",
+          "label": "Review 52 untouched Rank A accounts",
           "priority": "high"
         },
         {
           "type": "rank_b",
-          "label": "Review 97 untouched Rank B accounts",
+          "label": "Review 96 untouched Rank B accounts",
           "priority": "medium"
         },
         {
@@ -37154,11 +37094,11 @@
       },
       "companies": {
         "total": 11,
-        "contacted": 2,
-        "notContacted": 9,
-        "rate": 18.2
+        "contacted": 4,
+        "notContacted": 7,
+        "rate": 36.4
       },
-      "rankAUntouched": 3,
+      "rankAUntouched": 1,
       "rankBUntouched": 6,
       "pipelineRisks": 72,
       "actions": [
@@ -37169,7 +37109,7 @@
         },
         {
           "type": "rank_a",
-          "label": "Review 3 untouched Rank A accounts",
+          "label": "Review 1 untouched Rank A accounts",
           "priority": "high"
         },
         {
@@ -37406,7 +37346,7 @@
         "signedDate": "2026-05-13",
         "cashingDate": null,
         "exitedSignedDate": null,
-        "daysFromSigned": 9,
+        "daysFromSigned": 10,
         "status": "Waiting Cash",
         "isDelayed": true,
         "riskLabel": "Delayed Cashing"
@@ -256103,7 +256043,7 @@
           "signedDate": "2026-05-13",
           "cashingDate": null,
           "exitedSignedDate": null,
-          "daysFromSigned": 9,
+          "daysFromSigned": 10,
           "status": "Waiting Cash",
           "isDelayed": true,
           "riskLabel": "Delayed Cashing"
@@ -256207,7 +256147,7 @@
           "signedDate": "2026-05-13",
           "cashingDate": null,
           "exitedSignedDate": null,
-          "daysFromSigned": 9,
+          "daysFromSigned": 10,
           "status": "Waiting Cash",
           "isDelayed": true,
           "riskLabel": "Delayed Cashing"
@@ -256320,7 +256260,7 @@
           "signedDate": "2026-05-13",
           "cashingDate": null,
           "exitedSignedDate": null,
-          "daysFromSigned": 9,
+          "daysFromSigned": 10,
           "status": "Waiting Cash",
           "isDelayed": true,
           "riskLabel": "Delayed Cashing"
@@ -256398,7 +256338,7 @@
         },
         {
           "name": " شركة الركيزة لخدمات التشغيل - New Deal",
-          "days": 36,
+          "days": 37,
           "amount": 6000,
           "rep": "Marita Chedid"
         },
@@ -256440,7 +256380,7 @@
         },
         {
           "name": "almoosahospital.com.sa - New Deal",
-          "days": 215,
+          "days": 216,
           "amount": 20000,
           "rep": "Zein Fares"
         },
@@ -256497,7 +256437,7 @@
           "name": " شركة الركيزة لخدمات التشغيل - New Deal",
           "amount": 6000,
           "reasons": [
-            "No activity for 36 days",
+            "No activity for 37 days",
             "Stuck in stage for 93 days"
           ],
           "rep": "Marita Chedid"
@@ -256552,19 +256492,19 @@
     "kpiLine": "MTD: 700 calls (46% connected), 46 meetings, 5 won ($213K), 11 lost ($83K), pipeline $4.9M"
   },
   "aiInsights": {
-    "summary": "Critical pipeline health crisis: 198 stuck deals and $54K lost to contact-ability issues demand immediate action",
+    "summary": "Pipeline health critical: 198 stuck deals and 110 cold opportunities require immediate intervention to prevent Q2 miss",
     "patterns": [
-      "Connection rate at 46% is significantly below Zein's 67% benchmark - indicates potential targeting or calling strategy issues",
-      "Ursula Waked shows strong activity (5 lost, 3 won) but low deal values ($9.8K avg win vs $213K total target) - closing small deals only",
-      "Contact-ability issues caused $54K in losses (65% of total lost value) - longest loss reason indicating CRM data quality problems"
+      "Contactability issues caused 3 lost deals worth $54K (65% of total lost revenue) - strongest loss pattern requiring process fix",
+      "Zein Fares has 67% connection rate but 72 stuck and 54 cold deals with $49K in losses and zero wins - conversion issue not activity issue",
+      "Ursula Waked shows highest activity (77 stuck deals) with 3 wins but only $9.8K average deal size - winning small deals while losing large ones"
     ],
     "quick_wins": [
-      "Zein Fares: Share calling techniques with team this week - his 67% connection rate is 45% higher than team average of 46%",
-      "Ursula & Zein: Prioritize 20 highest-value stuck deals from their combined 149 for immediate outreach by Thursday EOD"
+      "Zein: Immediately re-engage 20 highest-value stuck deals using multi-channel approach (WhatsApp/LinkedIn/email) to address contactability gap by Thursday",
+      "Ursula: Schedule deal review session with sales engineering by Wednesday to identify upsell opportunities in 3 recent wins and replicate success pattern"
     ],
     "risks": [
-      "$4.9M pipeline health at risk - 198 total stuck deals across team suggests qualification issues or lack of urgency in follow-up",
-      "Zein's 72 stuck and 54 cold deals ($49K already lost) indicate potential burnout or need for pipeline pruning to focus on winnable opportunities"
+      "$54K lost to contactability issues indicates broken follow-up process - 27% of pipeline (198 stuck deals) at risk of same fate without intervention",
+      "Only $213K won vs $4.9M pipeline shows 4.3% conversion - if stuck deals continue aging, Q2 target miss likely with current 46% connection rate"
     ]
   },
   "marketNews": [
@@ -256573,21 +256513,21 @@
       "tag": "Regulation",
       "color": "#D97706",
       "source": "HRSD Saudi",
-      "text": "Saudi Arabia mandates all companies with 500+ employees to implement digital recruitment systems by Q3 2026 for Nitaqat compliance tracking"
+      "text": "Saudi Arabia announces stricter Nitaqat penalties starting Q3 2026, requiring enterprises to achieve 35% Saudi workforce or face SR 10K monthly fines per non-compliant employee"
     },
     {
       "icon": "📊",
       "tag": "M&A",
       "color": "#7C3AED",
       "source": "Bloomberg",
-      "text": "Oracle acquires regional HCM provider TalentMENA for $180M, intensifying competition in UAE enterprise segment"
+      "text": "SAP SuccessFactors acquires UAE-based compliance platform Tawzef for $47M to strengthen GCC localization capabilities and compete with regional ATS providers"
     },
     {
       "icon": "⚡",
       "tag": "Trend",
       "color": "#2563EB",
       "source": "Gartner",
-      "text": "GCC enterprises increased HR tech budgets by 34% in 2026, with 67% prioritizing localized ATS solutions over global platforms"
+      "text": "GCC enterprises increased HR tech budgets by 28% in 2026 with 67% prioritizing AI-powered candidate screening and compliance automation over traditional ATS features"
     }
   ]
 }
