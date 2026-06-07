@@ -2031,15 +2031,82 @@ function setRetentionOwnerMode(isOwner){
 }
 
 
-function renderRetentionSidebar(){ /* removed in Acquisition-only version */ }
+function renderRetentionSidebar(activeMode="overview"){
+  if(!$('sideRepLinks')) return;
+  const data = R || {};
+  const repData = data.repData || data.ownerMatrix || [];
+  const dealsSplit = data.dealsSplit || {};
+  const bookedCount = (dealsSplit.booked || []).length;
+  const cashedCount = (dealsSplit.cashed || []).length;
+  $('sideRepLinks').style.display = 'block';
+  if($('repsSectionTitle')) { $('repsSectionTitle').style.display = 'block'; $('repsSectionTitle').textContent = 'Retention'; }
+  const overviewActive = activeMode === 'overview' ? ' active' : '';
+  const financialActive = activeMode === 'financial' ? ' active' : '';
+  const financialBadge = `${bookedCount}/${cashedCount}`;
+  const links = [
+    `<button class="nav-item${overviewActive}" id="side-ret-overview" onclick="switchMainPanel('retention')"><span class="nav-icon" style="color:var(--cyan)">🛡️</span>Team Overview<span class="view-tag">VIEW</span></button>`,
+    `<button class="nav-item${financialActive}" id="side-ret-financial" onclick="switchRetentionFinancial()"><span class="nav-icon" style="color:var(--green)">💰</span>Financial Details<span class="nav-badge">${financialBadge}</span></button>`,
+    `<div class="sidebar-section" style="padding:12px 10px 5px;margin:0;font-size:8px">Retention Team</div>`
+  ];
+  for(const r of repData){
+    const color = r.color || 'var(--cyan)';
+    const short = String(r.name || '').split(' ')[0] || 'Owner';
+    const active = activeMode === 'owner' && String(RET_SELECTED_OWNER_ID || '') === String(r.id) ? ' active' : '';
+    const badge = r.accounts || r.activeAccounts || 0;
+    links.push(`<button class="nav-item${active}" id="side-ret-${esc(r.id)}" onclick="selectRetentionOwner('${esc(r.id)}')"><span class="nav-icon" style="color:${color}">${r.role === 'RM' ? '◆' : '●'}</span>${esc(short)} <span class="ret">${esc(r.role || '')}</span><span class="nav-badge">${badge}</span></button>`);
+  }
+  $('sideRepLinks').innerHTML = links.join('');
+}
 
-function switchRetentionFinancial(){ switchTab("financial"); }
+function switchRetentionFinancial(){
+  APP_MAIN_PANEL = "retention";
+  APP_RETENTION_VIEW = "financial";
+  APP_RETENTION_OWNER_ID = null;
+  RET_SELECTED_OWNER_ID = null;
+  RETENTION_SUBVIEW = 'financial';
+  setRetentionOwnerMode(false);
+  document.querySelectorAll('.tab-btn').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  if($('tabsBar')) $('tabsBar').style.display = 'none';
+  $('side-retention')?.classList.add('active');
+  $('panel-retention-financial')?.classList.add('active');
+  renderRetentionSidebar('financial');
+  if($('topbarTitle')) $('topbarTitle').textContent = 'Retention · Financial Details';
+  if($('topbarSub')) $('topbarSub').textContent = 'Deal stage Booked/Cashed · date entered current stage CY · renewed value · delayed exposure';
+  renderRetentionFinancialDetails();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
 
 function switchMainPanel(panel){
+  document.querySelectorAll(".nav-item").forEach(n=>n.classList.remove("active"));
+  if(panel === "retention") panel = "acquisition";
+  if(panel === "retention"){
+    APP_MAIN_PANEL = "retention";
+    APP_RETENTION_VIEW = "overview";
+    APP_RETENTION_OWNER_ID = null;
+    RET_SELECTED_OWNER_ID = null;
+    RETENTION_SUBVIEW = "overview";
+    setRetentionOwnerMode(false);
+    document.querySelectorAll(".tab-btn").forEach(t=>t.classList.remove("active"));
+    document.querySelectorAll(".panel").forEach(p=>p.classList.remove("active"));
+    if($("tabsBar")) $("tabsBar").style.display = "none";
+    $("side-retention")?.classList.add("active");
+    $("panel-retention")?.classList.add("active");
+    renderRetentionSidebar("overview");
+    if($("topbarTitle")) $("topbarTitle").textContent = "Retention · Team Overview";
+    if($("topbarSub")) $("topbarSub").textContent = R?.generatedAt ? `Updated ${R.generatedAt} · Customer Success` : "Renewals · Booked · Cashed · Churn · Delayed";
+    renderRetention();
+    window.scrollTo({top:0,behavior:"smooth"});
+    return;
+  }
   APP_MAIN_PANEL = "acquisition";
   APP_ACQ_TAB_ID = "team";
+  APP_RETENTION_VIEW = "overview";
+  APP_RETENTION_OWNER_ID = null;
   RET_SELECTED_OWNER_ID = null;
-  document.querySelectorAll(".nav-item").forEach(n=>n.classList.remove("active"));
+  setRetentionOwnerMode(false);
   if($("tabsBar")) $("tabsBar").style.display = "flex";
   if($("repsSectionTitle")) { $("repsSectionTitle").style.display = "block"; $("repsSectionTitle").textContent = "Acquisition Reps"; }
   $("side-acquisition")?.classList.add("active");
@@ -3302,10 +3369,101 @@ function enhanceAcquisitionInteractiveViews(){
 
 function restoreCurrentView(options={}){
   const keepScroll = options.keepScroll !== false;
-  const y = keepScroll ? window.scrollY : 0;
-  if(APP_ACQ_TAB_ID === "financial") switchTab("financial");
-  else switchTab(APP_ACQ_TAB_ID || "team");
-  if(keepScroll) requestAnimationFrame(()=>window.scrollTo(0,y));
+  const scrollY = keepScroll ? window.scrollY : null;
+
+  if(APP_MAIN_PANEL === "retention"){
+    document.querySelectorAll(".tab-btn").forEach(t=>t.classList.remove("active"));
+    document.querySelectorAll(".panel").forEach(p=>p.classList.remove("active"));
+    document.querySelectorAll(".nav-item").forEach(n=>n.classList.remove("active"));
+    if($("tabsBar")) $("tabsBar").style.display = "none";
+    $("side-retention")?.classList.add("active");
+
+    if(APP_RETENTION_VIEW === "financial"){
+      RET_SELECTED_OWNER_ID = null;
+      RETENTION_SUBVIEW = "financial";
+      setRetentionOwnerMode(false);
+      $("panel-retention-financial")?.classList.add("active");
+      renderRetentionSidebar("financial");
+      if($("topbarTitle")) $("topbarTitle").textContent = "Retention · Financial Details";
+      if($("topbarSub")) $("topbarSub").textContent = "Deal stage Booked/Cashed · date entered current stage CY · renewed value · delayed exposure";
+      renderRetentionFinancialDetails();
+    } else if(APP_RETENTION_VIEW === "owner" && APP_RETENTION_OWNER_ID){
+      RET_SELECTED_OWNER_ID = String(APP_RETENTION_OWNER_ID);
+      RETENTION_SUBVIEW = "owner";
+      $("panel-retention")?.classList.add("active");
+      const rep = (R?.repData || R?.ownerMatrix || []).find(r=>String(r.id) === String(APP_RETENTION_OWNER_ID));
+      renderRetentionSidebar("owner");
+      setRetentionOwnerMode(true);
+      if($("topbarTitle")) $("topbarTitle").textContent = "Retention · " + (rep?.name || "Owner");
+      if($("topbarSub")) $("topbarSub").textContent = rep ? (rep.role || "Owner") + " · owner page · priority actions, financial movement, activity quality" : "Owner page";
+      renderRetention();
+      renderRetentionOwnerDetails(APP_RETENTION_OWNER_ID);
+    } else {
+      RET_SELECTED_OWNER_ID = null;
+      RETENTION_SUBVIEW = "overview";
+      setRetentionOwnerMode(false);
+      $("panel-retention")?.classList.add("active");
+      renderRetentionSidebar("overview");
+      if($("topbarTitle")) $("topbarTitle").textContent = "Retention · Team Overview";
+      if($("topbarSub")) $("topbarSub").textContent = R?.generatedAt ? "Updated " + R.generatedAt + " · Customer Success" : "Renewals · Booked · Cashed · Churn · Delayed";
+      renderRetention();
+    }
+  } else {
+    RET_SELECTED_OWNER_ID = null;
+    RETENTION_SUBVIEW = "acquisition";
+    setRetentionOwnerMode(false);
+    if($("tabsBar")) $("tabsBar").style.display = "flex";
+    if($("repsSectionTitle")){
+      $("repsSectionTitle").style.display = "block";
+      $("repsSectionTitle").textContent = "Acquisition Reps";
+    }
+    if($("sideRepLinks")) $("sideRepLinks").style.display = "block";
+    document.querySelectorAll(".tab-btn").forEach(t=>t.classList.remove("active"));
+    document.querySelectorAll(".panel").forEach(p=>p.classList.remove("active"));
+    document.querySelectorAll(".nav-item").forEach(n=>n.classList.remove("active"));
+    $("side-acquisition")?.classList.add("active");
+
+    const id = APP_ACQ_TAB_ID || "team";
+    $("tab-"+id)?.classList.add("active");
+    $("panel-"+id)?.classList.add("active");
+    if($("side-"+id) && id !== "financial") $("side-"+id).classList.add("active");
+
+    const repName = D ? (D.repData||[]).find(r=>r.name.toLowerCase().replace(/\s/g,"-")===id)?.name : null;
+    if($("topbarTitle")) $("topbarTitle").textContent = id === "team" ? "Acquisition · Team Overview" : id === "financial" ? "Acquisition · Financial Details" : "Acquisition · " + (repName || id);
+    if($("topbarSub")){
+      $("topbarSub").textContent = id === "financial" ? "Cashing revenue · Signed contracts · Pending to cash" : D ? "Updated " + (D.meta?.generatedAt||"") + " · Auto-refresh 5min" : "Loading...";
+    }
+  }
+
+  if(keepScroll && scrollY !== null){
+    requestAnimationFrame(()=>window.scrollTo(0, scrollY));
+  }
+}
+
+async function fetchJsonFromSources(urls, required){
+  const stamp = Date.now();
+  let lastError = null;
+
+  for(const baseUrl of urls){
+    if(!baseUrl) continue;
+
+    try{
+      const sep = baseUrl.includes("?") ? "&" : "?";
+      const res = await fetch(baseUrl + sep + "t=" + stamp, { cache: "no-store" });
+
+      if(!res.ok){
+        lastError = new Error("HTTP " + res.status + " from " + baseUrl);
+        continue;
+      }
+
+      return await res.json();
+    }catch(e){
+      lastError = e;
+    }
+  }
+
+  if(required) throw lastError || new Error("No dashboard data source loaded");
+  return null;
 }
 
 async function loadData(){
@@ -3339,6 +3497,16 @@ function render(){
   $("loadingState").style.display="none";
   $("dashMain").style.display="block";
 
+  // Do not pre-render Retention while Acquisition is active.
+  // Retention financial patches can fail independently and should never break Acquisition rendering/sidebar.
+  if(APP_MAIN_PANEL === "retention"){
+    try{
+      renderRetention();
+      if(APP_RETENTION_VIEW === "financial") renderRetentionFinancialDetails();
+    }catch(e){
+      console.error("Retention pre-render failed", e);
+    }
+  }
 
   const meta=D.meta||{},repData=D.repData||[],team=D.team||{},stageData=D.stageData||[];
   const kY=D.kpi?.yesterday||{},kM=D.kpi?.mtd||{},kT=D.kpi?.ytd||{};
@@ -3590,11 +3758,1798 @@ renderManagerAddons();
 
 /* Removed duplicate Acquisition follow-up/table injection patch. */
 
-/* Retention logic removed: Acquisition-only version. */
+/* RETENTION TIER FOLLOW-UP LOGIC — scoped to Retention only */
+const RET_TIER_RULES = {
+  A: { csm: 7, rm: 14, label: "Tier A" },
+  B: { csm: 14, rm: 30, label: "Tier B" },
+  C: { csm: 30, rm: 90, label: "Tier C" }
+};
+
+function retNormTier(v){
+  const s = String(v || '').trim().toUpperCase().replace(/^TIER\s+/,'');
+  return ['A','B','C'].includes(s) ? s : '';
+}
+
+function retTierBadge(tier){
+  const t = retNormTier(tier);
+  return `<span class="ret-tier-chip ${t==='A'?'ret-tier-a':t==='B'?'ret-tier-b':t==='C'?'ret-tier-c':'ret-tier-missing'}">${t ? 'Tier ' + t : 'No tier'}</span>`;
+}
+
+function retMonthLabel(v){
+  const raw = String(v || '').trim();
+  const mNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  let m = null;
+  const iso = raw.match(/^(\d{4})-(\d{2})/);
+  if(iso) m = Number(iso[2]);
+  else {
+    const d = new Date(raw);
+    if(!isNaN(d)) m = d.getMonth() + 1;
+  }
+  return m && m >= 1 && m <= 12 ? mNames[m - 1] : (raw || 'No date');
+}
+
+function retDateValue(v){
+  if(!v) return null;
+  const d = new Date(v);
+  return isNaN(d) ? null : d;
+}
+
+function retDaysSinceDate(v){
+  const d = retDateValue(v);
+  if(!d) return null;
+  const today = new Date();
+  today.setHours(0,0,0,0);
+  d.setHours(0,0,0,0);
+  return Math.max(0, Math.floor((today - d) / 86400000));
+}
+
+function retLatestDate(values){
+  return values.map(retDateValue).filter(Boolean).sort((a,b)=>b-a)[0] || null;
+}
+
+function retDateText(d){
+  if(!d) return '—';
+  return d.toISOString().slice(0,10);
+}
+
+function retCompanyKey(row){
+  return String(row.companyId || row.associatedCompanyId || row.hs_company_id || row.companyName || row.accountName || row.name || '').trim().toLowerCase();
+}
+
+function retBuildRelatedDealMap(rows){
+  const map = new Map();
+  (rows || []).forEach(r => {
+    const k = retCompanyKey(r);
+    if(!k) return;
+    if(!map.has(k)) map.set(k, []);
+    map.get(k).push(r);
+  });
+  return map;
+}
+
+function retRoleActivity(account, related, role){
+  const r = String(role || '').toLowerCase();
+  const isRm = r === 'rm';
+  const prefix = isRm ? 'rm' : 'csm';
+  const rawDirectDays = Number(account?.[prefix + 'DaysSinceTouch']);
+  const directDays = Number.isFinite(rawDirectDays) && rawDirectDays >= 0 && rawDirectDays < 9000 ? rawDirectDays : null;
+  const candidates = [
+    account?.[prefix + 'LastTouch'],
+    account?.[prefix + 'LastActivity'],
+    account?.[prefix + 'LastCall'],
+    account?.[prefix + 'LastMeeting'],
+    account?.[prefix + 'LastCallDate'],
+    account?.[prefix + 'LastMeetingDate']
+  ];
+
+  (related || []).forEach(d => {
+    candidates.push(
+      d?.[prefix + 'LastTouch'],
+      d?.[prefix + 'LastActivity'],
+      d?.[prefix + 'LastCall'],
+      d?.[prefix + 'LastMeeting'],
+      d?.[prefix + 'LastCallDate'],
+      d?.[prefix + 'LastMeetingDate']
+    );
+  });
+
+  const latest = retLatestDate(candidates);
+  const days = latest ? retDaysSinceDate(latest) : directDays;
+  return { latest, days };
+}
+
+function retBuildTierFollowupRows(accounts, relatedRows){
+  const relatedMap = retBuildRelatedDealMap(relatedRows || []);
+  return (accounts || []).map(a => {
+    const tier = retNormTier(a.company_tier || a.companyTier || a.tier || a.customerTier || a.accountTier);
+    const rules = RET_TIER_RULES[tier] || null;
+    const related = relatedMap.get(retCompanyKey(a)) || [];
+    const rmAct = retRoleActivity(a, related, 'rm');
+    const csmAct = retRoleActivity(a, related, 'csm');
+    const rmHasOwner = !!(a.rmOwnerName || a.rmOwner || a.rmOwnerId);
+    const csmHasOwner = !!(a.csmOwnerName || a.csmOwner || a.csmOwnerId);
+    const rmThreshold = rules?.rm || null;
+    const csmThreshold = rules?.csm || null;
+    const rmOverdue = !!(rules && rmHasOwner && (rmAct.days === null || rmAct.days > rmThreshold));
+    const csmOverdue = !!(rules && csmHasOwner && (csmAct.days === null || csmAct.days > csmThreshold));
+    let alert = 'Healthy';
+    if(!tier) alert = 'Missing tier';
+    else if(rmOverdue && csmOverdue) alert = 'RM + CSM follow-up due';
+    else if(rmOverdue) alert = 'RM follow-up due';
+    else if(csmOverdue) alert = 'CSM follow-up due';
+    return {
+      account: a,
+      tier,
+      rmDays: rmAct.days,
+      csmDays: csmAct.days,
+      rmLatest: rmAct.latest,
+      csmLatest: csmAct.latest,
+      rmThreshold,
+      csmThreshold,
+      rmOverdue,
+      csmOverdue,
+      alert
+    };
+  });
+}
+
+
+function retHumanLastActivity(latest, days){
+  if(latest) return retDateText(latest) + ' · ' + (days ?? 0) + 'd';
+  if(days === null || days === undefined || Number(days) >= 9000) return 'No activity';
+  return String(days) + 'd';
+}
+function retOpenUrl(row){ return row && (row.companyUrl || row.hubspotUrl || row.dealUrl || row.renewedDealUrl || row.renewalSourceDealUrl) || null; }
+function retRowName(row){ return row && (row.companyName || row.accountName || row.dealName || row.name || row.title || row.reason) || 'Record'; }
+function retMetricMeta(row){
+  const pieces = [];
+  const tier = retNormTier(row && (row.company_tier || row.companyTier || row.tier || row.accountTier));
+  if(tier) pieces.push('Tier ' + tier);
+  if(row && (row.contractRenewalDate || row.renewalDate)) pieces.push('Renewal ' + (row.contractRenewalDate || row.renewalDate));
+  if(row && row.date) pieces.push(row.date);
+  if(row && row.createdAt) pieces.push('Created ' + row.createdAt);
+  if(row && row.actionDate) pieces.push('Action ' + row.actionDate);
+  if(row && row.message) pieces.push(row.message);
+  return pieces.filter(Boolean).join(' · ');
+}
+function retOwnerText(row){ if(!row) return '—'; return [row.rmOwnerName || row.rmOwner, row.csmOwnerName || row.csmOwner, row.ownerName].filter(Boolean).join(' / ') || '—'; }
+function retMetricValue(row){
+  if(!row) return '—';
+  const v = row.renewalValue ?? row.amount ?? row.value ?? row.revenue;
+  if(v !== undefined && v !== null && v !== '') return fmt(v);
+  if(row.daysOverdue) return row.daysOverdue + 'd overdue';
+  if(row.daysLeft !== undefined && row.daysLeft !== null) return row.daysLeft + 'd left';
+  return row.status || row.alert || row.stageType || row.outcome || '—';
+}
+function retInPeriod(dateLike, period){
+  if(!dateLike) return false;
+  const d = new Date(dateLike); if(isNaN(d)) return false;
+  const now = new Date();
+  const startToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const startYesterday = new Date(startToday.getTime() - 86400000);
+  const endYesterday = new Date(startToday.getTime() - 1);
+  const startMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+  const startYear = new Date(now.getFullYear(), 0, 1);
+  if(period === 'yest' || period === 'yesterday') return d >= startYesterday && d <= endYesterday;
+  if(period === 'mtd') return d >= startMonth && d <= now;
+  if(period === 'ytd') return d >= startYear && d <= now;
+  return true;
+}
+function retMetricRows(kind, opts={}){
+  const store = window.__retentionMetricStore || {};
+  if(kind === 'focus-delayed') return store.delayedRenewals || [];
+  if(kind === 'focus-tier-a') return (store.tierRows || []).filter(r => r.tier === 'A' && (r.rmOverdue || r.csmOverdue)).map(r => Object.assign({}, r.account||{}, {tier:r.tier, alert:r.alert, daysOverdue: Math.max(r.rmDays||0,r.csmDays||0)}));
+  if(kind === 'focus-csm') return (store.tierRows || []).filter(r => r.csmOverdue).map(r => Object.assign({}, r.account||{}, {tier:r.tier, alert:r.alert, csmDays:r.csmDays, daysOverdue:r.csmDays}));
+  if(kind === 'focus-rm') return (store.tierRows || []).filter(r => r.rmOverdue).map(r => Object.assign({}, r.account||{}, {tier:r.tier, alert:r.alert, rmDays:r.rmDays, daysOverdue:r.rmDays}));
+  if(kind === 'monthly'){
+    const row = (store.monthRows || [])[Number(opts.monthIndex || 0)] || null;
+    const rows = row && row.rows || [];
+    const bucket = String(opts.bucket || 'due').toLowerCase();
+    if(bucket === 'due') return rows;
+    if(bucket === 'renewed') return rows.filter(r => String(r.status||'').toLowerCase()==='renewed');
+    if(bucket === 'booked') return rows.filter(r => String(r.status||'').toLowerCase()==='renewed' && (r.renewalType === 'Booked' || (r.bookedDateEntered && !r.cashedDateEntered)));
+    if(bucket === 'cashed') return rows.filter(r => String(r.status||'').toLowerCase()==='renewed' && (r.renewalType === 'Cashed' || r.cashedDateEntered));
+    if(bucket === 'delayed') return rows.filter(r => String(r.status||'').toLowerCase()==='delayed');
+    return rows;
+  }
+  if(kind === 'period'){
+    const p = String(opts.period || 'ytd').toLowerCase();
+    const metric = String(opts.metric || '').toLowerCase();
+    let rows = [];
+    if(metric === 'calls') rows = store.calls || [];
+    if(metric === 'meetings') rows = store.meetings || [];
+    if(metric === 'renewed') rows = store.renewedDeals || [];
+    if(metric === 'booked') rows = store.bookedDeals || [];
+    if(metric === 'cashed') rows = store.cashedDeals || [];
+    if(metric === 'churn') rows = store.churnDeals || [];
+    if(metric === 'delayed') rows = store.delayedRenewals || [];
+    const dateKey = metric === 'delayed' ? 'contractRenewalDate' : (metric === 'calls' || metric === 'meetings' ? 'date' : 'actionDate');
+    return rows.filter(r => retInPeriod((r && (r[dateKey] || r.createdAt || r.contractRenewalDate)), p));
+  }
+  if(kind === 'tier-matrix'){
+    const f = String(opts.tier || 'all').toUpperCase();
+    return (store.tierRows || []).filter(r => f === 'ALL' ? true : f === 'NO' ? !r.tier : r.tier === f).map(r => Object.assign({}, r.account||{}, {tier:r.tier, alert:r.alert, rmDays:r.rmDays, csmDays:r.csmDays}));
+  }
+  return [];
+}
+function openRetentionMetricDetails(kind, opts={}){
+  const rows = retMetricRows(kind, opts);
+  const titles = {'focus-delayed':'Delayed renewals','focus-tier-a':'Tier A overdue','focus-csm':'CSM follow-up due','focus-rm':'RM follow-up due','monthly':'Monthly renewal pipeline','period':'Retention KPI details','tier-matrix':'RM / CSM tier follow-up details'};
+  const sub = opts.label || opts.metric || opts.bucket || 'Retention records';
+  document.getElementById('retMetricBackdrop')?.remove();
+  let body = '<div class="acq-detail-empty">No rows available for this number in the current retention data.</div>';
+  if(rows.length){
+    body = '<table class="ret-detail-table"><thead><tr><th>Name</th><th>Owner</th><th>Status</th><th class="c">Value / Date</th></tr></thead><tbody>' + rows.slice(0,100).map(function(row){
+      const name = retRowName(row), url = retOpenUrl(row), status = row.status || row.alert || row.stageType || row.outcome || row.bucket || '—';
+      return '<tr><td><div style="font-weight:900">' + recordLink(name,url) + '</div><div class="ret-detail-mini">' + esc(retMetricMeta(row)) + '</div></td><td>' + esc(retOwnerText(row)) + '</td><td><span class="acq-detail-pill">' + esc(status) + '</span></td><td class="c" style="font-family:var(--mono);font-weight:900">' + esc(retMetricValue(row)) + '</td></tr>';
+    }).join('') + '</tbody></table>' + (rows.length>100 ? '<div class="acq-detail-empty" style="padding:12px">Showing first 100 of ' + rows.length.toLocaleString() + ' rows.</div>' : '');
+  }
+  const node=document.createElement('div');
+  node.id='retMetricBackdrop'; node.className='acq-detail-backdrop'; node.onclick=function(e){ if(e.target===node) node.remove(); };
+  node.innerHTML='<div class="acq-detail-card"><div class="acq-detail-hd"><div><div class="acq-detail-title">' + esc(titles[kind]||'Retention details') + ' <span class="badge bb" style="margin-left:8px">' + rows.length.toLocaleString() + ' rows</span></div><div class="acq-detail-sub">' + esc(sub) + ' · Names open directly in HubSpot when a link is available.</div></div><button class="acq-detail-close" onclick="document.getElementById(&quot;retMetricBackdrop&quot;)?.remove()">×</button></div><div class="acq-detail-body">' + body + '</div></div>';
+  document.body.appendChild(node);
+}
+function retMakeClickable(id, kind, opts={}, title='Click to open details'){
+  const el = $(id); if(!el) return;
+  el.classList.add('ret-click-num'); el.title = title; el.onclick = function(){ openRetentionMetricDetails(kind, opts); };
+}
+function retSetTierMatrixFilter(tier){ RET_TIER_MATRIX_FILTER = String(tier || 'all').toLowerCase(); renderRetention(); }
+
+function renderRetentionTodayFocus(ctx){
+  const setText=(id,val)=>{ if($(id)) $(id).textContent=val; };
+  const data = ctx?.data || {};
+  const tierRows = ctx?.tierRows || [];
+  const delayed = ctx?.delayedRenewals || [];
+  const renewalPipeline = ctx?.renewalPipeline || [];
+  const now = new Date();
+  const thisMonth = String(now.getFullYear()) + '-' + String(now.getMonth()+1).padStart(2,'0');
+  const dueThisMonth = renewalPipeline.filter(r => String(r.contractRenewalDate || r.renewalDate || '').slice(0,7) === thisMonth).length;
+  const rmDue = tierRows.filter(r=>r.rmOverdue);
+  const csmDue = tierRows.filter(r=>r.csmOverdue);
+  const tierADue = tierRows.filter(r=>r.tier === 'A' && (r.rmOverdue || r.csmOverdue));
+  const allDue = tierRows.filter(r=>r.rmOverdue || r.csmOverdue);
+  setText('retFocusGenAt', data.generatedAt || data.meta?.generatedAt || 'Live');
+  setText('retFocusDelayed', delayed.length.toLocaleString());
+  setText('retFocusDelayedSub', dueThisMonth ? `${dueThisMonth} due this month` : 'No current-month due count');
+  setText('retFocusTierA', tierADue.length.toLocaleString());
+  setText('retFocusCsm', csmDue.length.toLocaleString());
+  setText('retFocusCsmSub', 'By company tier cadence');
+  setText('retFocusRm', rmDue.length.toLocaleString());
+  setText('retFocusRmSub', 'By company tier cadence');
+
+  const focus = $('retFocusText');
+  if(focus){
+    if(delayed.length) focus.innerHTML = `<strong>Start with delayed renewals</strong> — ${delayed.length.toLocaleString()} account(s) already past renewal date.`;
+    else if(tierADue.length) focus.innerHTML = `<strong>Tier A first</strong> — ${tierADue.length.toLocaleString()} high-priority account(s) need RM/CSM follow-up.`;
+    else if(allDue.length) focus.innerHTML = `<strong>Follow-up cadence</strong> — ${allDue.length.toLocaleString()} account(s) are outside their tier cadence.`;
+    else focus.innerHTML = `<strong>Healthy</strong> — no tier follow-up breach detected in the current retention data.`;
+  }
+
+  const actions = [];
+  if(delayed.length) actions.push({c:'var(--red)',bg:'var(--red-bg)',title:`Work ${delayed.length.toLocaleString()} delayed renewals`,desc:'Renewal date already passed and no same-company current-year booked/cashed movement is detected.',value:delayed.length,label:'delayed'});
+  if(tierADue.length) actions.push({c:'var(--amber)',bg:'var(--amber-bg)',title:`Clear ${tierADue.length.toLocaleString()} Tier A follow-ups`,desc:'Tier A requires CSM every 7 days and RM every 14 days based on company or associated deal activity.',value:tierADue.length,label:'Tier A'});
+  if(csmDue.length) actions.push({c:'var(--purple)',bg:'var(--purple-bg)',title:`CSM follow-up due on ${csmDue.length.toLocaleString()} account(s)`,desc:'Completed meetings or connected calls are missing within the required company-tier cadence.',value:csmDue.length,label:'CSM'});
+  if(rmDue.length) actions.push({c:'var(--blue)',bg:'var(--blue-bg)',title:`RM follow-up due on ${rmDue.length.toLocaleString()} account(s)`,desc:'Completed meetings or connected calls are missing within the required company-tier cadence.',value:rmDue.length,label:'RM'});
+  if(!actions.length) actions.push({c:'var(--green)',bg:'var(--green-bg)',title:'Retention cadence is healthy',desc:'No delayed renewal or tier-based follow-up breach in the current data.',value:'✓',label:'healthy'});
+
+  if($('retSmartActionList')){
+    $('retSmartActionList').innerHTML = actions.slice(0,4).map((a,i)=>`<div class="priority-item"><div class="priority-num" style="background:${a.bg};color:${a.c}">${i+1}</div><div class="priority-text"><div class="priority-action">${a.title}</div><div class="priority-desc">${a.desc}</div></div><div class="priority-metric"><div class="priority-metric-v" style="color:${a.c}">${a.value}</div><div class="priority-metric-l">${a.label}</div></div></div>`).join('');
+  }
+}
+
+function renderRetention(){
+  if(!$('panel-retention')) return;
+  const data = R || {};
+  const summary = data.summary || {};
+  const kpi = data.kpi || data.kpis || {};
+  const team = data.team || {};
+  const accountsAll = Array.isArray(data.accounts) ? data.accounts : [ ...(data.accounts?.active||[]), ...(data.accounts?.churned||[]) ];
+  const dealsSplit = data.dealsSplit || {};
+  const renewedAll = dealsSplit.renewed || [];
+  const bookedAll = dealsSplit.booked || [];
+  const cashedAll = dealsSplit.cashed || [];
+  const churnAll = dealsSplit.churn || [];
+  const renewalPipelineAll = data.renewalPipeline || data.renewalDeals || [];
+  const renewalAttentionAll = data.renewalAttention || renewalPipelineAll;
+  const monthlyAll = data.monthlyRenewalPipeline || [];
+  const delayedAll = data.delayedRenewals || data.accountsToRenew || [];
+  const alertsObj = data.alerts || {};
+  const coverage = data.coverageDetails || {};
+  const ownerDetails = data.ownerDetails || {};
+  const repData = data.repData || data.ownerMatrix || [];
+  const churnReasonsAll = data.churnAnalysis?.reasons || [];
+  const retentionRelatedRowsAll = [...renewalPipelineAll, ...renewalAttentionAll, ...delayedAll, ...renewedAll, ...bookedAll, ...cashedAll, ...churnAll];
+
+  const num = v => Number(v || 0);
+  const money = v => fmt(v || 0);
+  const textSafe = v => esc(v ?? '—');
+  const setText=(id,val)=>{ if($(id)) $(id).textContent=val; };
+  const val=(obj,...keys)=>{ for(const k of keys){ if(obj && obj[k] !== undefined && obj[k] !== null && obj[k] !== '') return obj[k]; } return 0; };
+  const p=(name)=> kpi[name] || kpi[name==='yesterday'?'yest':name] || {};
+  const y=p('yesterday'), m=p('mtd'), t=p('ytd');
+  const valueOf=(rows,key='amount')=>rows.reduce((s,r)=>s+num(r[key] ?? r.amount ?? r.renewalValue),0);
+  const empty=(cols,msg)=>`<tr><td colspan="${cols}" style="text-align:center;color:var(--muted);padding:18px;font-style:italic">${msg}</td></tr>`;
+  const selectedRep = RET_SELECTED_OWNER_ID ? repData.find(r => String(r.id) === String(RET_SELECTED_OWNER_ID)) : null;
+  const selectedOwnerName = selectedRep?.name || '';
+  const selectedOwnerId = selectedRep ? String(selectedRep.id) : '';
+  const selectedOwnerRole = selectedRep?.role || '';
+
+  const match = row => {
+    if(!selectedRep) return true;
+    if(selectedOwnerRole === 'RM') return String(row.rmOwnerId || row.ownerId || '') === selectedOwnerId || row.rmOwnerName === selectedOwnerName || row.ownerName === selectedOwnerName;
+    if(selectedOwnerRole === 'CSM') return String(row.csmOwnerId || '') === selectedOwnerId || row.csmOwnerName === selectedOwnerName;
+    return true;
+  };
+  const accounts = accountsAll.filter(match);
+  const renewedDeals = renewedAll.filter(match);
+  const bookedDeals = bookedAll.filter(match);
+  const cashedDeals = cashedAll.filter(match);
+  const churnDeals = churnAll.filter(match);
+  const renewalPipeline = renewalPipelineAll.filter(match);
+  const renewalAttention = renewalAttentionAll.filter(match);
+  const delayedRenewals = delayedAll.filter(match);
+  const churnReasons = churnReasonsAll;
+  const allAlerts = (Array.isArray(alertsObj) ? alertsObj : (alertsObj.all || [])).filter(match);
+  const noActivityAlerts = (alertsObj.noActivity || []).filter(match);
+  const noMeetingAlerts = (alertsObj.noMeeting || []).filter(match);
+  const retentionRelatedRows = retentionRelatedRowsAll.filter(match);
+  const tierFollowupRows = retBuildTierFollowupRows(accounts, retentionRelatedRows);
+  const ownerDetailRows = selectedRep ? ownerDetails[selectedRep.id] : null;
+  const activityCalls = (ownerDetailRows?.calls || data.activityDetails?.calls || []).filter(match);
+  const activityMeetings = (ownerDetailRows?.meetings || data.activityDetails?.meetings || []).filter(match);
+
+  if($('retFilterNote')) $('retFilterNote').textContent = selectedRep
+    ? `${selectedRep.role} page · ${selectedRep.name} · showing this owner accounts and activities only`
+    : 'Team Overview · choose any RM/CSM from the sidebar for a personal page';
+
+  // Sidebar Retention navigation
+  if($('panel-retention')?.classList.contains('active')) renderRetentionSidebar(selectedRep ? 'owner' : 'overview');
+
+  // Top KPI bar
+  setText('kpiAccounts', accounts.length);
+  setText('kpiRenewed', renewedDeals.length);
+  setText('kpiBooked', bookedDeals.length);
+  setText('kpiCashed', cashedDeals.length);
+  setText('kpiChurn', churnDeals.length);
+  setText('kpiDelayed', delayedRenewals.length);
+  const ownerDetailForSelected = selectedRep ? ownerDetails[selectedRep.id] : null;
+  setText('kpiCalls', ownerDetailForSelected ? ownerDetailForSelected.calls.length : (team.callsYTD || val(t,'calls')));
+  setText('kpiMeetings', ownerDetailForSelected ? ownerDetailForSelected.meetings.length : (team.meetingsYTD || val(t,'meetings')));
+  setTimeout(function(){
+    retMakeClickable('kpiAccounts','tier-matrix',{tier:'all',label:'All retention accounts'},'Open account details');
+    retMakeClickable('kpiRenewed','period',{period:'ytd',metric:'renewed',label:'Renewed YTD'},'Open renewed details');
+    retMakeClickable('kpiBooked','period',{period:'ytd',metric:'booked',label:'Booked YTD'},'Open booked details');
+    retMakeClickable('kpiCashed','period',{period:'ytd',metric:'cashed',label:'Cashed YTD'},'Open cashed details');
+    retMakeClickable('kpiChurn','period',{period:'ytd',metric:'churn',label:'Churn YTD'},'Open churn details');
+    retMakeClickable('kpiDelayed','focus-delayed',{},'Open delayed renewals');
+    retMakeClickable('kpiCalls','period',{period:'ytd',metric:'calls',label:'Calls YTD'},'Open calls');
+    retMakeClickable('kpiMeetings','period',{period:'ytd',metric:'meetings',label:'Meetings YTD'},'Open meetings');
+  },0);
+
+  // Period KPI cards
+  setText('retYCalls', val(y,'calls')); setText('retYMeetings', val(y,'meetings'));
+  setText('retYRenewed', val(y,'renewed')); setText('retYBooked', val(y,'booked')); setText('retYCashed', val(y,'cashed')); setText('retYChurn', val(y,'churn')); setText('retYDelayed', val(y,'delayed'));
+  setText('retMCalls', val(m,'calls')); setText('retMMeetings', val(m,'meetings'));
+  setText('retMRenewed', val(m,'renewed')); setText('retMBooked', val(m,'booked')); setText('retMCashed', val(m,'cashed')); setText('retMChurn', val(m,'churn')); setText('retMDelayed', val(m,'delayed'));
+  setText('retMBookedValue', money(val(m,'bookedAmt'))); setText('retMCashedValue', money(val(m,'cashedAmt')));
+  setText('retYtdCalls', val(t,'calls')); setText('retYtdMeetings', val(t,'meetings'));
+  setText('retYtdRenewed', val(t,'renewed')); setText('retYtdBooked', val(t,'booked')); setText('retYtdCashed', val(t,'cashed')); setText('retYtdChurn', val(t,'churn')); setText('retYtdDelayed', val(t,'delayed'));
+
+  const currentYear = new Date().getFullYear();
+  const upcomingRenewals = renewalPipeline.filter(r=>String(r.status||'').toLowerCase()==='upcoming');
+  const renewalsThisYear = renewalPipeline.filter(r=>String(r.contractRenewalDate||'').slice(0,4)===String(currentYear)).length;
+  const renewals90 = upcomingRenewals.filter(r=>num(r.daysLeft)<=90 || !r.daysLeft).length;
+  const noAct30 = noActivityAlerts.length || accounts.filter(a=>num(a.daysSinceActivity)>30).length;
+  const noMeetingQuarter = noMeetingAlerts.length || accounts.filter(a=>num(a.daysSinceMeeting)>90).length;
+  renderRetentionTodayFocus({ data, accounts, tierRows: tierFollowupRows, delayedRenewals, renewalPipeline });
+  setText('retRenewalsThisYear', renewalsThisYear);
+  setText('retRenewalsNext90', renewals90);
+  setText('retNoActivity30', noAct30);
+  setText('retNoMeetingQuarter', noMeetingQuarter);
+  setText('retRenewedWon', renewedDeals.length);
+  setText('retCashing', cashedDeals.length);
+  setText('retChurnRisk', churnDeals.length + accounts.filter(a=>String(a.accountStatus||'').toLowerCase()==='churned').length);
+  setText('retUpsell', renewalAttention.length);
+  setText('retRenewalsNext90Value', money(valueOf(upcomingRenewals,'renewalValue')));
+  setText('retRenewedWonValue', money(valueOf(renewedDeals,'renewalValue')));
+  setText('retCashingValue', money(valueOf(cashedDeals,'amount')));
+
+  // Monthly renewal pipeline — clear operational meaning
+  const monthRows = (monthlyAll.length ? monthlyAll : []).filter(row=>{
+    if(!selectedOwnerName) return true;
+    return (row.rows||[]).some(match);
+  }).map(row=>{
+    const rows=(row.rows||[]).filter(match);
+    if(!selectedOwnerName) return row;
+    return { month: row.month, due: rows.length, renewed: rows.filter(r=>r.status==='Renewed').length, booked: rows.filter(r=>r.status==='Renewed' && r.bookedDateEntered && !r.cashedDateEntered).length, cashed: rows.filter(r=>r.status==='Renewed' && r.cashedDateEntered).length, delayed: rows.filter(r=>r.status==='Delayed').length, upcoming: rows.filter(r=>r.status==='Upcoming').length, value: valueOf(rows,'renewalValue'), rows };
+  }).filter(r=>r.due>0).sort((a,b)=>String(a.month).localeCompare(String(b.month)));
+  if($('retRenewalMonthBody')) $('retRenewalMonthBody').innerHTML = monthRows.length ? monthRows.map((r,i)=>{
+    const action = r.delayed>0 ? `${r.delayed} delayed renewal(s) need action` : r.upcoming>0 ? `${r.upcoming} upcoming renewal(s)` : `${r.renewed} renewed`;
+    const mLabel = retMonthLabel(r.month);
+    const clickCell = (bucket, value, cls='') => '<span class="ret-click-num ' + cls + '" onclick="openRetentionMetricDetails(\'monthly\',{monthIndex:' + i + ',bucket:\'' + bucket + '\',label:\'' + esc(mLabel) + ' · ' + bucket + '\'})">' + value + '</span>';
+    return '<tr class="' + (r.delayed>0?'ret-redline':r.upcoming>0?'ret-amberline':'ret-greenline') + ' ' + (i>=5?'ret-hidden':'') + '"><td><div style="font-weight:900">' + textSafe(mLabel) + '</div><div style="font-size:10px;color:var(--muted)">contract_renewal_date month</div></td><td class="c" style="font-family:var(--mono);font-weight:800">' + clickCell('due',num(r.due)) + '</td><td class="c ret-status-green">' + clickCell('renewed',num(r.renewed),'ret-status-green') + '</td><td class="c">' + clickCell('booked',num(r.booked)) + '</td><td class="c">' + clickCell('cashed',num(r.cashed)) + '</td><td class="c ' + (num(r.delayed)>0?'ret-status-red':'') + '">' + clickCell('delayed',num(r.delayed),num(r.delayed)>0?'ret-status-red':'') + '</td><td class="c" style="font-family:var(--mono);font-weight:800">' + money(r.value) + '</td><td><span class="badge ' + (r.delayed>0?'br':r.upcoming>0?'ba':'bg') + '">' + textSafe(action) + '</span></td></tr>';
+  }).join('') : empty(8,'No monthly renewal pipeline rows found.');
+  if($('retRenewalMonthToggle')) $('retRenewalMonthToggle').style.display = monthRows.length>5?'block':'none';
+
+  // Coverage Quality — restored after Renewal Action Center merge
+  // Uses JSON coverageDetails when available, otherwise calculates from active retention accounts.
+  (function renderRetentionCoverageQuality(){
+    const pct = (hit,total) => total ? Math.round((hit / total) * 100) : 0;
+    const totalAccounts = accounts.length || num(coverage.totalAccounts) || num(summary.activeAccounts) || accountsAll.length || 0;
+    const hasAny = v => v !== undefined && v !== null && String(v).trim() !== '' && String(v).trim() !== '—';
+    const getRate = (keys, fallbackHitFn) => {
+      for(const k of keys){
+        if(coverage && coverage[k] !== undefined && coverage[k] !== null && coverage[k] !== '') return num(coverage[k]);
+      }
+      return pct(accounts.filter(fallbackHitFn).length, totalAccounts);
+    };
+    const callCoverage = getRate(['callCoverage','callsCoverage','callCoverageRate'], a => hasAny(a.lastCallDate) || hasAny(a.rmLastCall) || hasAny(a.csmLastCall) || hasAny(a.lastConnectedCall));
+    const meetingCoverage = getRate(['meetingCoverage','meetingsCoverage','meetingCoverageRate'], a => hasAny(a.lastMeetingDate) || hasAny(a.rmLastMeeting) || hasAny(a.csmLastMeeting) || hasAny(a.lastCompletedMeeting));
+    const rmAssigned = accounts.filter(a => hasAny(a.rmOwnerId) || hasAny(a.rmOwnerName) || hasAny(a.rmOwner)).length;
+    const csmAssigned = accounts.filter(a => hasAny(a.csmOwnerId) || hasAny(a.csmOwnerName) || hasAny(a.csmOwner)).length;
+    let rmTouchCoverage = coverage.rmTouchCoverage !== undefined ? num(coverage.rmTouchCoverage) : (rmAssigned ? pct(accounts.filter(a => (hasAny(a.rmOwnerId)||hasAny(a.rmOwnerName)||hasAny(a.rmOwner)) && (hasAny(a.rmLastTouch)||hasAny(a.rmLastCall)||hasAny(a.rmLastMeeting)||hasAny(a.lastActivityDate)||hasAny(a.lastActivity))).length, rmAssigned) : 0);
+    let csmTouchCoverage = coverage.csmTouchCoverage !== undefined ? num(coverage.csmTouchCoverage) : (csmAssigned ? pct(accounts.filter(a => (hasAny(a.csmOwnerId)||hasAny(a.csmOwnerName)||hasAny(a.csmOwner)) && (hasAny(a.csmLastTouch)||hasAny(a.csmLastCall)||hasAny(a.csmLastMeeting)||hasAny(a.lastActivityDate)||hasAny(a.lastActivity))).length, csmAssigned) : 0);
+    const lines = [
+      ['Call Coverage', callCoverage, 'var(--blue)'],
+      ['Meeting Coverage', meetingCoverage, 'var(--purple)'],
+      ['RM Touch Coverage', rmTouchCoverage, 'var(--cyan)'],
+      ['CSM Touch Coverage', csmTouchCoverage, 'var(--green)']
+    ];
+    if($('retCoverageBody')) $('retCoverageBody').innerHTML = `<div class="ret-explain"><b>Coverage definitions:</b><br>Call Coverage = accounts with connected call ÷ active retention accounts. Meeting Coverage = accounts with completed meeting ÷ active retention accounts. RM/CSM Touch = assigned accounts where that owner has connected call or completed meeting on the company or an associated renewal deal.</div>` + lines.map(([label,rate,color])=>`<div class="ret-coverage-line"><div class="ret-coverage-label">${label}</div><div class="ret-bar"><div class="ret-fill" style="--rc:${color};width:${Math.max(0,Math.min(100,num(rate)))}%"></div></div><div style="font-family:var(--mono);font-weight:800">${num(rate)}%</div></div>`).join('');
+  })();
+
+  window.__retentionMetricStore = {
+    accounts, renewedDeals, bookedDeals, cashedDeals, churnDeals, delayedRenewals, renewalPipeline, renewalAttention, monthRows, tierRows: tierFollowupRows, calls: activityCalls, meetings: activityMeetings
+  };
+  retMakeClickable('retFocusDelayed','focus-delayed',{},'Open delayed renewals');
+  retMakeClickable('retFocusTierA','focus-tier-a',{},'Open Tier A overdue accounts');
+  retMakeClickable('retFocusCsm','focus-csm',{},'Open CSM follow-up due accounts');
+  retMakeClickable('retFocusRm','focus-rm',{},'Open RM follow-up due accounts');
+  [['retYCalls','yesterday','calls'],['retYMeetings','yesterday','meetings'],['retYRenewed','yesterday','renewed'],['retYBooked','yesterday','booked'],['retYCashed','yesterday','cashed'],['retYChurn','yesterday','churn'],['retYDelayed','yesterday','delayed'],['retMCalls','mtd','calls'],['retMMeetings','mtd','meetings'],['retMRenewed','mtd','renewed'],['retMBooked','mtd','booked'],['retMCashed','mtd','cashed'],['retMChurn','mtd','churn'],['retMDelayed','mtd','delayed'],['retYtdCalls','ytd','calls'],['retYtdMeetings','ytd','meetings'],['retYtdRenewed','ytd','renewed'],['retYtdBooked','ytd','booked'],['retYtdCashed','ytd','cashed'],['retYtdChurn','ytd','churn'],['retYtdDelayed','ytd','delayed']].forEach(function(x){ retMakeClickable(x[0],'period',{period:x[1],metric:x[2],label:x[1].toUpperCase() + ' · ' + x[2]},'Open KPI details'); });
+
+  // Unified Renewal Table — one row per company, no duplicate renewal sections
+  const accountByKey = new Map();
+  const makeCompanyKey = r => String(r.companyId || r.accountId || r.hs_object_id || r.companyName || r.accountName || r.name || r.dealName || '').trim().toLowerCase();
+  accounts.forEach(a => {
+    const key = makeCompanyKey(a);
+    if(key) accountByKey.set(key, a);
+  });
+
+  function pickFilled(...values){
+    return values.find(v => v !== undefined && v !== null && String(v).trim() !== '') || '';
+  }
+  function mergeValue(oldVal,newVal){
+    return oldVal !== undefined && oldVal !== null && String(oldVal).trim() !== '' && String(oldVal).trim() !== '—' ? oldVal : newVal;
+  }
+  function normalizeUnifiedRenewalRow(r, sourceLabel){
+    const key = makeCompanyKey(r);
+    const acc = accountByKey.get(key) || {};
+    const renewalDate = pickFilled(r.contractRenewalDate, r.renewalDate, r.renewal_date, acc.contractRenewalDate, acc.renewalDate);
+    const daysOverdue = num(pickFilled(r.daysOverdue, acc.daysOverdue, 0));
+    const daysLeftRaw = pickFilled(r.daysLeft, acc.daysLeft, '');
+    const status = pickFilled(r.status, r.alert, daysOverdue > 0 ? 'Delayed Renewal' : sourceLabel === 'attention' ? 'Needs Attention' : 'Upcoming');
+    return {
+      key,
+      companyName: pickFilled(r.companyName, r.accountName, r.name, r.dealName, acc.companyName, acc.name, '—'),
+      companyUrl: pickFilled(r.companyUrl, r.hubspotUrl, r.dealUrl, acc.companyUrl, acc.hubspotUrl),
+      dealName: pickFilled(r.dealName, r.name, r.renewalDealName),
+      dealUrl: pickFilled(r.dealUrl, r.hubspotUrl),
+      tier: pickFilled(r.company_tier, r.companyTier, r.tier, acc.company_tier, acc.companyTier, acc.tier),
+      renewalValue: num(pickFilled(r.renewalValue, r.amount, r.value, r.revenue, acc.renewalValue, acc.amount, acc.value, 0)),
+      month: retMonthLabel(pickFilled(r.renewalMonth, renewalDate)),
+      renewalDate,
+      daysOverdue,
+      daysLeft: daysLeftRaw,
+      rmOwnerName: pickFilled(r.rmOwnerName, r.rmOwner, r.ownerName, acc.rmOwnerName, acc.rmOwner, acc.ownerName),
+      csmOwnerName: pickFilled(r.csmOwnerName, r.csmOwner, acc.csmOwnerName, acc.csmOwner),
+      rmTouch: pickFilled(r.rmLastTouch, r.rmLastCall, r.rmLastMeeting, r.lastRmActivity, acc.rmLastTouch, acc.rmLastCall, acc.rmLastMeeting),
+      csmTouch: pickFilled(r.csmLastTouch, r.csmLastCall, r.csmLastMeeting, r.lastCsmActivity, acc.csmLastTouch, acc.csmLastCall, acc.csmLastMeeting),
+      status,
+      sourceLabel
+    };
+  }
+
+  const unifiedMap = new Map();
+  [...delayedRenewals.map(r=>({...r,_src:'delayed'})), ...upcomingRenewals.map(r=>({...r,_src:'upcoming'})), ...renewalAttention.map(r=>({...r,_src:'attention'}))].forEach(raw => {
+    const row = normalizeUnifiedRenewalRow(raw, raw._src);
+    if(!row.key) return;
+    if(!unifiedMap.has(row.key)){
+      unifiedMap.set(row.key, row);
+      return;
+    }
+    const old = unifiedMap.get(row.key);
+    unifiedMap.set(row.key, {
+      ...old,
+      companyName: mergeValue(old.companyName, row.companyName),
+      companyUrl: mergeValue(old.companyUrl, row.companyUrl),
+      dealName: mergeValue(old.dealName, row.dealName),
+      dealUrl: mergeValue(old.dealUrl, row.dealUrl),
+      tier: mergeValue(old.tier, row.tier),
+      renewalValue: old.renewalValue || row.renewalValue,
+      month: mergeValue(old.month, row.month),
+      renewalDate: mergeValue(old.renewalDate, row.renewalDate),
+      daysOverdue: Math.max(num(old.daysOverdue), num(row.daysOverdue)),
+      daysLeft: mergeValue(old.daysLeft, row.daysLeft),
+      rmOwnerName: mergeValue(old.rmOwnerName, row.rmOwnerName),
+      csmOwnerName: mergeValue(old.csmOwnerName, row.csmOwnerName),
+      rmTouch: mergeValue(old.rmTouch, row.rmTouch),
+      csmTouch: mergeValue(old.csmTouch, row.csmTouch),
+      status: /delayed|overdue/i.test(String(old.status)) ? old.status : (/delayed|overdue/i.test(String(row.status)) ? row.status : mergeValue(old.status, row.status)),
+      sourceLabel: old.sourceLabel === 'delayed' || row.sourceLabel === 'delayed' ? 'delayed' : old.sourceLabel
+    });
+  });
+
+  const unifiedRenewalRows = Array.from(unifiedMap.values()).sort((a,b)=>{
+    const overdueDiff = num(b.daysOverdue) - num(a.daysOverdue);
+    if(overdueDiff) return overdueDiff;
+    return String(a.renewalDate || a.month || '').localeCompare(String(b.renewalDate || b.month || ''));
+  });
+
+  if($('retRenewalUnifiedBody')) $('retRenewalUnifiedBody').innerHTML = unifiedRenewalRows.length ? unifiedRenewalRows.map((r,i)=>{
+    const isDelayed = num(r.daysOverdue) > 0 || /delayed|overdue/i.test(String(r.status));
+    const isRenewed = /renewed/i.test(String(r.status));
+    const overdueText = num(r.daysOverdue) > 0 ? `${num(r.daysOverdue)} overdue` : textSafe(r.daysLeft !== '' ? r.daysLeft : '—');
+    const statusClass = isRenewed ? 'bg' : isDelayed ? 'br' : /attention|needed|action/i.test(String(r.status)) ? 'ba' : 'bb';
+    return `<tr class="${isDelayed?'ret-redline':isRenewed?'ret-greenline':'ret-amberline'} ${i>=5?'ret-hidden':''}"><td><div style="font-weight:900">${recordLink(r.companyName,r.companyUrl)}</div>${r.dealName ? `<div style="font-size:10px;color:var(--muted)">${recordLink(r.dealName,r.dealUrl)}</div>` : `<div style="font-size:10px;color:var(--muted)">Renewal account</div>`}</td><td class="c">${retTierBadge(r.tier)}</td><td class="c" style="font-family:var(--mono);font-weight:800">${money(r.renewalValue)}</td><td class="c">${textSafe(r.month)}</td><td class="c ${isDelayed?'ret-status-red':''}">${textSafe(r.renewalDate)}</td><td class="c ${isDelayed?'ret-status-red':''}">${overdueText}</td><td>${textSafe(r.rmOwnerName || '—')}</td><td>${textSafe(r.csmOwnerName || '—')}</td><td class="c">${textSafe(r.rmTouch || '—')}</td><td class="c">${textSafe(r.csmTouch || '—')}</td><td class="c"><span class="badge ${statusClass}">${textSafe(r.status || 'Upcoming')}</span></td></tr>`;
+  }).join('') : empty(11,'No renewal rows found.');
+  if($('retRenewalUnifiedToggle')) $('retRenewalUnifiedToggle').style.display = unifiedRenewalRows.length>5?'block':'none';
+
+  // Churn reasons
+  if($('retUpsellCoverageBody')) $('retUpsellCoverageBody').innerHTML = churnReasons.length ? churnReasons.map((r,i)=>`<tr class="${i>=5?'ret-hidden':''}"><td><div style="font-weight:800">${textSafe(r.reason||'Not specified')}</div></td><td class="c">${num(r.count)}</td><td class="c" style="font-family:var(--mono);font-weight:700">${money(r.amount)}</td><td class="c">${recordLink(r.deals?.[0]?.companyName||r.deals?.[0]?.name||'—',r.deals?.[0]?.companyUrl||r.deals?.[0]?.hubspotUrl)}</td><td class="c"><span class="badge br">Churn</span></td></tr>`).join('') : empty(5,'No churn reason data in the current retention JSON.');
+  if($('retChurnReasonsToggle')) $('retChurnReasonsToggle').style.display = churnReasons.length>5?'block':'none';
+
+  // RM/CSM follow-up metrics — company_tier cadence, based on company + associated renewal deals
+  const tierCounts = {all:tierFollowupRows.length, a:tierFollowupRows.filter(r=>r.tier==='A').length, b:tierFollowupRows.filter(r=>r.tier==='B').length, c:tierFollowupRows.filter(r=>r.tier==='C').length, no:tierFollowupRows.filter(r=>!r.tier).length};
+  if($('retTierFilterBar')) $('retTierFilterBar').innerHTML = [['all','All tiers',tierCounts.all],['a','Tier A',tierCounts.a],['b','Tier B',tierCounts.b],['c','Tier C',tierCounts.c],['no','No tier',tierCounts.no]].map(function(x){ return '<button class="ret-filter-chip ' + (RET_TIER_MATRIX_FILTER===x[0]?'active':'') + '" onclick="retSetTierMatrixFilter(\'' + x[0] + '\')">' + x[1] + ' ' + x[2] + '</button>'; }).join('');
+  const tierRowsVisible = tierFollowupRows.filter(r => RET_TIER_MATRIX_FILTER === 'all' ? true : RET_TIER_MATRIX_FILTER === 'no' ? !r.tier : String(r.tier || '').toLowerCase() === RET_TIER_MATRIX_FILTER);
+  if($('retOwnerMatrixBody')) $('retOwnerMatrixBody').innerHTML = tierRowsVisible.length ? tierRowsVisible.map((tr,i)=>{
+    const a = tr.account || {};
+    const healthy = tr.alert === 'Healthy';
+    const warn = tr.alert === 'Missing tier';
+    const rmLast = retHumanLastActivity(tr.rmLatest, tr.rmDays);
+    const csmLast = retHumanLastActivity(tr.csmLatest, tr.csmDays);
+    const rmCadence = tr.rmThreshold ? `${tr.rmThreshold}d` : '—';
+    const csmCadence = tr.csmThreshold ? `${tr.csmThreshold}d` : '—';
+    return `<tr class="${healthy?'ret-greenline':warn?'ret-amberline':'ret-redline'} ${i>=5?'ret-hidden':''}"><td><div style="font-weight:800">${recordLink(a.companyName||a.accountName||a.name,a.companyUrl||a.hubspotUrl)}</div><div style="font-size:10px;color:var(--muted)">Company + associated renewal deals</div></td><td class="c">${retTierBadge(tr.tier)}</td><td>${textSafe(a.rmOwnerName||a.rmOwner)}</td><td class="c ${tr.rmOverdue?'ret-status-red':''}">${textSafe(rmLast)}</td><td class="c">${textSafe(rmCadence)}</td><td>${textSafe(a.csmOwnerName||a.csmOwner)}</td><td class="c ${tr.csmOverdue?'ret-status-red':''}">${textSafe(csmLast)}</td><td class="c">${textSafe(csmCadence)}</td><td><span class="badge ${healthy?'bg':warn?'ba':'br'}">${textSafe(tr.alert)}</span></td></tr>`;
+  }).join('') : empty(9,'No RM / CSM matrix rows found for this tier filter.');
+  if($('retOwnerMatrixToggle')) $('retOwnerMatrixToggle').style.display = tierRowsVisible.length>5?'block':'none';
+
+  const rmStats = {accounts: (data.rmMatrix||[]).reduce((s,r)=>s+num(r.accounts),0), noContact: (data.rmMatrix||[]).reduce((s,r)=>s+num(r.noContact),0), delayed: (data.rmMatrix||[]).reduce((s,r)=>s+num(r.delayed),0), calls: (data.rmMatrix||[]).reduce((s,r)=>s+num(r.calls),0)};
+  const csmStats = {accounts: (data.csmMatrix||[]).reduce((s,r)=>s+num(r.accounts),0), noMeeting: (data.csmMatrix||[]).reduce((s,r)=>s+num(r.noMeeting),0), delayed: (data.csmMatrix||[]).reduce((s,r)=>s+num(r.delayed),0), meetings: (data.csmMatrix||[]).reduce((s,r)=>s+num(r.meetings),0)};
+  if($('retRmStats')) $('retRmStats').innerHTML = [[rmStats.accounts,'Accounts'],[rmStats.noContact,'No Touch'],[rmStats.delayed,'Delayed'],[rmStats.calls,'Calls']].map(x=>`<div class="ret-mini"><div class="ret-mini-v">${textSafe(x[0])}</div><div class="ret-mini-l">${x[1]}</div></div>`).join('');
+  if($('retCsmStats')) $('retCsmStats').innerHTML = [[csmStats.accounts,'Accounts'],[csmStats.noMeeting,'No Meeting'],[csmStats.delayed,'Delayed'],[csmStats.meetings,'Meetings']].map(x=>`<div class="ret-mini"><div class="ret-mini-v">${textSafe(x[0])}</div><div class="ret-mini-l">${x[1]}</div></div>`).join('');
+
+  renderRetentionOwnerDetails(selectedRep?.id || null);
+}
+
+function selectRetentionOwner(repId){
+  APP_MAIN_PANEL = "retention";
+  APP_RETENTION_VIEW = "owner";
+  APP_RETENTION_OWNER_ID = String(repId);
+  RETENTION_SUBVIEW = "owner";
+  const data = R || {};
+  const rep = (data.repData||[]).find(r=>String(r.id)===String(repId));
+  if(!rep) return;
+  RET_SELECTED_OWNER_ID = String(repId);
+  document.querySelectorAll(".tab-btn").forEach(t=>t.classList.remove("active"));
+  document.querySelectorAll(".panel").forEach(p=>p.classList.remove("active"));
+  document.querySelectorAll(".nav-item").forEach(n=>n.classList.remove("active"));
+  if($("tabsBar")) $("tabsBar").style.display = "none";
+  $("side-retention")?.classList.add("active");
+  $("panel-retention")?.classList.add("active");
+  renderRetentionSidebar("owner");
+  if($("topbarTitle")) $("topbarTitle").textContent = "Retention · " + rep.name;
+  if($("topbarSub")) $("topbarSub").textContent = rep.role + " · owner page · priority actions, financial movement, activity quality";
+  setRetentionOwnerMode(true);
+  renderRetention();
+  window.scrollTo({top:0, behavior:"smooth"});
+}
+
+
+function retOwnerMonthKey(v){
+  const s = String(v || '').trim();
+  return s && s.length >= 7 ? s.slice(0,7) : 'No date';
+}
+
+function retOwnerRenewalRows(details){
+  const rows = [
+    ...(details?.delayedRenewals || []),
+    ...(details?.renewalAttention || []),
+    ...(details?.renewedDeals || [])
+  ];
+  const seen = new Set();
+  return rows.filter(row => {
+    const key = [row.companyId || row.companyName || row.name, row.id || row.renewalSourceDealId || row.contractRenewalDate || row.originalContractRenewalDate, row.status || row.stageType || row.renewalType].join('|');
+    if(seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
+function retOwnerFinancialRows(details){
+  return [
+    ...(details?.cashedDeals || []).map(d => ({...d, bucket:'Cashed'})),
+    ...(details?.bookedDeals || []).map(d => ({...d, bucket:'Booked'})),
+    ...(details?.renewedDeals || []).map(d => ({...d, bucket:'Renewed'})),
+    ...(details?.churnDeals || []).map(d => ({...d, bucket:'Churn'})),
+  ];
+}
+
+function closeRetOwnerSlice(){
+  const panel = $('retOwnerClickPanel');
+  if(panel){ panel.style.display = 'none'; panel.innerHTML = ''; }
+}
+
+function openRetOwnerSlice(repId, slice, month, status){
+  const data = R || {};
+  const details = data.ownerDetails?.[String(repId || APP_RETENTION_OWNER_ID || RET_SELECTED_OWNER_ID || '')];
+  const panel = $('retOwnerClickPanel');
+  if(!details || !panel) return;
+
+  const safe = v => esc(v ?? '—');
+  const money = v => fmt(v || 0);
+  const rowLimit = 12;
+  let title = 'Details';
+  let sub = `${details.name || 'Owner'} · click another number to switch this view`;
+  let rows = [];
+  let headers = [];
+  let rowFn = null;
+  let empty = 'No rows found for this selection.';
+
+  const renewalRows = retOwnerRenewalRows(details);
+  const financialRows = retOwnerFinancialRows(details);
+
+  if(slice === 'month'){
+    title = `${month || 'Month'} Renewal Details`;
+    sub = `${status === 'due' ? 'All due renewals' : status === 'renewed' ? 'Renewed rows' : status === 'delayed' ? 'Delayed rows' : status === 'upcoming' ? 'Upcoming rows' : 'Renewal rows'} for ${details.name || 'this owner'}`;
+    rows = renewalRows.filter(r => retOwnerMonthKey(r.contractRenewalDate || r.originalContractRenewalDate || r.renewalDate) === String(month));
+    if(status && status !== 'due'){
+      rows = rows.filter(r => {
+        const st = String(r.status || r.stageType || r.renewalType || '').toLowerCase();
+        if(status === 'delayed') return st.includes('delayed');
+        if(status === 'upcoming') return st.includes('upcoming');
+        if(status === 'renewed') return st.includes('renewed') || st.includes('cashed') || st.includes('booked');
+        return true;
+      });
+    }
+    headers = [{t:'Account / Deal'},{t:'Renewal',c:1},{t:'Value',c:1},{t:'Type',c:1},{t:'Status',c:1}];
+    rowFn = (d,i) => { const st = d.status || d.stageType || d.renewalType || '—'; return `<tr class="${/delayed/i.test(st)?'ret-row-critical':/upcoming/i.test(st)?'ret-row-warning':'ret-row-ok'} ${i>=rowLimit?'ret-hidden':''}"><td>${recordLink(d.companyName||d.name||'Account',d.companyUrl||d.hubspotUrl)}<div style="font-size:10px;color:var(--muted)">${recordLink(d.name||d.renewalSourceDealName||'Deal',d.hubspotUrl||d.renewalSourceDealUrl)}</div></td><td class="c">${safe(d.contractRenewalDate||d.originalContractRenewalDate)}</td><td class="c" style="font-family:var(--mono);font-weight:900">${money(d.renewalValue||d.amount)}</td><td class="c">${safe(d.renewalType||d.stageType||'—')}</td><td class="c"><span class="badge ${/delayed/i.test(st)?'br':/upcoming/i.test(st)?'ba':'bg'}">${safe(st)}</span></td></tr>`; };
+  }
+
+  if(slice === 'delayed'){
+    title = 'Delayed Renewals';
+    sub = 'Renewal date passed with no current-year Booked/Cashed renewal for the same company';
+    rows = details.delayedRenewals || [];
+    headers = [{t:'Account / Deal'},{t:'Renewal',c:1},{t:'Days',c:1},{t:'Value',c:1},{t:'Action',c:1}];
+    rowFn = (d,i) => `<tr class="ret-row-critical ${i>=rowLimit?'ret-hidden':''}"><td>${recordLink(d.companyName||d.name||'Account',d.companyUrl||d.hubspotUrl)}<div style="font-size:10px;color:var(--muted)">${safe(d.reason||'No Booked/Cashed renewal found')}</div></td><td class="c">${safe(d.contractRenewalDate||d.originalContractRenewalDate)}</td><td class="c"><span class="badge br">${safe(d.daysOverdue||'—')}d</span></td><td class="c" style="font-family:var(--mono);font-weight:900">${money(d.renewalValue||d.amount)}</td><td class="c"><span class="badge br">Chase now</span></td></tr>`;
+  }
+
+  if(slice === 'notouch'){
+    title = 'No Touch 30D';
+    sub = 'Accounts with no connected call or completed meeting from assigned RM/CSM';
+    rows = details.noContactAccounts || [];
+    headers = [{t:'Account'},{t:'Last Touch',c:1},{t:'Days',c:1},{t:'RM / CSM'},{t:'Action',c:1}];
+    rowFn = (a,i) => `<tr class="ret-row-critical ${i>=rowLimit?'ret-hidden':''}"><td>${recordLink(a.companyName,a.companyUrl)}</td><td class="c">${safe(a.lastActivityDate||'—')}</td><td class="c"><span class="badge br">${safe(a.daysSinceActivity||'—')}d</span></td><td>${safe(a.rmOwnerName||'—')} / ${safe(a.csmOwnerName||'—')}</td><td class="c"><span class="badge br">Call now</span></td></tr>`;
+  }
+
+  if(slice === 'booked' || slice === 'cashed' || slice === 'renewed' || slice === 'financial'){
+    title = slice === 'financial' ? 'Booked / Cashed / Renewed Movement' : `${slice.charAt(0).toUpperCase()+slice.slice(1)} Deals`;
+    sub = 'Current-year financial movement for this owner';
+    rows = slice === 'financial' ? financialRows : (slice === 'booked' ? details.bookedDeals||[] : slice === 'cashed' ? details.cashedDeals||[] : details.renewedDeals||[]).map(d => ({...d, bucket:slice.charAt(0).toUpperCase()+slice.slice(1)}));
+    headers = [{t:'Deal / Company'},{t:'Bucket',c:1},{t:'Created',c:1},{t:'Value',c:1},{t:'Reason / Product'}];
+    rowFn = (d,i) => `<tr class="${d.bucket==='Churn'?'ret-row-critical':d.bucket==='Renewed'||d.bucket==='Cashed'?'ret-row-ok':d.bucket==='Booked'?'ret-row-warning':''} ${i>=rowLimit?'ret-hidden':''}"><td>${recordLink(d.name||d.companyName,d.hubspotUrl||d.companyUrl)}<div style="font-size:10px;color:var(--muted)">${recordLink(d.companyName,d.companyUrl)}</div></td><td class="c"><span class="badge ${d.bucket==='Churn'?'br':d.bucket==='Booked'?'bp':'bg'}">${safe(d.bucket)}</span></td><td class="c">${safe(d.createdAt||d.renewedDealCreatedAt||d.actionDate)}</td><td class="c" style="font-family:var(--mono);font-weight:900">${money(d.amount||d.renewalValue)}</td><td>${safe(d.churnReason||d.product||d.statusReason||'—')}</td></tr>`;
+  }
+
+  if(slice === 'accounts'){
+    title = 'Accounts Owned';
+    sub = 'Owned accounts with touch status and next action';
+    rows = details.accounts || [];
+    headers = [{t:'Account'},{t:'Status',c:1},{t:'RM Touch',c:1},{t:'CSM Touch',c:1},{t:'Next Action',c:1}];
+    rowFn = (a,i) => { const bad = Number(a.daysSinceActivity||0)>30 || Number(a.daysSinceMeeting||0)>90; const act = Number(a.daysSinceActivity||0)>30 ? 'Call now' : Number(a.daysSinceMeeting||0)>90 ? 'Book meeting' : 'Healthy'; return `<tr class="${bad?'ret-row-warning':'ret-row-ok'} ${i>=rowLimit?'ret-hidden':''}"><td>${recordLink(a.companyName,a.companyUrl)}<div style="font-size:10px;color:var(--muted)">RM ${safe(a.rmOwnerName)} · CSM ${safe(a.csmOwnerName)}</div></td><td class="c">${safe(a.accountStatus)}</td><td class="c">${safe(a.rmLastTouch||a.rmLastCall||a.rmLastMeeting)}</td><td class="c">${safe(a.csmLastTouch||a.csmLastCall||a.csmLastMeeting)}</td><td class="c"><span class="badge ${bad?'ba':'bg'}">${act}</span></td></tr>`; };
+  }
+
+  const table = rows.length ? `<div class="ret-compact-table" style="overflow-x:auto"><table class="tbl"><thead><tr>${headers.map(h=>`<th${h.c?' class="c"':''}>${h.t}</th>`).join('')}</tr></thead><tbody>${rows.map((r,i)=>rowFn(r,i)).join('')}</tbody></table></div>${rows.length>rowLimit?'<button class="ret-show-btn" onclick="toggleInlineHidden(this)">▼ Show more</button>':''}` : `<div class="ret-drill-empty">${safe(empty)}</div>`;
+  panel.innerHTML = `<div class="ret-drill-head"><div><div class="ret-drill-title">🔎 ${safe(title)} <span class="badge bb">${rows.length} rows</span></div><div class="ret-drill-sub">${safe(sub)}</div></div><button class="ret-drill-close" onclick="closeRetOwnerSlice()">Close</button></div>${table}`;
+  panel.style.display = 'block';
+  panel.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function renderRetentionOwnerDetails(repId){
+  const data = R || {};
+  const ownerDetails = data.ownerDetails || {};
+  const details = repId ? ownerDetails[repId] : null;
+  const mount = ensureRetentionOwnerMount();
+  const oldBody = $('retOwnerDetailBody');
+
+  if(!details){
+    if(oldBody){
+      $('retOwnerDetailTitle').textContent = 'Choose RM / CSM from the sidebar';
+      $('retOwnerDetailBadge').textContent = 'Owner details';
+      oldBody.innerHTML = `<div class="ret-explain">Team overview is shown above. Click any Retention Team owner in the sidebar to open a clean owner page.</div>`;
+    }
+    if(mount) mount.innerHTML = '';
+    return;
+  }
+
+  const m = details.metrics || {};
+ 
+  const color = details.color || 'var(--cyan)';
+  const safe = v => esc(v ?? '—');
+  const riskCount = Number(m.delayed||0) + Number(m.noContact||0) + Number(m.noMeeting||0);
+  const revenueValue = Number(m.renewedAmt||0) + Number(m.cashedAmt||0) + Number(m.bookedAmt||0);
+  const limit = 5;
+
+  function ownerActivityDate(row){
+    return row?.dateRaw || row?.date || row?.hs_timestamp || row?.timestamp || row?.createdAt || row?.activityDate || row?.callDate || row?.meetingDate || null;
+  }
+
+  function ownerDateInRange(value, from, to){
+    if(!value) return false;
+    const ms = new Date(value).getTime();
+    return Number.isFinite(ms) && ms >= from && ms <= to;
+  }
+
+  function ownerDateBoundaries(){
+    const now = new Date();
+    const y = new Date(now);
+    y.setDate(now.getDate() - 1);
+    const yesterdayStart = new Date(y.getFullYear(), y.getMonth(), y.getDate(), 0, 0, 0, 0).getTime();
+    const yesterdayEnd = new Date(y.getFullYear(), y.getMonth(), y.getDate(), 23, 59, 59, 999).getTime();
+    const mtdStart = new Date(now.getFullYear(), now.getMonth(), 1, 0, 0, 0, 0).getTime();
+    const ytdStart = new Date(now.getFullYear(), 0, 1, 0, 0, 0, 0).getTime();
+    return { yesterdayStart, yesterdayEnd, mtdStart, ytdStart, nowMs: now.getTime() };
+  }
+
+  function countOwnerPeriod(rows, from, to){
+    return (Array.isArray(rows) ? rows : []).filter(row => ownerDateInRange(ownerActivityDate(row), from, to)).length;
+  }
+
+  function buildOwnerActivityFallback(){
+    const bounds = ownerDateBoundaries();
+    const loggedCalls = Array.isArray(details.loggedCalls) ? details.loggedCalls : (Array.isArray(details.calls) ? details.calls : []);
+    const connectedCalls = Array.isArray(details.connectedCalls) ? details.connectedCalls : (Array.isArray(details.calls) ? details.calls : []);
+    const loggedMeetings = Array.isArray(details.loggedMeetings) ? details.loggedMeetings : (Array.isArray(details.meetings) ? details.meetings : []);
+    const completedMeetings = Array.isArray(details.completedMeetings) ? details.completedMeetings : (Array.isArray(details.meetings) ? details.meetings : []);
+
+    return {
+      yesterday: {
+        callLogged: countOwnerPeriod(loggedCalls, bounds.yesterdayStart, bounds.yesterdayEnd),
+        connectedCalls: countOwnerPeriod(connectedCalls, bounds.yesterdayStart, bounds.yesterdayEnd),
+        meetingLogged: countOwnerPeriod(loggedMeetings, bounds.yesterdayStart, bounds.yesterdayEnd),
+        completedMeetings: countOwnerPeriod(completedMeetings, bounds.yesterdayStart, bounds.yesterdayEnd),
+      },
+      mtd: {
+        callLogged: countOwnerPeriod(loggedCalls, bounds.mtdStart, bounds.nowMs),
+        connectedCalls: countOwnerPeriod(connectedCalls, bounds.mtdStart, bounds.nowMs),
+        meetingLogged: countOwnerPeriod(loggedMeetings, bounds.mtdStart, bounds.nowMs),
+        completedMeetings: countOwnerPeriod(completedMeetings, bounds.mtdStart, bounds.nowMs),
+      },
+      ytd: {
+        callLogged: Number(m.callLogged || loggedCalls.length || 0),
+        connectedCalls: Number(m.connectedCalls || m.calls || connectedCalls.length || 0),
+        meetingLogged: Number(m.meetingLogged || loggedMeetings.length || 0),
+        completedMeetings: Number(m.completedMeetings || m.meetings || completedMeetings.length || 0),
+      }
+    };
+  }
+
+  const activityFallback = buildOwnerActivityFallback();
+  const activityKpis = details.activityKpis || {};
+  const akY = activityKpis.yesterday || activityFallback.yesterday;
+  const akM = activityKpis.mtd || activityFallback.mtd;
+  const akT = activityKpis.ytd || activityFallback.ytd;
+
+  function ownerActivityCard(value, label, subtitle, colorVar){
+    return `
+      <div class="ret-kpi-compact" style="--rk:${colorVar}">
+        <div class="ret-kpi-v">${Number(value || 0).toLocaleString()}<span>•</span></div>
+        <div class="ret-kpi-l">${safe(label)}</div>
+        <div class="ret-kpi-s">${safe(subtitle)}</div>
+      </div>`;
+  }
+
+  function ownerActivityRow(name, sub, colorVar, stats){
+    const row = stats || {};
+    return `
+      <div class="ret-kpi-period-row" style="--pc:${colorVar};grid-template-columns:125px repeat(4,1fr)">
+        <div class="ret-kpi-period-label">
+          <div class="ret-kpi-period-name">${safe(name)}</div>
+          <div class="ret-kpi-period-sub">${safe(sub)}</div>
+        </div>
+        ${ownerActivityCard(row.callLogged, 'CALL LOGGED', 'HubSpot logged', 'var(--blue)')}
+        ${ownerActivityCard(row.connectedCalls, 'CONNECTED CALLS', 'Connected only', 'var(--green)')}
+        ${ownerActivityCard(row.meetingLogged, 'MEETING LOGGED', 'HubSpot logged', 'var(--purple)')}
+        ${ownerActivityCard(row.completedMeetings, 'COMPLETED MEETINGS', 'Completed only', 'var(--green)')}
+      </div>`;
+  }
+
+  const ownerKpiHtml = `
+    <div class="card ret-kpi-master-card" style="margin-bottom:14px;border-top-color:${safe(color)}">
+      <div class="ret-kpi-master-hd">
+        <div class="ret-kpi-master-title">📞 Activity KPIs · HubSpot</div>
+        <span class="badge bb">${safe(details.name)} · ${safe(details.role)}</span>
+      </div>
+      ${ownerActivityRow('YESTERDAY', 'daily execution', 'var(--blue)', akY)}
+      ${ownerActivityRow('MTD', 'current month', 'var(--amber)', akM)}
+      ${ownerActivityRow('YTD', 'current year', 'var(--green)', akT)}
+    </div>`;
+
+  const byAmountDesc = arr => [...(arr||[])].sort((a,b)=>Number(b.amount||b.renewalValue||0)-Number(a.amount||a.renewalValue||0));
+  const byDateAsc = arr => [...(arr||[])].sort((a,b)=>String(a.contractRenewalDate||a.originalContractRenewalDate||a.month||'').localeCompare(String(b.contractRenewalDate||b.originalContractRenewalDate||b.month||'')));
+
+  const focus = (value,label,sub,colorVar,slice) => `
+    <div class="ret-focus-card ret-click-card" style="--fc:${colorVar}" onclick="openRetOwnerSlice('${safe(repId)}','${slice}')" title="Open ${label} details">
+      <div class="ret-focus-v">${safe(value)}</div>
+      <div class="ret-focus-l">${label}</div>
+      <div class="ret-focus-s">${sub}</div>
+    </div>`;
+
+  const hidden = i => i >= limit ? 'ret-hidden' : '';
+  const showMore = rows => rows.length > limit ? '<button class="ret-show-btn" onclick="toggleInlineHidden(this)">▼ Show more</button>' : '';
+  const emptyBlock = msg => `<div class="ret-owner-empty">${safe(msg)}</div>`;
+
+  const actionRows = [
+    ...(details.delayedRenewals||[]).map(x=>({kind:'Delayed Renewal', tone:'red', icon:'!', name:x.companyName||x.name, url:x.companyUrl||x.hubspotUrl, desc:`Renewal date ${x.contractRenewalDate||x.originalContractRenewalDate||'—'} passed · ${fmt(x.renewalValue||x.amount||0)} · ${x.reason||'No current-year Booked/Cashed renewal found'}`, badge:x.daysOverdue?`${x.daysOverdue}d overdue`:'Delayed'})),
+    ...(details.noContactAccounts||[]).map(x=>({kind:'No Touch 30D', tone:'red', icon:'☎', name:x.companyName, url:x.companyUrl, desc:`No connected call or completed meeting for ${x.daysSinceActivity||'—'} days · RM ${x.rmOwnerName||'—'} · CSM ${x.csmOwnerName||'—'}`, badge:'Call now'})),
+    ...(details.noMeetingAccounts||[]).map(x=>({kind:'No Meeting 90D', tone:'amber', icon:'📅', name:x.companyName, url:x.companyUrl, desc:`No completed meeting for ${x.daysSinceMeeting||'—'} days · latest touch ${x.lastActivityDate||'—'}`, badge:'Book meeting'})),
+  ];
+
+  const actionList = rows => rows.length ? rows.map((r,i)=>`
+    <div class="ret-action-item ${hidden(i)}" style="--dot:${r.tone==='amber'?'var(--amber)':'var(--red)'};--dot-bg:${r.tone==='amber'?'var(--amber-bg)':'var(--red-bg)'}">
+      <div class="ret-action-dot">${r.icon}</div>
+      <div class="ret-action-main"><div class="ret-action-name">${recordLink(r.name||r.kind,r.url)}</div><div class="ret-action-desc">${safe(r.desc)}</div></div>
+      <span class="badge ${r.tone==='amber'?'ba':'br'}">${safe(r.badge)}</span>
+    </div>`).join('') + showMore(rows) : emptyBlock('No priority actions for this owner.');
+
+  const card = (title,badge,content,colorVar='var(--green)') => `
+    <div class="ret-clean-card" style="--cc:${colorVar}">
+      <div class="ret-clean-hd"><div class="ret-clean-title">${title}</div><span class="badge bb">${badge}</span></div>
+      ${content}
+    </div>`;
+
+  const simpleTable = (headers, rows, rowFn, emptyMsg='No rows found') => rows.length ? `
+    <div class="ret-compact-table" style="overflow-x:auto"><table class="tbl"><thead><tr>${headers.map(h=>`<th${h.c?' class="c"':''}>${h.t}</th>`).join('')}</tr></thead><tbody>${rows.map((r,i)=>rowFn(r,i)).join('')}</tbody></table></div>${showMore(rows)}` : emptyBlock(emptyMsg);
+
+  const moneyCell = v => `<span style="font-family:var(--mono);font-weight:900">${fmt(v||0)}</span>`;
+  const monthKey = v => { const s = String(v || '').trim(); return s && s.length >= 7 ? s.slice(0,7) : 'No date'; };
+
+  const renewalRows = [...(details.delayedRenewals||[]), ...(details.renewalAttention||[]), ...(details.renewedDeals||[])].filter((v,i,a)=>a.findIndex(x=>(x.companyId||x.id||x.name)===(v.companyId||v.id||v.name) && (x.status||x.stageType)===(v.status||v.stageType))===i);
+
+  const monthMap = {};
+  for(const row of renewalRows){
+    const month = monthKey(row.contractRenewalDate || row.originalContractRenewalDate || row.renewalDate);
+    const status = String(row.status || row.stageType || row.renewalType || '').toLowerCase();
+    if(!monthMap[month]) monthMap[month] = {month, due:0, delayed:0, renewed:0, upcoming:0, value:0};
+    monthMap[month].due += 1;
+    monthMap[month].value += Number(row.renewalValue || row.amount || 0);
+    if(status.includes('delayed')) monthMap[month].delayed += 1;
+    else if(status.includes('renewed') || status.includes('cashed') || status.includes('booked')) monthMap[month].renewed += 1;
+    else monthMap[month].upcoming += 1;
+  }
+  const renewalMonthRows = Object.values(monthMap).sort((a,b)=>String(a.month).localeCompare(String(b.month)));
+
+  const renewalMonthTable = simpleTable(
+    [{t:'Renewal Month'},{t:'Due',c:1},{t:'Renewed',c:1},{t:'Delayed',c:1},{t:'Upcoming',c:1},{t:'Value',c:1}],
+    renewalMonthRows,
+    (r,i)=>`<tr class="${r.delayed?'ret-row-critical':r.upcoming?'ret-row-warning':'ret-row-ok'} ${hidden(i)}"><td><b>${safe(r.month)}</b></td><td class="c"><button class="ret-num-link" onclick="openRetOwnerSlice('${safe(repId)}','month','${safe(r.month)}','due')">${r.due}</button></td><td class="c"><span class="badge bg"><button class="ret-num-link" onclick="openRetOwnerSlice('${safe(repId)}','month','${safe(r.month)}','renewed')">${r.renewed}</button></span></td><td class="c"><span class="badge ${r.delayed?'br':'bg'}"><button class="ret-num-link" onclick="openRetOwnerSlice('${safe(repId)}','month','${safe(r.month)}','delayed')">${r.delayed}</button></span></td><td class="c"><span class="badge ba"><button class="ret-num-link" onclick="openRetOwnerSlice('${safe(repId)}','month','${safe(r.month)}','upcoming')">${r.upcoming}</button></span></td><td class="c">${moneyCell(r.value)}</td></tr>`,
+    'No renewal months found for this owner.'
+  );
+
+  const renewalTable = simpleTable(
+    [{t:'Account / Deal'},{t:'Renewal',c:1},{t:'Value',c:1},{t:'Type',c:1},{t:'Status',c:1}],
+    byDateAsc(renewalRows),
+    (d,i)=>{ const st=d.status||d.stageType||'—'; return `<tr class="${/delayed/i.test(st)?'ret-row-critical':/upcoming/i.test(st)?'ret-row-warning':'ret-row-ok'} ${hidden(i)}"><td>${recordLink(d.companyName||d.name||'Account',d.companyUrl||d.hubspotUrl)}<div style="font-size:10px;color:var(--muted)">${recordLink(d.name||d.renewalSourceDealName||'Deal',d.hubspotUrl||d.renewalSourceDealUrl)}</div></td><td class="c">${safe(d.contractRenewalDate||d.originalContractRenewalDate)}</td><td class="c">${moneyCell(d.renewalValue||d.amount)}</td><td class="c">${safe(d.renewalType||d.stageType||'—')}</td><td class="c"><span class="badge ${/delayed/i.test(st)?'br':/upcoming/i.test(st)?'ba':'bg'}">${safe(st)}</span></td></tr>`; },
+    'No renewal movement for this owner.'
+  );
+
+  const financialRows = [
+    ...(details.cashedDeals||[]).map(d=>({...d, bucket:'Cashed'})),
+    ...(details.bookedDeals||[]).map(d=>({...d, bucket:'Booked'})),
+    ...(details.renewedDeals||[]).map(d=>({...d, bucket:'Renewed'})),
+    ...(details.churnDeals||[]).map(d=>({...d, bucket:'Churn'})),
+  ];
+  const financialTable = simpleTable(
+    [{t:'Deal / Company'},{t:'Bucket',c:1},{t:'Created',c:1},{t:'Value',c:1},{t:'Reason / Product'}],
+    byAmountDesc(financialRows),
+    (d,i)=>`<tr class="${d.bucket==='Churn'?'ret-row-critical':d.bucket==='Renewed'||d.bucket==='Cashed'?'ret-row-ok':d.bucket==='Booked'?'ret-row-warning':''} ${hidden(i)}"><td>${recordLink(d.name||d.companyName,d.hubspotUrl||d.companyUrl)}<div style="font-size:10px;color:var(--muted)">${recordLink(d.companyName,d.companyUrl)}</div></td><td class="c"><span class="badge ${d.bucket==='Churn'?'br':d.bucket==='Booked'?'bp':'bg'}">${safe(d.bucket)}</span></td><td class="c">${safe(d.createdAt||d.renewedDealCreatedAt||d.actionDate)}</td><td class="c">${moneyCell(d.amount||d.renewalValue)}</td><td>${safe(d.churnReason||d.product||d.statusReason||'—')}</td></tr>`,
+    'No Booked / Cashed / Renewed movement for this owner.'
+  );
+
+  const noTouchTable = simpleTable(
+    [{t:'Account'},{t:'Last Touch',c:1},{t:'Days',c:1},{t:'RM / CSM'},{t:'Action',c:1}],
+    details.noContactAccounts||[],
+    (a,i)=>`<tr class="ret-row-critical ${hidden(i)}"><td>${recordLink(a.companyName,a.companyUrl)}</td><td class="c">${safe(a.lastActivityDate||'—')}</td><td class="c"><span class="badge br">${safe(a.daysSinceActivity||'—')}d</span></td><td>${safe(a.rmOwnerName||'—')} / ${safe(a.csmOwnerName||'—')}</td><td class="c"><span class="badge br">Call now</span></td></tr>`,
+    'No no-touch accounts over 30 days.'
+  );
+
+  const accountsTable = simpleTable(
+    [{t:'Account'},{t:'Status',c:1},{t:'RM Touch',c:1},{t:'CSM Touch',c:1},{t:'Next Action',c:1}],
+    details.accounts||[],
+    (a,i)=>{ const bad=Number(a.daysSinceActivity||0)>30||Number(a.daysSinceMeeting||0)>90; const act=Number(a.daysSinceActivity||0)>30?'Call now':Number(a.daysSinceMeeting||0)>90?'Book meeting':'Healthy'; return `<tr class="${bad?'ret-row-warning':'ret-row-ok'} ${hidden(i)}"><td>${recordLink(a.companyName,a.companyUrl)}<div style="font-size:10px;color:var(--muted)">RM ${safe(a.rmOwnerName)} · CSM ${safe(a.csmOwnerName)}</div></td><td class="c">${safe(a.accountStatus)}</td><td class="c">${safe(a.rmLastTouch||a.rmLastCall||a.rmLastMeeting)}</td><td class="c">${safe(a.csmLastTouch||a.csmLastCall||a.csmLastMeeting)}</td><td class="c"><span class="badge ${bad?'ba':'bg'}">${act}</span></td></tr>`; },
+    'No owned accounts found.'
+  );
+
+  const html = `
+    <div class="ret-owner-page">
+      <div class="ret-owner-clean-hero" style="--oc:${color}">
+        <div class="ret-owner-clean-avatar">${safe(details.name||'?').charAt(0)}</div>
+        <div style="flex:1;position:relative;z-index:1"><div class="ret-owner-clean-name">${safe(details.name)} <span class="ret">${safe(details.role)}</span></div><div class="ret-owner-clean-sub">Focused owner page: renewals by month, no-touch accounts, Booked / Cashed / Renewed movement, and owned accounts only. Lists show first ${limit} rows.</div></div>
+        <div class="ret-owner-clean-actions"><div class="ret-owner-clean-stat"><div class="ret-owner-clean-stat-v" style="color:${riskCount?'var(--red)':'var(--green)'}">${riskCount}</div><div class="ret-owner-clean-stat-l">Actions</div></div><div class="ret-owner-clean-stat"><div class="ret-owner-clean-stat-v" style="color:var(--cyan)">${m.accounts||0}</div><div class="ret-owner-clean-stat-l">Accounts</div></div><div class="ret-owner-clean-stat"><div class="ret-owner-clean-stat-v" style="color:var(--green)">${fmt(revenueValue)}</div><div class="ret-owner-clean-stat-l">Revenue</div></div></div>
+      </div>
+      ${ownerKpiHtml}
+      <div class="ret-focus-strip">${focus(m.delayed||0,'Delayed Renewals','Renewal passed with no current-year Booked/Cashed','var(--red)','delayed')}${focus(m.noContact||0,'No Touch 30D','Needs connected call or completed meeting','var(--amber)','notouch')}${focus(`${m.booked||0} / ${m.cashed||0}`,'Booked / Cashed','Current-year created deals','var(--purple)','financial')}${focus(m.renewed||0,'Renewed','Same-company renewal movement','var(--green)','renewed')}</div>
+      <div id="retOwnerClickPanel" class="ret-drill-panel" style="display:none"></div>
+      ${card('⚡ Manager Focus', `${actionRows.length} actions`, `<div class="ret-action-list">${actionList(actionRows)}</div>`, actionRows.length?'var(--red)':'var(--green)')}
+      <div class="ret-clean-grid">${card('📅 Renewals by Month', `${renewalMonthRows.length} months`, renewalMonthTable, 'var(--amber)')}${card('💰 Booked / Cashed / Renewed', `${financialRows.length} rows`, financialTable, 'var(--green)')}</div>
+      <div class="ret-clean-grid">${card('☎️ No Touch 30D', `${(details.noContactAccounts||[]).length} accounts`, noTouchTable, 'var(--red)')}${card('🏢 Accounts Owned', `${(details.accounts||[]).length} accounts`, accountsTable, 'var(--cyan)')}</div>
+      ${card('🔁 Renewal Details', `${renewalRows.length} rows`, renewalTable, 'var(--blue)')}
+    </div>`;
+
+  if(mount) mount.innerHTML = html;
+  if(oldBody){
+    $('retOwnerDetailTitle').textContent = `${details.name} · ${details.role} manager page`;
+    $('retOwnerDetailBadge').textContent = `${m.accounts||0} accounts · ${riskCount} actions`;
+    oldBody.innerHTML = html;
+  }
+}
+
+
+function toggleInlineHidden(btn){
+  const parent = btn.closest('.ret-clean-card, .ret-action-list, .card, .ret-compact-table, .ret-clean-grid, #retAlertList') || btn.parentElement;
+  if(!parent) return;
+  const hiddenItems = [...parent.querySelectorAll('.ret-hidden')];
+  const willShow = hiddenItems.some(el => getComputedStyle(el).display === 'none');
+  hiddenItems.forEach(el => {
+    if(willShow){
+      el.classList.add('ret-showing');
+      if(el.tagName === 'TR') el.style.display = 'table-row';
+      else if(el.classList.contains('ret-action-item') || el.classList.contains('ret-alert-row')) el.style.display = 'flex';
+      else el.style.display = '';
+    } else {
+      el.classList.remove('ret-showing');
+      el.style.display = 'none';
+    }
+  });
+  btn.textContent = willShow ? '▲ Show less' : '▼ Show more';
+}
+
+function toggleRetMore(bodyId, btn){
+  const body = $(bodyId);
+  if(!body) return;
+  const rows = [...body.querySelectorAll('.ret-hidden')];
+  const willShow = rows.some(row => getComputedStyle(row).display === 'none');
+  rows.forEach(row => {
+    if(willShow){
+      row.classList.add('ret-showing');
+      row.style.display = row.tagName === 'TR' ? 'table-row' : 'flex';
+    } else {
+      row.classList.remove('ret-showing');
+      row.style.display = 'none';
+    }
+  });
+  if(btn) btn.textContent = willShow ? '▲ Show less' : '▼ Show more';
+}
+
+
+
+
+/* Removed duplicate Acquisition follow-up/table injection patch. */
+
+
+/* Removed duplicate Acquisition follow-up/table injection patch. */
+
+
+/* Removed duplicate Acquisition follow-up/table injection patch. */
+
+
+/* Removed duplicate Acquisition follow-up/table injection patch. */
+
+/* ═══════════════════════════════════════════
+   RETENTION OWNER + FINANCIAL DATA-SAFE PATCH
+   Scope: Retention only. Acquisition remains untouched.
+   Fixes:
+   1) Rebuilds Retention RM/CSM sidebar if repData/ownerMatrix is missing.
+   2) Retention Financial Booked/Cashed uses:
+      - retention pipeline when available
+      - Booked/Cashed stage
+      - Booked: dealstage = Booked and date entered current stage = current year
+      - Cashed: dealstage = Cashed and date entered current stage = current year
+   ═══════════════════════════════════════════ */
+(function(){
+  var RET_FIN_RETENTION_PIPELINE_ID = '1026934003';
+  var RET_FIN_BOOKED_STAGE_ID = '1435517125';
+  var RET_FIN_CASHED_STAGE_ID = '1479506164';
+
+  function byId(id){ return document.getElementById(id); }
+  function asArray(v){ return Array.isArray(v) ? v : []; }
+  function safe(v){ return (typeof esc === 'function') ? esc(v == null ? '—' : v) : String(v == null ? '—' : v); }
+  function money(v){ return (typeof fmt === 'function') ? fmt(v || 0) : ('$' + Math.round(Number(v || 0)).toLocaleString()); }
+  function num(v){ var n = Number(v || 0); return isFinite(n) ? n : 0; }
+  function link(label,url){ return (typeof recordLink === 'function') ? recordLink(label, url) : safe(label || 'Open record'); }
+  function set(id, html){ var el = byId(id); if(el) el.innerHTML = html; }
+  function setText(id, txt){ var el = byId(id); if(el) el.textContent = txt; }
+  function currentYear(){ return new Date().getFullYear(); }
+
+  function prop(row, key){
+    if(!row) return undefined;
+    if(row[key] !== undefined && row[key] !== null && row[key] !== '') return row[key];
+    if(row.properties && row.properties[key] !== undefined && row.properties[key] !== null && row.properties[key] !== '') return row.properties[key];
+    if(row.json && row.json[key] !== undefined && row.json[key] !== null && row.json[key] !== '') return row.json[key];
+    if(row.json && row.json.properties && row.json.properties[key] !== undefined && row.json.properties[key] !== null && row.json.properties[key] !== '') return row.json.properties[key];
+    return undefined;
+  }
+  function first(row, keys){
+    for(var i=0;i<keys.length;i++){
+      var v = prop(row, keys[i]);
+      if(v !== undefined && v !== null && String(v).trim() !== '') return v;
+    }
+    return null;
+  }
+  function parseYear(value){
+    if(value === undefined || value === null || String(value).trim() === '') return null;
+    var s = String(value).trim();
+    var m = s.match(/^(\d{4})-\d{2}-\d{2}/);
+    if(m) return Number(m[1]);
+    if(/^\d+$/.test(s)){
+      var n = Number(s);
+      var ms = n > 1e12 ? n : n > 1e9 ? n * 1000 : n;
+      var d = new Date(ms);
+      return isNaN(d.getTime()) ? null : d.getFullYear();
+    }
+    var parsed = new Date(s);
+    return isNaN(parsed.getTime()) ? null : parsed.getFullYear();
+  }
+  function isCY(value){ return parseYear(value) === currentYear(); }
+  function yearMonthNumber(value){
+    if(value === undefined || value === null || String(value).trim() === '') return null;
+    var s = String(value).trim();
+    var m = s.match(/^(\d{4})-(\d{2})-\d{2}/);
+    if(m) return Number(m[1]) * 100 + Number(m[2]);
+    if(/^\d+$/.test(s)){
+      var n = Number(s);
+      var ms = n > 1e12 ? n : n > 1e9 ? n * 1000 : n;
+      var d = new Date(ms);
+      return isNaN(d.getTime()) ? null : d.getFullYear() * 100 + (d.getMonth() + 1);
+    }
+    var parsed = new Date(s);
+    return isNaN(parsed.getTime()) ? null : parsed.getFullYear() * 100 + (parsed.getMonth() + 1);
+  }
+  function isDateInYearMonthRange(value, startYear, startMonth, endYear, endMonth){
+    var ym = yearMonthNumber(value);
+    if(!ym) return false;
+    return ym >= (startYear * 100 + startMonth) && ym <= (endYear * 100 + endMonth);
+  }
+  function dateText(value){
+    if(value === undefined || value === null || String(value).trim() === '') return '—';
+    var s = String(value).trim();
+    var m = s.match(/^(\d{4}-\d{2}-\d{2})/);
+    if(m) return m[1];
+    if(/^\d+$/.test(s)){
+      var n = Number(s);
+      var ms = n > 1e12 ? n : n > 1e9 ? n * 1000 : n;
+      var d = new Date(ms);
+      return isNaN(d.getTime()) ? '—' : d.toISOString().slice(0,10);
+    }
+    var parsed = new Date(s);
+    return isNaN(parsed.getTime()) ? s : parsed.toISOString().slice(0,10);
+  }
+  function stageEnteredDate(row, bucket){
+    // FINAL rule: Retention financial is filtered by deal stage + date entered current stage only.
+    // For current Booked deals, current-stage date = date entered Booked.
+    // For current Cashed deals, current-stage date = date entered Cashed.
+    return first(row, [
+      'currentStageDateEntered',
+      'hs_v2_date_entered_current_stage',
+      'hs_date_entered_current_stage',
+      'dateEnteredCurrentStage',
+      'date_entered_current_stage',
+      'stageDate',
+      'actionDate'
+    ]);
+  }
+  function contractStartDate(row){
+    return first(row, [
+      'contract_start_date',
+      'contractStartDate',
+      'contractStart',
+      'startDate'
+    ]);
+  }
+  function isContractStartAllowed(row){
+    // Informational only now. Retention Booked/Cashed financial matching no longer depends on contract_start_date.
+    return true;
+  }
+  function pipeline(row){ return String(first(row, ['pipeline','pipelineId']) || '').trim(); }
+  function stage(row){ return String(first(row, ['dealstage','stageId','stage','stageType','renewalType']) || '').trim(); }
+  function amount(row){
+    var raw = first(row, ['amount_in_home_currency','amountInHomeCurrency','amount','renewalValue','value','revenue']);
+    var n = Number(String(raw == null ? 0 : raw).replace(/[^0-9.-]/g,''));
+    return isFinite(n) ? n : 0;
+  }
+  function ownerLabel(row){ return [row && row.ownerName, row && row.rmOwnerName, row && row.csmOwnerName].filter(Boolean).slice(0,2).join(' / ') || '—'; }
+  function rowClass(i, kind){ return (i >= 5 ? 'ret-hidden ' : '') + (kind === 'risk' ? 'ret-row-critical' : kind === 'ok' ? 'ret-row-ok' : 'ret-row-warning'); }
+  function empty(cols,msg){ return '<tr><td colspan="' + cols + '" class="ret-fin-empty">' + safe(msg) + '</td></tr>'; }
+
+  function stageOk(row, bucket){
+    var stRaw = stage(row);
+    if(!stRaw) return true; // dealsSplit.booked/cashed is already bucketed by the workflow.
+    var st = stRaw.toLowerCase();
+    if(bucket === 'booked') return st === RET_FIN_BOOKED_STAGE_ID || /booked|booking/.test(st);
+    if(bucket === 'cashed') return st === RET_FIN_CASHED_STAGE_ID || /cashed|cash|closed won|closedwon/.test(st);
+    return false;
+  }
+  function pipelineOk(row){
+    var p = pipeline(row);
+    return !p || p === RET_FIN_RETENTION_PIPELINE_ID;
+  }
+  function matchesRetentionFinancial(row, bucket){
+    return pipelineOk(row) && stageOk(row, bucket) && isCY(stageEnteredDate(row, bucket));
+  }
+  function filtered(rows, bucket){ return asArray(rows).filter(function(row){ return matchesRetentionFinancial(row, bucket); }); }
+  function total(rows){ return asArray(rows).reduce(function(s,row){ return s + amount(row); }, 0); }
+  function uniqueFinancialRows(rows){
+    var seen = {};
+    return asArray(rows).filter(function(row, i){
+      var key = String(first(row, ['id','hs_object_id','dealId']) || row.hubspotUrl || row.dealUrl || row.name || row.dealName || i) + '|' + String(stage(row)) + '|' + String(amount(row));
+      if(seen[key]) return false;
+      seen[key] = true;
+      return true;
+    });
+  }
+  function gatherFinancialRows(data, bucket){
+    data = data || window.R || {};
+    var split = data.dealsSplit || {};
+    var rows = [];
+    if(bucket === 'booked'){
+      rows = rows.concat(asArray(split.booked), asArray(data.bookedDeals), asArray(data.booked), asArray(data.financialBookedDeals));
+    }
+    if(bucket === 'cashed'){
+      rows = rows.concat(asArray(split.cashed), asArray(data.cashedDeals), asArray(data.cashed), asArray(data.financialCashedDeals));
+    }
+    // Some outputs put all deals in one array, so we also scan generic deal arrays and filter by stage.
+    rows = rows.concat(asArray(data.deals).filter(function(row){ return stageOk(row, bucket); }));
+    rows = rows.concat(asArray(data.renewedDeals).filter(function(row){ return stageOk(row, bucket); }));
+    rows = rows.concat(asArray(split.renewed).filter(function(row){ return stageOk(row, bucket); }));
+
+    var ownerDetails = data.ownerDetails || {};
+    Object.keys(ownerDetails).forEach(function(id){
+      var od = ownerDetails[id] || {};
+      if(bucket === 'booked') rows = rows.concat(asArray(od.bookedDeals), asArray(od.booked));
+      if(bucket === 'cashed') rows = rows.concat(asArray(od.cashedDeals), asArray(od.cashed));
+      rows = rows.concat(asArray(od.deals).filter(function(row){ return stageOk(row, bucket); }));
+      rows = rows.concat(asArray(od.renewedDeals).filter(function(row){ return stageOk(row, bucket); }));
+    });
+    return uniqueFinancialRows(rows);
+  }
+  function filteredSplit(data){
+    data = data || window.R || {};
+    var bookedSource = gatherFinancialRows(data, 'booked');
+    var cashedSource = gatherFinancialRows(data, 'cashed');
+    return {
+      bookedSource: bookedSource,
+      cashedSource: cashedSource,
+      booked: filtered(bookedSource, 'booked'),
+      cashed: filtered(cashedSource, 'cashed')
+    };
+  }
+
+  function normalizeRole(role){
+    role = String(role || '').toUpperCase();
+    if(role.indexOf('CSM') >= 0) return 'CSM';
+    if(role.indexOf('RM') >= 0) return 'RM';
+    return role || 'Owner';
+  }
+  function buildRetentionOwners(data){
+    data = data || {};
+
+    // IMPORTANT: do not invent owners from ownerDetails/accounts/deals.
+    // The retention JSON already has the correct official owner list in repData
+    // with the real role (RM or CSM). Building owners from account rows caused
+    // CSMs to appear again as RM and created duplicated sidebar rows.
+    var source = asArray(data.repData);
+
+    // Fallback only if repData is missing. Keep role-specific sources separated.
+    if(!source.length){
+      source = [].concat(
+        asArray(data.rmMatrix).map(function(r){ return Object.assign({}, r, { role: 'RM' }); }),
+        asArray(data.csmMatrix).map(function(r){ return Object.assign({}, r, { role: 'CSM' }); })
+      );
+    }
+    if(!source.length){
+      source = asArray(data.ownerMatrix);
+    }
+
+    var map = {};
+    var colors = ['#2563EB','#0891B2','#7C3AED','#16A34A','#D97706','#DC2626','#0E7490','#4F46E5','#be185d','#6B7280'];
+
+    source.forEach(function(r){
+      var id = String(r.id || r.ownerId || r.rmOwnerId || r.csmOwnerId || r.name || r.ownerName || '').trim();
+      var name = String(r.name || r.ownerName || r.rmOwnerName || r.csmOwnerName || id || '').trim();
+      var role = normalizeRole(r.role || r.type);
+      if(!name && !id) return;
+      if(!role || role === 'Owner'){
+        if(asArray(data.rmMatrix).some(function(x){ return String(x.id || x.ownerId || x.rmOwnerId) === id; })) role = 'RM';
+        else if(asArray(data.csmMatrix).some(function(x){ return String(x.id || x.ownerId || x.csmOwnerId) === id; })) role = 'CSM';
+      }
+      var key = role + ':' + id;
+      if(map[key]) return;
+      map[key] = Object.assign({}, r, {
+        id: id,
+        name: name,
+        role: role || 'Owner',
+        color: r.color || colors[Object.keys(map).length % colors.length],
+        accounts: num(r.accounts || r.activeAccounts || 0),
+        activeAccounts: num(r.activeAccounts || r.accounts || 0)
+      });
+    });
+
+    return Object.keys(map).map(function(k){ return map[k]; }).filter(function(r){
+      return String(r.name || '').trim() && !/^unknown|—|-$/i.test(String(r.name || '').trim());
+    }).sort(function(a,b){
+      var ar = a.role === 'RM' ? 0 : a.role === 'CSM' ? 1 : 2;
+      var br = b.role === 'RM' ? 0 : b.role === 'CSM' ? 1 : 2;
+      return ar - br || String(a.name).localeCompare(String(b.name));
+    });
+  }
+  function normalizeRetentionData(){
+    if(!window.R) return [];
+    var owners = buildRetentionOwners(window.R);
+    // Keep a normalized display list for sidebar/financial owner rows,
+    // but do not mutate the original JSON role logic elsewhere.
+    window.R.__displayOwners = owners;
+    return owners;
+  }
+  window.retGetOwnerList = function(){ return normalizeRetentionData(); };
+
+  window.renderRetentionSidebar = function(activeMode){
+    activeMode = activeMode || 'overview';
+    var side = byId('sideRepLinks');
+    if(!side) return;
+    var data = window.R || {};
+    var repData = normalizeRetentionData();
+    var fin = filteredSplit(data);
+    side.style.display = 'block';
+    var title = byId('repsSectionTitle');
+    if(title){ title.style.display = 'block'; title.textContent = 'Retention'; }
+    var links = [
+      '<button class="nav-item' + (activeMode === 'overview' ? ' active' : '') + '" id="side-ret-overview" onclick="switchMainPanel(\'retention\')"><span class="nav-icon" style="color:var(--cyan)">🛡️</span>Team Overview<span class="view-tag">VIEW</span></button>',
+      '<button class="nav-item' + (activeMode === 'financial' ? ' active' : '') + '" id="side-ret-financial" onclick="switchRetentionFinancial()"><span class="nav-icon" style="color:var(--green)">💰</span>Financial Details<span class="nav-badge">' + fin.booked.length + '/' + fin.cashed.length + '</span></button>',
+      '<div class="sidebar-section" style="padding:12px 10px 5px;margin:0;font-size:8px">Retention Team</div>'
+    ];
+    if(!repData.length){
+      links.push('<div style="padding:8px 16px;color:rgba(139,173,138,.72);font-size:10px;line-height:1.45">No RM / CSM owners in data-retention.json</div>');
+    }
+    repData.forEach(function(r){
+      var color = r.color || 'var(--cyan)';
+      var short = String(r.name || '').split(' ')[0] || 'Owner';
+      var active = activeMode === 'owner' && String(window.RET_SELECTED_OWNER_ID || '') === String(r.id) ? ' active' : '';
+      var badge = r.accounts || r.activeAccounts || 0;
+      links.push('<button class="nav-item' + active + '" id="side-ret-' + safe(r.id) + '" onclick="selectRetentionOwner(\'' + safe(r.id) + '\')"><span class="nav-icon" style="color:' + color + '">' + (r.role === 'RM' ? '◆' : '●') + '</span>' + safe(short) + ' <span class="ret">' + safe(r.role || '') + '</span><span class="nav-badge">' + badge + '</span></button>');
+    });
+    side.innerHTML = links.join('');
+  };
+
+  window.renderRetentionFinancialDetails = function(){
+    var data = window.R || {};
+    normalizeRetentionData();
+    var split = data.dealsSplit || {};
+    var fin = filteredSplit(data);
+    var booked = fin.booked;
+    var cashed = fin.cashed;
+    var renewed = asArray(split.renewed);
+    var delayed = asArray(data.delayedRenewals || data.accountsToRenew);
+    var churn = asArray(split.churn);
+    var repData = data.repData || [];
+    var ownerDetails = data.ownerDetails || {};
+    var y = currentYear();
+
+    set('retFinTopGrid', [
+      {v: money(total(cashed)), l:'Cashed CY', s: cashed.length + ' deals · current stage date ' + y, c:'var(--green)'},
+      {v: money(total(booked)), l:'Booked CY', s: booked.length + ' deals · current stage date ' + y, c:'var(--purple)'},
+      {v: money(total(renewed)), l:'Renewed Value', s: renewed.length + ' renewed companies', c:'var(--cyan)'},
+      {v: money(total(delayed)), l:'Delayed Exposure', s: delayed.length + ' overdue renewals', c:'var(--red)'},
+      {v: money(total(churn)), l:'Churn Value', s: churn.length + ' churn deals', c:'var(--amber)'}
+    ].map(function(x){ return '<div class="ret-fin-card" style="--fc:' + x.c + '"><div class="ret-fin-card-v">' + x.v + '</div><div class="ret-fin-card-l">' + x.l + '</div><div class="ret-fin-card-s">' + x.s + '</div></div>'; }).join(''));
+
+    setText('retFinCashedBadge', cashed.length + ' · ' + money(total(cashed)));
+    setText('retFinBookedBadge', booked.length + ' · ' + money(total(booked)));
+    setText('retFinRenewedBadge', renewed.length + ' · ' + money(total(renewed)));
+    setText('retFinDelayedBadge', delayed.length + ' · ' + money(total(delayed)));
+    setText('retFinOwnerBadge', repData.length + ' owners · CY rule');
+
+    function dealRow(row,i,kind,status){
+      var stageDate = stageEnteredDate(row, status === 'Cashed' ? 'cashed' : status === 'Booked' ? 'booked' : null);
+      var startDate = contractStartDate(row);
+      return '<tr class="' + rowClass(i, kind) + '"><td><div style="font-weight:900">' + link(row.name || row.dealName || row.dealname || 'Unnamed Deal', row.hubspotUrl || row.dealUrl) + '</div><div style="font-size:10px;color:var(--muted)">' + link(row.companyName || 'Unknown Company', row.companyUrl) + '</div></td><td>' + safe(ownerLabel(row)) + '</td><td class="c" style="font-family:var(--mono);font-weight:900">' + money(amount(row)) + '</td><td class="c">' + safe(dateText(startDate)) + '</td><td class="c">' + safe(dateText(stageDate)) + '</td><td class="c"><span class="badge ' + (kind === 'ok' ? 'bg' : kind === 'risk' ? 'br' : 'bp') + '">' + safe(status) + '</span></td></tr>';
+    }
+
+    set('retFinCashedBody', cashed.length ? cashed.map(function(r,i){ return dealRow(r,i,'ok','Cashed'); }).join('') : empty(6, 'No cashed retention deals matched: current-stage date ' + y + '.'));
+    set('retFinBookedBody', booked.length ? booked.map(function(r,i){ return dealRow(r,i,'warn','Booked'); }).join('') : empty(6, 'No booked retention deals matched: current-stage date ' + y + '.'));
+    var cT = byId('retFinCashedToggle'); if(cT) cT.style.display = cashed.length > 5 ? 'block' : 'none';
+    var bT = byId('retFinBookedToggle'); if(bT) bT.style.display = booked.length > 5 ? 'block' : 'none';
+
+    set('retFinRenewedBody', renewed.length ? renewed.map(function(r,i){ return '<tr class="' + rowClass(i,'ok') + '"><td><div style="font-weight:900">' + link(r.companyName || 'Unknown Company', r.companyUrl) + '</div><div style="font-size:10px;color:var(--muted)">' + safe(r.renewalSourceDealName || r.sourceDealName || '') + '</div></td><td>' + link(r.name || r.renewedDealName || 'Renewed deal', r.hubspotUrl || r.renewedDealUrl) + '</td><td class="c" style="font-family:var(--mono);font-weight:900">' + money(r.renewalValue == null ? r.amount : r.renewalValue) + '</td><td class="c">' + safe(r.originalContractRenewalDate || r.contractRenewalDate) + '</td><td class="c"><span class="badge ' + (/cash/i.test(String(r.renewalType || '')) ? 'bg' : 'bp') + '">' + safe(r.renewalType || 'Renewed') + '</span></td><td>' + safe([r.rmOwnerName,r.csmOwnerName].filter(Boolean).join(' / ')) + '</td></tr>'; }).join('') : empty(6,'No renewed companies found under the current-year renewal logic.'));
+    set('retFinDelayedBody', delayed.length ? delayed.map(function(r,i){ return '<tr class="' + rowClass(i,'risk') + '"><td><div style="font-weight:900">' + link(r.companyName || r.name || r.dealName || 'Renewal', r.companyUrl || r.hubspotUrl) + '</div><div style="font-size:10px;color:var(--muted)">' + safe(r.reason || r.alert || 'Delayed renewal') + '</div></td><td>' + safe([r.rmOwnerName,r.csmOwnerName].filter(Boolean).join(' / ') || r.ownerName) + '</td><td class="c" style="font-family:var(--mono);font-weight:900;color:var(--red)">' + money(r.renewalValue == null ? r.amount : r.renewalValue) + '</td><td class="c">' + safe(r.contractRenewalDate || r.renewalDate) + '</td><td class="c"><span class="badge br">' + num(r.daysOverdue) + 'd</span></td><td class="c"><span class="badge ba">Follow up</span></td></tr>'; }).join('') : empty(6,'No delayed renewal exposure found.'));
+    var rT = byId('retFinRenewedToggle'); if(rT) rT.style.display = renewed.length > 5 ? 'block' : 'none';
+    var dT = byId('retFinDelayedToggle'); if(dT) dT.style.display = delayed.length > 5 ? 'block' : 'none';
+
+    var filteredOwnerStats = {};
+    repData.forEach(function(r){ filteredOwnerStats[String(r.id)] = { booked:0, cashed:0, cashValue:0 }; });
+    function matchOwners(row){
+      var ids = [row && row.ownerId, row && row.rmOwnerId, row && row.csmOwnerId, row && row.hubspot_owner_id, first(row, ['hubspot_owner_id'])].filter(Boolean).map(String);
+      var names = [row && row.ownerName, row && row.rmOwnerName, row && row.csmOwnerName].filter(Boolean).map(String);
+      return repData.filter(function(r){ return ids.indexOf(String(r.id)) >= 0 || names.indexOf(String(r.name)) >= 0; });
+    }
+    booked.forEach(function(row){ matchOwners(row).forEach(function(r){ filteredOwnerStats[String(r.id)].booked += 1; }); });
+    cashed.forEach(function(row){ matchOwners(row).forEach(function(r){ filteredOwnerStats[String(r.id)].cashed += 1; filteredOwnerStats[String(r.id)].cashValue += amount(row); }); });
+
+    var head = ['Owner','Booked','Cashed','Renewed','Delayed','Cash Value'];
+    var rows = repData.map(function(r){
+      var original = (ownerDetails[String(r.id)] && ownerDetails[String(r.id)].metrics) || r || {};
+      var filteredMetrics = filteredOwnerStats[String(r.id)] || {booked:0,cashed:0,cashValue:0};
+      var renewedCount = num(original.renewed);
+      var delayedCount = num(original.delayed);
+      return '<div class="ret-fin-owner-cell"><div class="ret-fin-owner-name"><span class="ret-fin-dot" style="--oc:' + (r.color || 'var(--cyan)') + '"></span>' + safe(r.name) + ' <span class="ret">' + safe(r.role || '') + '</span></div></div>' +
+        '<div class="ret-fin-owner-cell" style="font-family:var(--mono);font-weight:900">' + num(filteredMetrics.booked) + '</div>' +
+        '<div class="ret-fin-owner-cell" style="font-family:var(--mono);font-weight:900;color:var(--green)">' + num(filteredMetrics.cashed) + '</div>' +
+        '<div class="ret-fin-owner-cell" style="font-family:var(--mono);font-weight:900;color:var(--cyan)">' + renewedCount + '</div>' +
+        '<div class="ret-fin-owner-cell" style="font-family:var(--mono);font-weight:900;color:' + (delayedCount > 0 ? 'var(--red)' : 'var(--green)') + '">' + delayedCount + '</div>' +
+        '<div class="ret-fin-owner-cell" style="font-family:var(--mono);font-weight:900;color:var(--green)">' + money(filteredMetrics.cashValue) + '</div>';
+    }).join('');
+    set('retFinOwnerGrid', head.map(function(h){ return '<div class="ret-fin-owner-cell ret-fin-owner-head">' + h + '</div>'; }).join('') + (rows || '<div class="ret-fin-empty" style="grid-column:1/-1">No owner financial summary found.</div>'));
+
+    if(window.console && console.info){
+      console.info('[Retention Financial Rule]', {
+        year: y,
+        rule: 'Booked/Cashed: deal stage is Booked or Cashed and date entered current stage is current year. Retention only; Acquisition untouched.',
+        owners: repData.length,
+        bookedSource: fin.bookedSource.length,
+        bookedMatched: booked.length,
+        cashedSource: fin.cashedSource.length,
+        cashedMatched: cashed.length
+      });
+    }
+  };
+
+  window.selectRetentionOwner = function(repId){
+    normalizeRetentionData();
+    var data = window.R || {};
+    var rep = (data.repData || []).find(function(r){ return String(r.id) === String(repId); });
+    if(!rep) return;
+    APP_MAIN_PANEL = 'retention';
+    APP_RETENTION_VIEW = 'owner';
+    APP_RETENTION_OWNER_ID = String(repId);
+    RET_SELECTED_OWNER_ID = String(repId);
+    RETENTION_SUBVIEW = 'owner';
+    document.querySelectorAll('.tab-btn').forEach(function(t){ t.classList.remove('active'); });
+    document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+    document.querySelectorAll('.nav-item').forEach(function(n){ n.classList.remove('active'); });
+    var tabs = byId('tabsBar'); if(tabs) tabs.style.display = 'none';
+    byId('side-retention') && byId('side-retention').classList.add('active');
+    byId('panel-retention') && byId('panel-retention').classList.add('active');
+    if(typeof setRetentionOwnerMode === 'function') setRetentionOwnerMode(true);
+    window.renderRetentionSidebar('owner');
+    var title = byId('topbarTitle'); if(title) title.textContent = 'Retention · ' + rep.name;
+    var sub = byId('topbarSub'); if(sub) sub.textContent = (rep.role || 'Owner') + ' · owner page · priority actions, financial movement, activity quality';
+    if(typeof window.renderRetention === 'function') window.renderRetention();
+    if(typeof window.renderRetentionOwnerDetails === 'function') window.renderRetentionOwnerDetails(repId);
+    window.scrollTo({top:0, behavior:'smooth'});
+  };
+
+  if(typeof window.loadData === 'function' && !window.loadData.__retentionOwnerFinancialWrapped){
+    var oldLoadData = window.loadData;
+    window.loadData = async function(){
+      var result;
+      try{
+        result = oldLoadData.apply(this, arguments);
+        if(result && typeof result.then === 'function') await result;
+      } finally {
+        normalizeRetentionData();
+        if(window.APP_MAIN_PANEL === 'retention' || (byId('panel-retention') && byId('panel-retention').classList.contains('active')) || (byId('panel-retention-financial') && byId('panel-retention-financial').classList.contains('active'))){
+          if(typeof window.renderRetention === 'function') window.renderRetention();
+          if(typeof window.renderRetentionFinancialDetails === 'function') window.renderRetentionFinancialDetails();
+          window.renderRetentionSidebar(window.APP_RETENTION_VIEW === 'financial' ? 'financial' : window.APP_RETENTION_VIEW === 'owner' ? 'owner' : 'overview');
+        }
+      }
+      return result;
+    };
+    window.loadData.__retentionOwnerFinancialWrapped = true;
+  }
+})();
+
+
+
+/* ═══════════════════════════════════════════
+   RETENTION FINANCIAL DETAILS — SHEETS ONLY PATCH
+   Scope: Retention Financial panel only.
+   Source: R.retentionSheets2026 only.
+   Acquisition is intentionally untouched.
+   ═══════════════════════════════════════════ */
+(function(){
+  if(window.__retentionFinancialSheetsOnlyPatch) return;
+  window.__retentionFinancialSheetsOnlyPatch = true;
+
+  var MONTHS = [
+    {key:'All', label:'All Months', short:'All'},
+    {key:'Jan', label:'January', short:'Jan'},
+    {key:'Feb', label:'February', short:'Feb'},
+    {key:'Mar', label:'March', short:'Mar'},
+    {key:'Apr', label:'April', short:'Apr'},
+    {key:'May', label:'May', short:'May'},
+    {key:'Jun', label:'June', short:'Jun'},
+    {key:'Jul', label:'July', short:'Jul'},
+    {key:'Aug', label:'August', short:'Aug'},
+    {key:'Sep', label:'September', short:'Sep'},
+    {key:'Oct', label:'October', short:'Oct'},
+    {key:'Nov', label:'November', short:'Nov'},
+    {key:'Dec', label:'December', short:'Dec'}
+  ];
+
+  window.RET_FIN_SHEET_MONTH = window.RET_FIN_SHEET_MONTH || 'All';
+
+  function byId(id){ return document.getElementById(id); }
+  function htmlSafe(v){
+    return String(v == null ? '' : v)
+      .replace(/&/g,'&amp;')
+      .replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;')
+      .replace(/'/g,'&#039;');
+  }
+  function money(v){
+    if(typeof window.fmt === 'function') return window.fmt(Number(v || 0));
+    var n = Number(v || 0);
+    if(!isFinite(n) || !n) return '$0';
+    if(Math.abs(n) >= 1000000) return '$' + (n / 1000000).toFixed(1) + 'M';
+    if(Math.abs(n) >= 1000) return '$' + Math.round(n / 1000) + 'K';
+    return '$' + Math.round(n).toLocaleString();
+  }
+  function number(v){
+    var n = Number(String(v == null ? 0 : v).replace(/[^0-9.-]/g,''));
+    return isFinite(n) ? n : 0;
+  }
+  function asArray(v){ return Array.isArray(v) ? v : []; }
+  function set(id, value){ var el = byId(id); if(el) el.innerHTML = value; }
+  function setText(id, value){ var el = byId(id); if(el) el.textContent = value; }
+  function norm(v){ return String(v || '').trim().toLowerCase().replace(/\s+/g,' '); }
+  function selectedMonth(){ return window.RET_FIN_SHEET_MONTH || 'All'; }
+  function monthLabel(key){
+    var item = MONTHS.find(function(m){ return m.key === key; });
+    return item ? item.label : 'All Months';
+  }
+  function statusClass(status){
+    var s = norm(status);
+    if(s.indexOf('late') >= 0) return 'ba';
+    if(s.indexOf('delayed') >= 0) return 'br';
+    if(s.indexOf('renewed on time') >= 0 || s === 'renewed') return 'bg';
+    if(s.indexOf('upcoming') >= 0) return 'bb';
+    return 'bp';
+  }
+  function productKey(row){
+    var p = norm(row && row.product);
+    if(p.indexOf('talentera') >= 0) return 'Talentera';
+    if(p.indexOf('after') >= 0) return 'AfterHire';
+    if(p.indexOf('evalufy') >= 0) return 'Evalufy';
+    return row && row.product ? String(row.product) : 'Talentera';
+  }
+  function monthlyValue(row, bucket, month){
+    if(!row) return 0;
+    if(!month || month === 'All'){
+      return bucket === 'booked' ? number(row.bookedValue) : number(row.collectedValue);
+    }
+    var map = bucket === 'booked' ? row.bookingByMonth : row.collectionByMonth;
+    var p = productKey(row);
+    var cell = map && map[month];
+    if(cell){
+      var direct = number(cell[p]);
+      if(direct) return direct;
+      var sum = 0;
+      Object.keys(cell).forEach(function(k){ sum += number(cell[k]); });
+      if(sum) return sum;
+    }
+    var rowMonth = bucket === 'booked' ? row.bookingMonth : row.collectionMonth;
+    var total = bucket === 'booked' ? number(row.bookedValue) : number(row.collectedValue);
+    return rowMonth === month ? total : 0;
+  }
+  function renewalValueForMonth(row, month){
+    if(!row) return 0;
+    if(!month || month === 'All') return number(row.renewalValue2026);
+    return row.renewalMonth === month ? number(row.renewalValue2026) : 0;
+  }
+  function rowIncluded(row, month){
+    if(!row) return false;
+    if(!month || month === 'All') return true;
+    return row.renewalMonth === month || monthlyValue(row, 'booked', month) > 0 || monthlyValue(row, 'collected', month) > 0;
+  }
+  function dueStatusIncluded(row, month){
+    if(!row) return false;
+    if(!month || month === 'All') return true;
+    return row.renewalMonth === month;
+  }
+  function sheetsData(){
+    var data = window.R || {};
+    return data.retentionSheets2026 || {};
+  }
+  function sheetAccounts(){
+    return asArray(sheetsData().accounts);
+  }
+  function filteredAccounts(){
+    var m = selectedMonth();
+    return sheetAccounts().filter(function(row){ return rowIncluded(row, m); });
+  }
+  function dueRows(rows, statusNeedle){
+    var m = selectedMonth();
+    return rows.filter(function(row){
+      return norm(row.status).indexOf(statusNeedle) >= 0 && dueStatusIncluded(row, m);
+    });
+  }
+  function remainingFor(row, month){
+    return Math.max(monthlyValue(row, 'booked', month) - monthlyValue(row, 'collected', month), 0);
+  }
+  function rowKey(row){
+    return String(row.gid || '') + '|' + norm(row.clientName) + '|' + norm(row.product);
+  }
+  function groupOwners(rows){
+    var m = selectedMonth();
+    var map = {};
+    function add(ownerName, role, row){
+      ownerName = String(ownerName || '').trim();
+      if(!ownerName) return;
+      var key = role + ':' + ownerName.toLowerCase();
+      if(!map[key]) map[key] = { name: ownerName, role: role, accounts: {}, renewal: 0, booked: 0, collected: 0, remaining: 0 };
+      map[key].accounts[rowKey(row)] = true;
+      map[key].renewal += renewalValueForMonth(row, m);
+      map[key].booked += monthlyValue(row, 'booked', m);
+      map[key].collected += monthlyValue(row, 'collected', m);
+      map[key].remaining += remainingFor(row, m);
+    }
+    rows.forEach(function(row){
+      add(row.rm, 'RM', row);
+      add(row.csm, 'CSM', row);
+    });
+    return Object.keys(map).map(function(k){
+      var x = map[k];
+      x.accountCount = Object.keys(x.accounts).length;
+      return x;
+    }).sort(function(a,b){
+      return (a.role === b.role ? 0 : a.role === 'RM' ? -1 : 1) || a.name.localeCompare(b.name);
+    });
+  }
+  function rowClass(i, kind){
+    return (i >= 10 ? 'ret-hidden ' : '') + (kind === 'risk' ? 'ret-row-critical' : kind === 'ok' ? 'ret-row-ok' : 'ret-row-warning');
+  }
+  function empty(cols, msg){ return '<tr><td colspan="' + cols + '" class="ret-fin-empty">' + htmlSafe(msg) + '</td></tr>'; }
+  function badge(status){ return '<span class="badge ' + statusClass(status) + '">' + htmlSafe(status || '—') + '</span>'; }
+  function cellMoney(v, color){ return '<span style="font-family:var(--mono);font-weight:900;color:' + color + '">' + money(v) + '</span>'; }
+  function ownerText(row){ return [row.rm ? 'RM: ' + row.rm : '', row.csm ? 'CSM: ' + row.csm : ''].filter(Boolean).join(' · ') || '—'; }
+
+  function ensureFilterUI(){
+    var panel = byId('panel-retention-financial');
+    if(!panel) return;
+    var heroTitle = panel.querySelector('.ret-fin-hero-title');
+    var heroSub = panel.querySelector('.ret-fin-hero-sub');
+    if(heroTitle) heroTitle.textContent = 'Retention Financial Details — Sheets Only';
+    if(heroSub) heroSub.textContent = 'This view no longer uses HubSpot financial/deal rows. Renewal value, booked value, collection, remaining collection, delayed and renewed-late logic are read only from the three Google Sheets inside retentionSheets2026.';
+
+    var styleId = 'retFinSheetsOnlyStyles';
+    if(!byId(styleId)){
+      var style = document.createElement('style');
+      style.id = styleId;
+      style.textContent = '.ret-sheet-filter-card{background:var(--surface);border:1px solid var(--border);border-top:3px solid var(--cyan);border-radius:var(--r-lg);box-shadow:var(--sh);margin-bottom:14px;overflow:hidden}.ret-sheet-filter-inner{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:13px 18px;background:var(--surface2);border-bottom:1px solid var(--border)}.ret-sheet-filter-left{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.ret-sheet-label{font-size:10px;font-weight:900;color:var(--text2);text-transform:uppercase;letter-spacing:.1em}.ret-sheet-select{height:34px;padding:0 11px;border:1px solid var(--border);border-radius:9px;background:#fff;font-size:11px;font-weight:800;color:var(--text2);font-family:var(--font)}.ret-sheet-note{font-size:10px;color:var(--muted);font-weight:800}.ret-sheet-source{padding:10px 18px;background:#fff;font-size:10px;color:var(--muted);font-weight:700;line-height:1.55}.ret-sheet-pill{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--border);border-radius:999px;padding:4px 8px;background:var(--surface);font-size:9px;font-weight:900;color:var(--text2);margin-right:5px}.ret-fin-top-grid{grid-template-columns:repeat(6,1fr)}@media(max-width:1200px){.ret-fin-top-grid{grid-template-columns:repeat(3,1fr)}}@media(max-width:700px){.ret-fin-top-grid{grid-template-columns:1fr}}';
+      document.head.appendChild(style);
+    }
+
+    var filter = byId('retFinSheetFilter');
+    if(!filter){
+      filter = document.createElement('div');
+      filter.id = 'retFinSheetFilter';
+      filter.className = 'ret-sheet-filter-card';
+      var hero = panel.querySelector('.ret-fin-hero');
+      if(hero && hero.parentNode) hero.parentNode.insertBefore(filter, hero.nextSibling);
+    }
+    var options = MONTHS.map(function(m){ return '<option value="' + m.key + '"' + (selectedMonth() === m.key ? ' selected' : '') + '>' + m.label + '</option>'; }).join('');
+    var src = sheetsData().sourceSheets || {};
+    filter.innerHTML = '<div class="ret-sheet-filter-inner"><div class="ret-sheet-filter-left"><span class="ret-sheet-label">Month Filter</span><select class="ret-sheet-select" id="retFinMonthSelect" onchange="RET_FIN_SHEET_MONTH=this.value; renderRetentionFinancialDetails();"><option value="All"' + (selectedMonth()==='All'?' selected':'') + '>All Months</option>' + options.replace('<option value="All" selected>All Months</option>','').replace('<option value="All">All Months</option>','') + '</select><span class="ret-sheet-note">Applies to all cards, owner summary and tables.</span></div><span class="badge bb">Sheets only</span></div><div class="ret-sheet-source"><span class="ret-sheet-pill">Budget: ' + htmlSafe(src.budget || '1- 2026 Budget') + '</span><span class="ret-sheet-pill">Booking: ' + htmlSafe(src.booking || 'Retention Accounts Booking') + '</span><span class="ret-sheet-pill">Collection: ' + htmlSafe(src.collection || 'Retention Accounts Collection') + '</span><span class="ret-sheet-pill">Last updated: ' + htmlSafe(sheetsData().lastUpdated || (window.R && window.R.generatedAt) || '—') + '</span></div>';
+  }
+
+  function updateStaticLabels(){
+    var panel = byId('panel-retention-financial');
+    if(!panel) return;
+    var boardTitle = panel.querySelector('.ret-fin-board-title');
+    if(boardTitle) boardTitle.innerHTML = '📊 Sheet Owner Summary';
+    var subs = panel.querySelectorAll('.ret-fin-subtitle');
+    if(subs[0]) subs[0].innerHTML = '💵 Collection From Sheets';
+    if(subs[1]) subs[1].innerHTML = '📝 Booked From Sheets';
+    if(subs[2]) subs[2].innerHTML = '📋 Renewal Overview From Sheets';
+    if(subs[3]) subs[3].innerHTML = '🚨 Delayed / Renewed Late From Sheets';
+    var notes = panel.querySelectorAll('.ret-fin-mini-note');
+    if(notes[0]) notes[0].textContent = 'Source = Retention Accounts Collection. Month filter uses collection month / product columns from the sheet only.';
+    if(notes[1]) notes[1].textContent = 'Source = Retention Accounts Booking. Month filter uses booking month / product columns from the sheet only.';
+    if(notes[2]) notes[2].textContent = 'Source = 1- 2026 Budget. Shows renewal value, renewal month, product, RM, CSM and sheet renewal status.';
+    if(notes[3]) notes[3].textContent = 'Delayed = renewal month passed with no booking. Renewed Late = booking month after renewal month. Both are calculated from the sheets output.';
+
+    function setHead(bodyId, html){
+      var body = byId(bodyId);
+      var table = body && body.closest('table');
+      var head = table && table.querySelector('thead tr');
+      if(head) head.innerHTML = html;
+    }
+    setHead('retFinCashedBody','<th>Client</th><th>RM / CSM</th><th class="c">Product</th><th class="c">Collection Month</th><th class="c">Collected</th><th class="c">Remaining</th>');
+    setHead('retFinBookedBody','<th>Client</th><th>RM / CSM</th><th class="c">Product</th><th class="c">Booking Month</th><th class="c">Booked</th><th class="c">Status</th>');
+    setHead('retFinRenewedBody','<th>Client</th><th>GID</th><th class="c">Product</th><th class="c">Renewal Month</th><th class="c">Renewal Value</th><th class="c">Sheet Status</th>');
+    setHead('retFinDelayedBody','<th>Client</th><th>RM</th><th>CSM</th><th class="c">Product</th><th class="c">Renewal Month</th><th class="c">Value / Status</th>');
+  }
+
+  window.renderRetentionSidebar = function(activeMode){
+    activeMode = activeMode || 'overview';
+    var side = byId('sideRepLinks');
+    if(!side) return;
+    var data = window.R || {};
+    var repData = typeof window.retGetOwnerList === 'function' ? window.retGetOwnerList() : asArray(data.repData || data.ownerMatrix);
+    var accounts = sheetAccounts();
+    var bookedCount = accounts.filter(function(a){ return number(a.bookedValue) > 0; }).length;
+    var collectedCount = accounts.filter(function(a){ return number(a.collectedValue) > 0; }).length;
+    side.style.display = 'block';
+    var title = byId('repsSectionTitle');
+    if(title){ title.style.display = 'block'; title.textContent = 'Retention'; }
+    var links = [
+      '<button class="nav-item' + (activeMode === 'overview' ? ' active' : '') + '" id="side-ret-overview" onclick="switchMainPanel(\'retention\')"><span class="nav-icon" style="color:var(--cyan)">🛡️</span>Team Overview<span class="view-tag">VIEW</span></button>',
+      '<button class="nav-item' + (activeMode === 'financial' ? ' active' : '') + '" id="side-ret-financial" onclick="switchRetentionFinancial()"><span class="nav-icon" style="color:var(--green)">💰</span>Financial Details<span class="nav-badge">' + bookedCount + '/' + collectedCount + '</span></button>',
+      '<div class="sidebar-section" style="padding:12px 10px 5px;margin:0;font-size:8px">Retention Team</div>'
+    ];
+    if(!repData.length){
+      links.push('<div style="padding:8px 16px;color:rgba(139,173,138,.72);font-size:10px;line-height:1.45">No RM / CSM owners in data-retention.json</div>');
+    }
+    repData.forEach(function(r){
+      var color = r.color || 'var(--cyan)';
+      var short = String(r.name || '').split(' ')[0] || 'Owner';
+      var active = activeMode === 'owner' && String(window.RET_SELECTED_OWNER_ID || '') === String(r.id) ? ' active' : '';
+      var badgeValue = r.accounts || r.activeAccounts || 0;
+      links.push('<button class="nav-item' + active + '" id="side-ret-' + htmlSafe(r.id) + '" onclick="selectRetentionOwner(\'' + htmlSafe(r.id) + '\')"><span class="nav-icon" style="color:' + color + '">' + (r.role === 'RM' ? '◆' : '●') + '</span>' + htmlSafe(short) + ' <span class="ret">' + htmlSafe(r.role || '') + '</span><span class="nav-badge">' + badgeValue + '</span></button>');
+    });
+    side.innerHTML = links.join('');
+  };
+
+  window.switchRetentionFinancial = function(){
+    window.APP_MAIN_PANEL = 'retention';
+    window.APP_RETENTION_VIEW = 'financial';
+    window.APP_RETENTION_OWNER_ID = null;
+    window.RET_SELECTED_OWNER_ID = null;
+    window.RETENTION_SUBVIEW = 'financial';
+    if(typeof window.setRetentionOwnerMode === 'function') window.setRetentionOwnerMode(false);
+    document.querySelectorAll('.tab-btn').forEach(function(t){ t.classList.remove('active'); });
+    document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+    document.querySelectorAll('.nav-item').forEach(function(n){ n.classList.remove('active'); });
+    var tabs = byId('tabsBar'); if(tabs) tabs.style.display = 'none';
+    byId('side-retention') && byId('side-retention').classList.add('active');
+    byId('panel-retention-financial') && byId('panel-retention-financial').classList.add('active');
+    window.renderRetentionSidebar('financial');
+    var title = byId('topbarTitle'); if(title) title.textContent = 'Retention · Financial Details';
+    var sub = byId('topbarSub'); if(sub) sub.textContent = 'Sheets only · 1- 2026 Budget + Booking + Collection · Month filter applied to all financial tables';
+    window.renderRetentionFinancialDetails();
+    window.scrollTo({top:0, behavior:'smooth'});
+  };
+
+  window.renderRetentionFinancialDetails = function(){
+    var data = window.R || {};
+    ensureFilterUI();
+    updateStaticLabels();
+    var rs = sheetsData();
+    var all = sheetAccounts();
+    var rows = filteredAccounts();
+    var m = selectedMonth();
+    var monthText = monthLabel(m);
+
+    if(!rs || !all.length){
+      set('retFinTopGrid','<div class="ret-fin-card" style="--fc:var(--red);grid-column:1/-1"><div class="ret-fin-card-v">No Sheet Data</div><div class="ret-fin-card-l">retentionSheets2026 missing</div><div class="ret-fin-card-s">Run the n8n sheet workflow and make sure data-retention.json contains retentionSheets2026.accounts.</div></div>');
+      set('retFinOwnerGrid','<div class="ret-fin-empty" style="grid-column:1/-1">No owner summary because retentionSheets2026.accounts is empty.</div>');
+      set('retFinCashedBody', empty(6,'No collection rows from sheets.'));
+      set('retFinBookedBody', empty(6,'No booking rows from sheets.'));
+      set('retFinRenewedBody', empty(6,'No renewal overview rows from sheets.'));
+      set('retFinDelayedBody', empty(6,'No delayed / renewed-late rows from sheets.'));
+      return;
+    }
+
+    var renewalTotal = rows.reduce(function(s,r){ return s + renewalValueForMonth(r,m); }, 0);
+    var bookedTotal = rows.reduce(function(s,r){ return s + monthlyValue(r,'booked',m); }, 0);
+    var collectedTotal = rows.reduce(function(s,r){ return s + monthlyValue(r,'collected',m); }, 0);
+    var remainingTotal = rows.reduce(function(s,r){ return s + remainingFor(r,m); }, 0);
+    var delayedRows = dueRows(rows, 'delayed');
+    var lateRows = dueRows(rows, 'late');
+    var upcomingRows = dueRows(rows, 'upcoming');
+
+    set('retFinTopGrid', [
+      {v: money(renewalTotal), l:'Renewal Value', s: rows.length + ' accounts · ' + monthText, c:'var(--cyan)'},
+      {v: money(bookedTotal), l:'Booked Value', s: rows.filter(function(r){ return monthlyValue(r,'booked',m) > 0; }).length + ' rows · Booking sheet', c:'var(--purple)'},
+      {v: money(collectedTotal), l:'Cash Collected', s: rows.filter(function(r){ return monthlyValue(r,'collected',m) > 0; }).length + ' rows · Collection sheet', c:'var(--green)'},
+      {v: money(remainingTotal), l:'Booked Not Cash', s:'Booked - Cash collected · ' + monthText, c:'var(--blue)'},
+      {v: delayedRows.length.toLocaleString(), l:'Delayed Accounts', s:'Due month passed · no booking/collection', c:'var(--red)'},
+      {v: lateRows.length.toLocaleString(), l:'Renewed Late', s:'Booking after renewal month', c:'var(--amber)'}
+    ].map(function(x){ return '<div class="ret-fin-card" style="--fc:' + x.c + '"><div class="ret-fin-card-v">' + x.v + '</div><div class="ret-fin-card-l">' + x.l + '</div><div class="ret-fin-card-s">' + x.s + '</div></div>'; }).join(''));
+
+    setText('retFinCashedBadge', rows.filter(function(r){ return monthlyValue(r,'collected',m) > 0; }).length + ' · ' + money(collectedTotal));
+    setText('retFinBookedBadge', rows.filter(function(r){ return monthlyValue(r,'booked',m) > 0; }).length + ' · ' + money(bookedTotal));
+    setText('retFinRenewedBadge', rows.length + ' · ' + money(renewalTotal));
+    setText('retFinDelayedBadge', (delayedRows.length + lateRows.length) + ' action rows');
+
+    var owners = groupOwners(rows);
+    var ownerGrid = byId('retFinOwnerGrid');
+    if(ownerGrid) ownerGrid.style.gridTemplateColumns = '1.15fr .45fr .65fr .85fr .85fr .85fr .85fr';
+    setText('retFinOwnerBadge', owners.length + ' sheet owners · ' + monthText);
+    ensureRetExportButton('retFinOwnerBadge','retFinOwnerGrid','retention-owner-financial-summary');
+    var ownerHead = ['Owner','Role','Accounts','Renewal','Booked','Collected','Remaining'];
+    var ownerHtml = owners.map(function(o){
+      return '<div class="ret-fin-owner-cell"><div class="ret-fin-owner-name"><span class="ret-fin-dot" style="--oc:' + (o.role === 'RM' ? 'var(--blue)' : 'var(--cyan)') + '"></span>' + htmlSafe(o.name) + '</div></div>' +
+        '<div class="ret-fin-owner-cell"><span class="ret">' + htmlSafe(o.role) + '</span></div>' +
+        '<div class="ret-fin-owner-cell" style="font-family:var(--mono);font-weight:900">' + o.accountCount.toLocaleString() + '</div>' +
+        '<div class="ret-fin-owner-cell" style="font-family:var(--mono);font-weight:900;color:var(--cyan)">' + money(o.renewal) + '</div>' +
+        '<div class="ret-fin-owner-cell" style="font-family:var(--mono);font-weight:900;color:var(--purple)">' + money(o.booked) + '</div>' +
+        '<div class="ret-fin-owner-cell" style="font-family:var(--mono);font-weight:900;color:var(--green)">' + money(o.collected) + '</div>' +
+        '<div class="ret-fin-owner-cell" style="font-family:var(--mono);font-weight:900;color:var(--blue)">' + money(o.remaining) + '</div>';
+    }).join('');
+    set('retFinOwnerGrid', ownerHead.map(function(h){ return '<div class="ret-fin-owner-cell ret-fin-owner-head">' + h + '</div>'; }).join('') + (ownerHtml || '<div class="ret-fin-empty" style="grid-column:1/-1">No RM/CSM values found in the sheet rows.</div>'));
+
+    function clientCell(row){
+      return '<div style="font-weight:900">' + htmlSafe(row.clientName || 'Unknown Client') + '</div><div style="font-size:10px;color:var(--muted)">GID: ' + htmlSafe(row.gid || '—') + ' · ' + htmlSafe(row.location || 'No location') + '</div>';
+    }
+    function collectionRow(row,i){
+      var collected = monthlyValue(row,'collected',m);
+      return '<tr class="' + rowClass(i,'ok') + '"><td>' + clientCell(row) + '</td><td>' + htmlSafe(ownerText(row)) + '</td><td class="c">' + htmlSafe(row.product || '—') + '</td><td class="c">' + htmlSafe(m === 'All' ? (row.collectionMonth || '—') : m) + '</td><td class="c">' + cellMoney(collected,'var(--green)') + '</td><td class="c">' + cellMoney(remainingFor(row,m),'var(--blue)') + '</td></tr>';
+    }
+    function bookingRow(row,i){
+      var booked = monthlyValue(row,'booked',m);
+      return '<tr class="' + rowClass(i,'warn') + '"><td>' + clientCell(row) + '</td><td>' + htmlSafe(ownerText(row)) + '</td><td class="c">' + htmlSafe(row.product || '—') + '</td><td class="c">' + htmlSafe(m === 'All' ? (row.bookingMonth || '—') : m) + '</td><td class="c">' + cellMoney(booked,'var(--purple)') + '</td><td class="c">' + badge(row.status) + '</td></tr>';
+    }
+    function overviewRow(row,i){
+      return '<tr class="' + rowClass(i,'ok') + '"><td>' + clientCell(row) + '</td><td class="c" style="font-family:var(--mono)">' + htmlSafe(row.gid || '—') + '</td><td class="c">' + htmlSafe(row.product || '—') + '</td><td class="c">' + htmlSafe(row.renewalMonth || '—') + '</td><td class="c">' + cellMoney(renewalValueForMonth(row,m),'var(--cyan)') + '</td><td class="c">' + badge(row.renewalStatusFromSheet || row.status) + '</td></tr>';
+    }
+    function actionRow(row,i){
+      var st = row.status || '—';
+      var kind = norm(st).indexOf('delayed') >= 0 ? 'risk' : 'warn';
+      return '<tr class="' + rowClass(i,kind) + '"><td>' + clientCell(row) + '</td><td>' + htmlSafe(row.rm || '—') + '</td><td>' + htmlSafe(row.csm || '—') + '</td><td class="c">' + htmlSafe(row.product || '—') + '</td><td class="c">' + htmlSafe(row.renewalMonth || '—') + '</td><td class="c">' + cellMoney(number(row.renewalValue2026),'var(--red)') + '<div style="margin-top:4px">' + badge(st) + '</div></td></tr>';
+    }
+
+    var collectionRows = rows.filter(function(r){ return monthlyValue(r,'collected',m) > 0; });
+    var bookingRows = rows.filter(function(r){ return monthlyValue(r,'booked',m) > 0; });
+    var actionRows = rows.filter(function(r){
+      var s = norm(r.status);
+      return (s.indexOf('delayed') >= 0 || s.indexOf('late') >= 0) && dueStatusIncluded(r,m);
+    });
+
+    set('retFinCashedBody', collectionRows.length ? collectionRows.map(collectionRow).join('') : empty(6, 'No collection rows found from the Collection sheet for ' + monthText + '.'));
+    set('retFinBookedBody', bookingRows.length ? bookingRows.map(bookingRow).join('') : empty(6, 'No booking rows found from the Booking sheet for ' + monthText + '.'));
+    set('retFinRenewedBody', rows.length ? rows.map(overviewRow).join('') : empty(6, 'No renewal accounts found from 1- 2026 Budget for ' + monthText + '.'));
+    set('retFinDelayedBody', actionRows.length ? actionRows.map(actionRow).join('') : empty(6, 'No delayed or renewed-late accounts found for ' + monthText + '.'));
+
+    [
+      ['retFinCashedToggle', collectionRows.length],
+      ['retFinBookedToggle', bookingRows.length],
+      ['retFinRenewedToggle', rows.length],
+      ['retFinDelayedToggle', actionRows.length]
+    ].forEach(function(pair){
+      var btn = byId(pair[0]);
+      if(btn){ btn.style.display = pair[1] > 10 ? 'block' : 'none'; btn.textContent = '▼ Show more'; }
+    });
+
+    if(window.console && console.info){
+      console.info('[Retention Financial Rule]', {
+        rule: 'Sheets only. No HubSpot financial/deal rows are used in Retention Financial Details.',
+        month: m,
+        sourceSheets: rs.sourceSheets || {},
+        accounts: rows.length,
+        bookedValue: bookedTotal,
+        collectedValue: collectedTotal,
+        delayedAccounts: delayedRows.length,
+        renewedLateAccounts: lateRows.length,
+        upcomingAccounts: upcomingRows.length
+      });
+    }
+  };
+})();
 
 function updateClock(){
   const now=new Date(),riy=new Date(now.toLocaleString("en-US",{timeZone:"Asia/Riyadh"}));
-  if($("topbarSub")&&D && !$("panel-financial")?.classList.contains("active"))$("topbarSub").textContent=`${riy.toLocaleTimeString("en-US",{hour:"2-digit",minute:"2-digit"})} Riyadh · Auto-refresh 5min`;
+  if($("topbarSub")&&D && !$("panel-retention")?.classList.contains("active") && !$("panel-financial")?.classList.contains("active"))$("topbarSub").textContent=`${riy.toLocaleTimeString("en-US",{hour:"2-digit",minute:"2-digit"})} Riyadh · Auto-refresh 5min`;
 }
 setInterval(updateClock,60000);
 window.__dashboardAutoRefreshTimer && clearInterval(window.__dashboardAutoRefreshTimer);
@@ -4571,5 +6526,6 @@ window.__dashboardAutoRefreshTimer = setInterval(function(){
 })();
 </script>
 
+<!-- Acquisition Only V3 Fixed: based on full original JS, keeps fetchJsonFromSources and renderFinancialDetails intact. -->
 </body>
 </html>
