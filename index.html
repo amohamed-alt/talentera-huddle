@@ -352,6 +352,10 @@ body{font-family:var(--font);background:#eef8f2;color:var(--text);-webkit-font-s
 @media(max-width:1100px){.priority-grid,.rank-country-summary{grid-template-columns:repeat(3,1fr)}.risk-grid{grid-template-columns:1fr}}
 @media(max-width:800px){.priority-grid,.rank-country-summary{grid-template-columns:1fr}.priority-item{grid-template-columns:28px 1fr}.priority-score{grid-column:2;text-align:left}.lead-rep-row{grid-template-columns:1fr repeat(3,.5fr)}}
 
+
+.clickable-card,.clickable-metric{cursor:pointer;transition:transform .12s,box-shadow .12s,background .12s}.clickable-card:hover,.clickable-metric:hover{transform:translateY(-1px);box-shadow:var(--sh-md);background:rgba(255,255,255,.88)}.metric-link{cursor:pointer;border-radius:7px;padding:2px 5px;display:inline-block;transition:.12s}.metric-link:hover{background:rgba(22,163,74,.10);color:#15803d}.metric-link::after{content:"";display:inline-block;width:4px;height:4px;border-radius:50%;background:#16a34a;margin-left:4px;vertical-align:middle;opacity:.45}.rep-rank-tools{display:flex;gap:7px;align-items:center;flex-wrap:wrap;padding:11px 18px;border-top:1px solid rgba(22,64,42,.05);background:rgba(255,255,255,.35)}.rep-rank-summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(112px,1fr));gap:1px;background:rgba(22,64,42,.06);border-top:1px solid rgba(22,64,42,.04);border-bottom:1px solid rgba(22,64,42,.04)}.rep-rank-cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}.rank-summary-box.clickable-metric:hover{background:rgba(22,163,74,.08)}
+@media(max-width:900px){.rep-rank-cards{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body>
@@ -422,7 +426,7 @@ body{font-family:var(--font);background:#eef8f2;color:var(--text);-webkit-font-s
               <div class="fp mc" onclick="openMetric('leads_not_contacted')"><div class="fp-v" id="fpLeads">—</div><div class="fp-l">Leads need contact</div><div class="fp-s" id="fpLeadsSub"></div></div>
               <div class="fp mc" onclick="openMetric('rank_ab_untouched')"><div class="fp-v" id="fpUntouched">—</div><div class="fp-l">Rank A/B untouched</div><div class="fp-s" id="fpUntouchedSub"></div></div>
               <div class="fp mc" onclick="openMetric('deals_at_risk')"><div class="fp-v" id="fpRisk">—</div><div class="fp-l">Deals at risk</div><div class="fp-s" id="fpRiskSub"></div></div>
-              <div class="fp"><div class="fp-v" id="fpRate">—%</div><div class="fp-l">Contact rate</div><div class="fp-s" id="fpRateSub"></div></div>
+              <div class="fp mc" onclick="openMetric('leads_contacted')"><div class="fp-v" id="fpRate">—%</div><div class="fp-l">Contact rate</div><div class="fp-s" id="fpRateSub"></div></div>
             </div>
           </div>
           <div class="focus-ai">
@@ -559,7 +563,7 @@ body{font-family:var(--font);background:#eef8f2;color:var(--text);-webkit-font-s
         </div>
         <div class="gc" style="margin-bottom:16px">
           <div class="gc-hd"><div class="gc-title">📊 Financial Summary</div><span class="badge bg">YTD</span></div>
-          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(22,64,42,.07);border-top:1px solid rgba(22,64,42,.06)" id="finSumGrid"></div>
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(22,64,42,.07);border-top:1px solid rgba(22,64,42,.06)" id="finSumGrid"></div>
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
           <div class="gc" style="border-top:3px solid #16a34a">
@@ -716,7 +720,7 @@ function rKPICards(kY,kM,kT,team){
     {lbl:'Open Pipeline',val:fmt(team.pipeline||0),sub:(team.openDeals||0)+' open deals',trend:(team.won||0)+' won MTD',tcls:'up',vals:[kY.pipeline||0,kM.pipeline||0,kT.pipeline||0],c:'#16a34a'},
     {lbl:'Won MTD',val:money(team.wonAmt||0),sub:(team.won||0)+' deals closed',trend:(kY.wonDeals||0)+' won yesterday',tcls:team.won>0?'up':'wn',vals:[kY.wonAmt||0,kM.wonAmt||0,kT.wonAmt||0],c:'#2563eb'}
   ];
-  H('kpiRow',cards.map(c=>'<div class="kpi-card"><div class="kpi-head"><div class="kpi-lbl">'+esc(c.lbl)+'</div><button class="kpi-menu-btn">⋮</button></div><div class="kpi-val" style="color:'+c.c+'">'+esc(c.val)+'</div><div class="kpi-sub">'+esc(c.sub)+'</div><span class="kpi-trend '+c.tcls+'">'+esc(c.trend)+'</span>'+spark(c.vals,c.c)+'</div>').join(''));
+  H('kpiRow',cards.map((c,i)=>'<div class="kpi-card clickable-card" onclick="openMetric(\''+(['leads_not_contacted','open_deals','closed_won'][i]||'open_deals')+'\')"><div class="kpi-head"><div class="kpi-lbl">'+esc(c.lbl)+'</div><button class="kpi-menu-btn" onclick="event.stopPropagation();openMetric(\''+(['leads_not_contacted','open_deals','closed_won'][i]||'open_deals')+'\')">⋮</button></div><div class="kpi-val" style="color:'+c.c+'">'+esc(c.val)+'</div><div class="kpi-sub">'+esc(c.sub)+'</div><span class="kpi-trend '+c.tcls+'">'+esc(c.trend)+'</span>'+spark(c.vals,c.c)+'</div>').join(''));
 }
 
 /* ══ ACTIVITY CHART ══ */
@@ -820,27 +824,28 @@ function priorityRows(){
 }
 function rPriority(ar,team){
   const rows=priorityRows();
-  const leads=rows.filter(x=>x._kind==='lead').length;
-  const deals=rows.filter(x=>x._kind==='deal').length;
-  const high=rows.filter(x=>x._severity>=3).length;
+  const leads=rows.filter(x=>x._kind==='lead');
+  const deals=rows.filter(x=>x._kind==='deal');
+  const high=rows.filter(x=>x._severity>=3);
   T('priorityBadge',rows.length+' items');
   H('priorityMiniGrid',[
-    {v:leads,l:'Leads need contact',c:'#dc2626'},
-    {v:deals,l:'Deals need action',c:'#d97706'},
-    {v:high,l:'High priority',c:'#7c3aed'}
-  ].map(x=>'<div class="priority-mini" style="--pc:'+x.c+'"><div class="priority-mini-v">'+Number(x.v||0).toLocaleString()+'</div><div class="priority-mini-l">'+esc(x.l)+'</div></div>').join(''));
+    {k:'priority_leads',v:leads.length,l:'Lead actions',c:'#dc2626'},
+    {k:'priority_deals',v:deals.length,l:'Deal actions',c:'#d97706'},
+    {k:'priority_actions',v:rows.length,l:'Total priority',c:'#7c3aed'}
+  ].map(x=>'<div class="priority-mini clickable-metric" onclick="openMetric(\''+x.k+'\')" style="--pc:'+x.c+'"><div class="priority-mini-v">'+Number(x.v||0).toLocaleString()+'</div><div class="priority-mini-l">'+esc(x.l)+'</div></div>').join(''));
   H('priorityList',rows.slice(0,7).map((row,i)=>{
     const name=row.name||row.dealname||row.email||row.id||'Unknown';
     const owner=row.ownerName||row.rep||row.owner||'—';
     const meta=[row._type,owner,row.country,row.source||row.sourceBucket,row.stage,row.createdAt?String(row.createdAt).slice(0,10):null].filter(Boolean).join(' · ');
     const value=row.amount!=null?fmt(row.amount):row.ageDays!=null?row.ageDays+'d':row.days!=null?row.days+'d':'';
-    return '<div class="priority-item"><div class="priority-num">'+(i+1)+'</div><div><div class="priority-name">'+rl(name,rowUrl(row))+'</div><div class="priority-meta">'+esc(meta)+'</div></div><div class="priority-score">'+esc(String(value||'Action'))+'</div></div>';
-  }).join('')+(rows.length===0?'<div class="lead-empty">No priority rows found in this data refresh.</div>':''));
+    return '<div class="priority-item clickable-metric" onclick="openMetric(\'priority_actions\')"><div class="priority-num">'+(i+1)+'</div><div><div class="priority-name">'+rl(name,rowUrl(row))+'</div><div class="priority-meta">'+esc(meta)+'</div></div><div class="priority-score">'+esc(String(value||'Action'))+'</div></div>';
+  }).join('')+(rows.length===0?'<div class="lead-empty">No priority rows found in this data refresh.</div>':'<button class="see-more" onclick="openMetric(\'priority_actions\')">View all '+rows.length+' priority rows →</button>'));
 }
+
 
 function countryName(v){return String(v||'Unknown').trim()||'Unknown';}
 function countryKey(v){return countryName(v).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')||'unknown';}
-function countryMatches(row,key){return key==='all'||countryKey(row.country||row.companyCountry||row.countryName||row.hs_country)===key;}
+function countryMatches(row,key){return key==='all'||countryKey(row.country||row.companyCountry||row.countryName||row.hs_country||row._country)===key;}
 function statFromCountry(obj,country){
   if(!obj)return null;
   const found=Object.entries(obj).find(([k])=>countryKey(k)===countryKey(country));
@@ -857,7 +862,7 @@ function nval(){
   return 0;
 }
 function rowFirst(row,keys){
-  const sources=[row,row&&row.properties,row&&row.fields,row&&row.propertyValues];
+  const sources=[row,row&&row.properties,row&&row.fields,row&&row.propertyValues,row&&row.associations];
   for(const k of keys){
     for(const src of sources){
       if(!src)continue;
@@ -869,18 +874,22 @@ function rowFirst(row,keys){
 }
 function ownerKey(v){return String(v||'').trim().toLowerCase();}
 function uiKey(v){return String(v||'all').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')||'all';}
-function rowRank(row){return String(rowFirst(row,['rank','companyRank','company_rank','hs_lead_rank','tier'])||'').trim().toUpperCase();}
-function rowCountry(row){return rowFirst(row,['country','companyCountry','countryName','hs_country','ip_country_code','country_code'])||'Unknown';}
-function rowOwner(row,fallback){return ownerKey(rowFirst(row,['ownerName','rep','hubspot_owner_name','owner','ownerId','hubspot_owner_id'])||fallback||'');}
-function rowCompanyId(row){return rowFirst(row,['id','hs_object_id','companyId','company_id','recordId','objectId'])||rowFirst(row,['name','companyName','company','domain']);}
+function rowRank(row){return String(rowFirst(row,['rank','companyRank','company_rank','hs_lead_rank','tier','Rank','company_rank_value'])||row._rank||'').trim().toUpperCase().replace('RANK ','');}
+function rowCountry(row){return rowFirst(row,['country','companyCountry','countryName','hs_country','ip_country_code','country_code','company_country','Country'])||row._country||'Unknown';}
+function rowOwner(row,fallback){return ownerKey(rowFirst(row,['ownerName','rep','hubspot_owner_name','owner','ownerId','hubspot_owner_id','salesOwner','companyOwner'])||row._owner||fallback||'');}
+function rowCompanyName(row){return rowFirst(row,['name','companyName','company','associatedCompanyName','primaryCompanyName','domain','website','companyDomain'])||row.name||row.companyName||'';}
+function rowCompanyId(row){return rowFirst(row,['id','hs_object_id','companyId','company_id','recordId','objectId','associatedCompanyId','primaryCompanyId'])||rowCompanyName(row);}
+function rowUrl(row){return row.hubspotUrl||row.url||row.recordUrl||null;}
 function hasCompletedMeeting(row){
   if(!row)return false;
   const bool=rowFirst(row,['hasCompletedMeeting','completedMeeting','meetingCompleted','completed_meeting','has_completed_meeting']);
   if(bool===true||String(bool).toLowerCase()==='true'||String(bool)==='1')return true;
   const count=nval(rowFirst(row,['completedMeetings','meetingsCompleted','completed_meetings','meetings_completed','completedMeetingsCount','meetingsCompletedCount','completedMeetingCount','meetingCompletedCount']));
   if(count>0)return true;
-  const date=rowFirst(row,['lastCompletedMeetingDate','latestCompletedMeetingDate','completedMeetingDate','meetingCompletedDate','last_meeting_completed_date']);
-  return !!date;
+  const outcome=String(rowFirst(row,['hs_meeting_outcome','meetingOutcome','outcome','status','meetingStatus','activityStatus'])||'').toLowerCase();
+  if(outcome.includes('complete')||outcome==='completed')return true;
+  const date=rowFirst(row,['lastCompletedMeetingDate','latestCompletedMeetingDate','completedMeetingDate','meetingCompletedDate','last_meeting_completed_date','hs_meeting_start_time','activityDate']);
+  return !!date && (outcome===''||!outcome.includes('cancel')&&!outcome.includes('no show'));
 }
 function objMetric(obj,keys){return obj?nval(...keys.map(k=>obj[k])):0;}
 function byCountryMetric(rep,country,rank,keys){
@@ -889,54 +898,68 @@ function byCountryMetric(rep,country,rank,keys){
   if(rank==='A')sources.push(statFromCountry(rep.rankAByCountry,label));
   if(rank==='B')sources.push(statFromCountry(rep.rankBByCountry,label));
   sources.push(statFromCountry(rep.rankByCountry,label),statFromCountry(rep.countryBreakdown,label),statFromCountry(rep.rankCoverageByCountry,label));
-  for(const src of sources){
-    const v=objMetric(src,keys);
-    if(v>0)return v;
-  }
+  for(const src of sources){const v=objMetric(src,keys); if(v>0)return v;}
   return 0;
 }
-function buildCompletedMeetingRankIndex(){
-  if(window.__completedMeetingRankIndex)return window.__completedMeetingRankIndex;
+function countryKeysFromObj(obj){return obj?Object.keys(obj):[];}
+function collectRankCompanyRows(){
+  const rows=[];
+  const push=(x,extra={})=>{if(!x)return; rows.push({...x,...extra,_rank:rowRank({...x,...extra}),_country:rowCountry({...x,...extra}),_owner:rowOwner({...x,...extra},extra.ownerName)});};
   const oc=(D&&D.outreachCoverage)||{};
-  const idx={byCompany:{},counts:{}};
-  const companyRows=[];
   if(oc.companies){
-    ['contactedList','notContactedList','allList','list'].forEach(k=>Array.isArray(oc.companies[k])&&companyRows.push(...oc.companies[k]));
+    ['allList','list','contactedList','notContactedList','untouchedList','completedMeetingsList','meetingsCompletedList'].forEach(k=>{
+      (oc.companies[k]||[]).forEach(x=>push(x,{_source:k,_status:k.includes('not')||k.includes('untouched')?'untouched':k.includes('contacted')?'contacted':undefined}));
+    });
   }
+  (D.topInactiveRankAccounts||[]).forEach(x=>push(x,{_source:'topInactive',_status:'untouched',rank:x.rank}));
   (D.repData||[]).forEach(rep=>{
-    [...(rep.rankAUntouched||[]).map(x=>({...x,rank:x.rank||'A',ownerName:x.ownerName||rep.name,ownerId:x.ownerId||rep.id})),...(rep.rankBUntouched||[]).map(x=>({...x,rank:x.rank||'B',ownerName:x.ownerName||rep.name,ownerId:x.ownerId||rep.id}))].forEach(x=>companyRows.push(x));
+    (rep.rankAUntouched||[]).forEach(x=>push(x,{_source:'repRankAUntouched',_status:'untouched',rank:x.rank||'A',ownerName:x.ownerName||rep.name,rep:rep.name,repColor:rep.color}));
+    (rep.rankBUntouched||[]).forEach(x=>push(x,{_source:'repRankBUntouched',_status:'untouched',rank:x.rank||'B',ownerName:x.ownerName||rep.name,rep:rep.name,repColor:rep.color}));
+    ['rankAContactedList','rankBContactedList','rankACompanies','rankBCompanies','rankCompanies','rankAccounts','companyList'].forEach(k=>{
+      (rep[k]||[]).forEach(x=>push(x,{_source:k,_status:k.toLowerCase().includes('contact')?'contacted':undefined,ownerName:x.ownerName||rep.name,rep:rep.name,repColor:rep.color}));
+    });
   });
-  companyRows.forEach(co=>{
-    const id=String(rowCompanyId(co)||'');
-    if(!id)return;
-    idx.byCompany[id]={...co,_rank:rowRank(co),_country:rowCountry(co),_owner:rowOwner(co)};
+  const seen=new Map();
+  rows.forEach(x=>{
+    const rank=rowRank(x); if(rank!=='A'&&rank!=='B')return;
+    const key=[rowOwner(x),countryKey(rowCountry(x)),rank,String(rowCompanyId(x)||rowCompanyName(x)).toLowerCase()].join('||');
+    const prev=seen.get(key)||{};
+    seen.set(key,{...prev,...x,_rank:rank,_country:rowCountry(x),_owner:rowOwner(x),_status:x._status||prev._status});
   });
-  const contacts=[];
-  if(oc.contacts){
-    ['contactedList','notContactedList','allList','list','completedMeetingsList','meetingsCompletedList'].forEach(k=>Array.isArray(oc.contacts[k])&&contacts.push(...oc.contacts[k]));
-  }
-  const add=(owner,country,rank,companyId)=>{
-    if(rank!=='A'&&rank!=='B')return;
-    const key=owner+'||'+uiKey(country)+'||'+rank;
-    idx.counts[key]=idx.counts[key]||new Set();
-    idx.counts[key].add(String(companyId||owner+'-'+country+'-'+rank+'-'+idx.counts[key].size));
+  return Array.from(seen.values());
+}
+function collectMeetingCandidateRows(){
+  const rows=[];
+  const oc=(D&&D.outreachCoverage)||{};
+  const addArr=a=>Array.isArray(a)&&a.forEach(x=>rows.push(x));
+  if(oc.contacts){['contactedList','allList','list','completedMeetingsList','meetingsCompletedList','meetingsList','activitiesList'].forEach(k=>addArr(oc.contacts[k]));}
+  if(oc.companies){['completedMeetingsList','meetingsCompletedList','meetingsList','activitiesList'].forEach(k=>addArr(oc.companies[k]));}
+  ['completedMeetings','meetingsCompleted','meetingRows','meetings','activities','activityRows','callsMeetings'].forEach(k=>addArr(D&&D[k]));
+  (D.repData||[]).forEach(rep=>['completedMeetings','meetingsCompleted','meetingsList','completedMeetingsList','activities','activityRows'].forEach(k=>Array.isArray(rep[k])&&rep[k].forEach(x=>rows.push({...x,ownerName:x.ownerName||rep.name,rep:rep.name,repColor:rep.color}))));
+  return rows;
+}
+function buildCompletedMeetingRankIndex(){
+  if(window.__completedMeetingRankIndex&&window.__completedMeetingRankIndex._stamp===D)return window.__completedMeetingRankIndex;
+  const idx={byCompany:{},alias:{},counts:{},rows:{}};
+  const companies=collectRankCompanyRows();
+  const aliases=(co)=>[rowCompanyId(co),rowCompanyName(co),rowFirst(co,['domain','website','companyDomain'])].filter(Boolean).map(x=>String(x).trim().toLowerCase());
+  companies.forEach(co=>{aliases(co).forEach(a=>idx.alias[a]=co); const id=String(rowCompanyId(co)||rowCompanyName(co)||''); if(id)idx.byCompany[id]=co;});
+  const add=(owner,country,rank,companyId,row)=>{
+    const r=String(rank||'').toUpperCase(); if(r!=='A'&&r!=='B')return;
+    const key=ownerKey(owner)+'||'+uiKey(country)+'||'+r;
+    idx.counts[key]=idx.counts[key]||new Set(); idx.rows[key]=idx.rows[key]||[];
+    const id=String(companyId||rowCompanyId(row)||rowCompanyName(row)||owner+'-'+country+'-'+r+'-'+idx.counts[key].size);
+    if(!idx.counts[key].has(id)){idx.counts[key].add(id); idx.rows[key].push({...row,_owner:owner,_country:country,_rank:r,_companyId:id});}
   };
-  contacts.forEach(ct=>{
-    if(!hasCompletedMeeting(ct))return;
-    const ids=[...(Array.isArray(ct.companyIds)?ct.companyIds:[]),rowFirst(ct,['companyId','company_id','associatedCompanyId','primaryCompanyId'])].filter(Boolean);
-    if(ids.length){
-      ids.forEach(id=>{
-        const co=idx.byCompany[String(id)];
-        if(!co)return;
-        add(co._owner||rowOwner(ct),co._country||rowCountry(ct),co._rank||rowRank(co),id);
-      });
-    }else{
-      const rank=rowRank(ct),country=rowCountry(ct),owner=rowOwner(ct);
-      if(rank==='A'||rank==='B')add(owner,country,rank,rowCompanyId(ct)||rowFirst(ct,['email','id'])||Math.random());
-    }
+  collectMeetingCandidateRows().forEach(mt=>{
+    if(!hasCompletedMeeting(mt))return;
+    const ids=[...(Array.isArray(mt.companyIds)?mt.companyIds:[]),rowFirst(mt,['companyId','company_id','associatedCompanyId','primaryCompanyId','hs_company_id']),rowCompanyName(mt),rowFirst(mt,['companyDomain','domain','website'])].filter(Boolean).map(x=>String(x).trim().toLowerCase());
+    let matched=false;
+    ids.forEach(id=>{const co=idx.alias[id]||idx.byCompany[id]; if(co){matched=true; add(rowOwner(co,rowOwner(mt)),rowCountry(co),rowRank(co),rowCompanyId(co)||id,{...co,...mt,name:rowCompanyName(co)||mt.name||mt.companyName,hubspotUrl:rowUrl(co)||rowUrl(mt)});}});
+    if(!matched){const rank=rowRank(mt),country=rowCountry(mt),owner=rowOwner(mt); if(rank==='A'||rank==='B')add(owner,country,rank,rowCompanyId(mt)||rowFirst(mt,['email','id']),mt);}
   });
   const flat={};Object.entries(idx.counts).forEach(([k,set])=>flat[k]=set.size);
-  window.__completedMeetingRankIndex={counts:flat,byCompany:idx.byCompany};
+  window.__completedMeetingRankIndex={_stamp:D,counts:flat,rows:idx.rows,byCompany:idx.byCompany,alias:idx.alias};
   return window.__completedMeetingRankIndex;
 }
 function completedMeetingsFor(rep,country,rank){
@@ -946,7 +969,6 @@ function completedMeetingsFor(rep,country,rank){
   if(country==='all')return Object.entries(idx).reduce((s,[k,v])=>{const p=k.split('||');return p[0]===owner&&p[2]===r?s+Number(v||0):s;},0);
   return Number(idx[owner+'||'+uiKey(window.__rankCountryLabels&&window.__rankCountryLabels[country]||country)+'||'+r]||0);
 }
-function countryKeysFromObj(obj){return obj?Object.keys(obj):[];}
 function repRankStats(r,country){
   const all=country==='all';
   const uA=(r.rankAUntouched||[]).filter(x=>countryMatches(x,country));
@@ -974,8 +996,83 @@ function repRankStats(r,country){
   const bM=byCountryMetric(r,country,'B',bMeetKeys)||completedMeetingsFor(r,country,'B');
   return {a,aC,aU,aM,b,bC,bU,bM};
 }
-function rankSummaryBox(v,l,c){return '<div class="rank-summary-box"><div class="rank-summary-v" style="color:'+c+'">'+Number(v||0).toLocaleString()+'</div><div class="rank-summary-l">'+esc(l)+'</div></div>';}
-function setRankCountry(key){RANK_COUNTRY=key; rRankCov(window.__rankRows||[]);}
+function rankSummaryBox(v,l,c,kind,country,owner){
+  const onclick=kind?' onclick="openRankMetric(\''+kind+'\',\''+(country||RANK_COUNTRY||'all')+'\',\''+esc(owner||'')+'\')"':'';
+  return '<div class="rank-summary-box clickable-metric"'+onclick+'><div class="rank-summary-v" style="color:'+c+'">'+Number(v||0).toLocaleString()+'</div><div class="rank-summary-l">'+esc(l)+'</div></div>';
+}
+function rankMetricRows(kind,country,owner){
+  const c=country||RANK_COUNTRY||'all'; const ownerK=ownerKey(owner||'');
+  const allCompanies=collectRankCompanyRows();
+  const meetingsIdx=buildCompletedMeetingRankIndex();
+  const countryLabel=window.__rankCountryLabels&&window.__rankCountryLabels[c]||c;
+  const match=(row,rank)=>{
+    if(rank&&rowRank(row)!==rank)return false;
+    if(c!=='all'&&countryKey(rowCountry(row))!==countryKey(countryLabel))return false;
+    if(ownerK&&rowOwner(row)!==ownerK&&ownerKey(row.ownerName||row.rep)!==ownerK)return false;
+    return true;
+  };
+  let rank=null,status=null,meeting=false;
+  if(kind.includes('a_'))rank='A'; if(kind.includes('b_'))rank='B';
+  if(kind.includes('contacted'))status='contacted';
+  if(kind.includes('untouched'))status='untouched';
+  if(kind.includes('meeting'))meeting=true;
+  if(meeting){
+    const rows=[];
+    Object.entries(meetingsIdx.rows||{}).forEach(([key,list])=>{
+      const [o,co,r]=key.split('||');
+      if(rank&&r!==rank)return;
+      if(ownerK&&o!==ownerK)return;
+      if(c!=='all'&&co!==uiKey(countryLabel))return;
+      rows.push(...list);
+    });
+    return rows;
+  }
+  return allCompanies.filter(row=>{
+    if(!match(row,rank))return false;
+    if(status==='untouched')return String(row._status||'').includes('untouched')||String(row._source||'').toLowerCase().includes('untouched')||String(row._source||'').toLowerCase().includes('inactive');
+    if(status==='contacted')return String(row._status||'').includes('contacted')||String(row._source||'').toLowerCase().includes('contacted');
+    return true;
+  });
+}
+function openRankMetric(kind,country,owner){
+  const labels={a_total:'Rank A Accounts',a_contacted:'Rank A Contacted',a_meetings:'Rank A Completed Meetings',a_untouched:'Rank A Untouched',b_total:'Rank B Accounts',b_contacted:'Rank B Contacted',b_meetings:'Rank B Completed Meetings',b_untouched:'Rank B Untouched',ab_contacted:'Rank A/B Contacted',ab_meetings:'Rank A/B Completed Meetings',ab_untouched:'Rank A/B Untouched'};
+  const rows=rankMetricRows(kind,country,owner);
+  const label=(country==='all'||!country?'All countries':(window.__rankCountryLabels&&window.__rankCountryLabels[country]||country));
+  showRowsModal((labels[kind]||'Rank Details')+' ('+rows.length+')',(owner?owner+' · ':'')+label,rows,'No row-level records exported for this metric yet. The count can exist while the matching record list is missing from data.json.');
+}
+function setRankCountry(key){RANK_COUNTRY=key; rRankCov(window.__rankRows||[]); updateAllRepRankSections();}
+function countriesForRep(r){
+  const countries=new Map();
+  [...(r.rankAUntouched||[]),...(r.rankBUntouched||[])].forEach(x=>countries.set(countryKey(rowCountry(x)),countryName(rowCountry(x))));
+  [...countryKeysFromObj(r.rankAByCountry),...countryKeysFromObj(r.rankBByCountry),...countryKeysFromObj(r.rankByCountry),...countryKeysFromObj(r.countryBreakdown),...countryKeysFromObj(r.rankCoverageByCountry)].forEach(c=>countries.set(countryKey(c),countryName(c)));
+  rankMetricRows('a_meetings','all',r.name).concat(rankMetricRows('b_meetings','all',r.name)).forEach(x=>countries.set(countryKey(rowCountry(x)),countryName(rowCountry(x))));
+  return countries;
+}
+function repRankKey(slug){return (window.__repRankFilters&&window.__repRankFilters[slug])||'all';}
+function setRepRankCountry(slug,key){window.__repRankFilters=window.__repRankFilters||{};window.__repRankFilters[slug]=key;const r=(D.repData||[]).find(x=>x.name.toLowerCase().replace(/\s/g,'-')===slug);if(r)renderRepRankSection(r,slug);}
+function repRankTools(r,slug,key){
+  const countries=countriesForRep(r); const total=(r.rankA||0)+(r.rankB||0);
+  return ['<span class="rank-filter-label">Rep country</span>','<button class="rank-chip '+(key==='all'?'active':'')+'" onclick="setRepRankCountry(\''+slug+'\',\'all\')">All '+Number(total||0).toLocaleString()+'</button>'].concat(Array.from(countries.entries()).sort((a,b)=>a[1].localeCompare(b[1])).map(([k,v])=>'<button class="rank-chip '+(key===k?'active':'')+'" onclick="setRepRankCountry(\''+slug+'\',\''+k+'\')">'+esc(v)+'</button>')).join('');
+}
+function repRankCardsHtml(r,slug,key){
+  const st=repRankStats(r,key), label=key==='all'?'All countries':(window.__rankCountryLabels&&window.__rankCountryLabels[key]||key);
+  const uA=(r.rankAUntouched||[]).filter(x=>countryMatches(x,key));
+  const uB=(r.rankBUntouched||[]).filter(x=>countryMatches(x,key));
+  const row=(co,rank)=>'<div class="deal-row clickable-metric" onclick="openRankMetric(\''+(rank==='A'?'a_untouched':'b_untouched')+'\',\''+key+'\',\''+esc(r.name)+'\')"><div style="flex:1;font-size:12px;font-weight:700">'+rl(co.name||rowCompanyName(co)||'Company',rowUrl(co))+'</div><span style="font-size:11px;color:var(--muted)">'+esc(rowCountry(co))+'</span><span class="'+(rank==='A'?'rank-a':'rank-b')+'">'+rank+'</span></div>';
+  const aCard='<div class="gc" style="border-top:3px solid #dc2626"><div class="gc-hd"><div class="gc-title">🎯 Rank A Untouched · '+esc(label)+'</div><span class="badge br clickable-metric" onclick="openRankMetric(\'a_untouched\',\''+key+'\',\''+esc(r.name)+'\')">'+uA.length+'</span></div>'+uA.slice(0,5).map(x=>row(x,'A')).join('')+(uA.length>5?'<button class="see-more" onclick="openRankMetric(\'a_untouched\',\''+key+'\',\''+esc(r.name)+'\')">View all '+uA.length+' →</button>':'')+(uA.length===0?'<div style="padding:14px;text-align:center;color:#16a34a;font-size:12px;font-weight:600">✅ All Rank A accounts contacted</div>':'')+'</div>';
+  const bCard='<div class="gc" style="border-top:3px solid #d97706"><div class="gc-hd"><div class="gc-title">🎯 Rank B Untouched · '+esc(label)+'</div><span class="badge ba clickable-metric" onclick="openRankMetric(\'b_untouched\',\''+key+'\',\''+esc(r.name)+'\')">'+uB.length+'</span></div>'+uB.slice(0,5).map(x=>row(x,'B')).join('')+(uB.length>5?'<button class="see-more" onclick="openRankMetric(\'b_untouched\',\''+key+'\',\''+esc(r.name)+'\')">View all '+uB.length+' →</button>':'')+(uB.length===0?'<div style="padding:14px;text-align:center;color:#16a34a;font-size:12px;font-weight:600">✅ All Rank B accounts contacted</div>':'')+'</div>';
+  return {summary:[rankSummaryBox(st.a,'Rank A','#dc2626','a_total',key,r.name),rankSummaryBox(st.aC,'A Contacted','#16a34a','a_contacted',key,r.name),rankSummaryBox(st.aM,'A Meetings','#7c3aed','a_meetings',key,r.name),rankSummaryBox(st.aU,'A Untouched','#dc2626','a_untouched',key,r.name),rankSummaryBox(st.b,'Rank B','#d97706','b_total',key,r.name),rankSummaryBox(st.bC,'B Contacted','#16a34a','b_contacted',key,r.name),rankSummaryBox(st.bM,'B Meetings','#7c3aed','b_meetings',key,r.name),rankSummaryBox(st.bU,'B Untouched','#d97706','b_untouched',key,r.name)].join(''),cards:aCard+bCard};
+}
+function renderRepRankSection(r,slug){
+  const key=repRankKey(slug); const pack=repRankCardsHtml(r,slug,key);
+  H('rep-rank-tools-'+slug,repRankTools(r,slug,key)); H('rep-rank-summary-'+slug,pack.summary); H('rep-rank-cards-'+slug,pack.cards);
+}
+function repRankSectionHtml(r,slug){
+  const key=repRankKey(slug); const pack=repRankCardsHtml(r,slug,key);
+  return '<div class="sec-lbl">Rank A/B by Country</div><div class="gc" style="margin-bottom:14px"><div class="gc-hd"><div class="gc-title">🎯 '+esc(r.name)+' Rank A/B Coverage</div><span class="badge bp">Country + meetings</span></div><div class="rep-rank-tools" id="rep-rank-tools-'+slug+'">'+repRankTools(r,slug,key)+'</div><div class="rep-rank-summary" id="rep-rank-summary-'+slug+'">'+pack.summary+'</div></div><div class="rep-rank-cards" id="rep-rank-cards-'+slug+'">'+pack.cards+'</div>';
+}
+function updateAllRepRankSections(){(D&&D.repData||[]).forEach(r=>{const slug=r.name.toLowerCase().replace(/\s/g,'-'); if($('rep-rank-tools-'+slug))renderRepRankSection(r,slug);});}
+
 
 function riskDealCard(title,items,color,badgeClass,key,label){
   const rows=Array.isArray(items)?items:[];
@@ -997,7 +1094,7 @@ function financialMetricRows(kind){
 function openFinancialMetric(kind){
   const labels={cash:['Cashing Revenue','closedwon deals entered current stage YTD'],sign:['Signed Contract','contractsent deals entered current stage YTD'],pending:['Pending to Cash','signed deals still waiting to cash'],delayed:['Delayed Signed','signed deals delayed more than 7 days'],missing:['Missing Financial Data','deals missing amount or date fields']};
   const rows=financialMetricRows(kind),info=labels[kind]||['Financial Details',''];
-  const html=rows.length?rows.slice(0,100).map(row=>{const name=row.name||row.dealname||row.id||'Unknown deal';const owner=row.rep||row.ownerName||'—';const date=row.stageDate||row.cashingDate||row.signedDate||row.closedate||'—';const status=row.riskLabel||row.status||row.stage||row.dealstage||'—';return '<div class="mrow"><div class="mn">'+rl(name,rowUrl(row))+'<div class="mm">'+esc(status)+' · '+esc(date)+'</div></div><div style="font-size:12px">'+esc(owner)+'</div><div><span class="mpill">'+esc(row.daysFromSigned!=null?row.daysFromSigned+'d':status)+'</span></div><div style="font-family:var(--mono);font-weight:800;text-align:right">'+money(row.amount||0)+'</div></div>';}).join('')+(rows.length>100?'<div class="mempty">Showing first 100/'+rows.length+' rows.</div>':''):'<div class="mempty">No rows found for this financial metric.</div>';
+  const html=rows.length?rows.map(row=>{const name=row.name||row.dealname||row.id||'Unknown deal';const owner=row.rep||row.ownerName||'—';const date=row.stageDate||row.cashingDate||row.signedDate||row.closedate||'—';const status=row.riskLabel||row.status||row.stage||row.dealstage||'—';return '<div class="mrow"><div class="mn">'+rl(name,rowUrl(row))+'<div class="mm">'+esc(status)+' · '+esc(date)+'</div></div><div style="font-size:12px">'+esc(owner)+'</div><div><span class="mpill">'+esc(row.daysFromSigned!=null?row.daysFromSigned+'d':status)+'</span></div><div style="font-family:var(--mono);font-weight:800;text-align:right">'+money(row.amount||0)+'</div></div>';}).join(''):'<div class="mempty">No rows found for this financial metric.</div>';
   T('modalTitle',info[0]+' ('+rows.length+')');T('modalDesc',info[1]);H('modalBody',html);$('modalBg').classList.add('open');
 }
 
@@ -1029,13 +1126,15 @@ function rCoaching(ar){
 /* ══ RANK ══ */
 function rRankCov(ar){
   window.__rankRows=ar||[];
+  window.__completedMeetingRankIndex=null;
   const countries=new Map();
   (ar||[]).forEach(r=>{
-    [...(r.rankAUntouched||[]),...(r.rankBUntouched||[])].forEach(x=>countries.set(countryKey(x.country||x.companyCountry||x.countryName||x.hs_country),countryName(x.country||x.companyCountry||x.countryName||x.hs_country)));
+    [...(r.rankAUntouched||[]),...(r.rankBUntouched||[])].forEach(x=>countries.set(countryKey(rowCountry(x)),countryName(rowCountry(x))));
     [...countryKeysFromObj(r.rankAByCountry),...countryKeysFromObj(r.rankBByCountry),...countryKeysFromObj(r.rankByCountry),...countryKeysFromObj(r.countryBreakdown),...countryKeysFromObj(r.rankCoverageByCountry)].forEach(c=>countries.set(countryKey(c),countryName(c)));
   });
-  (D.topInactiveRankAccounts||[]).forEach(x=>{if(x.country||x.companyCountry||x.countryName)countries.set(countryKey(x.country||x.companyCountry||x.countryName),countryName(x.country||x.companyCountry||x.countryName));});
+  (D.topInactiveRankAccounts||[]).forEach(x=>countries.set(countryKey(rowCountry(x)),countryName(rowCountry(x))));
   Object.values((buildCompletedMeetingRankIndex()||{}).byCompany||{}).forEach(x=>countries.set(countryKey(x._country||rowCountry(x)),countryName(x._country||rowCountry(x))));
+  collectMeetingCandidateRows().forEach(x=>{const c=rowCountry(x); if(c&&c!=='Unknown')countries.set(countryKey(c),countryName(c));});
   window.__rankCountryLabels=Object.fromEntries(countries);
   const totalAll=(D.rankTotals||{}).total||((D.rankTotals||{}).A||0)+((D.rankTotals||{}).B||0);
   const chipHtml=['<span class="rank-filter-label">Filter by country</span>','<button class="rank-chip '+(RANK_COUNTRY==='all'?'active':'')+'" onclick="setRankCountry(\'all\')">All '+Number(totalAll||0).toLocaleString()+'</button>'].concat(Array.from(countries.entries()).sort((a,b)=>a[1].localeCompare(b[1])).map(([k,v])=>'<button class="rank-chip '+(RANK_COUNTRY===k?'active':'')+'" onclick="setRankCountry(\''+k+'\')">'+esc(v)+'</button>')).join('');
@@ -1044,28 +1143,29 @@ function rRankCov(ar){
   const sum=stats.reduce((a,x)=>({a:a.a+x.a,aC:a.aC+x.aC,aU:a.aU+x.aU,aM:a.aM+x.aM,b:a.b+x.b,bC:a.bC+x.bC,bU:a.bU+x.bU,bM:a.bM+x.bM}),{a:0,aC:0,aU:0,aM:0,b:0,bC:0,bU:0,bM:0});
   const totalMeet=sum.aM+sum.bM,totalContacted=sum.aC+sum.bC,totalUntouched=sum.aU+sum.bU;
   H('rankCountrySummary',[
-    rankSummaryBox(sum.a,'Rank A','#dc2626'),
-    rankSummaryBox(sum.aC,'A Contacted','#16a34a'),
-    rankSummaryBox(sum.aM,'A Meetings','#7c3aed'),
-    rankSummaryBox(sum.aU,'A Untouched','#dc2626'),
-    rankSummaryBox(sum.b,'Rank B','#d97706'),
-    rankSummaryBox(sum.bC,'B Contacted','#16a34a'),
-    rankSummaryBox(sum.bM,'B Meetings','#7c3aed'),
-    rankSummaryBox(sum.bU,'B Untouched','#d97706')
+    rankSummaryBox(sum.a,'Rank A','#dc2626','a_total',RANK_COUNTRY,''),
+    rankSummaryBox(sum.aC,'A Contacted','#16a34a','a_contacted',RANK_COUNTRY,''),
+    rankSummaryBox(sum.aM,'A Meetings','#7c3aed','a_meetings',RANK_COUNTRY,''),
+    rankSummaryBox(sum.aU,'A Untouched','#dc2626','a_untouched',RANK_COUNTRY,''),
+    rankSummaryBox(sum.b,'Rank B','#d97706','b_total',RANK_COUNTRY,''),
+    rankSummaryBox(sum.bC,'B Contacted','#16a34a','b_contacted',RANK_COUNTRY,''),
+    rankSummaryBox(sum.bM,'B Meetings','#7c3aed','b_meetings',RANK_COUNTRY,''),
+    rankSummaryBox(sum.bU,'B Untouched','#d97706','b_untouched',RANK_COUNTRY,'')
   ].join(''));
-  H('rankBadges','<span class="badge bg">Contacted '+totalContacted.toLocaleString()+'</span><span class="badge bp">Meetings '+totalMeet.toLocaleString()+'</span><span class="badge br">Untouched '+totalUntouched.toLocaleString()+'</span>');
+  H('rankBadges','<span class="badge bg clickable-metric" onclick="openRankMetric(\'ab_contacted\',RANK_COUNTRY,\'\')">Contacted '+totalContacted.toLocaleString()+'</span><span class="badge bp clickable-metric" onclick="openRankMetric(\'ab_meetings\',RANK_COUNTRY,\'\')">Meetings '+totalMeet.toLocaleString()+'</span><span class="badge br clickable-metric" onclick="openRankMetric(\'ab_untouched\',RANK_COUNTRY,\'\')">Untouched '+totalUntouched.toLocaleString()+'</span>');
   const rd=(D.topInactiveRankAccounts||[]).filter(x=>countryMatches(x,RANK_COUNTRY));
   H('rankRepBody',(ar||[]).map(r=>{
     const st=repRankStats(r,RANK_COUNTRY);
     const uA=(r.rankAUntouched||[]).filter(x=>countryMatches(x,RANK_COUNTRY));
     const uB=(r.rankBUntouched||[]).filter(x=>countryMatches(x,RANK_COUNTRY));
     const top=[...uA.slice(0,2).map(x=>({...x,rank:'A'})),...uB.slice(0,2).map(x=>({...x,rank:'B'}))];
-    const topHtml=top.map(c=>'<span style="font-size:10px;color:'+(c.rank==='A'?'#dc2626':'#d97706')+'">• '+rl(c.name,c.hubspotUrl)+' · '+c.rank+'</span>').join('<br>');
-    return '<tr><td><div style="display:flex;align-items:center;gap:8px"><div style="width:26px;height:26px;border-radius:8px;background:'+r.color+'20;color:'+r.color+';font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center">'+esc((r.name||'?')[0])+'</div><span style="font-weight:700">'+esc(r.name)+'</span></div></td><td class="c"><span class="rank-a">'+st.a+'</span></td><td class="c mono" style="color:#16a34a">'+st.aC+'</td><td class="c mono" style="color:#7c3aed">'+st.aM+'</td><td class="c mono" style="color:'+(st.aU>0?'#dc2626':'#16a34a')+'">'+(st.aU>0?st.aU:'✓')+'</td><td class="c"><span class="rank-b">'+st.b+'</span></td><td class="c mono" style="color:#16a34a">'+st.bC+'</td><td class="c mono" style="color:#7c3aed">'+st.bM+'</td><td class="c mono" style="color:'+(st.bU>0?'#d97706':'#16a34a')+'">'+(st.bU>0?st.bU:'✓')+'</td><td style="font-size:10px;line-height:1.8">'+(topHtml||'<span style="color:#16a34a;font-size:10px">✓</span>')+'</td></tr>';
+    const topHtml=top.map(c=>'<span class="metric-link" onclick="openRankMetric(\''+(c.rank==='A'?'a_untouched':'b_untouched')+'\',\''+RANK_COUNTRY+'\',\''+esc(r.name)+'\')" style="font-size:10px;color:'+(c.rank==='A'?'#dc2626':'#d97706')+'">• '+esc(c.name||rowCompanyName(c))+' · '+c.rank+'</span>').join('<br>');
+    return '<tr><td><div style="display:flex;align-items:center;gap:8px"><div style="width:26px;height:26px;border-radius:8px;background:'+r.color+'20;color:'+r.color+';font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center">'+esc((r.name||'?')[0])+'</div><span style="font-weight:700">'+esc(r.name)+'</span></div></td><td class="c"><span class="rank-a metric-link" onclick="openRankMetric(\'a_total\',\''+RANK_COUNTRY+'\',\''+esc(r.name)+'\')">'+st.a+'</span></td><td class="c mono"><span class="metric-link" onclick="openRankMetric(\'a_contacted\',\''+RANK_COUNTRY+'\',\''+esc(r.name)+'\')" style="color:#16a34a">'+st.aC+'</span></td><td class="c mono"><span class="metric-link" onclick="openRankMetric(\'a_meetings\',\''+RANK_COUNTRY+'\',\''+esc(r.name)+'\')" style="color:#7c3aed">'+st.aM+'</span></td><td class="c mono"><span class="metric-link" onclick="openRankMetric(\'a_untouched\',\''+RANK_COUNTRY+'\',\''+esc(r.name)+'\')" style="color:'+(st.aU>0?'#dc2626':'#16a34a')+'">'+(st.aU>0?st.aU:'✓')+'</span></td><td class="c"><span class="rank-b metric-link" onclick="openRankMetric(\'b_total\',\''+RANK_COUNTRY+'\',\''+esc(r.name)+'\')">'+st.b+'</span></td><td class="c mono"><span class="metric-link" onclick="openRankMetric(\'b_contacted\',\''+RANK_COUNTRY+'\',\''+esc(r.name)+'\')" style="color:#16a34a">'+st.bC+'</span></td><td class="c mono"><span class="metric-link" onclick="openRankMetric(\'b_meetings\',\''+RANK_COUNTRY+'\',\''+esc(r.name)+'\')" style="color:#7c3aed">'+st.bM+'</span></td><td class="c mono"><span class="metric-link" onclick="openRankMetric(\'b_untouched\',\''+RANK_COUNTRY+'\',\''+esc(r.name)+'\')" style="color:'+(st.bU>0?'#d97706':'#16a34a')+'">'+(st.bU>0?st.bU:'✓')+'</span></td><td style="font-size:10px;line-height:1.8">'+(topHtml||'<span style="color:#16a34a;font-size:10px">✓</span>')+'</td></tr>';
   }).join(''));
-  H('rankBody',rd.map(c=>{const dc=c.daysSinceActivity>14?'#dc2626':c.daysSinceActivity>7?'#d97706':'#16a34a';return'<tr><td>'+( c.rank==='A'?'<span class="rank-a">A</span>':'<span class="rank-b">B</span>')+'</td><td style="font-weight:700">'+rl(c.name,c.hubspotUrl)+'</td><td><span style="font-size:11px;font-weight:600;color:'+(c.repColor||'#6b7280')+'">● '+esc(c.rep)+'</span></td><td><span style="font-weight:700;color:'+dc+';font-family:var(--mono);font-size:11px">'+(c.daysSinceActivity>900?'Never':c.daysSinceActivity+'d ago')+'</span></td></tr>';}).join(''));
+  H('rankBody',rd.map(c=>{const dc=c.daysSinceActivity>14?'#dc2626':c.daysSinceActivity>7?'#d97706':'#16a34a';return'<tr class="clickable-metric" onclick="openRankMetric(\''+(c.rank==='A'?'a_untouched':'b_untouched')+'\',\''+RANK_COUNTRY+'\',\''+esc(c.rep||'')+'\')"><td>'+( c.rank==='A'?'<span class="rank-a">A</span>':'<span class="rank-b">B</span>')+'</td><td style="font-weight:700">'+rl(c.name,c.hubspotUrl)+'</td><td><span style="font-size:11px;font-weight:600;color:'+(c.repColor||'#6b7280')+'">● '+esc(c.rep)+'</span></td><td><span style="font-weight:700;color:'+dc+';font-family:var(--mono);font-size:11px">'+(c.daysSinceActivity>900?'Never':c.daysSinceActivity+'d ago')+'</span></td></tr>';}).join(''));
   T('rankFoot','Showing '+rd.length+' inactive accounts · filter: '+(RANK_COUNTRY==='all'?'All countries':(window.__rankCountryLabels[RANK_COUNTRY]||RANK_COUNTRY))+' · contacted '+totalContacted.toLocaleString()+' · meetings completed '+totalMeet.toLocaleString());
 }
+
 
 /* ══ PIPELINE CARDS ══ */
 function rPipeCards(ar){
@@ -1137,9 +1237,9 @@ function buildFullP(r,rW,rL,sh,re,did,c,meta){
   const openBlock='<div class="gc" style="margin-bottom:14px"><div class="gc-hd"><div class="gc-title">💼 Open Deals</div><span class="badge bb">'+(r.openDeals||0)+' · '+fmt(r.pipeAmt||0)+'</span></div>'+openDT(sh,re,did)+'</div>';
   const riskParts=[riskDealCard('🟡 Cold Deals',cold,'#d97706','ba','cold-'+did,'No activity'),riskDealCard('🔴 Stuck Deals',stuck,'#dc2626','br','stuck-'+did,'Stuck')].filter(Boolean).join('');
   const riskBlock=riskParts?'<div class="risk-grid">'+riskParts+'</div>':'';
-  const rankA=uA.length?'<div class="gc" style="border-top:3px solid #dc2626"><div class="gc-hd"><div class="gc-title">🎯 Rank A Untouched</div><span class="badge br">'+uA.length+'</span></div>'+uA.slice(0,5).map(co=>'<div class="deal-row"><div style="flex:1;font-size:12px;font-weight:700">'+rl(co.name,co.hubspotUrl)+'</div><span style="font-size:11px;color:var(--muted)">'+esc(co.country||'')+'</span><span class="rank-a">A</span></div>').join('')+(uA.length>5?'<div style="text-align:center;padding:8px;font-size:11px;color:var(--muted)">+'+(uA.length-5)+' more</div>':'')+'</div>':'<div class="gc" style="border-top:3px solid #16a34a"><div class="gc-hd"><div class="gc-title">🎯 Rank A</div><span class="badge bg">All covered</span></div><div style="padding:14px;text-align:center;color:#16a34a;font-size:12px;font-weight:600">✅ All Rank A accounts contacted</div></div>';
-  const rankB=uB.length?'<div class="gc" style="border-top:3px solid #d97706"><div class="gc-hd"><div class="gc-title">🎯 Rank B Untouched</div><span class="badge ba">'+uB.length+'</span></div>'+uB.slice(0,5).map(co=>'<div class="deal-row"><div style="flex:1;font-size:12px;font-weight:700">'+rl(co.name,co.hubspotUrl)+'</div><span style="font-size:11px;color:var(--muted)">'+esc(co.country||'')+'</span><span class="rank-b">B</span></div>').join('')+(uB.length>5?'<div style="text-align:center;padding:8px;font-size:11px;color:var(--muted)">+'+(uB.length-5)+' more</div>':'')+'</div>':'<div class="gc" style="border-top:3px solid #16a34a"><div class="gc-hd"><div class="gc-title">🎯 Rank B</div><span class="badge bg">All covered</span></div><div style="padding:14px;text-align:center;color:#16a34a;font-size:12px;font-weight:600">✅ All Rank B accounts contacted</div></div>';
-  return hero+kpi+wonBlock+lostBlock+openBlock+riskBlock+'<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">'+rankA+rankB+'</div>';
+  const slug=(r.name||'').toLowerCase().replace(/\s/g,'-');
+  const rankSection=repRankSectionHtml(r,slug);
+  return hero+kpi+wonBlock+lostBlock+openBlock+riskBlock+rankSection;
 }
 
 function openDT(sh,re,did){return'<div>'+sh.map(d=>{const na=d.nextActivityDate,nd=na?String(na).slice(0,10):null;return'<div class="deal-row"><div style="flex:1;min-width:0"><div class="deal-nm">'+rl(d.name,d.hubspotUrl)+'</div><div class="deal-mt">'+esc(d.stage||'')+(nd?' · Next: '+nd:'')+'</div></div>'+(d.isStuck?'<span class="badge br" style="flex-shrink:0;font-size:8px">Stuck</span>':d.isCold?'<span class="badge ba" style="flex-shrink:0;font-size:8px">Cold</span>':d.hasNextActivity?'<span class="badge bg" style="flex-shrink:0;font-size:8px">On Track</span>':'')+'<div class="deal-amt">'+fmt(d.amount||0)+'</div></div>';}).join('')+'<div id="'+did+'-m" style="display:none">'+re.map(d=>'<div class="deal-row"><div style="flex:1;min-width:0"><div class="deal-nm">'+rl(d.name,d.hubspotUrl)+'</div><div class="deal-mt">'+esc(d.stage||'')+'</div></div><div class="deal-amt">'+fmt(d.amount||0)+'</div></div>').join('')+'</div>'+(re.length?'<button class="see-more" onclick="toggleMore(\''+did+'-m\',this,\'▼ '+re.length+' more\',\'▲ Less\')">▼ '+re.length+' more deals</button>':'')+(sh.length===0&&re.length===0?'<div style="padding:16px;text-align:center;color:var(--muted);font-size:12px">No open deals.</div>':'')+'</div>';}
@@ -1149,20 +1249,33 @@ function mRows(kind){
   if(!D)return[];
   const oc=D.outreachCoverage||{};
   if(kind==='priority_actions')return priorityRows();
+  if(kind==='priority_leads')return priorityRows().filter(x=>x._kind==='lead');
+  if(kind==='priority_deals')return priorityRows().filter(x=>x._kind==='deal');
   if(kind==='leads_not_contacted')return[...(oc.contacts&&oc.contacts.notContactedList||[])];
+  if(kind==='leads_contacted')return[...(oc.contacts&&oc.contacts.contactedList||[])];
   if(kind==='companies_not_contacted')return[...(oc.companies&&oc.companies.notContactedList||[])];
+  if(kind==='companies_contacted')return[...(oc.companies&&oc.companies.contactedList||[])];
   if(kind==='rank_ab_untouched')return(D.repData||[]).flatMap(r=>[...(r.rankAUntouched||[]).map(x=>({...x,ownerName:r.name,rank:'A'})),...(r.rankBUntouched||[]).map(x=>({...x,ownerName:r.name,rank:'B'}))]);
   if(kind==='deals_at_risk')return(D.repData||[]).flatMap(r=>[...(r.needsAttention||[]).map(x=>({...x,ownerName:r.name})),...(r.cold||[]).map(x=>({...x,ownerName:r.name})),...(r.stuck||[]).map(x=>({...x,ownerName:r.name}))]);
   if(kind==='open_deals')return(D.repData||[]).flatMap(r=>(r.topDeals||[]).map(x=>({...x,ownerName:r.name})));
+  if(kind==='closed_won')return D.closedWon||[];
+  if(kind==='closed_lost')return D.closedLost||[];
+  if(kind==='signed_financial')return __sign||[];
+  if(kind==='cash_financial')return __cash||[];
   return[];
 }
-const mLbls={priority_actions:['Priority Leads & SLA Breaches','Manager-first list of leads/deals that need immediate action.'],leads_not_contacted:['Leads Not Contacted','Eligible leads with no connected call.'],companies_not_contacted:['Companies Not Contacted','Rank A/B companies untouched.'],rank_ab_untouched:['Rank A/B Untouched','Accounts not contacted.'],deals_at_risk:['Deals at Risk','Cold/stuck/no-next-activity deals.'],open_deals:['Open Deals','All open pipeline deals.']};
-function openMetric(kind){
-  const rows=mRows(kind),[title,desc]=mLbls[kind]||['Details',''];
-  const html=rows.length?rows.slice(0,80).map(row=>{const name=row.name||row.dealname||row.email||row.id||'Unknown';const url=row.hubspotUrl||null;const owner=row.ownerName||row.rep||'—';const meta=[row.country,row.rank?'Rank '+row.rank:null,row.stage,row.source||row.sourceBucket,row.createdAt?String(row.createdAt).slice(0,10):null].filter(Boolean).join(' · ');const val=row.amount!=null?fmt(row.amount):row.ageDays!=null?row.ageDays+'d':row.score!=null?row.score:'';return'<div class="mrow"><div class="mn">'+(url?'<a class="rl" href="'+esc(url)+'" target="_blank">'+esc(name)+'</a>':'<span>'+esc(name)+'</span>')+'<div class="mm">'+esc(meta)+'</div></div><div style="font-size:11px">'+esc(owner)+'</div><div><span class="mpill">'+esc(row.leadStatus||row.stage||row.rank||'—')+'</span></div><div style="font-family:var(--mono);font-weight:700;text-align:right">'+esc(String(val))+'</div></div>';}).join('')+(rows.length>80?'<div class="mempty">Showing 80/'+rows.length+' rows.</div>':''):'<div class="mempty">No rows found for this metric.</div>';
-  T('modalTitle',title+' ('+rows.length+')');T('modalDesc',desc);H('modalBody',html);
-  $('modalBg').classList.add('open');
+const mLbls={priority_actions:['Priority Leads & SLA Breaches','All priority rows exported in data.json.'],priority_leads:['Priority Lead Actions','Lead rows requiring action.'],priority_deals:['Priority Deal Actions','Deal rows requiring action.'],leads_not_contacted:['Leads Not Contacted','Eligible leads with no connected call.'],leads_contacted:['Leads Contacted','Eligible leads with connected activity.'],companies_not_contacted:['Companies Not Contacted','Rank A/B companies untouched.'],companies_contacted:['Companies Contacted','Companies with contacted signal.'],rank_ab_untouched:['Rank A/B Untouched','Accounts not contacted.'],deals_at_risk:['Deals at Risk','Cold/stuck/no-next-activity deals.'],open_deals:['Open Deals','All open pipeline deals.'],closed_won:['Closed Won MTD','All closed won rows in this refresh.'],closed_lost:['Closed Lost MTD','All closed lost rows in this refresh.'],signed_financial:['Signed Financial Rows','All signed contract rows.'],cash_financial:['Cashing Financial Rows','All cashing rows.']};
+function rowModalHtml(rows,emptyText){
+  return rows.length?rows.map(row=>{const name=row.name||row.dealname||row.email||row.id||row.companyName||'Unknown';const url=row.hubspotUrl||row.url||null;const owner=row.ownerName||row.rep||row.owner||row._owner||'—';const meta=[row._type,row.country||row._country,row.rank||row._rank?('Rank '+(row.rank||row._rank)):null,row.stage,row.source||row.sourceBucket,row.createdAt?String(row.createdAt).slice(0,10):row.stageDate||row.closedate||null].filter(Boolean).join(' · ');const val=row.amount!=null?fmt(row.amount):row.ageDays!=null?row.ageDays+'d':row.days!=null?row.days+'d':row.score!=null?row.score:'';return'<div class="mrow"><div class="mn">'+(url?'<a class="rl" href="'+esc(url)+'" target="_blank">'+esc(name)+'</a>':'<span>'+esc(name)+'</span>')+'<div class="mm">'+esc(meta)+'</div></div><div style="font-size:11px">'+esc(owner)+'</div><div><span class="mpill">'+esc(row.leadStatus||row.status||row.stage||row.rank||row._rank||'—')+'</span></div><div style="font-family:var(--mono);font-weight:700;text-align:right">'+esc(String(val))+'</div></div>';}).join(''):'<div class="mempty">'+esc(emptyText||'No rows found for this metric.')+'</div>';
 }
+function showRowsModal(title,desc,rows,emptyText){
+  T('modalTitle',title);T('modalDesc',desc||'');H('modalBody',rowModalHtml(rows||[],emptyText));$('modalBg').classList.add('open');
+}
+function openMetric(kind){
+  const rows=mRows(kind),info=mLbls[kind]||['Details',''];
+  showRowsModal(info[0]+' ('+rows.length+')',info[1],rows,'No row-level records exported for this metric yet.');
+}
+
 function closeModal(){$('modalBg').classList.remove('open');}
 window.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
 
