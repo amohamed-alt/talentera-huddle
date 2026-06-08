@@ -356,6 +356,90 @@ body{font-family:var(--font);background:#eef8f2;color:var(--text);-webkit-font-s
 .clickable-card,.clickable-metric{cursor:pointer;transition:transform .12s,box-shadow .12s,background .12s}.clickable-card:hover,.clickable-metric:hover{transform:translateY(-1px);box-shadow:var(--sh-md);background:rgba(255,255,255,.88)}.metric-link{cursor:pointer;border-radius:7px;padding:2px 5px;display:inline-block;transition:.12s}.metric-link:hover{background:rgba(22,163,74,.10);color:#15803d}.metric-link::after{content:"";display:inline-block;width:4px;height:4px;border-radius:50%;background:#16a34a;margin-left:4px;vertical-align:middle;opacity:.45}.rep-rank-tools{display:flex;gap:7px;align-items:center;flex-wrap:wrap;padding:11px 18px;border-top:1px solid rgba(22,64,42,.05);background:rgba(255,255,255,.35)}.rep-rank-summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(112px,1fr));gap:1px;background:rgba(22,64,42,.06);border-top:1px solid rgba(22,64,42,.04);border-bottom:1px solid rgba(22,64,42,.04)}.rep-rank-cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}.rank-summary-box.clickable-metric:hover{background:rgba(22,163,74,.08)}
 @media(max-width:900px){.rep-rank-cards{grid-template-columns:1fr}}
 
+
+
+/* RETENTION-LIKE UI PATCH — Acquisition logic preserved */
+:root{
+  --green:#0f7a45;--green-dk:#0b5e35;--green-lt:#e7f6ed;
+  --text:#0e1712;--text2:#34433a;--muted:#7d8d83;
+  --border:#e7eee9;--glass:rgba(255,255,255,.82);
+  --sb-w:260px;--r:24px;--r-sm:16px;--sh:0 4px 14px rgba(15,23,42,.055);--sh-md:0 16px 40px rgba(15,23,42,.08);
+}
+body{
+  background:
+    radial-gradient(circle at 10% 10%,rgba(15,122,69,.08),transparent 26%),
+    radial-gradient(circle at 90% 0%,rgba(14,116,144,.07),transparent 30%),
+    linear-gradient(135deg,#f8fbf9,#eef5f1)!important;
+  overflow-x:hidden;
+}
+.blobs{display:none!important}
+.app{background:rgba(255,255,255,.58);min-height:100vh}
+.sidebar{
+  width:var(--sb-w)!important;
+  background:rgba(250,252,250,.80)!important;
+  backdrop-filter:blur(18px) saturate(165%)!important;
+  -webkit-backdrop-filter:blur(18px) saturate(165%)!important;
+  border-right:1px solid var(--border)!important;
+  box-shadow:none!important;
+  padding:22px 14px!important;
+}
+.sb-logo{padding:0 4px 20px!important;border-bottom:1px solid var(--border)!important;margin-bottom:10px}
+.sb-mark{width:40px!important;height:40px!important;border-radius:15px!important;background:linear-gradient(135deg,#0f7a45,#17a466)!important;box-shadow:0 12px 24px rgba(15,122,69,.16)!important}
+.sb-brand{font-size:18px!important;letter-spacing:-.04em;color:var(--text)!important}
+.sb-sub{font-size:11px!important;color:var(--muted)!important}
+.sb-sec{padding:16px 8px 6px!important;color:#96a39a!important;font-size:10px!important;letter-spacing:.16em!important}
+.sbi{
+  height:44px!important;margin:2px 0!important;width:100%!important;border-radius:14px!important;
+  padding:0 12px!important;font-size:13px!important;font-weight:780!important;color:#65736a!important;
+  background:transparent!important;border:1px solid transparent!important;
+}
+.sbi:hover{background:#fff!important;color:var(--green)!important;transform:translateX(2px)!important}
+.sbi.active{background:#e4f6eb!important;color:var(--green)!important;border-color:#ccebd8!important;box-shadow:inset 4px 0 0 var(--green)!important}
+.sbi-ic{width:28px!important;height:28px!important;border-radius:10px!important;background:rgba(15,122,69,.08)!important}
+.sbi-badge,.tab-chip{background:#fff1f2!important;border:1px solid #fecaca!important;color:#dc2626!important;border-radius:999px!important}
+.sb-bot{border-top:1px solid var(--border)!important;padding-top:14px!important}
+.sb-user{background:#fff!important;border:1px solid var(--border)!important;border-radius:18px!important}
+.main{margin-left:var(--sb-w)!important;background:rgba(250,252,250,.62)!important;min-width:0!important}
+.acq-ret-topbar{
+  margin:18px 24px 0!important;padding:10px 14px!important;height:66px!important;
+  background:rgba(255,255,255,.86)!important;border:1px solid var(--border)!important;border-radius:24px!important;
+  box-shadow:var(--sh)!important;backdrop-filter:blur(18px)!important;position:sticky!important;top:14px!important;z-index:60!important;
+}
+.ret-search{
+  width:min(520px,44vw);height:46px;background:#f8faf9;border:1px solid var(--border);
+  border-radius:18px;display:flex;align-items:center;gap:10px;padding:0 14px;
+}
+.ret-search-icon{font-size:20px;color:#24352a}.ret-search input{border:0;outline:0;background:transparent;width:100%;font-size:13px;font-weight:650;color:var(--text2)}
+.kbd{font-size:11px;border:1px solid #d9e4dc;background:#fff;border-radius:8px;padding:3px 7px;color:#7b897f;font-weight:850}
+.tb-right{margin-left:auto!important}.tb-btn{background:#fff!important;border:1px solid var(--border)!important;border-radius:15px!important;width:42px!important;height:42px!important}
+.live-pill{height:34px!important;border-radius:999px!important;border:1px solid #b8e5c8!important;background:#eefaf3!important;color:var(--green)!important;padding:0 12px!important}
+.add-btn{height:42px!important;border-radius:14px!important;background:linear-gradient(135deg,#0f7a45,#0b5e35)!important;box-shadow:0 12px 28px rgba(15,122,69,.18)!important}
+.content{padding:18px 24px 54px!important}.acq-ret-hero{margin:18px 0 10px;display:flex;align-items:flex-end;justify-content:space-between;gap:16px}
+.acq-ret-hero h2{font-size:40px;letter-spacing:-.07em;line-height:1;font-weight:950;color:var(--text)}
+.acq-ret-hero p{color:var(--muted);font-size:14px;margin-top:8px;font-weight:650}.hero-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.primary,.outline{height:46px;border-radius:999px;padding:0 20px;font-size:13px;font-weight:900;display:flex;align-items:center;gap:8px;font-family:inherit;cursor:pointer}
+.primary{border:0;background:linear-gradient(135deg,#0f7a45,#0b5e35);color:#fff;box-shadow:0 15px 30px rgba(15,122,69,.18)}.outline{background:#fff;border:1.5px solid #173b29;color:#173b29}
+.tabs-bar{
+  position:static!important;top:auto!important;background:transparent!important;border:0!important;backdrop-filter:none!important;
+  padding:0!important;margin:0 0 16px!important;gap:6px!important;display:flex!important;overflow-x:auto!important;
+}
+.tab-btn{
+  height:34px!important;padding:0 12px!important;border:0!important;border-radius:999px!important;background:transparent!important;
+  color:#738177!important;font-size:12px!important;font-weight:850!important;gap:6px!important;
+}
+.tab-btn.active{background:#e6f6ec!important;color:var(--green)!important;border-bottom:0!important}.tab-btn:hover{color:var(--green)!important;background:rgba(15,122,69,.06)!important}
+.gc,.kpi-card,.pcard,.rep-hero,.rep-km{
+  background:#fff!important;border:1px solid var(--border)!important;border-radius:24px!important;box-shadow:var(--sh)!important;backdrop-filter:none!important;
+}
+.gc:hover,.kpi-card:hover,.pcard:hover{box-shadow:var(--sh-md)!important;transform:translateY(-1px)!important}.gc-hd{padding:16px 18px 8px!important}.gc-title{font-size:14px!important;color:var(--text)!important;font-weight:920!important;letter-spacing:-.035em}.gc-icon{width:26px!important;height:26px!important;border-radius:9px!important}
+.focus-strip{
+  background:linear-gradient(135deg,#0f7a45 0%,#0b5e35 100%)!important;border-radius:24px!important;
+  box-shadow:0 15px 30px rgba(15,122,69,.18)!important;padding:18px 20px!important;margin-bottom:14px!important;
+}
+.fp{border-radius:16px!important;padding:12px 14px!important}.fp-v{font-size:26px!important}.fp-l{font-size:8px!important}.focus-ai-txt{font-size:12px!important;line-height:1.5!important}.kpi-row{gap:14px!important;margin-bottom:14px!important}.kpi-card{min-height:126px!important;padding:18px 18px 0!important}.kpi-val{font-size:32px!important}.row2,.row2b{gap:14px!important;margin-bottom:14px!important}.chart-body{height:200px!important;padding:10px 18px 14px!important}.donut-c{width:132px!important;height:132px!important}.donut-wrap{padding:10px 18px 14px!important}.mkpi-grid{padding:12px 16px!important;gap:7px!important}.mk{padding:9px 6px!important;border:1px solid var(--border)!important;background:#fbfdfc!important}.mk-v{font-size:16px!important}.rtbl th{background:#fbfdfc!important;color:#8a998f!important;border-bottom:1px solid var(--border)!important;font-size:10px!important;padding:10px 14px!important}.rtbl td{border-bottom:1px solid var(--border)!important;font-size:12px!important;padding:10px 14px!important}.deal-row{padding:9px 16px!important;border-bottom:1px solid var(--border)!important}.badge{border-radius:999px!important}.sec-lbl{margin:16px 0 10px!important;color:#6b7a70!important}.priority-grid{padding:12px 16px!important}.priority-mini{background:#fbfdfc!important;border:1px solid var(--border)!important;border-radius:16px!important}.lead-rep-row{padding:8px 16px!important}.rank-filter-row{background:#fbfdfc!important;border-top:1px solid var(--border)!important;padding:10px 16px!important}.rank-chip{background:#fff!important;border:1px solid var(--border)!important}.rank-chip.active{background:#e6f6ec!important;color:var(--green)!important;border-color:#bce7c9!important}.rank-country-summary,.rep-rank-summary{background:#f3f7f4!important}.rank-summary-box{background:#fff!important}.pipe-grid{gap:12px!important}.pc-top{padding:12px 14px!important}.pc-body{padding:7px 13px 6px!important}.rep-hero{padding:18px 20px!important;margin-bottom:14px!important}.rep-km{margin-bottom:14px!important}.rkrow{padding:7px 12px!important;grid-template-columns:90px repeat(7,1fr)!important}.rk-cell,.rk-plbl{border:1px solid var(--border)!important;background:#fbfdfc!important}.coach-grid{padding:12px 16px!important}.ccard{background:#fbfdfc!important;border:1px solid var(--border)!important}.modal-card{background:#fff!important;border:1px solid var(--border)!important;border-radius:24px!important}.modal-hd{background:#fbfdfc!important;border-bottom:1px solid var(--border)!important}.mrow{border-bottom:1px solid var(--border)!important}
+@media(max-width:1280px){:root{--sb-w:82px}.sidebar{padding:18px 10px!important}.sb-brand,.sb-sub,.sb-sec,.sbi:not(.active)::after,.sbi span:not(.sbi-ic):not(.sbi-badge):not(.sbi-ext),.sb-user{display:none!important}.sbi{justify-content:center!important}.content{padding:16px!important}.ret-search{width:360px}.acq-ret-hero h2{font-size:34px}.kpi-row,.row2,.row2b{grid-template-columns:1fr!important}.pipe-grid{grid-template-columns:repeat(2,1fr)!important}}
+@media(max-width:800px){:root{--sb-w:0px}.main{margin-left:0!important}.sidebar{display:none!important}.acq-ret-topbar{margin:10px!important;height:auto!important;flex-wrap:wrap}.ret-search{width:100%!important}.acq-ret-hero{align-items:flex-start;flex-direction:column}.acq-ret-hero h2{font-size:30px}.fp-pills,.kpi-row,.pipe-grid,.mkpi-grid{grid-template-columns:1fr!important}.content{padding:12px!important}}
+
 </style>
 </head>
 <body>
@@ -390,26 +474,40 @@ body{font-family:var(--font);background:#eef8f2;color:var(--text);-webkit-font-s
 <!-- MAIN -->
 <div class="main">
   <!-- TOPBAR -->
-  <div class="topbar">
-    <div>
-      <div class="tb-greet">Hi, Sales Manager 👋</div>
-      <div class="tb-sub" id="topbarSub">Loading data…</div>
+  <div class="topbar acq-ret-topbar">
+    <div class="ret-search">
+      <span class="ret-search-icon">⌕</span>
+      <input id="acqSearch" placeholder="Search lead, deal, account, rep..." />
+      <span class="kbd">⌘ F</span>
     </div>
     <div class="tb-right">
-      <div class="live-pill"><span class="live-dot"></span>LIVE · HUBSPOT</div>
+      <button class="tb-btn" onclick="openMetric('open_deals')" title="Open data">⇱</button>
       <button class="tb-btn" onclick="loadData()" title="Refresh"><span id="ri">⟳</span></button>
-      <button class="add-btn" onclick="loadData()">⟳ Refresh Data</button>
+      <div class="live-pill"><span class="live-dot"></span>LIVE · HUBSPOT</div>
+      <button class="add-btn" onclick="loadData()">↻ Refresh Data</button>
     </div>
   </div>
+
+
+
+  <!-- CONTENT -->
+  <div class="content">
+    <section class="acq-ret-hero">
+      <div>
+        <h2 id="pageTitle">Acquisition Command Center</h2>
+        <p id="topbarSub">Loading data…</p>
+      </div>
+      <div class="hero-actions">
+        <button class="primary" onclick="switchTab('financial')"><span>+</span> Open Financial Tab</button>
+        <button class="outline" onclick="openMetric('open_deals')">Open Data</button>
+      </div>
+    </section>
 
   <!-- TABS -->
   <div class="tabs-bar" id="tabsBar">
     <button class="tab-btn active" id="tab-team" onclick="switchTab('team')">🏠 Team Overview</button>
     <button class="tab-btn" id="tab-financial" onclick="switchTab('financial')">💰 Financial</button>
   </div>
-
-  <!-- CONTENT -->
-  <div class="content">
     <div class="load-state" id="loadingState"><div class="spinner"></div><div class="ld-txt">Fetching latest HubSpot data…</div></div>
     <div id="errorState" style="display:none"><div class="load-state"><div style="font-size:38px">⚠️</div><div style="font-size:17px;font-weight:700;color:#dc2626">Failed to load data.json</div><div style="font-size:13px;color:var(--muted);max-width:440px;text-align:center;line-height:1.6" id="errorDesc"></div><button class="ref-btn" onclick="loadData()">⟳ Try Again</button></div></div>
 
@@ -645,9 +743,18 @@ function switchTab(name){
   if(btn)btn.classList.add('active');
   if(side)side.classList.add('active');
   const meta=D&&D.meta||{};
-  if(name==='team')T('topbarSub','Updated '+(meta.generatedAt||'')+' · Acquisition Command Center');
-  else if(name==='financial')T('topbarSub','YTD · Cashing & Signed deals');
-  else{const rep=(D&&D.repData||[]).find(r=>r.name.toLowerCase().replace(/\s/g,'-')===name);if(rep)T('topbarSub',(meta.yesterdayLabel||'')+' · '+rep.name);}
+  if(name==='team'){
+    T('pageTitle','Acquisition Command Center');
+    T('topbarSub','Updated '+(meta.generatedAt||'')+' · Team overview, pipeline, leads and rep execution');
+  }
+  else if(name==='financial'){
+    T('pageTitle','Acquisition Financials');
+    T('topbarSub','YTD · Cashing & Signed deals · all cards clickable');
+  }
+  else{
+    const rep=(D&&D.repData||[]).find(r=>r.name.toLowerCase().replace(/\s/g,'-')===name);
+    if(rep){T('pageTitle',rep.name);T('topbarSub',(meta.yesterdayLabel||'')+' · Acquisition rep page');}
+  }
 }
 
 /* ══ LOAD ══ */
@@ -1278,6 +1385,23 @@ function openMetric(kind){
 
 function closeModal(){$('modalBg').classList.remove('open');}
 window.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+
+/* ══ SEARCH SHORTCUT ══ */
+(function(){
+  const input=document.getElementById('acqSearch');
+  if(input){
+    input.addEventListener('keydown',function(e){
+      if(e.key==='Enter'){
+        e.preventDefault();
+        const q=(this.value||'').trim().toLowerCase();
+        if(!q){openMetric('open_deals');return;}
+        const rows=mRows('open_deals').concat(mRows('deals_at_risk'),mRows('leads_not_contacted'),mRows('closed_won'),mRows('closed_lost'));
+        const filtered=rows.filter(r=>JSON.stringify(r).toLowerCase().includes(q));
+        showRowsModal('Search Results ('+filtered.length+')',q,filtered,'No matching acquisition rows found.');
+      }
+    });
+  }
+})();
 
 /* ══ INIT ══ */
 loadData();
