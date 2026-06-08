@@ -459,8 +459,8 @@ body{
   <button class="sbi active" id="side-team" onclick="switchTab('team')"><span class="sbi-ic">📊</span>Acquisition</button>
   <button class="sbi" id="side-financial" onclick="switchTab('financial')"><span class="sbi-ic">💰</span>Financial</button>
   <div class="sb-sec">External</div>
-  <a class="sbi ext" href="#" id="retentionLink"><span class="sbi-ic" style="background:rgba(8,145,178,.08)">🛡️</span>Retention<span class="sbi-ext">↗</span></a>
-  <a class="sbi ext" href="#" id="pnlLink"><span class="sbi-ic" style="background:rgba(124,58,237,.08)">📈</span>P&amp;L<span class="sbi-ext">↗</span></a>
+  <a class="sbi ext" href="#" id="retentionLink" target="_blank" rel="noopener"><span class="sbi-ic" style="background:rgba(8,145,178,.08)">🛡️</span>Retention<span class="sbi-ext">↗</span></a>
+  <a class="sbi ext" href="#" id="pnlLink" target="_blank" rel="noopener"><span class="sbi-ic" style="background:rgba(124,58,237,.08)">📈</span>P&amp;L<span class="sbi-ext">↗</span></a>
   <div class="sb-sec" id="repsSectionTitle">Reps</div>
   <div id="sideRepLinks"></div>
   <div class="sb-bot">
@@ -705,7 +705,7 @@ const CONFIG={
   dataSources:['./data.json','data.json',
     'https://amohamed-alt.github.io/talentera-huddle/data.json',
     'https://raw.githubusercontent.com/amohamed-alt/talentera-huddle/refs/heads/main/data.json'],
-  retentionUrl:'#',pnlUrl:'#',
+  retentionUrl:'https://amohamed-alt.github.io/talentera-retention/',pnlUrl:'#',
   hubspotPortalId:'145742477',
   hubspotDomain:'https://app-eu1.hubspot.com'
 };
