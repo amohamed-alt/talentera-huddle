@@ -347,7 +347,7 @@ body{font-family:var(--font);background:#eef8f2;color:var(--text);-webkit-font-s
 .priority-list{padding:4px 0 8px}.priority-item{display:grid;grid-template-columns:30px minmax(0,1fr) 90px;gap:12px;align-items:center;padding:11px 18px;border-top:1px solid rgba(22,64,42,.04);transition:.12s}.priority-item:hover{background:rgba(22,163,74,.025)}
 .priority-num{width:28px;height:28px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;background:rgba(220,38,38,.08);color:#dc2626;flex-shrink:0}.priority-name{font-size:13px;font-weight:800;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.priority-meta{font-size:11px;color:var(--muted);font-weight:600;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.priority-score{text-align:right;font-family:var(--mono);font-size:13px;font-weight:800;color:#dc2626}.priority-actions{padding:0 18px 14px;display:flex;justify-content:center}
 .lead-rep-summary{border-top:1px solid rgba(22,64,42,.05);max-height:245px;overflow:auto}.lead-rep-row{display:grid;grid-template-columns:1.2fr repeat(3,.65fr);gap:8px;align-items:center;padding:9px 18px;border-bottom:1px solid rgba(22,64,42,.035);font-size:12px}.lead-rep-row:hover{background:rgba(22,163,74,.025)}.lead-rep-head{background:rgba(255,255,255,.38);font-size:9px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}.lead-rep-name{font-weight:800;color:var(--text)}.lead-rep-num{font-family:var(--mono);font-weight:800;text-align:center}.lead-empty{padding:16px 18px;color:var(--muted);font-size:12px;text-align:center;font-style:italic}
-.rank-filter-row{display:flex;gap:7px;align-items:center;flex-wrap:wrap;padding:11px 18px;border-top:1px solid rgba(22,64,42,.05);background:rgba(255,255,255,.35)}.rank-chip{border:1px solid rgba(22,64,42,.1);background:rgba(255,255,255,.72);border-radius:999px;padding:6px 10px;font-size:11px;font-weight:800;color:var(--text2);cursor:pointer;font-family:inherit;transition:.12s}.rank-chip:hover{color:#15803d;border-color:rgba(22,163,74,.2);transform:translateY(-1px)}.rank-chip.active{background:rgba(22,163,74,.11);border-color:rgba(22,163,74,.25);color:#15803d}.rank-country-summary{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:rgba(22,64,42,.06);border-top:1px solid rgba(22,64,42,.04)}.rank-summary-box{background:rgba(255,255,255,.56);padding:10px;text-align:center}.rank-summary-v{font-family:var(--mono);font-size:17px;font-weight:800;line-height:1}.rank-summary-l{font-size:8px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-top:5px}
+.rank-filter-row{display:flex;gap:7px;align-items:center;flex-wrap:wrap;padding:11px 18px;border-top:1px solid rgba(22,64,42,.05);background:rgba(255,255,255,.35)}.rank-chip{border:1px solid rgba(22,64,42,.1);background:rgba(255,255,255,.72);border-radius:999px;padding:6px 10px;font-size:11px;font-weight:800;color:var(--text2);cursor:pointer;font-family:inherit;transition:.12s}.rank-chip:hover{color:#15803d;border-color:rgba(22,163,74,.2);transform:translateY(-1px)}.rank-chip.active{background:rgba(22,163,74,.11);border-color:rgba(22,163,74,.25);color:#15803d}.rank-country-summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(112px,1fr));gap:1px;background:rgba(22,64,42,.06);border-top:1px solid rgba(22,64,42,.04)}.rank-filter-label{font-size:10px;font-weight:900;color:#15803d;text-transform:uppercase;letter-spacing:.1em;margin-right:4px;background:rgba(22,163,74,.08);border:1px solid rgba(22,163,74,.15);border-radius:999px;padding:6px 10px}.rank-summary-box{background:rgba(255,255,255,.56);padding:10px;text-align:center}.rank-summary-v{font-family:var(--mono);font-size:17px;font-weight:800;line-height:1}.rank-summary-l{font-size:8px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-top:5px}
 .risk-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}.risk-card{max-height:560px;overflow:hidden}.risk-card.expanded{max-height:none}.fin-click{cursor:pointer;transition:.14s}.fin-click:hover{background:rgba(22,163,74,.07)!important;box-shadow:inset 0 0 0 1px rgba(22,163,74,.18)}
 @media(max-width:1100px){.priority-grid,.rank-country-summary{grid-template-columns:repeat(3,1fr)}.risk-grid{grid-template-columns:1fr}}
 @media(max-width:800px){.priority-grid,.rank-country-summary{grid-template-columns:1fr}.priority-item{grid-template-columns:28px 1fr}.priority-score{grid-column:2;text-align:left}.lead-rep-row{grid-template-columns:1fr repeat(3,.5fr)}}
@@ -529,7 +529,7 @@ body{font-family:var(--font);background:#eef8f2;color:var(--text);-webkit-font-s
           <div class="gc-hd"><div class="gc-title"><div class="gc-icon" style="background:rgba(217,119,6,.08)">🎯</div>Rank A/B Coverage</div><div id="rankBadges" style="display:flex;gap:5px"></div></div>
           <div class="rank-filter-row" id="rankCountryTools"></div>
           <div class="rank-country-summary" id="rankCountrySummary"></div>
-          <div style="overflow-x:auto"><table class="rtbl"><thead><tr><th>Rep</th><th class="c">Rank A</th><th class="c">A ✓</th><th class="c">A ✗</th><th class="c">Rank B</th><th class="c">B ✓</th><th class="c">B ✗</th><th>Top Untouched</th></tr></thead><tbody id="rankRepBody"></tbody></table></div>
+          <div style="overflow-x:auto"><table class="rtbl"><thead><tr><th>Rep</th><th class="c">Rank A</th><th class="c">A Contacted</th><th class="c">A Meetings</th><th class="c">A Untouched</th><th class="c">Rank B</th><th class="c">B Contacted</th><th class="c">B Meetings</th><th class="c">B Untouched</th><th>Top Untouched</th></tr></thead><tbody id="rankRepBody"></tbody></table></div>
           <div style="overflow-x:auto"><table class="rtbl"><thead><tr><th>Rank</th><th>Company</th><th>Rep</th><th>Last Activity</th></tr></thead><tbody id="rankBody"></tbody></table><div style="padding:8px 18px;font-size:10px;color:var(--muted);font-weight:600" id="rankFoot"></div></div>
         </div>
 
@@ -840,28 +840,139 @@ function rPriority(ar,team){
 
 function countryName(v){return String(v||'Unknown').trim()||'Unknown';}
 function countryKey(v){return countryName(v).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')||'unknown';}
-function countryMatches(row,key){return key==='all'||countryKey(row.country||row.companyCountry||row.countryName)===key;}
+function countryMatches(row,key){return key==='all'||countryKey(row.country||row.companyCountry||row.countryName||row.hs_country)===key;}
 function statFromCountry(obj,country){
   if(!obj)return null;
-  const entries=Object.entries(obj);
-  const found=entries.find(([k])=>countryKey(k)===countryKey(country));
+  const found=Object.entries(obj).find(([k])=>countryKey(k)===countryKey(country));
   return found?found[1]:null;
 }
+function nval(){
+  for(const v of arguments){
+    if(Array.isArray(v))return v.length;
+    if(v!==undefined&&v!==null&&String(v).trim()!==''){
+      const n=Number(v);
+      if(Number.isFinite(n))return n;
+    }
+  }
+  return 0;
+}
+function rowFirst(row,keys){
+  const sources=[row,row&&row.properties,row&&row.fields,row&&row.propertyValues];
+  for(const k of keys){
+    for(const src of sources){
+      if(!src)continue;
+      const v=src[k];
+      if(v!==undefined&&v!==null&&String(v).trim()!=='')return v;
+    }
+  }
+  return null;
+}
+function ownerKey(v){return String(v||'').trim().toLowerCase();}
+function uiKey(v){return String(v||'all').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')||'all';}
+function rowRank(row){return String(rowFirst(row,['rank','companyRank','company_rank','hs_lead_rank','tier'])||'').trim().toUpperCase();}
+function rowCountry(row){return rowFirst(row,['country','companyCountry','countryName','hs_country','ip_country_code','country_code'])||'Unknown';}
+function rowOwner(row,fallback){return ownerKey(rowFirst(row,['ownerName','rep','hubspot_owner_name','owner','ownerId','hubspot_owner_id'])||fallback||'');}
+function rowCompanyId(row){return rowFirst(row,['id','hs_object_id','companyId','company_id','recordId','objectId'])||rowFirst(row,['name','companyName','company','domain']);}
+function hasCompletedMeeting(row){
+  if(!row)return false;
+  const bool=rowFirst(row,['hasCompletedMeeting','completedMeeting','meetingCompleted','completed_meeting','has_completed_meeting']);
+  if(bool===true||String(bool).toLowerCase()==='true'||String(bool)==='1')return true;
+  const count=nval(rowFirst(row,['completedMeetings','meetingsCompleted','completed_meetings','meetings_completed','completedMeetingsCount','meetingsCompletedCount','completedMeetingCount','meetingCompletedCount']));
+  if(count>0)return true;
+  const date=rowFirst(row,['lastCompletedMeetingDate','latestCompletedMeetingDate','completedMeetingDate','meetingCompletedDate','last_meeting_completed_date']);
+  return !!date;
+}
+function objMetric(obj,keys){return obj?nval(...keys.map(k=>obj[k])):0;}
+function byCountryMetric(rep,country,rank,keys){
+  const label=window.__rankCountryLabels&&window.__rankCountryLabels[country]||country;
+  const sources=[];
+  if(rank==='A')sources.push(statFromCountry(rep.rankAByCountry,label));
+  if(rank==='B')sources.push(statFromCountry(rep.rankBByCountry,label));
+  sources.push(statFromCountry(rep.rankByCountry,label),statFromCountry(rep.countryBreakdown,label),statFromCountry(rep.rankCoverageByCountry,label));
+  for(const src of sources){
+    const v=objMetric(src,keys);
+    if(v>0)return v;
+  }
+  return 0;
+}
+function buildCompletedMeetingRankIndex(){
+  if(window.__completedMeetingRankIndex)return window.__completedMeetingRankIndex;
+  const oc=(D&&D.outreachCoverage)||{};
+  const idx={byCompany:{},counts:{}};
+  const companyRows=[];
+  if(oc.companies){
+    ['contactedList','notContactedList','allList','list'].forEach(k=>Array.isArray(oc.companies[k])&&companyRows.push(...oc.companies[k]));
+  }
+  (D.repData||[]).forEach(rep=>{
+    [...(rep.rankAUntouched||[]).map(x=>({...x,rank:x.rank||'A',ownerName:x.ownerName||rep.name,ownerId:x.ownerId||rep.id})),...(rep.rankBUntouched||[]).map(x=>({...x,rank:x.rank||'B',ownerName:x.ownerName||rep.name,ownerId:x.ownerId||rep.id}))].forEach(x=>companyRows.push(x));
+  });
+  companyRows.forEach(co=>{
+    const id=String(rowCompanyId(co)||'');
+    if(!id)return;
+    idx.byCompany[id]={...co,_rank:rowRank(co),_country:rowCountry(co),_owner:rowOwner(co)};
+  });
+  const contacts=[];
+  if(oc.contacts){
+    ['contactedList','notContactedList','allList','list','completedMeetingsList','meetingsCompletedList'].forEach(k=>Array.isArray(oc.contacts[k])&&contacts.push(...oc.contacts[k]));
+  }
+  const add=(owner,country,rank,companyId)=>{
+    if(rank!=='A'&&rank!=='B')return;
+    const key=owner+'||'+uiKey(country)+'||'+rank;
+    idx.counts[key]=idx.counts[key]||new Set();
+    idx.counts[key].add(String(companyId||owner+'-'+country+'-'+rank+'-'+idx.counts[key].size));
+  };
+  contacts.forEach(ct=>{
+    if(!hasCompletedMeeting(ct))return;
+    const ids=[...(Array.isArray(ct.companyIds)?ct.companyIds:[]),rowFirst(ct,['companyId','company_id','associatedCompanyId','primaryCompanyId'])].filter(Boolean);
+    if(ids.length){
+      ids.forEach(id=>{
+        const co=idx.byCompany[String(id)];
+        if(!co)return;
+        add(co._owner||rowOwner(ct),co._country||rowCountry(ct),co._rank||rowRank(co),id);
+      });
+    }else{
+      const rank=rowRank(ct),country=rowCountry(ct),owner=rowOwner(ct);
+      if(rank==='A'||rank==='B')add(owner,country,rank,rowCompanyId(ct)||rowFirst(ct,['email','id'])||Math.random());
+    }
+  });
+  const flat={};Object.entries(idx.counts).forEach(([k,set])=>flat[k]=set.size);
+  window.__completedMeetingRankIndex={counts:flat,byCompany:idx.byCompany};
+  return window.__completedMeetingRankIndex;
+}
+function completedMeetingsFor(rep,country,rank){
+  const owner=ownerKey(rep.ownerName||rep.name||rep.ownerId||rep.id);
+  const r=String(rank||'').toUpperCase();
+  const idx=buildCompletedMeetingRankIndex().counts||{};
+  if(country==='all')return Object.entries(idx).reduce((s,[k,v])=>{const p=k.split('||');return p[0]===owner&&p[2]===r?s+Number(v||0):s;},0);
+  return Number(idx[owner+'||'+uiKey(window.__rankCountryLabels&&window.__rankCountryLabels[country]||country)+'||'+r]||0);
+}
+function countryKeysFromObj(obj){return obj?Object.keys(obj):[];}
 function repRankStats(r,country){
   const all=country==='all';
   const uA=(r.rankAUntouched||[]).filter(x=>countryMatches(x,country));
   const uB=(r.rankBUntouched||[]).filter(x=>countryMatches(x,country));
-  if(all)return {a:Number(r.rankA||0),aC:Number(r.rankAContacted||0),aU:Number(r.rankANotContacted||uA.length||0),b:Number(r.rankB||0),bC:Number(r.rankBContacted||0),bU:Number(r.rankBNotContacted||uB.length||0)};
+  const aMeetKeys=['rankAMeetingsCompleted','rankACompletedMeetings','rankAMeetings','meetingsCompletedA','completedMeetingsA','aMeetingsCompleted','meetingsCompleted','completedMeetings'];
+  const bMeetKeys=['rankBMeetingsCompleted','rankBCompletedMeetings','rankBMeetings','meetingsCompletedB','completedMeetingsB','bMeetingsCompleted','meetingsCompleted','completedMeetings'];
+  if(all){
+    const a=Number(r.rankA||0),b=Number(r.rankB||0);
+    const aU=Number(r.rankANotContacted||uA.length||0),bU=Number(r.rankBNotContacted||uB.length||0);
+    const aC=Number(r.rankAContacted||Math.max(0,a-aU)),bC=Number(r.rankBContacted||Math.max(0,b-bU));
+    const aM=nval(...aMeetKeys.map(k=>r[k]))||completedMeetingsFor(r,'all','A');
+    const bM=nval(...bMeetKeys.map(k=>r[k]))||completedMeetingsFor(r,'all','B');
+    return {a,aC,aU,aM,b,bC,bU,bM};
+  }
   const label=window.__rankCountryLabels&&window.__rankCountryLabels[country]||country;
   const aS=statFromCountry(r.rankAByCountry,label)||statFromCountry(r.countryBreakdown,label)||{};
-  const bS=statFromCountry(r.rankBByCountry,label)||{};
-  const a=Number(aS.rankA||aS.A||aS.totalA||aS.total||uA.length||0);
-  const b=Number(bS.rankB||bS.B||bS.totalB||bS.total||uB.length||0);
-  const aU=Number(aS.rankANotContacted||aS.notContactedA||aS.untouchedA||uA.length||0);
-  const bU=Number(bS.rankBNotContacted||bS.notContactedB||bS.untouchedB||uB.length||0);
-  const aC=Number(aS.rankAContacted||aS.contactedA||Math.max(0,a-aU));
-  const bC=Number(bS.rankBContacted||bS.contactedB||Math.max(0,b-bU));
-  return {a,aC,aU,b,bC,bU};
+  const bS=statFromCountry(r.rankBByCountry,label)||statFromCountry(r.countryBreakdown,label)||{};
+  const a=Number(aS.rankA||aS.A||aS.totalA||aS.totalRankA||uA.length||0);
+  const b=Number(bS.rankB||bS.B||bS.totalB||bS.totalRankB||uB.length||0);
+  const aU=Number(aS.rankANotContacted||aS.notContactedA||aS.untouchedA||aS.rankAUntouched||uA.length||0);
+  const bU=Number(bS.rankBNotContacted||bS.notContactedB||bS.untouchedB||bS.rankBUntouched||uB.length||0);
+  const aC=Number(aS.rankAContacted||aS.contactedA||aS.touchedA||Math.max(0,a-aU));
+  const bC=Number(bS.rankBContacted||bS.contactedB||bS.touchedB||Math.max(0,b-bU));
+  const aM=byCountryMetric(r,country,'A',aMeetKeys)||completedMeetingsFor(r,country,'A');
+  const bM=byCountryMetric(r,country,'B',bMeetKeys)||completedMeetingsFor(r,country,'B');
+  return {a,aC,aU,aM,b,bC,bU,bM};
 }
 function rankSummaryBox(v,l,c){return '<div class="rank-summary-box"><div class="rank-summary-v" style="color:'+c+'">'+Number(v||0).toLocaleString()+'</div><div class="rank-summary-l">'+esc(l)+'</div></div>';}
 function setRankCountry(key){RANK_COUNTRY=key; rRankCov(window.__rankRows||[]);}
@@ -920,24 +1031,40 @@ function rRankCov(ar){
   window.__rankRows=ar||[];
   const countries=new Map();
   (ar||[]).forEach(r=>{
-    [...(r.rankAUntouched||[]),...(r.rankBUntouched||[])].forEach(x=>countries.set(countryKey(x.country||x.companyCountry||x.countryName),countryName(x.country||x.companyCountry||x.countryName)));
-    Object.keys(r.rankAByCountry||{}).forEach(c=>countries.set(countryKey(c),countryName(c)));
-    Object.keys(r.rankBByCountry||{}).forEach(c=>countries.set(countryKey(c),countryName(c)));
-    Object.keys(r.countryBreakdown||{}).forEach(c=>countries.set(countryKey(c),countryName(c)));
+    [...(r.rankAUntouched||[]),...(r.rankBUntouched||[])].forEach(x=>countries.set(countryKey(x.country||x.companyCountry||x.countryName||x.hs_country),countryName(x.country||x.companyCountry||x.countryName||x.hs_country)));
+    [...countryKeysFromObj(r.rankAByCountry),...countryKeysFromObj(r.rankBByCountry),...countryKeysFromObj(r.rankByCountry),...countryKeysFromObj(r.countryBreakdown),...countryKeysFromObj(r.rankCoverageByCountry)].forEach(c=>countries.set(countryKey(c),countryName(c)));
   });
-  (D.topInactiveRankAccounts||[]).forEach(x=>{if(x.country)countries.set(countryKey(x.country),countryName(x.country));});
+  (D.topInactiveRankAccounts||[]).forEach(x=>{if(x.country||x.companyCountry||x.countryName)countries.set(countryKey(x.country||x.companyCountry||x.countryName),countryName(x.country||x.companyCountry||x.countryName));});
+  Object.values((buildCompletedMeetingRankIndex()||{}).byCompany||{}).forEach(x=>countries.set(countryKey(x._country||rowCountry(x)),countryName(x._country||rowCountry(x))));
   window.__rankCountryLabels=Object.fromEntries(countries);
   const totalAll=(D.rankTotals||{}).total||((D.rankTotals||{}).A||0)+((D.rankTotals||{}).B||0);
-  const chipHtml=['<button class="rank-chip '+(RANK_COUNTRY==='all'?'active':'')+'" onclick="setRankCountry(\'all\')">All '+Number(totalAll||0).toLocaleString()+'</button>'].concat(Array.from(countries.entries()).sort((a,b)=>a[1].localeCompare(b[1])).map(([k,v])=>'<button class="rank-chip '+(RANK_COUNTRY===k?'active':'')+'" onclick="setRankCountry(\''+k+'\')">'+esc(v)+'</button>')).join('');
+  const chipHtml=['<span class="rank-filter-label">Filter by country</span>','<button class="rank-chip '+(RANK_COUNTRY==='all'?'active':'')+'" onclick="setRankCountry(\'all\')">All '+Number(totalAll||0).toLocaleString()+'</button>'].concat(Array.from(countries.entries()).sort((a,b)=>a[1].localeCompare(b[1])).map(([k,v])=>'<button class="rank-chip '+(RANK_COUNTRY===k?'active':'')+'" onclick="setRankCountry(\''+k+'\')">'+esc(v)+'</button>')).join('');
   H('rankCountryTools',chipHtml);
   const stats=(ar||[]).map(r=>repRankStats(r,RANK_COUNTRY));
-  const sum=stats.reduce((a,x)=>({a:a.a+x.a,aC:a.aC+x.aC,aU:a.aU+x.aU,b:a.b+x.b,bC:a.bC+x.bC,bU:a.bU+x.bU}),{a:0,aC:0,aU:0,b:0,bC:0,bU:0});
-  H('rankCountrySummary',[rankSummaryBox(sum.a,'Rank A','#dc2626'),rankSummaryBox(sum.aC,'A Touched','#16a34a'),rankSummaryBox(sum.aU,'A Untouched','#dc2626'),rankSummaryBox(sum.b,'Rank B','#d97706'),rankSummaryBox(sum.bC,'B Touched','#16a34a'),rankSummaryBox(sum.bU,'B Untouched','#d97706')].join(''));
-  H('rankBadges','<span class="rank-a">'+sum.a+' A</span><span class="rank-b">'+sum.b+' B</span><span class="badge bg">✓ '+sum.aC+'A / '+sum.bC+'B</span><span class="badge br">✗ '+sum.aU+'A / '+sum.bU+'B</span>');
+  const sum=stats.reduce((a,x)=>({a:a.a+x.a,aC:a.aC+x.aC,aU:a.aU+x.aU,aM:a.aM+x.aM,b:a.b+x.b,bC:a.bC+x.bC,bU:a.bU+x.bU,bM:a.bM+x.bM}),{a:0,aC:0,aU:0,aM:0,b:0,bC:0,bU:0,bM:0});
+  const totalMeet=sum.aM+sum.bM,totalContacted=sum.aC+sum.bC,totalUntouched=sum.aU+sum.bU;
+  H('rankCountrySummary',[
+    rankSummaryBox(sum.a,'Rank A','#dc2626'),
+    rankSummaryBox(sum.aC,'A Contacted','#16a34a'),
+    rankSummaryBox(sum.aM,'A Meetings','#7c3aed'),
+    rankSummaryBox(sum.aU,'A Untouched','#dc2626'),
+    rankSummaryBox(sum.b,'Rank B','#d97706'),
+    rankSummaryBox(sum.bC,'B Contacted','#16a34a'),
+    rankSummaryBox(sum.bM,'B Meetings','#7c3aed'),
+    rankSummaryBox(sum.bU,'B Untouched','#d97706')
+  ].join(''));
+  H('rankBadges','<span class="badge bg">Contacted '+totalContacted.toLocaleString()+'</span><span class="badge bp">Meetings '+totalMeet.toLocaleString()+'</span><span class="badge br">Untouched '+totalUntouched.toLocaleString()+'</span>');
   const rd=(D.topInactiveRankAccounts||[]).filter(x=>countryMatches(x,RANK_COUNTRY));
-  H('rankRepBody',(ar||[]).map(r=>{const st=repRankStats(r,RANK_COUNTRY);const uA=(r.rankAUntouched||[]).filter(x=>countryMatches(x,RANK_COUNTRY));const uB=(r.rankBUntouched||[]).filter(x=>countryMatches(x,RANK_COUNTRY));const top=[...uA.slice(0,2).map(x=>({...x,rank:'A'})),...uB.slice(0,2).map(x=>({...x,rank:'B'}))];const topHtml=top.map(c=>'<span style="font-size:10px;color:'+(c.rank==='A'?'#dc2626':'#d97706')+'">• '+rl(c.name,c.hubspotUrl)+' · '+c.rank+'</span>').join('<br>');return '<tr><td><div style="display:flex;align-items:center;gap:8px"><div style="width:26px;height:26px;border-radius:8px;background:'+r.color+'20;color:'+r.color+';font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center">'+esc((r.name||'?')[0])+'</div><span style="font-weight:700">'+esc(r.name)+'</span></div></td><td class="c"><span class="rank-a">'+st.a+'</span></td><td class="c mono" style="color:#16a34a">'+st.aC+'</td><td class="c mono" style="color:'+(st.aU>0?'#dc2626':'#16a34a')+'">'+(st.aU>0?st.aU:'✓')+'</td><td class="c"><span class="rank-b">'+st.b+'</span></td><td class="c mono" style="color:#16a34a">'+st.bC+'</td><td class="c mono" style="color:'+(st.bU>0?'#d97706':'#16a34a')+'">'+(st.bU>0?st.bU:'✓')+'</td><td style="font-size:10px;line-height:1.8">'+(topHtml||'<span style="color:#16a34a;font-size:10px">✓</span>')+'</td></tr>';}).join(''));
+  H('rankRepBody',(ar||[]).map(r=>{
+    const st=repRankStats(r,RANK_COUNTRY);
+    const uA=(r.rankAUntouched||[]).filter(x=>countryMatches(x,RANK_COUNTRY));
+    const uB=(r.rankBUntouched||[]).filter(x=>countryMatches(x,RANK_COUNTRY));
+    const top=[...uA.slice(0,2).map(x=>({...x,rank:'A'})),...uB.slice(0,2).map(x=>({...x,rank:'B'}))];
+    const topHtml=top.map(c=>'<span style="font-size:10px;color:'+(c.rank==='A'?'#dc2626':'#d97706')+'">• '+rl(c.name,c.hubspotUrl)+' · '+c.rank+'</span>').join('<br>');
+    return '<tr><td><div style="display:flex;align-items:center;gap:8px"><div style="width:26px;height:26px;border-radius:8px;background:'+r.color+'20;color:'+r.color+';font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center">'+esc((r.name||'?')[0])+'</div><span style="font-weight:700">'+esc(r.name)+'</span></div></td><td class="c"><span class="rank-a">'+st.a+'</span></td><td class="c mono" style="color:#16a34a">'+st.aC+'</td><td class="c mono" style="color:#7c3aed">'+st.aM+'</td><td class="c mono" style="color:'+(st.aU>0?'#dc2626':'#16a34a')+'">'+(st.aU>0?st.aU:'✓')+'</td><td class="c"><span class="rank-b">'+st.b+'</span></td><td class="c mono" style="color:#16a34a">'+st.bC+'</td><td class="c mono" style="color:#7c3aed">'+st.bM+'</td><td class="c mono" style="color:'+(st.bU>0?'#d97706':'#16a34a')+'">'+(st.bU>0?st.bU:'✓')+'</td><td style="font-size:10px;line-height:1.8">'+(topHtml||'<span style="color:#16a34a;font-size:10px">✓</span>')+'</td></tr>';
+  }).join(''));
   H('rankBody',rd.map(c=>{const dc=c.daysSinceActivity>14?'#dc2626':c.daysSinceActivity>7?'#d97706':'#16a34a';return'<tr><td>'+( c.rank==='A'?'<span class="rank-a">A</span>':'<span class="rank-b">B</span>')+'</td><td style="font-weight:700">'+rl(c.name,c.hubspotUrl)+'</td><td><span style="font-size:11px;font-weight:600;color:'+(c.repColor||'#6b7280')+'">● '+esc(c.rep)+'</span></td><td><span style="font-weight:700;color:'+dc+';font-family:var(--mono);font-size:11px">'+(c.daysSinceActivity>900?'Never':c.daysSinceActivity+'d ago')+'</span></td></tr>';}).join(''));
-  T('rankFoot','Showing '+rd.length+' inactive accounts · filter: '+(RANK_COUNTRY==='all'?'All countries':(window.__rankCountryLabels[RANK_COUNTRY]||RANK_COUNTRY)));
+  T('rankFoot','Showing '+rd.length+' inactive accounts · filter: '+(RANK_COUNTRY==='all'?'All countries':(window.__rankCountryLabels[RANK_COUNTRY]||RANK_COUNTRY))+' · contacted '+totalContacted.toLocaleString()+' · meetings completed '+totalMeet.toLocaleString());
 }
 
 /* ══ PIPELINE CARDS ══ */
