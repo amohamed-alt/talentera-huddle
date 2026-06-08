@@ -336,6 +336,22 @@ body{font-family:var(--font);background:#eef8f2;color:var(--text);-webkit-font-s
 @media(max-width:1380px){.mkpi-grid{grid-template-columns:repeat(4,1fr)}}
 @media(max-width:1100px){.kpi-row,.row2,.row2b{grid-template-columns:1fr}.coach-grid{grid-template-columns:1fr 1fr}.pipe-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:800px){:root{--sb-w:0px}.sidebar{display:none}.kpi-row,.row2,.row2b{grid-template-columns:1fr}.coach-grid,.pipe-grid{grid-template-columns:1fr}.content{padding:14px 14px 60px}.mkpi-grid{grid-template-columns:repeat(2,1fr)}.rep-stats{display:none}.fp-pills{grid-template-columns:1fr 1fr}}
+
+
+/* FINAL MANAGER CLEANUP PATCH — Acquisition only */
+.rtbl td{font-size:13px;line-height:1.35}.rtbl th{font-size:11px}.sbi{font-size:14px}.deal-row{font-size:13px}.deal-mt,.mm{font-size:11px}.gc-title{font-size:14px}.badge{font-size:10px}
+.priority-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:14px 18px;border-top:1px solid rgba(22,64,42,.05)}
+.priority-mini{background:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.88);border-radius:14px;padding:12px;border-left:3px solid var(--pc,#16a34a)}
+.priority-mini-v{font-family:var(--mono);font-size:22px;font-weight:800;line-height:1;color:var(--pc,#16a34a)}
+.priority-mini-l{font-size:8px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-top:6px}
+.priority-list{padding:4px 0 8px}.priority-item{display:grid;grid-template-columns:30px minmax(0,1fr) 90px;gap:12px;align-items:center;padding:11px 18px;border-top:1px solid rgba(22,64,42,.04);transition:.12s}.priority-item:hover{background:rgba(22,163,74,.025)}
+.priority-num{width:28px;height:28px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;background:rgba(220,38,38,.08);color:#dc2626;flex-shrink:0}.priority-name{font-size:13px;font-weight:800;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.priority-meta{font-size:11px;color:var(--muted);font-weight:600;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.priority-score{text-align:right;font-family:var(--mono);font-size:13px;font-weight:800;color:#dc2626}.priority-actions{padding:0 18px 14px;display:flex;justify-content:center}
+.lead-rep-summary{border-top:1px solid rgba(22,64,42,.05);max-height:245px;overflow:auto}.lead-rep-row{display:grid;grid-template-columns:1.2fr repeat(3,.65fr);gap:8px;align-items:center;padding:9px 18px;border-bottom:1px solid rgba(22,64,42,.035);font-size:12px}.lead-rep-row:hover{background:rgba(22,163,74,.025)}.lead-rep-head{background:rgba(255,255,255,.38);font-size:9px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}.lead-rep-name{font-weight:800;color:var(--text)}.lead-rep-num{font-family:var(--mono);font-weight:800;text-align:center}.lead-empty{padding:16px 18px;color:var(--muted);font-size:12px;text-align:center;font-style:italic}
+.rank-filter-row{display:flex;gap:7px;align-items:center;flex-wrap:wrap;padding:11px 18px;border-top:1px solid rgba(22,64,42,.05);background:rgba(255,255,255,.35)}.rank-chip{border:1px solid rgba(22,64,42,.1);background:rgba(255,255,255,.72);border-radius:999px;padding:6px 10px;font-size:11px;font-weight:800;color:var(--text2);cursor:pointer;font-family:inherit;transition:.12s}.rank-chip:hover{color:#15803d;border-color:rgba(22,163,74,.2);transform:translateY(-1px)}.rank-chip.active{background:rgba(22,163,74,.11);border-color:rgba(22,163,74,.25);color:#15803d}.rank-country-summary{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:rgba(22,64,42,.06);border-top:1px solid rgba(22,64,42,.04)}.rank-summary-box{background:rgba(255,255,255,.56);padding:10px;text-align:center}.rank-summary-v{font-family:var(--mono);font-size:17px;font-weight:800;line-height:1}.rank-summary-l{font-size:8px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-top:5px}
+.risk-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}.risk-card{max-height:560px;overflow:hidden}.risk-card.expanded{max-height:none}.fin-click{cursor:pointer;transition:.14s}.fin-click:hover{background:rgba(22,163,74,.07)!important;box-shadow:inset 0 0 0 1px rgba(22,163,74,.18)}
+@media(max-width:1100px){.priority-grid,.rank-country-summary{grid-template-columns:repeat(3,1fr)}.risk-grid{grid-template-columns:1fr}}
+@media(max-width:800px){.priority-grid,.rank-country-summary{grid-template-columns:1fr}.priority-item{grid-template-columns:28px 1fr}.priority-score{grid-column:2;text-align:left}.lead-rep-row{grid-template-columns:1fr repeat(3,.5fr)}}
+
 </style>
 </head>
 <body>
@@ -416,6 +432,16 @@ body{font-family:var(--font);background:#eef8f2;color:var(--text);-webkit-font-s
           </div>
         </div>
 
+
+
+        <!-- PRIORITY LEADS / SLA BREACHES -->
+        <div class="gc" id="prioritySection" style="margin-bottom:16px;border-top:3px solid #dc2626">
+          <div class="gc-hd"><div class="gc-title"><div class="gc-icon" style="background:rgba(220,38,38,.08)">🎯</div>Priority Leads &amp; SLA Breaches</div><span class="badge br" id="priorityBadge">0 items</span></div>
+          <div class="priority-grid" id="priorityMiniGrid"></div>
+          <div class="priority-list" id="priorityList"></div>
+          <div class="priority-actions"><button class="see-more" style="border-radius:12px;max-width:240px;border:1px solid rgba(22,64,42,.05)" onclick="openMetric('priority_actions')">Open all priority rows →</button></div>
+        </div>
+
         <!-- TOP 3 KPI CARDS -->
         <div class="kpi-row" id="kpiRow"></div>
 
@@ -483,7 +509,7 @@ body{font-family:var(--font);background:#eef8f2;color:var(--text);-webkit-font-s
         <div class="row2" style="margin-bottom:16px">
           <div class="gc">
             <div class="gc-hd"><div class="gc-title"><div class="gc-icon" style="background:rgba(8,145,178,.08)">👤</div>Lead Volume</div><div id="leadBadges" style="display:flex;gap:5px"></div></div>
-            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(22,64,42,.07);border-top:1px solid rgba(22,64,42,.06)"><div id="lp0"></div><div id="lp1"></div><div id="lp2"></div></div>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(22,64,42,.07);border-top:1px solid rgba(22,64,42,.06)"><div id="lp0"></div><div id="lp1"></div><div id="lp2"></div></div><div class="lead-rep-summary" id="leadRepSummary"></div>
           </div>
           <div class="gc">
             <div class="gc-hd"><div class="gc-title"><div class="gc-icon" style="background:rgba(8,145,178,.08)">📞</div>Outreach Coverage</div></div>
@@ -501,6 +527,8 @@ body{font-family:var(--font);background:#eef8f2;color:var(--text);-webkit-font-s
         <div class="sec-lbl">Rank A/B Account Coverage</div>
         <div class="gc" style="margin-bottom:16px">
           <div class="gc-hd"><div class="gc-title"><div class="gc-icon" style="background:rgba(217,119,6,.08)">🎯</div>Rank A/B Coverage</div><div id="rankBadges" style="display:flex;gap:5px"></div></div>
+          <div class="rank-filter-row" id="rankCountryTools"></div>
+          <div class="rank-country-summary" id="rankCountrySummary"></div>
           <div style="overflow-x:auto"><table class="rtbl"><thead><tr><th>Rep</th><th class="c">Rank A</th><th class="c">A ✓</th><th class="c">A ✗</th><th class="c">Rank B</th><th class="c">B ✓</th><th class="c">B ✗</th><th>Top Untouched</th></tr></thead><tbody id="rankRepBody"></tbody></table></div>
           <div style="overflow-x:auto"><table class="rtbl"><thead><tr><th>Rank</th><th>Company</th><th>Rep</th><th>Last Activity</th></tr></thead><tbody id="rankBody"></tbody></table><div style="padding:8px 18px;font-size:10px;color:var(--muted);font-weight:600" id="rankFoot"></div></div>
         </div>
@@ -531,7 +559,7 @@ body{font-family:var(--font);background:#eef8f2;color:var(--text);-webkit-font-s
         </div>
         <div class="gc" style="margin-bottom:16px">
           <div class="gc-hd"><div class="gc-title">📊 Financial Summary</div><span class="badge bg">YTD</span></div>
-          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(22,64,42,.07);border-top:1px solid rgba(22,64,42,.06)" id="finSumGrid"></div>
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(22,64,42,.07);border-top:1px solid rgba(22,64,42,.06)" id="finSumGrid"></div>
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
           <div class="gc" style="border-top:3px solid #16a34a">
@@ -585,6 +613,7 @@ document.getElementById('pnlLink').href=CONFIG.pnlUrl;
 /* ══ STATE ══ */
 let D=null,CUR_TAB=localStorage.getItem('acq_tab')||'team';
 let __cash=[],__sign=[],__showAll={};
+let RANK_COUNTRY='all';
 let _actChart=null,_donutChart=null,_actReps=[];
 const SC=['#16a34a','#2563eb','#0891b2','#7c3aed','#d97706','#065f46','#1d4ed8','#be185d','#b45309','#0e7490'];
 
@@ -640,7 +669,7 @@ function render(){
   const ar=repData.filter(r=>r.type!=='view');
   T('topbarSub','Updated '+(meta.generatedAt||'')+' · Acquisition Command Center');
   T('perfDate',meta.yesterdayLabel||'');
-  rFocus();rKPICards(kY,kM,kT,team);
+  rFocus();rPriority(ar,team);rKPICards(kY,kM,kT,team);
   _actReps=ar;buildActChart('yest');
   rLeadSrc(team);rDonut(D.stageData||[]);rRecentDeals(won,lost,team);
   rMtdKpi(kM);rPerfTable(ar);rAutoRecs();rAI();rNews();
@@ -774,10 +803,99 @@ function rNews(){
   H('newsCont',news.length?news.map(n=>'<div class="deal-row" style="gap:12px"><span style="font-size:17px;flex-shrink:0">'+esc(n.icon||'📰')+'</span><div style="flex:1"><div style="display:flex;gap:6px;align-items:center;margin-bottom:3px"><span class="sp" style="background:'+(n.color||'#ccc')+'15;color:'+(n.color||'#888')+';border:1px solid '+(n.color||'#ccc')+'25;padding:2px 8px;font-size:9px">'+esc(n.tag||'')+'</span><span style="font-size:10px;color:var(--muted)">'+esc(n.source||'')+'</span></div><div style="font-size:11px;color:var(--text2);line-height:1.5">'+esc(n.text||'')+'</div></div></div>').join(''):'<div style="padding:18px;text-align:center;color:var(--muted);font-size:12px">No market news.</div>');
 }
 
+
+/* ══ PRIORITY / MANAGER ACTIONS ══ */
+function rowUrl(row){return row.hubspotUrl||row.url||row.recordUrl||null;}
+function priorityRows(){
+  if(!D)return[];
+  const oc=D.outreachCoverage||{},ct=oc.contacts||{};
+  const out=[];
+  (ct.notContactedList||[]).forEach(x=>out.push({...x,_type:'Lead needs contact',_severity:3,_kind:'lead',_score:Number(x.ageDays||x.daysWithoutContact||x.daysSinceCreated||0)}));
+  (D.repData||[]).forEach(r=>{
+    (r.needsAttention||[]).forEach(x=>out.push({...x,ownerName:r.name,_type:'No next activity',_severity:3,_kind:'deal',_score:Number(x.amount||0)}));
+    (r.stuck||[]).forEach(x=>out.push({...x,ownerName:r.name,_type:'Stuck deal',_severity:3,_kind:'deal',_score:Number(x.amount||0)}));
+    (r.cold||[]).forEach(x=>out.push({...x,ownerName:r.name,_type:'Cold deal',_severity:2,_kind:'deal',_score:Number(x.days||0)}));
+  });
+  return out.sort((a,b)=>(b._severity-a._severity)||(Number(b._score||0)-Number(a._score||0))).slice(0,250);
+}
+function rPriority(ar,team){
+  const rows=priorityRows();
+  const leads=rows.filter(x=>x._kind==='lead').length;
+  const deals=rows.filter(x=>x._kind==='deal').length;
+  const high=rows.filter(x=>x._severity>=3).length;
+  T('priorityBadge',rows.length+' items');
+  H('priorityMiniGrid',[
+    {v:leads,l:'Leads need contact',c:'#dc2626'},
+    {v:deals,l:'Deals need action',c:'#d97706'},
+    {v:high,l:'High priority',c:'#7c3aed'}
+  ].map(x=>'<div class="priority-mini" style="--pc:'+x.c+'"><div class="priority-mini-v">'+Number(x.v||0).toLocaleString()+'</div><div class="priority-mini-l">'+esc(x.l)+'</div></div>').join(''));
+  H('priorityList',rows.slice(0,7).map((row,i)=>{
+    const name=row.name||row.dealname||row.email||row.id||'Unknown';
+    const owner=row.ownerName||row.rep||row.owner||'—';
+    const meta=[row._type,owner,row.country,row.source||row.sourceBucket,row.stage,row.createdAt?String(row.createdAt).slice(0,10):null].filter(Boolean).join(' · ');
+    const value=row.amount!=null?fmt(row.amount):row.ageDays!=null?row.ageDays+'d':row.days!=null?row.days+'d':'';
+    return '<div class="priority-item"><div class="priority-num">'+(i+1)+'</div><div><div class="priority-name">'+rl(name,rowUrl(row))+'</div><div class="priority-meta">'+esc(meta)+'</div></div><div class="priority-score">'+esc(String(value||'Action'))+'</div></div>';
+  }).join('')+(rows.length===0?'<div class="lead-empty">No priority rows found in this data refresh.</div>':''));
+}
+
+function countryName(v){return String(v||'Unknown').trim()||'Unknown';}
+function countryKey(v){return countryName(v).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')||'unknown';}
+function countryMatches(row,key){return key==='all'||countryKey(row.country||row.companyCountry||row.countryName)===key;}
+function statFromCountry(obj,country){
+  if(!obj)return null;
+  const entries=Object.entries(obj);
+  const found=entries.find(([k])=>countryKey(k)===countryKey(country));
+  return found?found[1]:null;
+}
+function repRankStats(r,country){
+  const all=country==='all';
+  const uA=(r.rankAUntouched||[]).filter(x=>countryMatches(x,country));
+  const uB=(r.rankBUntouched||[]).filter(x=>countryMatches(x,country));
+  if(all)return {a:Number(r.rankA||0),aC:Number(r.rankAContacted||0),aU:Number(r.rankANotContacted||uA.length||0),b:Number(r.rankB||0),bC:Number(r.rankBContacted||0),bU:Number(r.rankBNotContacted||uB.length||0)};
+  const label=window.__rankCountryLabels&&window.__rankCountryLabels[country]||country;
+  const aS=statFromCountry(r.rankAByCountry,label)||statFromCountry(r.countryBreakdown,label)||{};
+  const bS=statFromCountry(r.rankBByCountry,label)||{};
+  const a=Number(aS.rankA||aS.A||aS.totalA||aS.total||uA.length||0);
+  const b=Number(bS.rankB||bS.B||bS.totalB||bS.total||uB.length||0);
+  const aU=Number(aS.rankANotContacted||aS.notContactedA||aS.untouchedA||uA.length||0);
+  const bU=Number(bS.rankBNotContacted||bS.notContactedB||bS.untouchedB||uB.length||0);
+  const aC=Number(aS.rankAContacted||aS.contactedA||Math.max(0,a-aU));
+  const bC=Number(bS.rankBContacted||bS.contactedB||Math.max(0,b-bU));
+  return {a,aC,aU,b,bC,bU};
+}
+function rankSummaryBox(v,l,c){return '<div class="rank-summary-box"><div class="rank-summary-v" style="color:'+c+'">'+Number(v||0).toLocaleString()+'</div><div class="rank-summary-l">'+esc(l)+'</div></div>';}
+function setRankCountry(key){RANK_COUNTRY=key; rRankCov(window.__rankRows||[]);}
+
+function riskDealCard(title,items,color,badgeClass,key,label){
+  const rows=Array.isArray(items)?items:[];
+  if(!rows.length)return '';
+  const first=rows.slice(0,8),rest=rows.slice(8);
+  const row=d=>'<div class="deal-row"><div style="flex:1;min-width:0"><div class="deal-nm">'+rl(d.name,d.hubspotUrl)+'</div><div class="deal-mt">'+esc(label)+' '+esc(String(d.days||d.ageDays||'?'))+'d</div></div><div class="deal-amt" style="color:'+color+'">'+fmt(d.amount||0)+'</div></div>';
+  return '<div class="gc risk-card" id="'+key+'" style="border-top:3px solid '+color+'"><div class="gc-hd"><div class="gc-title">'+title+'</div><span class="badge '+badgeClass+'">'+rows.length+'</span></div>'+first.map(row).join('')+'<div id="'+key+'-more" style="display:none">'+rest.map(row).join('')+'</div>'+(rest.length?'<button class="see-more" onclick="toggleMore(\''+key+'-more\',this,\'▼ '+rest.length+' more\',\'▲ Less\')">▼ '+rest.length+' more</button>':'')+'</div>';
+}
+
+function financialMetricRows(kind){
+  const delayed=(__sign||[]).filter(d=>Number(d.daysFromSigned||0)>7||/delayed/i.test(String(d.riskLabel||d.status||'')));
+  if(kind==='cash')return __cash||[];
+  if(kind==='sign')return __sign||[];
+  if(kind==='pending')return __sign||[];
+  if(kind==='delayed')return delayed;
+  if(kind==='missing')return (D&&D.financialDetails&&D.financialDetails.missingFinancials)||[];
+  return [];
+}
+function openFinancialMetric(kind){
+  const labels={cash:['Cashing Revenue','closedwon deals entered current stage YTD'],sign:['Signed Contract','contractsent deals entered current stage YTD'],pending:['Pending to Cash','signed deals still waiting to cash'],delayed:['Delayed Signed','signed deals delayed more than 7 days'],missing:['Missing Financial Data','deals missing amount or date fields']};
+  const rows=financialMetricRows(kind),info=labels[kind]||['Financial Details',''];
+  const html=rows.length?rows.slice(0,100).map(row=>{const name=row.name||row.dealname||row.id||'Unknown deal';const owner=row.rep||row.ownerName||'—';const date=row.stageDate||row.cashingDate||row.signedDate||row.closedate||'—';const status=row.riskLabel||row.status||row.stage||row.dealstage||'—';return '<div class="mrow"><div class="mn">'+rl(name,rowUrl(row))+'<div class="mm">'+esc(status)+' · '+esc(date)+'</div></div><div style="font-size:12px">'+esc(owner)+'</div><div><span class="mpill">'+esc(row.daysFromSigned!=null?row.daysFromSigned+'d':status)+'</span></div><div style="font-family:var(--mono);font-weight:800;text-align:right">'+money(row.amount||0)+'</div></div>';}).join('')+(rows.length>100?'<div class="mempty">Showing first 100/'+rows.length+' rows.</div>':''):'<div class="mempty">No rows found for this financial metric.</div>';
+  T('modalTitle',info[0]+' ('+rows.length+')');T('modalDesc',info[1]);H('modalBody',html);$('modalBg').classList.add('open');
+}
+
 /* ══ LEADS ══ */
 function rLeads(ar,team){
   H('leadBadges','<span class="badge bb">Yest: '+(team.leadsYest||0)+'</span><span class="badge bg">MTD: '+(team.leadsMTD||0)+'</span><span class="badge bp">YTD: '+(team.leadsYTD||0)+'</span>');
   [{p:'Yesterday',t:team.leadsYest||0,i:team.leadsYestInbound||0,o:team.leadsYestOutbound||0,c:'#2563eb'},{p:'Month to Date',t:team.leadsMTD||0,i:team.leadsMTDInbound||0,o:team.leadsMTDOutbound||0,c:'#16a34a'},{p:'Year to Date',t:team.leadsYTD||0,i:team.leadsYTDInbound||0,o:team.leadsYTDOutbound||0,c:'#7c3aed'}].forEach((x,i)=>{H('lp'+i,'<div style="background:rgba(255,255,255,.6);padding:13px;text-align:center"><div style="font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:5px">'+x.p+'</div><div style="font-family:var(--mono);font-size:28px;font-weight:700;color:'+x.c+'">'+x.t.toLocaleString()+'</div><div style="display:flex;justify-content:center;gap:10px;margin-top:6px;font-size:10px;font-weight:700"><span style="color:#2563eb">↓ '+x.i+'</span><span style="color:#d97706">↑ '+x.o+'</span></div></div>');});
+  const rows=(ar||[]).map(r=>({name:r.name,color:r.color,y:r.leadsYest||0,m:r.leadsMTD||0,t:r.leadsYTD||0})).sort((a,b)=>b.m-a.m);
+  H('leadRepSummary',rows.length?'<div class="lead-rep-row lead-rep-head"><div>Rep</div><div class="lead-rep-num">Yest</div><div class="lead-rep-num">MTD</div><div class="lead-rep-num">YTD</div></div>'+rows.map(r=>'<div class="lead-rep-row"><div class="lead-rep-name"><span style="color:'+r.color+'">●</span> '+esc(r.name)+'</div><div class="lead-rep-num" style="color:#2563eb">'+r.y+'</div><div class="lead-rep-num" style="color:#16a34a">'+r.m+'</div><div class="lead-rep-num" style="color:#7c3aed">'+r.t+'</div></div>').join(''):'<div class="lead-empty">No lead data by rep in this refresh.</div>');
 }
 
 /* ══ OUTREACH ══ */
@@ -799,20 +917,27 @@ function rCoaching(ar){
 
 /* ══ RANK ══ */
 function rRankCov(ar){
-  const rt=D.rankTotals||{};
-  H('rankBadges','<span class="rank-a">'+(rt.A||0)+' A</span><span class="rank-b">'+(rt.B||0)+' B</span><span class="badge bg">✓ '+(rt.AContacted||0)+'A / '+(rt.BContacted||0)+'B</span><span class="badge br">✗ '+(rt.ANotContacted||0)+'A / '+(rt.BNotContacted||0)+'B</span>');
-  const rd=D.topInactiveRankAccounts||[];
-  H('rankRepBody',ar.map(r=>{
-    const uA=r.rankAUntouched||[];
-    const uB=r.rankBUntouched||[];
-    const topUntouched=[...uA.slice(0,2).map(x=>({...x,_rank:'A'})),...uB.slice(0,2).map(x=>({...x,_rank:'B'}))].slice(0,3);
-    const iN=topUntouched.map(c=>'<span style="font-size:10px;color:'+(c._rank==='A'?'#dc2626':'#d97706')+'">• '+rl(c.name,c.hubspotUrl)+' <b>'+c._rank+'</b></span>').join('<br>');
-    const aMissing=(r.rankANotContacted||0);
-    const bMissing=(r.rankBNotContacted||0);
-    return '<tr><td><div style="display:flex;align-items:center;gap:8px"><div style="width:26px;height:26px;border-radius:8px;background:'+r.color+'20;color:'+r.color+';font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center">'+r.name[0]+'</div><span style="font-weight:700">'+esc(r.name)+'</span></div></td><td class="c"><span class="rank-a">'+(r.rankA||0)+'</span></td><td class="c mono" style="color:#16a34a">'+(r.rankAContacted||0)+'</td><td class="c mono" style="color:'+(aMissing>0?'#dc2626':'#16a34a')+'">'+(aMissing>0?aMissing:'✓')+'</td><td class="c"><span class="rank-b">'+(r.rankB||0)+'</span></td><td class="c mono" style="color:#16a34a">'+(r.rankBContacted||0)+'</td><td class="c mono" style="color:'+(bMissing>0?'#d97706':'#16a34a')+'">'+(bMissing>0?bMissing:'✓')+'</td><td style="font-size:10px;line-height:1.8">'+(iN||'<span style="color:#16a34a;font-size:10px">✓</span>')+'</td></tr>';
-  }).join(''));
+  window.__rankRows=ar||[];
+  const countries=new Map();
+  (ar||[]).forEach(r=>{
+    [...(r.rankAUntouched||[]),...(r.rankBUntouched||[])].forEach(x=>countries.set(countryKey(x.country||x.companyCountry||x.countryName),countryName(x.country||x.companyCountry||x.countryName)));
+    Object.keys(r.rankAByCountry||{}).forEach(c=>countries.set(countryKey(c),countryName(c)));
+    Object.keys(r.rankBByCountry||{}).forEach(c=>countries.set(countryKey(c),countryName(c)));
+    Object.keys(r.countryBreakdown||{}).forEach(c=>countries.set(countryKey(c),countryName(c)));
+  });
+  (D.topInactiveRankAccounts||[]).forEach(x=>{if(x.country)countries.set(countryKey(x.country),countryName(x.country));});
+  window.__rankCountryLabels=Object.fromEntries(countries);
+  const totalAll=(D.rankTotals||{}).total||((D.rankTotals||{}).A||0)+((D.rankTotals||{}).B||0);
+  const chipHtml=['<button class="rank-chip '+(RANK_COUNTRY==='all'?'active':'')+'" onclick="setRankCountry(\'all\')">All '+Number(totalAll||0).toLocaleString()+'</button>'].concat(Array.from(countries.entries()).sort((a,b)=>a[1].localeCompare(b[1])).map(([k,v])=>'<button class="rank-chip '+(RANK_COUNTRY===k?'active':'')+'" onclick="setRankCountry(\''+k+'\')">'+esc(v)+'</button>')).join('');
+  H('rankCountryTools',chipHtml);
+  const stats=(ar||[]).map(r=>repRankStats(r,RANK_COUNTRY));
+  const sum=stats.reduce((a,x)=>({a:a.a+x.a,aC:a.aC+x.aC,aU:a.aU+x.aU,b:a.b+x.b,bC:a.bC+x.bC,bU:a.bU+x.bU}),{a:0,aC:0,aU:0,b:0,bC:0,bU:0});
+  H('rankCountrySummary',[rankSummaryBox(sum.a,'Rank A','#dc2626'),rankSummaryBox(sum.aC,'A Touched','#16a34a'),rankSummaryBox(sum.aU,'A Untouched','#dc2626'),rankSummaryBox(sum.b,'Rank B','#d97706'),rankSummaryBox(sum.bC,'B Touched','#16a34a'),rankSummaryBox(sum.bU,'B Untouched','#d97706')].join(''));
+  H('rankBadges','<span class="rank-a">'+sum.a+' A</span><span class="rank-b">'+sum.b+' B</span><span class="badge bg">✓ '+sum.aC+'A / '+sum.bC+'B</span><span class="badge br">✗ '+sum.aU+'A / '+sum.bU+'B</span>');
+  const rd=(D.topInactiveRankAccounts||[]).filter(x=>countryMatches(x,RANK_COUNTRY));
+  H('rankRepBody',(ar||[]).map(r=>{const st=repRankStats(r,RANK_COUNTRY);const uA=(r.rankAUntouched||[]).filter(x=>countryMatches(x,RANK_COUNTRY));const uB=(r.rankBUntouched||[]).filter(x=>countryMatches(x,RANK_COUNTRY));const top=[...uA.slice(0,2).map(x=>({...x,rank:'A'})),...uB.slice(0,2).map(x=>({...x,rank:'B'}))];const topHtml=top.map(c=>'<span style="font-size:10px;color:'+(c.rank==='A'?'#dc2626':'#d97706')+'">• '+rl(c.name,c.hubspotUrl)+' · '+c.rank+'</span>').join('<br>');return '<tr><td><div style="display:flex;align-items:center;gap:8px"><div style="width:26px;height:26px;border-radius:8px;background:'+r.color+'20;color:'+r.color+';font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center">'+esc((r.name||'?')[0])+'</div><span style="font-weight:700">'+esc(r.name)+'</span></div></td><td class="c"><span class="rank-a">'+st.a+'</span></td><td class="c mono" style="color:#16a34a">'+st.aC+'</td><td class="c mono" style="color:'+(st.aU>0?'#dc2626':'#16a34a')+'">'+(st.aU>0?st.aU:'✓')+'</td><td class="c"><span class="rank-b">'+st.b+'</span></td><td class="c mono" style="color:#16a34a">'+st.bC+'</td><td class="c mono" style="color:'+(st.bU>0?'#d97706':'#16a34a')+'">'+(st.bU>0?st.bU:'✓')+'</td><td style="font-size:10px;line-height:1.8">'+(topHtml||'<span style="color:#16a34a;font-size:10px">✓</span>')+'</td></tr>';}).join(''));
   H('rankBody',rd.map(c=>{const dc=c.daysSinceActivity>14?'#dc2626':c.daysSinceActivity>7?'#d97706':'#16a34a';return'<tr><td>'+( c.rank==='A'?'<span class="rank-a">A</span>':'<span class="rank-b">B</span>')+'</td><td style="font-weight:700">'+rl(c.name,c.hubspotUrl)+'</td><td><span style="font-size:11px;font-weight:600;color:'+(c.repColor||'#6b7280')+'">● '+esc(c.rep)+'</span></td><td><span style="font-weight:700;color:'+dc+';font-family:var(--mono);font-size:11px">'+(c.daysSinceActivity>900?'Never':c.daysSinceActivity+'d ago')+'</span></td></tr>';}).join(''));
-  T('rankFoot','Top '+rd.length+' by days since last activity · '+(rt.total||0)+' total Rank A/B accounts');
+  T('rankFoot','Showing '+rd.length+' inactive accounts · filter: '+(RANK_COUNTRY==='all'?'All countries':(window.__rankCountryLabels[RANK_COUNTRY]||RANK_COUNTRY)));
 }
 
 /* ══ PIPELINE CARDS ══ */
@@ -843,12 +968,13 @@ function rFinancial(){
   const fd=D.financialDetails||{},fs=fd.summary||{};
   __cash=fd.cashing||[];__sign=fd.signed||[];
   const miss=fd.missingFinancials||[];
+  const delayed=financialMetricRows('delayed');
   const cA=fs.cashingRevenue||__cash.reduce((s,d)=>s+(d.amount||0),0);
   const sA=fs.signedRevenue||__sign.reduce((s,d)=>s+(d.amount||0),0);
   const pA=fs.pendingToCash||sA;
-  T('finHeroSub','YTD · '+__cash.length+' cashing · '+__sign.length+' signed · '+(fs.delayedSignedCount||0)+' delayed');
+  T('finHeroSub','YTD · '+__cash.length+' cashing · '+__sign.length+' signed · '+delayed.length+' delayed');
   T('finCashBadge',__cash.length+' · '+money(cA));T('finSignBadge',__sign.length+' · '+money(sA));
-  H('finSumGrid',[{v:money(cA),l:'Cashing Revenue',s:__cash.length+' closedwon · YTD',c:'#16a34a'},{v:money(sA),l:'Signed Contract',s:__sign.length+' contractsent · YTD',c:'#d97706'},{v:money(pA),l:'Pending to Cash',s:'Same value as Signed',c:'#2563eb'}].map(x=>'<div class="obox" style="cursor:pointer;padding:16px"><div class="obox-v" style="color:'+x.c+';font-size:26px">'+x.v+'</div><div class="obox-l">'+esc(x.l)+'</div><div style="font-size:9px;color:var(--muted);margin-top:3px">'+esc(x.s)+'</div></div>').join(''));
+  H('finSumGrid',[{k:'cash',v:money(cA),l:'Cashing Revenue',s:__cash.length+' closedwon · YTD',c:'#16a34a'},{k:'sign',v:money(sA),l:'Signed Contract',s:__sign.length+' contractsent · YTD',c:'#d97706'},{k:'pending',v:money(pA),l:'Pending to Cash',s:'Click to inspect signed rows',c:'#2563eb'},{k:'delayed',v:delayed.length,l:'Delayed Signed',s:'More than 7 days',c:'#dc2626'}].map(x=>'<div class="obox fin-click" onclick="openFinancialMetric(\''+x.k+'\')" style="cursor:pointer;padding:16px"><div class="obox-v" style="color:'+x.c+';font-size:26px">'+x.v+'</div><div class="obox-l">'+esc(x.l)+'</div><div style="font-size:9px;color:var(--muted);margin-top:3px">'+esc(x.s)+'</div></div>').join(''));
   H('finCashBody',(__cash.slice(0,10)).length?__cash.slice(0,10).map(cashR).join(''):'<tr><td colspan="5"><div style="padding:18px;text-align:center;color:var(--muted);font-size:12px">No YTD closedwon deals.</div></td></tr>');
   H('finSignBody',(__sign.slice(0,10)).length?__sign.slice(0,10).map(signR).join(''):'<tr><td colspan="6"><div style="padding:18px;text-align:center;color:var(--muted);font-size:12px">No YTD contractsent deals.</div></td></tr>');
   if($('finCashMore')){$('finCashMore').style.display=__cash.length>10?'block':'none';T('finCashMore','▼ Show '+(__cash.length-10)+' more');}
@@ -877,21 +1003,25 @@ function buildRepPanels(repData,won,lost,meta){
 function buildViewP(r,rW,rL,sh,re,did,c,meta){return'<div class="rep-hero" style="--hc:'+c+'"><div class="rep-av" style="background:'+c+'20;color:'+c+'">'+r.name[0]+'</div><div><div style="font-size:20px;font-weight:800">'+esc(r.name)+'<span class="badge bb" style="margin-left:8px;font-size:10px">VIEW</span></div><div style="font-size:11px;color:var(--muted);margin-top:3px">'+esc(meta.yesterdayLabel||'')+' · Deals visibility only</div></div><div class="rep-stats">'+[{v:r.openDeals||0,l:'Open Deals',c:'#d97706'},{v:fmt(r.pipeAmt||0),l:'Pipeline',c:'#0891b2'},{v:r.won||0,l:'Won MTD',c:'#16a34a'},{v:r.lost||0,l:'Lost MTD',c:'#dc2626'}].map(s=>'<div style="text-align:center"><div class="rs-v" style="color:'+s.c+'">'+s.v+'</div><div class="rs-l">'+esc(s.l)+'</div></div>').join('')+'</div></div>'+(rW.length?'<div class="gc" style="border-top:3px solid #16a34a;margin-bottom:14px"><div class="gc-hd"><div class="gc-title">🏆 Won MTD</div><span class="badge bg">'+rW.length+'</span></div>'+rW.map(d=>dRow(d,'#16a34a',false)).join('')+'</div>':'')+'<div class="gc"><div class="gc-hd"><div class="gc-title">💼 Open Deals</div><span class="badge bb">'+(r.openDeals||0)+' · '+fmt(r.pipeAmt||0)+'</span></div>'+openDT(sh,re,did)+'</div>';}
 function buildFullP(r,rW,rL,sh,re,did,c,meta){
   const cold=r.cold||[],stuck=r.stuck||[],uA=r.rankAUntouched||[],uB=r.rankBUntouched||[];
-  return'<div class="rep-hero" style="--hc:'+c+'"><div class="rep-av" style="background:'+c+'20;color:'+c+'">'+r.name[0]+'</div><div><div style="font-size:20px;font-weight:800">'+esc(r.name)+'</div><div style="font-size:11px;color:var(--muted);margin-top:3px">'+esc(meta.yesterdayLabel||'')+' · Acquisition Rep</div></div><div class="rep-stats">'+[{v:r.calls&&r.calls.yest||0,l:'Calls',c:'#2563eb'},{v:(r.connRateYest||0)+'%',l:'Conn.Rate',c:rcColor(r.connRateYest||0)},{v:r.meetings&&r.meetings.yest||0,l:'Meetings',c:'#7c3aed'},{v:r.openDeals||0,l:'Open',c:'#d97706'},{v:fmt(r.pipeAmt||0),l:'Pipeline',c:'#0891b2'},{v:r.won||0,l:'Won MTD',c:'#16a34a'},{v:r.lost||0,l:'Lost',c:'#dc2626'}].map(s=>'<div style="text-align:center"><div class="rs-v" style="color:'+s.c+'">'+s.v+'</div><div class="rs-l">'+esc(s.l)+'</div></div>').join('')+'</div></div>'+
-  '<div class="rep-km" style="margin-bottom:16px;border-top:3px solid '+c+'"><div class="rep-km-hd"><div style="font-size:12px;font-weight:700;display:flex;align-items:center;gap:8px"><span style="color:'+c+'">●</span>'+esc(r.name)+' — KPI Breakdown</div></div>'+
-  [{p:'Yesterday',sub:meta.yesterdayLabel||'',pc:c,calls:r.calls&&r.calls.yest||0,conn:r.calls&&r.calls.yestConn||0,rate:r.connRateYest||0,mtgs:r.meetings&&r.meetings.yest||0,leads:r.leadsYest||0,open:r.openDeals||0,won:(r.wonYest||0)+'('+fmt(r.wonAmtYest||0)+')'},{p:'MTD',sub:'Month to Date',pc:c,calls:r.calls&&r.calls.mtd||0,conn:r.calls&&r.calls.mtdConn||0,rate:r.connRateMTD||0,mtgs:r.meetings&&r.meetings.mtd||0,leads:r.leadsMTD||0,open:r.openDeals||0,won:(r.won||0)+'('+fmt(r.wonAmt||0)+')'},{p:'YTD',sub:'Year to Date',pc:c,calls:r.calls&&r.calls.ytd||0,conn:r.calls&&r.calls.ytdConn||0,rate:r.connRateYTD||0,mtgs:r.meetings&&r.meetings.ytd||0,leads:r.leadsYTD||0,open:r.openDeals||0,won:(r.wonYTD||0)+'('+fmt(r.wonAmtYTD||0)+')'}].map(p=>'<div class="rkrow"><div class="rk-plbl" style="--pc:'+p.pc+'"><div class="rk-pn">'+p.p+'</div><div class="rk-ps">'+esc(p.sub)+'</div></div>'+[{v:p.calls,l:'Calls',rk:'#2563eb'},{v:p.conn,l:'Connected',rk:'#16a34a'},{v:p.rate+'%',l:'Conn.Rate',rk:rcColor(p.rate)},{v:p.mtgs,l:'Meetings',rk:'#7c3aed'},{v:p.leads,l:'Leads',rk:'#0891b2'},{v:p.open,l:'Open Deals',rk:'#d97706'},{v:p.won,l:'Won',rk:'#16a34a'}].map(x=>'<div class="rk-cell" style="--rk:'+x.rk+'"><div class="rk-v">'+esc(String(x.v))+'</div><div class="rk-l">'+esc(x.l)+'</div></div>').join('')+'</div>').join('')+'</div>'+
-  (rW.length?'<div class="gc" style="border-top:3px solid #16a34a;margin-bottom:14px"><div class="gc-hd"><div class="gc-title">🏆 Won MTD</div><span class="badge bg">'+rW.length+' · '+fmt(rW.reduce((s,d)=>s+(d.amount||0),0))+'</span></div>'+rW.map(d=>dRow(d,'#16a34a',false)).join('')+'</div>':'')+
-  (rL.length?'<div class="gc" style="border-top:3px solid #dc2626;margin-bottom:14px"><div class="gc-hd"><div class="gc-title">❌ Lost MTD</div><span class="badge br">'+rL.length+' · '+fmt(rL.reduce((s,d)=>s+(d.amount||0),0))+'</span></div>'+rL.map(d=>dRow(d,'#dc2626',true)).join('')+'</div>':'')+
-  '<div class="gc" style="margin-bottom:14px"><div class="gc-hd"><div class="gc-title">💼 Open Deals</div><span class="badge bb">'+(r.openDeals||0)+' · '+fmt(r.pipeAmt||0)+'</span></div>'+openDT(sh,re,did)+'</div>'+
-  ((cold.length||stuck.length)?'<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">'+(cold.length?'<div class="gc" style="border-top:3px solid #d97706"><div class="gc-hd"><div class="gc-title">🟡 Cold Deals</div><span class="badge ba">'+cold.length+'</span></div>'+cold.map(d=>'<div class="deal-row"><div style="flex:1;min-width:0"><div class="deal-nm">'+rl(d.name,d.hubspotUrl)+'</div><div class="deal-mt">No activity '+esc(String(d.days||'?'))+'d</div></div><div class="deal-amt" style="color:#d97706">'+fmt(d.amount||0)+'</div></div>').join('')+'</div>':'')+(stuck.length?'<div class="gc" style="border-top:3px solid #dc2626"><div class="gc-hd"><div class="gc-title">🔴 Stuck Deals</div><span class="badge br">'+stuck.length+'</span></div>'+stuck.map(d=>'<div class="deal-row"><div style="flex:1;min-width:0"><div class="deal-nm">'+rl(d.name,d.hubspotUrl)+'</div><div class="deal-mt">Stuck '+esc(String(d.days||'?'))+'d</div></div><div class="deal-amt" style="color:#dc2626">'+fmt(d.amount||0)+'</div></div>').join('')+'</div>':'')+'</div>':'')+
-  '<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">'+(uA.length?'<div class="gc" style="border-top:3px solid #dc2626"><div class="gc-hd"><div class="gc-title">🎯 Rank A Untouched</div><span class="badge br">'+uA.length+'</span></div>'+uA.slice(0,5).map(co=>'<div class="deal-row"><div style="flex:1;font-size:11px;font-weight:700">'+rl(co.name,co.hubspotUrl)+'</div><span style="font-size:10px;color:var(--muted)">'+esc(co.country||'')+'</span><span class="rank-a">A</span></div>').join('')+(uA.length>5?'<div style="text-align:center;padding:8px;font-size:10px;color:var(--muted)">+'+( uA.length-5)+' more</div>':'')+'</div>':'<div class="gc" style="border-top:3px solid #16a34a"><div class="gc-hd"><div class="gc-title">🎯 Rank A</div><span class="badge bg">All covered</span></div><div style="padding:14px;text-align:center;color:#16a34a;font-size:12px;font-weight:600">✅ All Rank A accounts contacted</div></div>')+(uB.length?'<div class="gc" style="border-top:3px solid #d97706"><div class="gc-hd"><div class="gc-title">🎯 Rank B Untouched</div><span class="badge ba">'+uB.length+'</span></div>'+uB.slice(0,5).map(co=>'<div class="deal-row"><div style="flex:1;font-size:11px;font-weight:700">'+rl(co.name,co.hubspotUrl)+'</div><span style="font-size:10px;color:var(--muted)">'+esc(co.country||'')+'</span><span class="rank-b">B</span></div>').join('')+(uB.length>5?'<div style="text-align:center;padding:8px;font-size:10px;color:var(--muted)">+'+(uB.length-5)+' more</div>':'')+'</div>':'<div class="gc" style="border-top:3px solid #16a34a"><div class="gc-hd"><div class="gc-title">🎯 Rank B</div><span class="badge bg">All covered</span></div><div style="padding:14px;text-align:center;color:#16a34a;font-size:12px;font-weight:600">✅ All Rank B accounts contacted</div></div>')+'</div>';
+  const hero='<div class="rep-hero" style="--hc:'+c+'"><div class="rep-av" style="background:'+c+'20;color:'+c+'">'+esc((r.name||'?')[0])+'</div><div><div style="font-size:20px;font-weight:800">'+esc(r.name)+'</div><div style="font-size:11px;color:var(--muted);margin-top:3px">'+esc(meta.yesterdayLabel||'')+' · Acquisition Rep</div></div><div class="rep-stats">'+[{v:r.calls&&r.calls.yest||0,l:'Calls',c:'#2563eb'},{v:(r.connRateYest||0)+'%',l:'Conn.Rate',c:rcColor(r.connRateYest||0)},{v:r.meetings&&r.meetings.yest||0,l:'Meetings',c:'#7c3aed'},{v:r.openDeals||0,l:'Open',c:'#d97706'},{v:fmt(r.pipeAmt||0),l:'Pipeline',c:'#0891b2'},{v:r.won||0,l:'Won MTD',c:'#16a34a'},{v:r.lost||0,l:'Lost',c:'#dc2626'}].map(s=>'<div style="text-align:center"><div class="rs-v" style="color:'+s.c+'">'+s.v+'</div><div class="rs-l">'+esc(s.l)+'</div></div>').join('')+'</div></div>';
+  const kpi='<div class="rep-km" style="margin-bottom:16px;border-top:3px solid '+c+'"><div class="rep-km-hd"><div style="font-size:12px;font-weight:700;display:flex;align-items:center;gap:8px"><span style="color:'+c+'">●</span>'+esc(r.name)+' — KPI Breakdown</div></div>'+[{p:'Yesterday',sub:meta.yesterdayLabel||'',pc:c,calls:r.calls&&r.calls.yest||0,conn:r.calls&&r.calls.yestConn||0,rate:r.connRateYest||0,mtgs:r.meetings&&r.meetings.yest||0,leads:r.leadsYest||0,open:r.openDeals||0,won:(r.wonYest||0)+'('+fmt(r.wonAmtYest||0)+')'},{p:'MTD',sub:'Month to Date',pc:c,calls:r.calls&&r.calls.mtd||0,conn:r.calls&&r.calls.mtdConn||0,rate:r.connRateMTD||0,mtgs:r.meetings&&r.meetings.mtd||0,leads:r.leadsMTD||0,open:r.openDeals||0,won:(r.won||0)+'('+fmt(r.wonAmt||0)+')'},{p:'YTD',sub:'Year to Date',pc:c,calls:r.calls&&r.calls.ytd||0,conn:r.calls&&r.calls.ytdConn||0,rate:r.connRateYTD||0,mtgs:r.meetings&&r.meetings.ytd||0,leads:r.leadsYTD||0,open:r.openDeals||0,won:(r.wonYTD||0)+'('+fmt(r.wonAmtYTD||0)+')'}].map(p=>'<div class="rkrow"><div class="rk-plbl" style="--pc:'+p.pc+'"><div class="rk-pn">'+p.p+'</div><div class="rk-ps">'+esc(p.sub)+'</div></div>'+[{v:p.calls,l:'Calls',rk:'#2563eb'},{v:p.conn,l:'Connected',rk:'#16a34a'},{v:p.rate+'%',l:'Conn.Rate',rk:rcColor(p.rate)},{v:p.mtgs,l:'Meetings',rk:'#7c3aed'},{v:p.leads,l:'Leads',rk:'#0891b2'},{v:p.open,l:'Open Deals',rk:'#d97706'},{v:p.won,l:'Won',rk:'#16a34a'}].map(x=>'<div class="rk-cell" style="--rk:'+x.rk+'"><div class="rk-v">'+esc(String(x.v))+'</div><div class="rk-l">'+esc(x.l)+'</div></div>').join('')+'</div>').join('')+'</div>';
+  const wonBlock=rW.length?'<div class="gc" style="border-top:3px solid #16a34a;margin-bottom:14px"><div class="gc-hd"><div class="gc-title">🏆 Won MTD</div><span class="badge bg">'+rW.length+' · '+fmt(rW.reduce((s,d)=>s+(d.amount||0),0))+'</span></div>'+rW.map(d=>dRow(d,'#16a34a',false)).join('')+'</div>':'';
+  const lostBlock=rL.length?'<div class="gc" style="border-top:3px solid #dc2626;margin-bottom:14px"><div class="gc-hd"><div class="gc-title">❌ Lost MTD</div><span class="badge br">'+rL.length+' · '+fmt(rL.reduce((s,d)=>s+(d.amount||0),0))+'</span></div>'+rL.map(d=>dRow(d,'#dc2626',true)).join('')+'</div>':'';
+  const openBlock='<div class="gc" style="margin-bottom:14px"><div class="gc-hd"><div class="gc-title">💼 Open Deals</div><span class="badge bb">'+(r.openDeals||0)+' · '+fmt(r.pipeAmt||0)+'</span></div>'+openDT(sh,re,did)+'</div>';
+  const riskParts=[riskDealCard('🟡 Cold Deals',cold,'#d97706','ba','cold-'+did,'No activity'),riskDealCard('🔴 Stuck Deals',stuck,'#dc2626','br','stuck-'+did,'Stuck')].filter(Boolean).join('');
+  const riskBlock=riskParts?'<div class="risk-grid">'+riskParts+'</div>':'';
+  const rankA=uA.length?'<div class="gc" style="border-top:3px solid #dc2626"><div class="gc-hd"><div class="gc-title">🎯 Rank A Untouched</div><span class="badge br">'+uA.length+'</span></div>'+uA.slice(0,5).map(co=>'<div class="deal-row"><div style="flex:1;font-size:12px;font-weight:700">'+rl(co.name,co.hubspotUrl)+'</div><span style="font-size:11px;color:var(--muted)">'+esc(co.country||'')+'</span><span class="rank-a">A</span></div>').join('')+(uA.length>5?'<div style="text-align:center;padding:8px;font-size:11px;color:var(--muted)">+'+(uA.length-5)+' more</div>':'')+'</div>':'<div class="gc" style="border-top:3px solid #16a34a"><div class="gc-hd"><div class="gc-title">🎯 Rank A</div><span class="badge bg">All covered</span></div><div style="padding:14px;text-align:center;color:#16a34a;font-size:12px;font-weight:600">✅ All Rank A accounts contacted</div></div>';
+  const rankB=uB.length?'<div class="gc" style="border-top:3px solid #d97706"><div class="gc-hd"><div class="gc-title">🎯 Rank B Untouched</div><span class="badge ba">'+uB.length+'</span></div>'+uB.slice(0,5).map(co=>'<div class="deal-row"><div style="flex:1;font-size:12px;font-weight:700">'+rl(co.name,co.hubspotUrl)+'</div><span style="font-size:11px;color:var(--muted)">'+esc(co.country||'')+'</span><span class="rank-b">B</span></div>').join('')+(uB.length>5?'<div style="text-align:center;padding:8px;font-size:11px;color:var(--muted)">+'+(uB.length-5)+' more</div>':'')+'</div>':'<div class="gc" style="border-top:3px solid #16a34a"><div class="gc-hd"><div class="gc-title">🎯 Rank B</div><span class="badge bg">All covered</span></div><div style="padding:14px;text-align:center;color:#16a34a;font-size:12px;font-weight:600">✅ All Rank B accounts contacted</div></div>';
+  return hero+kpi+wonBlock+lostBlock+openBlock+riskBlock+'<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">'+rankA+rankB+'</div>';
 }
+
 function openDT(sh,re,did){return'<div>'+sh.map(d=>{const na=d.nextActivityDate,nd=na?String(na).slice(0,10):null;return'<div class="deal-row"><div style="flex:1;min-width:0"><div class="deal-nm">'+rl(d.name,d.hubspotUrl)+'</div><div class="deal-mt">'+esc(d.stage||'')+(nd?' · Next: '+nd:'')+'</div></div>'+(d.isStuck?'<span class="badge br" style="flex-shrink:0;font-size:8px">Stuck</span>':d.isCold?'<span class="badge ba" style="flex-shrink:0;font-size:8px">Cold</span>':d.hasNextActivity?'<span class="badge bg" style="flex-shrink:0;font-size:8px">On Track</span>':'')+'<div class="deal-amt">'+fmt(d.amount||0)+'</div></div>';}).join('')+'<div id="'+did+'-m" style="display:none">'+re.map(d=>'<div class="deal-row"><div style="flex:1;min-width:0"><div class="deal-nm">'+rl(d.name,d.hubspotUrl)+'</div><div class="deal-mt">'+esc(d.stage||'')+'</div></div><div class="deal-amt">'+fmt(d.amount||0)+'</div></div>').join('')+'</div>'+(re.length?'<button class="see-more" onclick="toggleMore(\''+did+'-m\',this,\'▼ '+re.length+' more\',\'▲ Less\')">▼ '+re.length+' more deals</button>':'')+(sh.length===0&&re.length===0?'<div style="padding:16px;text-align:center;color:var(--muted);font-size:12px">No open deals.</div>':'')+'</div>';}
 
 /* ══ METRIC MODAL ══ */
 function mRows(kind){
   if(!D)return[];
   const oc=D.outreachCoverage||{};
+  if(kind==='priority_actions')return priorityRows();
   if(kind==='leads_not_contacted')return[...(oc.contacts&&oc.contacts.notContactedList||[])];
   if(kind==='companies_not_contacted')return[...(oc.companies&&oc.companies.notContactedList||[])];
   if(kind==='rank_ab_untouched')return(D.repData||[]).flatMap(r=>[...(r.rankAUntouched||[]).map(x=>({...x,ownerName:r.name,rank:'A'})),...(r.rankBUntouched||[]).map(x=>({...x,ownerName:r.name,rank:'B'}))]);
@@ -899,7 +1029,7 @@ function mRows(kind){
   if(kind==='open_deals')return(D.repData||[]).flatMap(r=>(r.topDeals||[]).map(x=>({...x,ownerName:r.name})));
   return[];
 }
-const mLbls={leads_not_contacted:['Leads Not Contacted','Eligible leads with no connected call.'],companies_not_contacted:['Companies Not Contacted','Rank A/B companies untouched.'],rank_ab_untouched:['Rank A/B Untouched','Accounts not contacted.'],deals_at_risk:['Deals at Risk','Cold/stuck/no-next-activity deals.'],open_deals:['Open Deals','All open pipeline deals.']};
+const mLbls={priority_actions:['Priority Leads & SLA Breaches','Manager-first list of leads/deals that need immediate action.'],leads_not_contacted:['Leads Not Contacted','Eligible leads with no connected call.'],companies_not_contacted:['Companies Not Contacted','Rank A/B companies untouched.'],rank_ab_untouched:['Rank A/B Untouched','Accounts not contacted.'],deals_at_risk:['Deals at Risk','Cold/stuck/no-next-activity deals.'],open_deals:['Open Deals','All open pipeline deals.']};
 function openMetric(kind){
   const rows=mRows(kind),[title,desc]=mLbls[kind]||['Details',''];
   const html=rows.length?rows.slice(0,80).map(row=>{const name=row.name||row.dealname||row.email||row.id||'Unknown';const url=row.hubspotUrl||null;const owner=row.ownerName||row.rep||'—';const meta=[row.country,row.rank?'Rank '+row.rank:null,row.stage,row.source||row.sourceBucket,row.createdAt?String(row.createdAt).slice(0,10):null].filter(Boolean).join(' · ');const val=row.amount!=null?fmt(row.amount):row.ageDays!=null?row.ageDays+'d':row.score!=null?row.score:'';return'<div class="mrow"><div class="mn">'+(url?'<a class="rl" href="'+esc(url)+'" target="_blank">'+esc(name)+'</a>':'<span>'+esc(name)+'</span>')+'<div class="mm">'+esc(meta)+'</div></div><div style="font-size:11px">'+esc(owner)+'</div><div><span class="mpill">'+esc(row.leadStatus||row.stage||row.rank||'—')+'</span></div><div style="font-family:var(--mono);font-weight:700;text-align:right">'+esc(String(val))+'</div></div>';}).join('')+(rows.length>80?'<div class="mempty">Showing 80/'+rows.length+' rows.</div>':''):'<div class="mempty">No rows found for this metric.</div>';
