@@ -734,11 +734,72 @@ function rateColor(r){return r>=70?'#16a34a':r>=40?'#d97706':'#dc2626';}
 function T(id,v){const e=$(id);if(e)e.textContent=v;}
 function H(id,v){const e=$(id);if(e)e.innerHTML=v;}
 function jsq(s){return String(s||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/[\r\n]+/g,' ');}
-function nameFallback(name){return'<a class="rl name-link" href="#" onclick="event.preventDefault();event.stopPropagation();openNameSearch(\''+jsq(name)+'\')">'+esc(name||'Open')+'</a>';}
-function rl(name,url){if(url&&url!=='#')return'<a class="rl name-link" href="'+esc(url)+'" target="_blank" rel="noopener">'+esc(name)+'</a>';return nameFallback(name);}
+function pick(row,keys){
+  const sources=[row,row&&row.properties,row&&row.fields,row&&row.propertyValues];
+  for(const k of keys){
+    for(const src of sources){
+      if(!src)continue;
+      const v=src[k];
+      if(v!==undefined&&v!==null&&String(v).trim()!==''&&String(v).trim()!=='—')return v;
+    }
+  }
+  return null;
+}
+function numericId(v){
+  const raw=String(v||'').trim();
+  if(!raw||raw==='—')return '';
+  const m=raw.match(/\d{5,}/);
+  return m?m[0]:'';
+}
+function hubSearch(name,type){
+  const q=encodeURIComponent(String(name||'').trim());
+  const obj={contact:'0-1',company:'0-2',deal:'0-3'}[type||'deal']||'0-3';
+  return CONFIG.hubspotDomain+'/contacts/'+CONFIG.hubspotPortalId+'/objects/'+obj+'/views/all/list'+(q?'?query='+q:'');
+}
+function inferObjectType(row,name){
+  const raw=String(pick(row,['objectType','objectTypeId','hs_object_type','hs_object_type_id','object'])||'').toLowerCase();
+  if(raw.includes('0-1')||raw.includes('contact'))return'contact';
+  if(raw.includes('0-2')||raw.includes('compan'))return'company';
+  if(raw.includes('0-3')||raw.includes('deal'))return'deal';
+  if(pick(row,['dealId','deal_id','hs_deal_id','dealname','dealstage','pipeline','stage'])||pick(row,['amount']))return'deal';
+  if(pick(row,['companyId','company_id','hs_company_id','domain','website','companyDomain','companyName','company']))return'company';
+  if(pick(row,['contactId','contact_id','vid','email','firstname','lastname']))return'contact';
+  return name?'deal':'deal';
+}
+function recordId(row,type){
+  if(!row)return'';
+  const keys=type==='deal'
+    ? ['dealId','deal_id','hs_deal_id','hs_object_id','recordId','objectId','id']
+    : type==='company'
+      ? ['companyId','company_id','hs_company_id','associatedCompanyId','primaryCompanyId','hs_object_id','recordId','objectId','id']
+      : ['contactId','contact_id','vid','hs_object_id','recordId','objectId','id'];
+  return numericId(pick(row,keys));
+}
+function directHubspotUrl(row,name){
+  if(!row)return null;
+  const explicit=pick(row,['hubspotUrl','url','recordUrl','hs_url','dealUrl','companyUrl','contactUrl']);
+  if(explicit&&explicit!=='#'&&/^https?:\/\//i.test(String(explicit)))return String(explicit);
+  const type=inferObjectType(row,name);
+  const id=recordId(row,type);
+  return id?hub(type,id):null;
+}
+function nameFallback(name,type){
+  const url=hubSearch(name,type||'deal');
+  return'<a class="rl name-link" href="'+esc(url)+'" target="_blank" rel="noopener">'+esc(name||'Open')+'</a>';
+}
+function rl(name,url,row){
+  const final=(url&&url!=='#')?url:(directHubspotUrl(row,name)||hubSearch(name,inferObjectType(row,name)));
+  return'<a class="rl name-link" href="'+esc(final)+'" target="_blank" rel="noopener">'+esc(name||'Open')+'</a>';
+}
 function repSlug(name){const raw=String(name||'').trim(),low=raw.toLowerCase();const reps=(D&&D.repData)||[];const found=reps.find(r=>String(r.name||'').toLowerCase()===low)||reps.find(r=>String(r.name||'').split(' ')[0].toLowerCase()===low.split(' ')[0]);return String((found&&found.name)||raw).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')||'team';}
 function repExists(name){const low=String(name||'').trim().toLowerCase();return !!((D&&D.repData)||[]).find(r=>String(r.name||'').toLowerCase()===low||String(r.name||'').split(' ')[0].toLowerCase()===low.split(' ')[0]);}
-function repLink(name,color,label){const raw=String(name||'').trim();if(!raw||raw==='—')return'<span>—</span>';const txt=label||raw,known=repExists(raw),slug=repSlug(raw);const dot=color?'<span class="rep-dot" style="background:'+esc(color)+'"></span>':'';const act=known?"switchTab('"+jsq(slug)+"')":"openNameSearch('"+jsq(raw)+"')";return'<button type="button" class="name-link rep-inline" onclick="event.preventDefault();event.stopPropagation();'+act+'">'+dot+'<span>'+esc(txt)+'</span></button>';}
+function repLink(name,color,label){
+  const raw=String(name||'').trim();
+  if(!raw||raw==='—')return'<span>—</span>';
+  const txt=label||raw;
+  const dot=color?'<span class="rep-dot" style="background:'+esc(color)+'"></span>':'';
+  return'<a class="name-link rep-inline" href="'+esc(hubSearch(raw,'contact'))+'" target="_blank" rel="noopener">'+dot+'<span>'+esc(txt)+'</span></a>';
+}
 function hub(type,id){if(!id)return null;const m={contact:'0-1',company:'0-2',deal:'0-3'};return CONFIG.hubspotDomain+'/contacts/'+CONFIG.hubspotPortalId+'/record/'+(m[type]||type)+'/'+id;}
 function toggleMore(id,btn,more,less){const el=$(id);if(!el)return;const h=!el.style.display||el.style.display==='none';el.style.display=h?'block':'none';if(btn)btn.textContent=h?less:more;}
 
@@ -891,7 +952,7 @@ function rRecentDeals(won,lost,team){
   T('recentBadge',won.length+' won · '+lost.length+' lost');
   const all=[...won.slice(0,4).map(d=>({...d,type:'won'})),...lost.slice(0,3).map(d=>({...d,type:'lost'}))].sort((a,b)=>(b.closedate||'').localeCompare(a.closedate||''));
   H('recentDeals','<table class="rtbl"><thead><tr><th>#</th><th>Deal</th><th>Rep</th><th class="c">Date</th><th class="c">Amount</th><th class="c">Status</th></tr></thead><tbody>'+
-    all.map((d,i)=>{const st=d.type==='won'?'<span class="sp sp-won">Won</span>':'<span class="sp sp-lost">Lost</span>';const link=rl(d.name||'Deal',d.hubspotUrl);const rc=d.repColor||'#6b7280';return'<tr><td class="mono" style="color:var(--muted)">#'+String(i+1).padStart(3,'0')+'</td><td style="font-weight:700">'+link+'</td><td>'+repLink(d.rep||'—',rc)+'</td><td class="c" style="font-size:11px;color:var(--muted)">'+esc(String(d.closedate||'—').slice(0,10))+'</td><td class="c mono">'+fmt(d.amount||0)+'</td><td class="c">'+st+'</td></tr>';}).join('')+
+    all.map((d,i)=>{const st=d.type==='won'?'<span class="sp sp-won">Won</span>':'<span class="sp sp-lost">Lost</span>';const link=rl(d.name||'Deal',rowUrl(d),d);const rc=d.repColor||'#6b7280';return'<tr><td class="mono" style="color:var(--muted)">#'+String(i+1).padStart(3,'0')+'</td><td style="font-weight:700">'+link+'</td><td>'+repLink(d.rep||'—',rc)+'</td><td class="c" style="font-size:11px;color:var(--muted)">'+esc(String(d.closedate||'—').slice(0,10))+'</td><td class="c mono">'+fmt(d.amount||0)+'</td><td class="c">'+st+'</td></tr>';}).join('')+
     '</tbody></table>'+(all.length===0?'<div style="padding:18px;text-align:center;color:var(--muted);font-size:12px">No recent deals MTD.</div>':'')+'<button class="see-more" onclick="openMetric(\'open_deals\')">View all open deals →</button>');
 }
 
@@ -926,7 +987,7 @@ function rNews(){
 
 
 /* ══ PRIORITY / MANAGER ACTIONS ══ */
-function rowUrl(row){return row.hubspotUrl||row.url||row.recordUrl||null;}
+function rowUrl(row){const name=(row&&(row.name||row.dealname||row.companyName||row.email))||'';return directHubspotUrl(row,name)||hubSearch(name,inferObjectType(row,name));}
 function priorityRows(){
   if(!D)return[];
   const oc=D.outreachCoverage||{},ct=oc.contacts||{};
@@ -955,7 +1016,7 @@ function rPriority(ar,team){
     const owner=row.ownerName||row.rep||row.owner||'—';
     const meta=[row._type,owner,row.country,row.source||row.sourceBucket,row.stage,row.createdAt?String(row.createdAt).slice(0,10):null].filter(Boolean).join(' · ');
     const value=row.amount!=null?fmt(row.amount):row.ageDays!=null?row.ageDays+'d':row.days!=null?row.days+'d':'';
-    return '<div class="priority-item clickable-metric" onclick="openMetric(\'priority_actions\')"><div class="priority-num">'+(i+1)+'</div><div><div class="priority-name">'+rl(name,rowUrl(row))+'</div><div class="priority-meta">'+esc(meta)+'</div></div><div class="priority-score">'+esc(String(value||'Action'))+'</div></div>';
+    return '<div class="priority-item clickable-metric" onclick="openMetric(\'priority_actions\')"><div class="priority-num">'+(i+1)+'</div><div><div class="priority-name">'+rl(name,rowUrl(row),row)+'</div><div class="priority-meta">'+esc(meta)+'</div></div><div class="priority-score">'+esc(String(value||'Action'))+'</div></div>';
   }).join('')+(rows.length===0?'<div class="lead-empty">No priority rows found in this data refresh.</div>':'<button class="see-more" onclick="openMetric(\'priority_actions\')">View all '+rows.length+' priority rows →</button>'));
 }
 
@@ -996,7 +1057,7 @@ function rowCountry(row){return rowFirst(row,['country','companyCountry','countr
 function rowOwner(row,fallback){return ownerKey(rowFirst(row,['ownerName','rep','hubspot_owner_name','owner','ownerId','hubspot_owner_id','salesOwner','companyOwner'])||row._owner||fallback||'');}
 function rowCompanyName(row){return rowFirst(row,['name','companyName','company','associatedCompanyName','primaryCompanyName','domain','website','companyDomain'])||row.name||row.companyName||'';}
 function rowCompanyId(row){return rowFirst(row,['id','hs_object_id','companyId','company_id','recordId','objectId','associatedCompanyId','primaryCompanyId'])||rowCompanyName(row);}
-function rowUrl(row){return row.hubspotUrl||row.url||row.recordUrl||null;}
+function rowUrl(row){const name=(row&&(row.name||row.dealname||row.companyName||row.email))||'';return directHubspotUrl(row,name)||hubSearch(name,inferObjectType(row,name));}
 function hasCompletedMeeting(row){
   if(!row)return false;
   const bool=rowFirst(row,['hasCompletedMeeting','completedMeeting','meetingCompleted','completed_meeting','has_completed_meeting']);
@@ -1175,7 +1236,7 @@ function repRankCardsHtml(r,slug,key){
   const st=repRankStats(r,key), label=key==='all'?'All countries':(window.__rankCountryLabels&&window.__rankCountryLabels[key]||key);
   const uA=(r.rankAUntouched||[]).filter(x=>countryMatches(x,key));
   const uB=(r.rankBUntouched||[]).filter(x=>countryMatches(x,key));
-  const row=(co,rank)=>'<div class="deal-row clickable-metric" onclick="openRankMetric(\''+(rank==='A'?'a_untouched':'b_untouched')+'\',\''+key+'\',\''+esc(r.name)+'\')"><div style="flex:1;font-size:12px;font-weight:700">'+rl(co.name||rowCompanyName(co)||'Company',rowUrl(co))+'</div><span style="font-size:11px;color:var(--muted)">'+esc(rowCountry(co))+'</span><span class="'+(rank==='A'?'rank-a':'rank-b')+'">'+rank+'</span></div>';
+  const row=(co,rank)=>'<div class="deal-row clickable-metric" onclick="openRankMetric(\''+(rank==='A'?'a_untouched':'b_untouched')+'\',\''+key+'\',\''+esc(r.name)+'\')"><div style="flex:1;font-size:12px;font-weight:700">'+rl(co.name||rowCompanyName(co)||'Company',rowUrl(co),co)+'</div><span style="font-size:11px;color:var(--muted)">'+esc(rowCountry(co))+'</span><span class="'+(rank==='A'?'rank-a':'rank-b')+'">'+rank+'</span></div>';
   const aCard='<div class="gc" style="border-top:3px solid #dc2626"><div class="gc-hd"><div class="gc-title">🎯 Rank A Untouched · '+esc(label)+'</div><span class="badge br clickable-metric" onclick="openRankMetric(\'a_untouched\',\''+key+'\',\''+esc(r.name)+'\')">'+uA.length+'</span></div>'+uA.slice(0,5).map(x=>row(x,'A')).join('')+(uA.length>5?'<button class="see-more" onclick="openRankMetric(\'a_untouched\',\''+key+'\',\''+esc(r.name)+'\')">View all '+uA.length+' →</button>':'')+(uA.length===0?'<div style="padding:14px;text-align:center;color:#16a34a;font-size:12px;font-weight:600">✅ All Rank A accounts contacted</div>':'')+'</div>';
   const bCard='<div class="gc" style="border-top:3px solid #d97706"><div class="gc-hd"><div class="gc-title">🎯 Rank B Untouched · '+esc(label)+'</div><span class="badge ba clickable-metric" onclick="openRankMetric(\'b_untouched\',\''+key+'\',\''+esc(r.name)+'\')">'+uB.length+'</span></div>'+uB.slice(0,5).map(x=>row(x,'B')).join('')+(uB.length>5?'<button class="see-more" onclick="openRankMetric(\'b_untouched\',\''+key+'\',\''+esc(r.name)+'\')">View all '+uB.length+' →</button>':'')+(uB.length===0?'<div style="padding:14px;text-align:center;color:#16a34a;font-size:12px;font-weight:600">✅ All Rank B accounts contacted</div>':'')+'</div>';
   return {summary:[rankSummaryBox(st.a,'Rank A','#dc2626','a_total',key,r.name),rankSummaryBox(st.aC,'A Contacted','#16a34a','a_contacted',key,r.name),rankSummaryBox(st.aM,'A Meetings','#7c3aed','a_meetings',key,r.name),rankSummaryBox(st.aU,'A Untouched','#dc2626','a_untouched',key,r.name),rankSummaryBox(st.b,'Rank B','#d97706','b_total',key,r.name),rankSummaryBox(st.bC,'B Contacted','#16a34a','b_contacted',key,r.name),rankSummaryBox(st.bM,'B Meetings','#7c3aed','b_meetings',key,r.name),rankSummaryBox(st.bU,'B Untouched','#d97706','b_untouched',key,r.name)].join(''),cards:aCard+bCard};
@@ -1195,7 +1256,7 @@ function riskDealCard(title,items,color,badgeClass,key,label){
   const rows=Array.isArray(items)?items:[];
   if(!rows.length)return '';
   const first=rows.slice(0,8),rest=rows.slice(8);
-  const row=d=>'<div class="deal-row"><div style="flex:1;min-width:0"><div class="deal-nm">'+rl(d.name,d.hubspotUrl)+'</div><div class="deal-mt">'+esc(label)+' '+esc(String(d.days||d.ageDays||'?'))+'d</div></div><div class="deal-amt" style="color:'+color+'">'+fmt(d.amount||0)+'</div></div>';
+  const row=d=>'<div class="deal-row"><div style="flex:1;min-width:0"><div class="deal-nm">'+rl(d.name,rowUrl(d),d)+'</div><div class="deal-mt">'+esc(label)+' '+esc(String(d.days||d.ageDays||'?'))+'d</div></div><div class="deal-amt" style="color:'+color+'">'+fmt(d.amount||0)+'</div></div>';
   return '<div class="gc risk-card" id="'+key+'" style="border-top:3px solid '+color+'"><div class="gc-hd"><div class="gc-title">'+title+'</div><span class="badge '+badgeClass+'">'+rows.length+'</span></div>'+first.map(row).join('')+'<div id="'+key+'-more" style="display:none">'+rest.map(row).join('')+'</div>'+(rest.length?'<button class="see-more" onclick="toggleMore(\''+key+'-more\',this,\'▼ '+rest.length+' more\',\'▲ Less\')">▼ '+rest.length+' more</button>':'')+'</div>';
 }
 
@@ -1211,7 +1272,7 @@ function financialMetricRows(kind){
 function openFinancialMetric(kind){
   const labels={cash:['Cashing Revenue','closedwon deals entered current stage YTD'],sign:['Signed Contract','contractsent deals entered current stage YTD'],pending:['Pending to Cash','signed deals still waiting to cash'],delayed:['Delayed Signed','signed deals delayed more than 7 days'],missing:['Missing Financial Data','deals missing amount or date fields']};
   const rows=financialMetricRows(kind),info=labels[kind]||['Financial Details',''];
-  const html=rows.length?rows.map(row=>{const name=row.name||row.dealname||row.id||'Unknown deal';const owner=row.rep||row.ownerName||'—';const date=row.stageDate||row.cashingDate||row.signedDate||row.closedate||'—';const status=row.riskLabel||row.status||row.stage||row.dealstage||'—';return '<div class="mrow"><div class="mn">'+rl(name,rowUrl(row))+'<div class="mm">'+esc(status)+' · '+esc(date)+'</div></div><div style="font-size:12px">'+repLink(owner,null)+'</div><div><span class="mpill">'+esc(row.daysFromSigned!=null?row.daysFromSigned+'d':status)+'</span></div><div style="font-family:var(--mono);font-weight:800;text-align:right">'+money(row.amount||0)+'</div></div>';}).join(''):'<div class="mempty">No rows found for this financial metric.</div>';
+  const html=rows.length?rows.map(row=>{const name=row.name||row.dealname||row.id||'Unknown deal';const owner=row.rep||row.ownerName||'—';const date=row.stageDate||row.cashingDate||row.signedDate||row.closedate||'—';const status=row.riskLabel||row.status||row.stage||row.dealstage||'—';return '<div class="mrow"><div class="mn">'+rl(name,rowUrl(row),row)+'<div class="mm">'+esc(status)+' · '+esc(date)+'</div></div><div style="font-size:12px">'+repLink(owner,null)+'</div><div><span class="mpill">'+esc(row.daysFromSigned!=null?row.daysFromSigned+'d':status)+'</span></div><div style="font-family:var(--mono);font-weight:800;text-align:right">'+money(row.amount||0)+'</div></div>';}).join(''):'<div class="mempty">No rows found for this financial metric.</div>';
   T('modalTitle',info[0]+' ('+rows.length+')');T('modalDesc',info[1]);H('modalBody',html);$('modalBg').classList.add('open');
 }
 
@@ -1237,7 +1298,7 @@ function rOutreach(){
 
 /* ══ COACHING ══ */
 function rCoaching(ar){
-  H('coachGrid',ar.map(r=>{const c=r.color,items=r.needsAttention||[];const show=items.slice(0,3),rest=items.slice(3),cid='cc-'+r.name.replace(/\s/g,'-');return'<div class="ccard" style="--cc:'+c+'"><div class="ccard-rep"><div style="width:20px;height:20px;border-radius:6px;background:'+c+'20;color:'+c+';font-size:9px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0">'+r.name[0]+'</div>'+repLink(r.name,c,r.name.split(' ')[0])+'<span style="margin-left:auto;font-size:9px;color:var(--muted)">'+items.length+'</span></div>'+(items.length===0?'<div style="font-size:11px;color:#16a34a;font-weight:600">✅ All good</div>':show.map(item=>'<div class="ci"><div class="ci-n">'+rl(item.name,item.hubspotUrl)+'<span class="ci-a">'+fmt(item.amount||0)+'</span></div>'+(item.reasons||[]).map(rs=>'<div class="ci-w">⚠️ '+esc(rs)+'</div>').join('')+'</div>').join('')+(rest.length?'<div id="'+cid+'-m" style="display:none">'+rest.map(item=>'<div class="ci"><div class="ci-n">'+rl(item.name,item.hubspotUrl)+'<span class="ci-a">'+fmt(item.amount||0)+'</span></div>'+(item.reasons||[]).map(rs=>'<div class="ci-w">⚠️ '+esc(rs)+'</div>').join('')+'</div>').join('')+'</div><button class="see-more" onclick="toggleMore(\''+cid+'-m\',this,\'▼ '+rest.length+' more\',\'▲ Less\')">▼ '+rest.length+' more</button>':''))+'</div>';}).join(''));
+  H('coachGrid',ar.map(r=>{const c=r.color,items=r.needsAttention||[];const show=items.slice(0,3),rest=items.slice(3),cid='cc-'+r.name.replace(/\s/g,'-');return'<div class="ccard" style="--cc:'+c+'"><div class="ccard-rep"><div style="width:20px;height:20px;border-radius:6px;background:'+c+'20;color:'+c+';font-size:9px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0">'+r.name[0]+'</div>'+repLink(r.name,c,r.name.split(' ')[0])+'<span style="margin-left:auto;font-size:9px;color:var(--muted)">'+items.length+'</span></div>'+(items.length===0?'<div style="font-size:11px;color:#16a34a;font-weight:600">✅ All good</div>':show.map(item=>'<div class="ci"><div class="ci-n">'+rl(item.name,rowUrl(item),item)+'<span class="ci-a">'+fmt(item.amount||0)+'</span></div>'+(item.reasons||[]).map(rs=>'<div class="ci-w">⚠️ '+esc(rs)+'</div>').join('')+'</div>').join('')+(rest.length?'<div id="'+cid+'-m" style="display:none">'+rest.map(item=>'<div class="ci"><div class="ci-n">'+rl(item.name,rowUrl(item),item)+'<span class="ci-a">'+fmt(item.amount||0)+'</span></div>'+(item.reasons||[]).map(rs=>'<div class="ci-w">⚠️ '+esc(rs)+'</div>').join('')+'</div>').join('')+'</div><button class="see-more" onclick="toggleMore(\''+cid+'-m\',this,\'▼ '+rest.length+' more\',\'▲ Less\')">▼ '+rest.length+' more</button>':''))+'</div>';}).join(''));
 }
 
 /* ══ RANK ══ */
@@ -1276,21 +1337,21 @@ function rRankCov(ar){
     const uA=(r.rankAUntouched||[]).filter(x=>countryMatches(x,RANK_COUNTRY));
     const uB=(r.rankBUntouched||[]).filter(x=>countryMatches(x,RANK_COUNTRY));
     const top=[...uA.slice(0,2).map(x=>({...x,rank:'A'})),...uB.slice(0,2).map(x=>({...x,rank:'B'}))];
-    const topHtml=top.map(c=>'<span class="metric-link" onclick="openRankMetric(\''+(c.rank==='A'?'a_untouched':'b_untouched')+'\',\''+RANK_COUNTRY+'\',\''+esc(r.name)+'\')" style="font-size:10px;color:'+(c.rank==='A'?'#dc2626':'#d97706')+'">• '+rl(c.name||rowCompanyName(c),rowUrl(c))+' · '+c.rank+'</span>').join('<br>');
+    const topHtml=top.map(c=>'<span class="metric-link" onclick="openRankMetric(\''+(c.rank==='A'?'a_untouched':'b_untouched')+'\',\''+RANK_COUNTRY+'\',\''+esc(r.name)+'\')" style="font-size:10px;color:'+(c.rank==='A'?'#dc2626':'#d97706')+'">• '+rl(c.name||rowCompanyName(c),rowUrl(c),c)+' · '+c.rank+'</span>').join('<br>');
     return '<tr><td><div style="display:flex;align-items:center;gap:8px"><div style="width:26px;height:26px;border-radius:8px;background:'+r.color+'20;color:'+r.color+';font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center">'+esc((r.name||'?')[0])+'</div>'+repLink(r.name,r.color)+'</div></td><td class="c"><span class="rank-a metric-link" onclick="openRankMetric(\'a_total\',\''+RANK_COUNTRY+'\',\''+esc(r.name)+'\')">'+st.a+'</span></td><td class="c mono"><span class="metric-link" onclick="openRankMetric(\'a_contacted\',\''+RANK_COUNTRY+'\',\''+esc(r.name)+'\')" style="color:#16a34a">'+st.aC+'</span></td><td class="c mono"><span class="metric-link" onclick="openRankMetric(\'a_meetings\',\''+RANK_COUNTRY+'\',\''+esc(r.name)+'\')" style="color:#7c3aed">'+st.aM+'</span></td><td class="c mono"><span class="metric-link" onclick="openRankMetric(\'a_untouched\',\''+RANK_COUNTRY+'\',\''+esc(r.name)+'\')" style="color:'+(st.aU>0?'#dc2626':'#16a34a')+'">'+(st.aU>0?st.aU:'✓')+'</span></td><td class="c"><span class="rank-b metric-link" onclick="openRankMetric(\'b_total\',\''+RANK_COUNTRY+'\',\''+esc(r.name)+'\')">'+st.b+'</span></td><td class="c mono"><span class="metric-link" onclick="openRankMetric(\'b_contacted\',\''+RANK_COUNTRY+'\',\''+esc(r.name)+'\')" style="color:#16a34a">'+st.bC+'</span></td><td class="c mono"><span class="metric-link" onclick="openRankMetric(\'b_meetings\',\''+RANK_COUNTRY+'\',\''+esc(r.name)+'\')" style="color:#7c3aed">'+st.bM+'</span></td><td class="c mono"><span class="metric-link" onclick="openRankMetric(\'b_untouched\',\''+RANK_COUNTRY+'\',\''+esc(r.name)+'\')" style="color:'+(st.bU>0?'#d97706':'#16a34a')+'">'+(st.bU>0?st.bU:'✓')+'</span></td><td style="font-size:10px;line-height:1.8">'+(topHtml||'<span style="color:#16a34a;font-size:10px">✓</span>')+'</td></tr>';
   }).join(''));
-  H('rankBody',rd.map(c=>{const dc=c.daysSinceActivity>14?'#dc2626':c.daysSinceActivity>7?'#d97706':'#16a34a';return'<tr class="clickable-metric" onclick="openRankMetric(\''+(c.rank==='A'?'a_untouched':'b_untouched')+'\',\''+RANK_COUNTRY+'\',\''+esc(c.rep||'')+'\')"><td>'+( c.rank==='A'?'<span class="rank-a">A</span>':'<span class="rank-b">B</span>')+'</td><td style="font-weight:700">'+rl(c.name,c.hubspotUrl)+'</td><td>'+repLink(c.rep,c.repColor||'#6b7280')+'</td><td><span style="font-weight:700;color:'+dc+';font-family:var(--mono);font-size:11px">'+(c.daysSinceActivity>900?'Never':c.daysSinceActivity+'d ago')+'</span></td></tr>';}).join(''));
+  H('rankBody',rd.map(c=>{const dc=c.daysSinceActivity>14?'#dc2626':c.daysSinceActivity>7?'#d97706':'#16a34a';return'<tr class="clickable-metric" onclick="openRankMetric(\''+(c.rank==='A'?'a_untouched':'b_untouched')+'\',\''+RANK_COUNTRY+'\',\''+esc(c.rep||'')+'\')"><td>'+( c.rank==='A'?'<span class="rank-a">A</span>':'<span class="rank-b">B</span>')+'</td><td style="font-weight:700">'+rl(c.name,rowUrl(c),c)+'</td><td>'+repLink(c.rep,c.repColor||'#6b7280')+'</td><td><span style="font-weight:700;color:'+dc+';font-family:var(--mono);font-size:11px">'+(c.daysSinceActivity>900?'Never':c.daysSinceActivity+'d ago')+'</span></td></tr>';}).join(''));
   T('rankFoot','Showing '+rd.length+' inactive accounts · filter: '+(RANK_COUNTRY==='all'?'All countries':(window.__rankCountryLabels[RANK_COUNTRY]||RANK_COUNTRY))+' · contacted '+totalContacted.toLocaleString()+' · meetings completed '+totalMeet.toLocaleString());
 }
 
 
 /* ══ PIPELINE CARDS ══ */
 function rPipeCards(ar){
-  H('pipeCards',ar.map(r=>{const c=r.color,deals=r.topDeals||[];const cold=(r.cold||[]).length,stuck=(r.stuck||[]).length,pa=r.pipeAmt||0;const s3=deals.slice(0,3),rest=deals.slice(3),cid='pc-'+r.name.replace(/\s/g,'-');return'<div class="pcard" style="border-top:3px solid '+c+'"><div class="pc-top"><div style="display:flex;align-items:center;gap:7px"><div style="width:22px;height:22px;border-radius:7px;background:'+c+'20;color:'+c+';font-size:9px;font-weight:800;display:flex;align-items:center;justify-content:center">'+r.name[0]+'</div>'+repLink(r.name,c,r.name.split(' ')[0])+'</div><div style="text-align:right"><div style="font-family:var(--mono);font-size:12px;font-weight:700">'+fmt(pa)+'</div><div style="font-size:9px;color:var(--muted)">'+(r.openDeals||0)+' deals</div></div></div><div class="pc-body">'+s3.map(d=>'<div class="pdeal"><div><div class="pdeal-n">'+rl(d.name,d.hubspotUrl)+'</div><div class="pdeal-s">'+esc(d.stage||'')+'</div></div><div style="font-family:var(--mono);font-size:11px;font-weight:700;flex-shrink:0">'+fmt(d.amount||0)+'</div></div>').join('')+'<div id="'+cid+'-m" style="display:none">'+rest.map(d=>'<div class="pdeal"><div><div class="pdeal-n">'+rl(d.name,d.hubspotUrl)+'</div><div class="pdeal-s">'+esc(d.stage||'')+'</div></div><div style="font-family:var(--mono);font-size:11px;font-weight:700;flex-shrink:0">'+fmt(d.amount||0)+'</div></div>').join('')+'</div>'+(rest.length?'<button class="see-more" onclick="toggleMore(\''+cid+'-m\',this,\'▼ '+rest.length+' more\',\'▲ Less\')">▼ '+rest.length+' more</button>':'')+'<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:8px;padding-bottom:4px">'+(stuck?'<span class="badge br" style="font-size:9px">🔴 '+stuck+' stuck</span>':'')+(cold?'<span class="badge ba" style="font-size:9px">🟡 '+cold+' cold</span>':'')+((!stuck&&!cold)?'<span class="badge bg" style="font-size:9px">✓ healthy</span>':'')+'</div></div></div>';}).join(''));
+  H('pipeCards',ar.map(r=>{const c=r.color,deals=r.topDeals||[];const cold=(r.cold||[]).length,stuck=(r.stuck||[]).length,pa=r.pipeAmt||0;const s3=deals.slice(0,3),rest=deals.slice(3),cid='pc-'+r.name.replace(/\s/g,'-');return'<div class="pcard" style="border-top:3px solid '+c+'"><div class="pc-top"><div style="display:flex;align-items:center;gap:7px"><div style="width:22px;height:22px;border-radius:7px;background:'+c+'20;color:'+c+';font-size:9px;font-weight:800;display:flex;align-items:center;justify-content:center">'+r.name[0]+'</div>'+repLink(r.name,c,r.name.split(' ')[0])+'</div><div style="text-align:right"><div style="font-family:var(--mono);font-size:12px;font-weight:700">'+fmt(pa)+'</div><div style="font-size:9px;color:var(--muted)">'+(r.openDeals||0)+' deals</div></div></div><div class="pc-body">'+s3.map(d=>'<div class="pdeal"><div><div class="pdeal-n">'+rl(d.name,rowUrl(d),d)+'</div><div class="pdeal-s">'+esc(d.stage||'')+'</div></div><div style="font-family:var(--mono);font-size:11px;font-weight:700;flex-shrink:0">'+fmt(d.amount||0)+'</div></div>').join('')+'<div id="'+cid+'-m" style="display:none">'+rest.map(d=>'<div class="pdeal"><div><div class="pdeal-n">'+rl(d.name,rowUrl(d),d)+'</div><div class="pdeal-s">'+esc(d.stage||'')+'</div></div><div style="font-family:var(--mono);font-size:11px;font-weight:700;flex-shrink:0">'+fmt(d.amount||0)+'</div></div>').join('')+'</div>'+(rest.length?'<button class="see-more" onclick="toggleMore(\''+cid+'-m\',this,\'▼ '+rest.length+' more\',\'▲ Less\')">▼ '+rest.length+' more</button>':'')+'<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:8px;padding-bottom:4px">'+(stuck?'<span class="badge br" style="font-size:9px">🔴 '+stuck+' stuck</span>':'')+(cold?'<span class="badge ba" style="font-size:9px">🟡 '+cold+' cold</span>':'')+((!stuck&&!cold)?'<span class="badge bg" style="font-size:9px">✓ healthy</span>':'')+'</div></div></div>';}).join(''));
 }
 
 /* ══ WON / LOST ══ */
-function dRow(d,c,sr){return'<div class="deal-row"><div style="flex:1;min-width:0"><div class="deal-nm">'+rl(d.name||'Deal',d.hubspotUrl)+'</div><div class="deal-mt">'+repLink(d.rep||'',d.repColor||null)+(d.closedate?' · '+String(d.closedate).slice(0,10):'')+'</div></div>'+(sr&&d.reason?'<span class="sp sp-lost" style="flex-shrink:0;font-size:8px">'+esc(d.reason)+'</span>':'<span class="sp" style="background:'+c+'15;color:'+c+';border-color:'+c+'25;font-size:8px">'+esc(d.stage||'')+'</span>')+'<div class="deal-amt" style="color:'+c+'">'+fmt(d.amount||0)+'</div></div>';}
+function dRow(d,c,sr){return'<div class="deal-row"><div style="flex:1;min-width:0"><div class="deal-nm">'+rl(d.name||'Deal',rowUrl(d),d)+'</div><div class="deal-mt">'+repLink(d.rep||'',d.repColor||null)+(d.closedate?' · '+String(d.closedate).slice(0,10):'')+'</div></div>'+(sr&&d.reason?'<span class="sp sp-lost" style="flex-shrink:0;font-size:8px">'+esc(d.reason)+'</span>':'<span class="sp" style="background:'+c+'15;color:'+c+';border-color:'+c+'25;font-size:8px">'+esc(d.stage||'')+'</span>')+'<div class="deal-amt" style="color:'+c+'">'+fmt(d.amount||0)+'</div></div>';}
 function rWonLost(won,lost,team){
   T('wonBadge',won.length+' deals · '+fmt(team.wonAmt||0));
   T('lostBadge',lost.length+' deals · '+fmt(lost.reduce((s,d)=>s+(d.amount||0),0)));
@@ -1304,8 +1365,8 @@ function rWonLost(won,lost,team){
 }
 
 /* ══ FINANCIAL ══ */
-function cashR(d){return'<tr><td style="font-weight:700">'+rl(d.name||'Unnamed',d.hubspotUrl)+'</td><td>'+repLink(d.rep||'',d.repColor||'#6b7280')+'</td><td class="c mono" style="color:#16a34a">'+money(d.amount)+'</td><td class="c" style="font-size:11px;color:var(--muted)">'+esc(d.stageDate||d.cashingDate||'—')+'</td><td class="c"><span class="sp sp-won">'+(d.daysFromSigned!=null?d.daysFromSigned+'d':'—')+'</span></td></tr>';}
-function signR(d){const days=d.daysFromSigned,st=d.riskLabel||(Number(days||0)>7?'Delayed':'On Track'),cls=/delayed/i.test(st)?'sp-lost':'sp-won';return'<tr><td style="font-weight:700">'+rl(d.name||'Unnamed',d.hubspotUrl)+'</td><td>'+repLink(d.rep||'',d.repColor||'#6b7280')+'</td><td class="c mono" style="color:#d97706">'+money(d.amount)+'</td><td class="c" style="font-size:11px;color:var(--muted)">'+esc(d.stageDate||d.signedDate||'—')+'</td><td class="c" style="font-size:11px;color:var(--muted)">'+(days!=null?days+'d':'—')+'</td><td class="c"><span class="sp '+cls+'">'+esc(st)+'</span></td></tr>';}
+function cashR(d){return'<tr><td style="font-weight:700">'+rl(d.name||'Unnamed',rowUrl(d),d)+'</td><td>'+repLink(d.rep||'',d.repColor||'#6b7280')+'</td><td class="c mono" style="color:#16a34a">'+money(d.amount)+'</td><td class="c" style="font-size:11px;color:var(--muted)">'+esc(d.stageDate||d.cashingDate||'—')+'</td><td class="c"><span class="sp sp-won">'+(d.daysFromSigned!=null?d.daysFromSigned+'d':'—')+'</span></td></tr>';}
+function signR(d){const days=d.daysFromSigned,st=d.riskLabel||(Number(days||0)>7?'Delayed':'On Track'),cls=/delayed/i.test(st)?'sp-lost':'sp-won';return'<tr><td style="font-weight:700">'+rl(d.name||'Unnamed',rowUrl(d),d)+'</td><td>'+repLink(d.rep||'',d.repColor||'#6b7280')+'</td><td class="c mono" style="color:#d97706">'+money(d.amount)+'</td><td class="c" style="font-size:11px;color:var(--muted)">'+esc(d.stageDate||d.signedDate||'—')+'</td><td class="c" style="font-size:11px;color:var(--muted)">'+(days!=null?days+'d':'—')+'</td><td class="c"><span class="sp '+cls+'">'+esc(st)+'</span></td></tr>';}
 function toggleFinMore(key){const rows=key==='cash'?__cash:__sign;const tb=$(key==='cash'?'finCashBody':'finSignBody');const btn=$(key==='cash'?'finCashMore':'finSignMore');if(!tb||!btn)return;__showAll[key]=!__showAll[key];tb.innerHTML=(__showAll[key]?rows:rows.slice(0,10)).map(key==='cash'?cashR:signR).join('');btn.textContent=__showAll[key]?'▲ Less':'▼ Show '+(rows.length-10)+' more';}
 function rFinancial(){
   if(!D)return;
@@ -1324,7 +1385,7 @@ function rFinancial(){
   if($('finCashMore')){$('finCashMore').style.display=__cash.length>10?'block':'none';T('finCashMore','▼ Show '+(__cash.length-10)+' more');}
   if($('finSignMore')){$('finSignMore').style.display=__sign.length>10?'block':'none';T('finSignMore','▼ Show '+(__sign.length-10)+' more');}
   T('finMissBadge',miss.length+' deals');
-  H('finMissBody',miss.length?miss.map(d=>'<tr><td style="font-weight:700">'+rl(d.name,d.hubspotUrl)+'</td><td>'+repLink(d.rep||'—',d.repColor||null)+'</td><td>'+esc(d.stage||'—')+'</td><td><span class="sp sp-warm">'+esc((d.missing||[]).join(', '))+'</span></td><td class="c mono" style="color:#d97706">'+money(d.amount)+'</td></tr>').join(''):'<tr><td colspan="5"><div style="padding:16px;text-align:center;color:var(--muted);font-size:12px">No deals with missing financial data ✓</div></td></tr>');
+  H('finMissBody',miss.length?miss.map(d=>'<tr><td style="font-weight:700">'+rl(d.name,rowUrl(d),d)+'</td><td>'+repLink(d.rep||'—',d.repColor||null)+'</td><td>'+esc(d.stage||'—')+'</td><td><span class="sp sp-warm">'+esc((d.missing||[]).join(', '))+'</span></td><td class="c mono" style="color:#d97706">'+money(d.amount)+'</td></tr>').join(''):'<tr><td colspan="5"><div style="padding:16px;text-align:center;color:var(--muted);font-size:12px">No deals with missing financial data ✓</div></td></tr>');
 }
 
 /* ══ REP PANELS ══ */
@@ -1359,7 +1420,7 @@ function buildFullP(r,rW,rL,sh,re,did,c,meta){
   return hero+kpi+wonBlock+lostBlock+openBlock+riskBlock+rankSection;
 }
 
-function openDT(sh,re,did){return'<div>'+sh.map(d=>{const na=d.nextActivityDate,nd=na?String(na).slice(0,10):null;return'<div class="deal-row"><div style="flex:1;min-width:0"><div class="deal-nm">'+rl(d.name,d.hubspotUrl)+'</div><div class="deal-mt">'+esc(d.stage||'')+(nd?' · Next: '+nd:'')+'</div></div>'+(d.isStuck?'<span class="badge br" style="flex-shrink:0;font-size:8px">Stuck</span>':d.isCold?'<span class="badge ba" style="flex-shrink:0;font-size:8px">Cold</span>':d.hasNextActivity?'<span class="badge bg" style="flex-shrink:0;font-size:8px">On Track</span>':'')+'<div class="deal-amt">'+fmt(d.amount||0)+'</div></div>';}).join('')+'<div id="'+did+'-m" style="display:none">'+re.map(d=>'<div class="deal-row"><div style="flex:1;min-width:0"><div class="deal-nm">'+rl(d.name,d.hubspotUrl)+'</div><div class="deal-mt">'+esc(d.stage||'')+'</div></div><div class="deal-amt">'+fmt(d.amount||0)+'</div></div>').join('')+'</div>'+(re.length?'<button class="see-more" onclick="toggleMore(\''+did+'-m\',this,\'▼ '+re.length+' more\',\'▲ Less\')">▼ '+re.length+' more deals</button>':'')+(sh.length===0&&re.length===0?'<div style="padding:16px;text-align:center;color:var(--muted);font-size:12px">No open deals.</div>':'')+'</div>';}
+function openDT(sh,re,did){return'<div>'+sh.map(d=>{const na=d.nextActivityDate,nd=na?String(na).slice(0,10):null;return'<div class="deal-row"><div style="flex:1;min-width:0"><div class="deal-nm">'+rl(d.name,rowUrl(d),d)+'</div><div class="deal-mt">'+esc(d.stage||'')+(nd?' · Next: '+nd:'')+'</div></div>'+(d.isStuck?'<span class="badge br" style="flex-shrink:0;font-size:8px">Stuck</span>':d.isCold?'<span class="badge ba" style="flex-shrink:0;font-size:8px">Cold</span>':d.hasNextActivity?'<span class="badge bg" style="flex-shrink:0;font-size:8px">On Track</span>':'')+'<div class="deal-amt">'+fmt(d.amount||0)+'</div></div>';}).join('')+'<div id="'+did+'-m" style="display:none">'+re.map(d=>'<div class="deal-row"><div style="flex:1;min-width:0"><div class="deal-nm">'+rl(d.name,rowUrl(d),d)+'</div><div class="deal-mt">'+esc(d.stage||'')+'</div></div><div class="deal-amt">'+fmt(d.amount||0)+'</div></div>').join('')+'</div>'+(re.length?'<button class="see-more" onclick="toggleMore(\''+did+'-m\',this,\'▼ '+re.length+' more\',\'▲ Less\')">▼ '+re.length+' more deals</button>':'')+(sh.length===0&&re.length===0?'<div style="padding:16px;text-align:center;color:var(--muted);font-size:12px">No open deals.</div>':'')+'</div>';}
 
 /* ══ METRIC MODAL ══ */
 function mRows(kind){
@@ -1383,7 +1444,7 @@ function mRows(kind){
 }
 const mLbls={priority_actions:['Priority Leads & SLA Breaches','All priority rows exported in data.json.'],priority_leads:['Priority Lead Actions','Lead rows requiring action.'],priority_deals:['Priority Deal Actions','Deal rows requiring action.'],leads_not_contacted:['Leads Not Contacted','Eligible leads with no connected call.'],leads_contacted:['Leads Contacted','Eligible leads with connected activity.'],companies_not_contacted:['Companies Not Contacted','Rank A/B companies untouched.'],companies_contacted:['Companies Contacted','Companies with contacted signal.'],rank_ab_untouched:['Rank A/B Untouched','Accounts not contacted.'],deals_at_risk:['Deals at Risk','Cold/stuck/no-next-activity deals.'],open_deals:['Open Deals','All open pipeline deals.'],closed_won:['Closed Won MTD','All closed won rows in this refresh.'],closed_lost:['Closed Lost MTD','All closed lost rows in this refresh.'],signed_financial:['Signed Financial Rows','All signed contract rows.'],cash_financial:['Cashing Financial Rows','All cashing rows.']};
 function rowModalHtml(rows,emptyText){
-  return rows.length?rows.map(row=>{const name=row.name||row.dealname||row.email||row.id||row.companyName||'Unknown';const url=row.hubspotUrl||row.url||null;const owner=row.ownerName||row.rep||row.owner||row._owner||'—';const meta=[row._type,row.country||row._country,row.rank||row._rank?('Rank '+(row.rank||row._rank)):null,row.stage,row.source||row.sourceBucket,row.createdAt?String(row.createdAt).slice(0,10):row.stageDate||row.closedate||null].filter(Boolean).join(' · ');const val=row.amount!=null?fmt(row.amount):row.ageDays!=null?row.ageDays+'d':row.days!=null?row.days+'d':row.score!=null?row.score:'';return'<div class="mrow"><div class="mn">'+rl(name,url)+'<div class="mm">'+esc(meta)+'</div></div><div style="font-size:11px">'+repLink(owner,null)+'</div><div><span class="mpill">'+esc(row.leadStatus||row.status||row.stage||row.rank||row._rank||'—')+'</span></div><div style="font-family:var(--mono);font-weight:700;text-align:right">'+esc(String(val))+'</div></div>';}).join(''):'<div class="mempty">'+esc(emptyText||'No rows found for this metric.')+'</div>';
+  return rows.length?rows.map(row=>{const name=row.name||row.dealname||row.email||row.id||row.companyName||'Unknown';const url=rowUrl(row);const owner=row.ownerName||row.rep||row.owner||row._owner||'—';const meta=[row._type,row.country||row._country,row.rank||row._rank?('Rank '+(row.rank||row._rank)):null,row.stage,row.source||row.sourceBucket,row.createdAt?String(row.createdAt).slice(0,10):row.stageDate||row.closedate||null].filter(Boolean).join(' · ');const val=row.amount!=null?fmt(row.amount):row.ageDays!=null?row.ageDays+'d':row.days!=null?row.days+'d':row.score!=null?row.score:'';return'<div class="mrow"><div class="mn">'+rl(name,rowUrl(row),row)+'<div class="mm">'+esc(meta)+'</div></div><div style="font-size:11px">'+repLink(owner,null)+'</div><div><span class="mpill">'+esc(row.leadStatus||row.status||row.stage||row.rank||row._rank||'—')+'</span></div><div style="font-family:var(--mono);font-weight:700;text-align:right">'+esc(String(val))+'</div></div>';}).join(''):'<div class="mempty">'+esc(emptyText||'No rows found for this metric.')+'</div>';
 }
 function showRowsModal(title,desc,rows,emptyText){
   T('modalTitle',title);T('modalDesc',desc||'');H('modalBody',rowModalHtml(rows||[],emptyText));$('modalBg').classList.add('open');
@@ -1402,7 +1463,7 @@ function openNameSearch(name){
     if(seen.has(key))return;
     if(JSON.stringify(r).toLowerCase().includes(q)){seen.add(key);rows.push(r);}
   });
-  showRowsModal('Name Search: '+name+' ('+rows.length+')','Clicking names without a direct HubSpot URL opens matching dashboard rows.',rows,'No matching rows were exported for this name in data.json.');
+  showRowsModal('Name Search: '+name+' ('+rows.length+')','Manual name search inside dashboard.',rows,'No matching rows were exported for this name in data.json.');
 }
 
 function closeModal(){$('modalBg').classList.remove('open');}
