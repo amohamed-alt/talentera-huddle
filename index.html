@@ -353,7 +353,7 @@ body{font-family:var(--font);background:#eef8f2;color:var(--text);-webkit-font-s
 .priority-num{width:28px;height:28px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;background:rgba(220,38,38,.08);color:#dc2626;flex-shrink:0}.priority-name{font-size:13px;font-weight:800;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.priority-meta{font-size:11px;color:var(--muted);font-weight:600;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.priority-score{text-align:right;font-family:var(--mono);font-size:13px;font-weight:800;color:#dc2626}.priority-actions{padding:0 18px 14px;display:flex;justify-content:center}
 .lead-rep-summary{border-top:1px solid rgba(22,64,42,.05);max-height:245px;overflow:auto}.lead-rep-row{display:grid;grid-template-columns:1.2fr repeat(3,.65fr);gap:8px;align-items:center;padding:9px 18px;border-bottom:1px solid rgba(22,64,42,.035);font-size:12px}.lead-rep-row:hover{background:rgba(22,163,74,.025)}.lead-rep-head{background:rgba(255,255,255,.38);font-size:9px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}.lead-rep-name{font-weight:800;color:var(--text)}.lead-rep-num{font-family:var(--mono);font-weight:800;text-align:center}.lead-empty{padding:16px 18px;color:var(--muted);font-size:12px;text-align:center;font-style:italic}
 .rank-filter-row{display:flex;gap:7px;align-items:center;flex-wrap:wrap;padding:11px 18px;border-top:1px solid rgba(22,64,42,.05);background:rgba(255,255,255,.35)}.rank-chip{border:1px solid rgba(22,64,42,.1);background:rgba(255,255,255,.72);border-radius:999px;padding:6px 10px;font-size:11px;font-weight:800;color:var(--text2);cursor:pointer;font-family:inherit;transition:.12s}.rank-chip:hover{color:#15803d;border-color:rgba(22,163,74,.2);transform:translateY(-1px)}.rank-chip.active{background:rgba(22,163,74,.11);border-color:rgba(22,163,74,.25);color:#15803d}.rank-country-summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(112px,1fr));gap:1px;background:rgba(22,64,42,.06);border-top:1px solid rgba(22,64,42,.04)}.rank-filter-label{font-size:10px;font-weight:900;color:#15803d;text-transform:uppercase;letter-spacing:.1em;margin-right:4px;background:rgba(22,163,74,.08);border:1px solid rgba(22,163,74,.15);border-radius:999px;padding:6px 10px}.rank-summary-box{background:rgba(255,255,255,.56);padding:10px;text-align:center}.rank-summary-v{font-family:var(--mono);font-size:17px;font-weight:800;line-height:1}.rank-summary-l{font-size:8px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-top:5px}
-.risk-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}.risk-card{max-height:560px;overflow:hidden}.risk-card.expanded{max-height:none}.fin-click{cursor:pointer;transition:.14s}.fin-click:hover{background:rgba(22,163,74,.07)!important;box-shadow:inset 0 0 0 1px rgba(22,163,74,.18)}
+.risk-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:14px}.risk-card{max-height:560px;overflow:hidden}.risk-card.expanded{max-height:none}.fin-click{cursor:pointer;transition:.14s}.fin-click:hover{background:rgba(22,163,74,.07)!important;box-shadow:inset 0 0 0 1px rgba(22,163,74,.18)}
 @media(max-width:1100px){.priority-grid,.rank-country-summary{grid-template-columns:repeat(3,1fr)}.risk-grid{grid-template-columns:1fr}}
 @media(max-width:800px){.priority-grid,.rank-country-summary{grid-template-columns:1fr}.priority-item{grid-template-columns:28px 1fr}.priority-score{grid-column:2;text-align:left}.lead-rep-row{grid-template-columns:1fr repeat(3,.5fr)}}
 
@@ -1252,11 +1252,61 @@ function repRankSectionHtml(r,slug){
 function updateAllRepRankSections(){(D&&D.repData||[]).forEach(r=>{const slug=r.name.toLowerCase().replace(/\s/g,'-'); if($('rep-rank-tools-'+slug))renderRepRankSection(r,slug);});}
 
 
+function dealUniqueKey(d){
+  return String(rowFirst(d||{},['hubspotUrl','url','recordUrl','dealId','id','hs_object_id','objectId','recordId','name'])||'').trim().toLowerCase();
+}
+function hasFutureTask(d){
+  if(!d)return false;
+  const bool=rowFirst(d,['hasFutureTask','hasNextActivity','has_future_task','has_next_activity','futureTaskExists','nextTaskExists']);
+  if(bool===true||String(bool).toLowerCase()==='true'||String(bool)==='1')return true;
+  const raw=rowFirst(d,['nextActivityDate','futureTaskDate','nextTaskDate','hs_next_activity_date','next_activity_date','next_activity','nextTaskDueDate','dueDate']);
+  if(!raw)return false;
+  const dt=new Date(raw);
+  if(Number.isNaN(dt.getTime()))return true;
+  const startToday=new Date();startToday.setHours(0,0,0,0);
+  return dt>=startToday;
+}
+function noFutureTaskDeals(r){
+  const rows=[];
+
+  // Backend-ready lists from n8n.
+  // They should include only cold/stuck deals with no future task.
+  ['needsAttention','noFutureTask','noFutureTasks','dealsNoFutureTask','coldNoFutureTask','stuckNoFutureTask'].forEach(k=>{
+    if(Array.isArray(r&&r[k]))rows.push(...r[k]);
+  });
+
+  // Fallback only: if old data.json does not export noFutureTask yet,
+  // use topDeals but keep ONLY Cold/Stuck + no future task.
+  (r&&r.topDeals||[]).forEach(d=>{
+    const isRisk=!!(d&&(
+      d.isCold||
+      d.isStuck||
+      String(d.riskType||'').toLowerCase()==='cold'||
+      String(d.riskType||'').toLowerCase()==='stuck'
+    ));
+    if(isRisk&&!hasFutureTask(d)){
+      const riskLabel=d.isStuck||String(d.riskType||'').toLowerCase()==='stuck'?'Stuck':'Cold';
+      rows.push({...d,riskType:d.riskType||(riskLabel.toLowerCase()),reasons:[...((d&&d.reasons)||[]),riskLabel+' + no future task']});
+    }
+  });
+
+  const seen=new Set();
+  return rows.filter(d=>{
+    const key=dealUniqueKey(d)||Math.random().toString(36);
+    if(seen.has(key))return false;
+    seen.add(key);
+    return true;
+  });
+}
 function riskDealCard(title,items,color,badgeClass,key,label){
   const rows=Array.isArray(items)?items:[];
   if(!rows.length)return '';
   const first=rows.slice(0,8),rest=rows.slice(8);
-  const row=d=>'<div class="deal-row"><div style="flex:1;min-width:0"><div class="deal-nm">'+rl(d.name,rowUrl(d),d)+'</div><div class="deal-mt">'+esc(label)+' '+esc(String(d.days||d.ageDays||'?'))+'d</div></div><div class="deal-amt" style="color:'+color+'">'+fmt(d.amount||0)+'</div></div>';
+  const row=d=>{
+    const dayVal=d.days||d.ageDays||d.daysSinceActivity||d.daysWithoutActivity;
+    const meta=[label,dayVal?String(dayVal)+'d':null,d.stage||d.dealstage||null,(d.reasons||[]).slice(0,1).join(', ')||null].filter(Boolean).join(' · ');
+    return '<div class="deal-row"><div style="flex:1;min-width:0"><div class="deal-nm">'+rl(d.name,rowUrl(d),d)+'</div><div class="deal-mt">'+esc(meta||label)+'</div></div><div class="deal-amt" style="color:'+color+'">'+fmt(d.amount||0)+'</div></div>';
+  };
   return '<div class="gc risk-card" id="'+key+'" style="border-top:3px solid '+color+'"><div class="gc-hd"><div class="gc-title">'+title+'</div><span class="badge '+badgeClass+'">'+rows.length+'</span></div>'+first.map(row).join('')+'<div id="'+key+'-more" style="display:none">'+rest.map(row).join('')+'</div>'+(rest.length?'<button class="see-more" onclick="toggleMore(\''+key+'-more\',this,\'▼ '+rest.length+' more\',\'▲ Less\')">▼ '+rest.length+' more</button>':'')+'</div>';
 }
 
@@ -1405,15 +1455,19 @@ function buildRepPanels(repData,won,lost,meta){
     rpnl.appendChild(panel);
   });
 }
-function buildViewP(r,rW,rL,sh,re,did,c,meta){return'<div class="rep-hero" style="--hc:'+c+'"><div class="rep-av" style="background:'+c+'20;color:'+c+'">'+r.name[0]+'</div><div><div style="font-size:20px;font-weight:800">'+repLink(r.name,c)+'<span class="badge bb" style="margin-left:8px;font-size:10px">VIEW</span></div><div style="font-size:11px;color:var(--muted);margin-top:3px">'+esc(meta.yesterdayLabel||'')+' · Deals visibility only</div></div><div class="rep-stats">'+[{v:r.openDeals||0,l:'Open Deals',c:'#d97706'},{v:fmt(r.pipeAmt||0),l:'Pipeline',c:'#0891b2'},{v:r.won||0,l:'Won MTD',c:'#16a34a'},{v:r.lost||0,l:'Lost MTD',c:'#dc2626'}].map(s=>'<div style="text-align:center"><div class="rs-v" style="color:'+s.c+'">'+s.v+'</div><div class="rs-l">'+esc(s.l)+'</div></div>').join('')+'</div></div>'+(rW.length?'<div class="gc" style="border-top:3px solid #16a34a;margin-bottom:14px"><div class="gc-hd"><div class="gc-title">🏆 Won MTD</div><span class="badge bg">'+rW.length+'</span></div>'+rW.map(d=>dRow(d,'#16a34a',false)).join('')+'</div>':'')+'<div class="gc"><div class="gc-hd"><div class="gc-title">💼 Open Deals</div><span class="badge bb">'+(r.openDeals||0)+' · '+fmt(r.pipeAmt||0)+'</span></div>'+openDT(sh,re,did)+'</div>';}
+function buildViewP(r,rW,rL,sh,re,did,c,meta){
+  const noFuture=noFutureTaskDeals(r);
+  const noFutureBlock=noFuture.length?'<div class="risk-grid">'+riskDealCard('🗓️ No Future Task',noFuture,'#7c3aed','bp','no-future-'+did,'No future task')+'</div>':'';
+  return '<div class="rep-hero" style="--hc:'+c+'"><div class="rep-av" style="background:'+c+'20;color:'+c+'">'+r.name[0]+'</div><div><div style="font-size:20px;font-weight:800">'+repLink(r.name,c)+'<span class="badge bb" style="margin-left:8px;font-size:10px">VIEW</span></div><div style="font-size:11px;color:var(--muted);margin-top:3px">'+esc(meta.yesterdayLabel||'')+' · Deals visibility only</div></div><div class="rep-stats">'+[{v:r.openDeals||0,l:'Open Deals',c:'#d97706'},{v:fmt(r.pipeAmt||0),l:'Pipeline',c:'#0891b2'},{v:r.won||0,l:'Won MTD',c:'#16a34a'},{v:r.lost||0,l:'Lost MTD',c:'#dc2626'}].map(s=>'<div style="text-align:center"><div class="rs-v" style="color:'+s.c+'">'+s.v+'</div><div class="rs-l">'+esc(s.l)+'</div></div>').join('')+'</div></div>'+(rW.length?'<div class="gc" style="border-top:3px solid #16a34a;margin-bottom:14px"><div class="gc-hd"><div class="gc-title">🏆 Won MTD</div><span class="badge bg">'+rW.length+'</span></div>'+rW.map(d=>dRow(d,'#16a34a',false)).join('')+'</div>':'')+'<div class="gc" style="margin-bottom:14px"><div class="gc-hd"><div class="gc-title">💼 Open Deals</div><span class="badge bb">'+(r.openDeals||0)+' · '+fmt(r.pipeAmt||0)+'</span></div>'+openDT(sh,re,did)+'</div>'+noFutureBlock;
+}
 function buildFullP(r,rW,rL,sh,re,did,c,meta){
-  const cold=r.cold||[],stuck=r.stuck||[],uA=r.rankAUntouched||[],uB=r.rankBUntouched||[];
+  const cold=r.cold||[],stuck=r.stuck||[],noFuture=noFutureTaskDeals(r),uA=r.rankAUntouched||[],uB=r.rankBUntouched||[];
   const hero='<div class="rep-hero" style="--hc:'+c+'"><div class="rep-av" style="background:'+c+'20;color:'+c+'">'+esc((r.name||'?')[0])+'</div><div><div style="font-size:20px;font-weight:800">'+repLink(r.name,c)+'</div><div style="font-size:11px;color:var(--muted);margin-top:3px">'+esc(meta.yesterdayLabel||'')+' · Acquisition Rep</div></div><div class="rep-stats">'+[{v:r.calls&&r.calls.yest||0,l:'Calls',c:'#2563eb'},{v:(r.connRateYest||0)+'%',l:'Conn.Rate',c:rcColor(r.connRateYest||0)},{v:r.meetings&&r.meetings.yest||0,l:'Meetings',c:'#7c3aed'},{v:r.openDeals||0,l:'Open',c:'#d97706'},{v:fmt(r.pipeAmt||0),l:'Pipeline',c:'#0891b2'},{v:r.won||0,l:'Won MTD',c:'#16a34a'},{v:r.lost||0,l:'Lost',c:'#dc2626'}].map(s=>'<div style="text-align:center"><div class="rs-v" style="color:'+s.c+'">'+s.v+'</div><div class="rs-l">'+esc(s.l)+'</div></div>').join('')+'</div></div>';
   const kpi='<div class="rep-km" style="margin-bottom:16px;border-top:3px solid '+c+'"><div class="rep-km-hd"><div style="font-size:12px;font-weight:700;display:flex;align-items:center;gap:8px">'+repLink(r.name,c)+' — KPI Breakdown</div></div>'+[{p:'Yesterday',sub:meta.yesterdayLabel||'',pc:c,calls:r.calls&&r.calls.yest||0,conn:r.calls&&r.calls.yestConn||0,rate:r.connRateYest||0,mtgs:r.meetings&&r.meetings.yest||0,leads:r.leadsYest||0,open:r.openDeals||0,won:(r.wonYest||0)+'('+fmt(r.wonAmtYest||0)+')'},{p:'MTD',sub:'Month to Date',pc:c,calls:r.calls&&r.calls.mtd||0,conn:r.calls&&r.calls.mtdConn||0,rate:r.connRateMTD||0,mtgs:r.meetings&&r.meetings.mtd||0,leads:r.leadsMTD||0,open:r.openDeals||0,won:(r.won||0)+'('+fmt(r.wonAmt||0)+')'},{p:'YTD',sub:'Year to Date',pc:c,calls:r.calls&&r.calls.ytd||0,conn:r.calls&&r.calls.ytdConn||0,rate:r.connRateYTD||0,mtgs:r.meetings&&r.meetings.ytd||0,leads:r.leadsYTD||0,open:r.openDeals||0,won:(r.wonYTD||0)+'('+fmt(r.wonAmtYTD||0)+')'}].map(p=>'<div class="rkrow"><div class="rk-plbl" style="--pc:'+p.pc+'"><div class="rk-pn">'+p.p+'</div><div class="rk-ps">'+esc(p.sub)+'</div></div>'+[{v:p.calls,l:'Calls',rk:'#2563eb'},{v:p.conn,l:'Connected',rk:'#16a34a'},{v:p.rate+'%',l:'Conn.Rate',rk:rcColor(p.rate)},{v:p.mtgs,l:'Meetings',rk:'#7c3aed'},{v:p.leads,l:'Leads',rk:'#0891b2'},{v:p.open,l:'Open Deals',rk:'#d97706'},{v:p.won,l:'Won',rk:'#16a34a'}].map(x=>'<div class="rk-cell" style="--rk:'+x.rk+'"><div class="rk-v">'+esc(String(x.v))+'</div><div class="rk-l">'+esc(x.l)+'</div></div>').join('')+'</div>').join('')+'</div>';
   const wonBlock=rW.length?'<div class="gc" style="border-top:3px solid #16a34a;margin-bottom:14px"><div class="gc-hd"><div class="gc-title">🏆 Won MTD</div><span class="badge bg">'+rW.length+' · '+fmt(rW.reduce((s,d)=>s+(d.amount||0),0))+'</span></div>'+rW.map(d=>dRow(d,'#16a34a',false)).join('')+'</div>':'';
   const lostBlock=rL.length?'<div class="gc" style="border-top:3px solid #dc2626;margin-bottom:14px"><div class="gc-hd"><div class="gc-title">❌ Lost MTD</div><span class="badge br">'+rL.length+' · '+fmt(rL.reduce((s,d)=>s+(d.amount||0),0))+'</span></div>'+rL.map(d=>dRow(d,'#dc2626',true)).join('')+'</div>':'';
   const openBlock='<div class="gc" style="margin-bottom:14px"><div class="gc-hd"><div class="gc-title">💼 Open Deals</div><span class="badge bb">'+(r.openDeals||0)+' · '+fmt(r.pipeAmt||0)+'</span></div>'+openDT(sh,re,did)+'</div>';
-  const riskParts=[riskDealCard('🟡 Cold Deals',cold,'#d97706','ba','cold-'+did,'No activity'),riskDealCard('🔴 Stuck Deals',stuck,'#dc2626','br','stuck-'+did,'Stuck')].filter(Boolean).join('');
+  const riskParts=[riskDealCard('🟡 Cold Deals',cold,'#d97706','ba','cold-'+did,'No activity'),riskDealCard('🔴 Stuck Deals',stuck,'#dc2626','br','stuck-'+did,'Stuck'),riskDealCard('🗓️ No Future Task',noFuture,'#7c3aed','bp','no-future-'+did,'No future task')].filter(Boolean).join('');
   const riskBlock=riskParts?'<div class="risk-grid">'+riskParts+'</div>':'';
   const slug=(r.name||'').toLowerCase().replace(/\s/g,'-');
   const rankSection=repRankSectionHtml(r,slug);
