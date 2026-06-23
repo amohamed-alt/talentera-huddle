@@ -25,9 +25,14 @@
         const version=Date.now();
         const stylesheets=
           '<link rel="stylesheet" href="./design-preview.css?v='+version+'">'+
-          '<link rel="stylesheet" href="./design-widgets.css?v='+version+'">';
-        if(!html.includes('</head>'))throw new Error('The dashboard HTML does not contain a closing head tag.');
+          '<link rel="stylesheet" href="./design-widgets.css?v='+version+'">'+
+          '<link rel="stylesheet" href="./design-structure.css?v='+version+'">';
+        const scripts=
+          '<script src="./design-data-bridge.js?v='+version+'"></'+'script>'+
+          '<script src="./design-structure.js?v='+version+'"></'+'script>';
+        if(!html.includes('</head>')||!html.includes('</body>'))throw new Error('The dashboard HTML is missing required closing tags.');
         html=html.replace('</head>',stylesheets+'</head>');
+        html=html.replace('</body>',scripts+'</body>');
         document.open();
         document.write(html);
         document.close();
