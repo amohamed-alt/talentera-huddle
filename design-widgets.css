@@ -1,0 +1,707 @@
+/* Talentera Huddle — Widget & Table Upgrade Layer
+   Visual-only enhancements loaded after design-preview.css. */
+
+/* =============================
+   1) CARD / WIDGET HIERARCHY
+   ============================= */
+.gc,
+.kpi-card,
+.rep-km,
+.pcard,
+.risk-card{
+  position:relative!important;
+  overflow:hidden!important;
+}
+
+.gc::before,
+.rep-km::before,
+.pcard::before,
+.risk-card::before{
+  content:"";
+  position:absolute;
+  inset:0 0 auto 0;
+  height:3px;
+  background:linear-gradient(90deg,rgba(19,164,102,.92),rgba(15,151,160,.38),transparent 78%);
+  z-index:2;
+  pointer-events:none;
+}
+
+.gc-hd,
+.rep-km-hd,
+.pc-top{
+  min-height:62px!important;
+  padding:15px 18px!important;
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.74),rgba(247,252,249,.48))!important;
+  border-bottom:1px solid rgba(59,99,79,.10)!important;
+  box-shadow:inset 0 -1px 0 rgba(255,255,255,.60)!important;
+}
+
+.gc-title{
+  font-size:13px!important;
+  font-weight:800!important;
+  color:#24483a!important;
+  letter-spacing:-.02em!important;
+}
+
+.gc-title::after{
+  content:"";
+  display:inline-block;
+  width:5px;
+  height:5px;
+  margin-left:3px;
+  border-radius:50%;
+  background:#13a466;
+  opacity:.42;
+  vertical-align:middle;
+}
+
+.gc-icon{
+  width:34px!important;
+  height:34px!important;
+  border-radius:12px!important;
+  background:linear-gradient(145deg,rgba(224,248,235,.96),rgba(244,252,248,.86))!important;
+  border:1px solid rgba(255,255,255,.94)!important;
+  color:#0d8450!important;
+  box-shadow:0 8px 18px rgba(39,88,64,.07),inset 0 1px 0 #fff!important;
+}
+
+/* Stronger spacing between widget sections */
+.row2,
+.row2b,
+.risk-grid,
+.pipe-grid{
+  align-items:stretch!important;
+}
+
+.row2 > .gc,
+.row2b > .gc,
+.risk-grid > .gc,
+.risk-grid > .risk-card,
+.pipe-grid > .pcard{
+  height:100%!important;
+}
+
+/* Widget body separators */
+.gc > * + *:not(.gc-hd),
+.rep-km > * + *:not(.rep-km-hd){
+  border-top-color:rgba(64,104,84,.075)!important;
+}
+
+/* =============================
+   2) CHART WIDGETS
+   ============================= */
+.chart-body{
+  position:relative!important;
+  margin:14px 16px 17px!important;
+  padding:16px 16px 18px!important;
+  height:248px!important;
+  border-radius:16px!important;
+  background:linear-gradient(180deg,rgba(255,255,255,.58),rgba(247,251,249,.38))!important;
+  border:1px solid rgba(255,255,255,.86)!important;
+  box-shadow:inset 0 1px 0 #fff,0 10px 24px rgba(39,88,64,.04)!important;
+}
+
+.chart-tabs{
+  gap:4px!important;
+  padding:4px!important;
+  border-radius:12px!important;
+}
+
+.ct{
+  min-width:58px!important;
+  font-weight:700!important;
+}
+
+.ct.active{
+  box-shadow:0 8px 20px rgba(39,88,64,.10),inset 0 1px 0 #fff!important;
+}
+
+.donut-wrap{
+  padding:18px 19px 20px!important;
+  gap:22px!important;
+}
+
+.donut-c{
+  width:156px!important;
+  height:156px!important;
+  padding:10px!important;
+  border-radius:50%!important;
+  background:rgba(255,255,255,.42)!important;
+  border:1px solid rgba(255,255,255,.84)!important;
+  box-shadow:0 12px 28px rgba(39,88,64,.06),inset 0 1px 0 #fff!important;
+}
+
+.donut-leg{
+  gap:9px!important;
+}
+
+.dl-item{
+  padding:8px 9px!important;
+  border-radius:10px!important;
+  background:rgba(255,255,255,.38)!important;
+  border:1px solid rgba(255,255,255,.66)!important;
+}
+
+.dl-name{
+  font-weight:650!important;
+  color:#516b60!important;
+}
+
+.dl-v{
+  font-size:12px!important;
+  font-weight:800!important;
+  color:#213d30!important;
+}
+
+/* Sources widget */
+.src-item{
+  min-height:48px!important;
+  padding:11px 18px!important;
+  transition:background .16s ease,transform .16s ease!important;
+}
+
+.src-item:hover{
+  background:rgba(237,249,242,.62)!important;
+  transform:translateX(2px)!important;
+}
+
+.src-dot{
+  width:9px!important;
+  height:9px!important;
+  box-shadow:0 0 0 4px rgba(255,255,255,.66)!important;
+}
+
+.src-name{
+  font-size:11.5px!important;
+  font-weight:700!important;
+  color:#466257!important;
+}
+
+.src-cnt{
+  min-width:44px!important;
+  text-align:right!important;
+  font-size:12px!important;
+  font-weight:800!important;
+}
+
+.src-bar-wrap{
+  width:92px!important;
+  height:6px!important;
+  border:1px solid rgba(255,255,255,.72)!important;
+}
+
+/* =============================
+   3) EXECUTIVE KPI WIDGETS
+   ============================= */
+.mkpi-grid{
+  grid-template-columns:repeat(8,minmax(0,1fr))!important;
+  gap:9px!important;
+  padding:15px 16px!important;
+}
+
+.mk{
+  position:relative!important;
+  min-height:78px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:center!important;
+  align-items:center!important;
+  padding:14px 9px!important;
+  border-radius:15px!important;
+}
+
+.mk::before{
+  content:"";
+  position:absolute;
+  left:12px;
+  right:12px;
+  top:0;
+  height:3px;
+  border-radius:0 0 3px 3px;
+  background:linear-gradient(90deg,transparent,rgba(19,164,102,.80),transparent);
+  opacity:.72;
+}
+
+.mk-v{
+  font-size:22px!important;
+  font-weight:800!important;
+  color:#203d30!important;
+}
+
+.mk-l{
+  margin-top:7px!important;
+  font-size:7px!important;
+  line-height:1.35!important;
+  letter-spacing:.11em!important;
+}
+
+/* =============================
+   4) TABLE CONTAINERS
+   ============================= */
+.gc:has(.rtbl),
+.gc:has(.priority-list),
+.gc:has(.lead-rep-summary),
+.modal-card:has(.mrow){
+  overflow:hidden!important;
+}
+
+.gc:has(.rtbl) .gc-hd,
+.gc:has(.priority-list) .gc-hd,
+.gc:has(.lead-rep-summary) .gc-hd{
+  background:linear-gradient(180deg,rgba(255,255,255,.84),rgba(244,250,247,.62))!important;
+}
+
+/* table wrapper behavior */
+.gc:has(.rtbl){
+  isolation:isolate!important;
+}
+
+.rtbl{
+  width:100%!important;
+  border-collapse:separate!important;
+  border-spacing:0!important;
+  font-variant-numeric:tabular-nums!important;
+}
+
+.rtbl thead{
+  position:relative!important;
+  z-index:4!important;
+}
+
+.rtbl th{
+  position:sticky!important;
+  top:0!important;
+  z-index:4!important;
+  height:42px!important;
+  padding:10px 16px!important;
+  background:rgba(239,247,243,.94)!important;
+  color:#647b70!important;
+  font-size:8px!important;
+  font-weight:850!important;
+  letter-spacing:.13em!important;
+  text-transform:uppercase!important;
+  border-top:1px solid rgba(255,255,255,.72)!important;
+  border-bottom:1px solid rgba(65,105,85,.11)!important;
+  backdrop-filter:blur(16px)!important;
+  -webkit-backdrop-filter:blur(16px)!important;
+}
+
+.rtbl th:first-child{
+  padding-left:20px!important;
+}
+
+.rtbl th:last-child{
+  padding-right:20px!important;
+}
+
+.rtbl td{
+  height:51px!important;
+  padding:12px 16px!important;
+  font-size:11.5px!important;
+  line-height:1.4!important;
+  color:#465f54!important;
+  border-bottom:1px solid rgba(67,106,87,.075)!important;
+  transition:background .15s ease,color .15s ease,box-shadow .15s ease!important;
+}
+
+.rtbl td:first-child{
+  padding-left:20px!important;
+  font-weight:720!important;
+  color:#244638!important;
+}
+
+.rtbl td:last-child{
+  padding-right:20px!important;
+}
+
+.rtbl tbody tr:nth-child(odd) td{
+  background:rgba(255,255,255,.20)!important;
+}
+
+.rtbl tbody tr:nth-child(even) td{
+  background:rgba(247,251,249,.42)!important;
+}
+
+.rtbl tbody tr:hover td{
+  background:rgba(231,248,238,.86)!important;
+  color:#244638!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.80),inset 0 -1px 0 rgba(19,164,102,.05)!important;
+}
+
+.rtbl tbody tr:hover td:first-child{
+  box-shadow:inset 4px 0 0 #13a466,inset 0 1px 0 rgba(255,255,255,.80),inset 0 -1px 0 rgba(19,164,102,.05)!important;
+}
+
+.rtbl .c{
+  text-align:center!important;
+}
+
+.rtbl .mono,
+.rtbl td.mono{
+  font-size:11px!important;
+  font-weight:800!important;
+  color:#203d30!important;
+}
+
+/* Header column separators */
+.rtbl th + th{
+  border-left:1px solid rgba(69,108,88,.055)!important;
+}
+
+/* Better badges inside tables */
+.rtbl .badge,
+.rtbl .sp{
+  min-width:62px!important;
+  justify-content:center!important;
+  font-weight:800!important;
+  letter-spacing:.01em!important;
+}
+
+/* Link clarity */
+.rtbl .name-link,
+.rtbl .rl{
+  max-width:280px!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+  font-weight:760!important;
+  color:#244638!important;
+}
+
+/* =============================
+   5) PRIORITY / RISK TABLE-LIKE LISTS
+   ============================= */
+.priority-grid{
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:10px!important;
+  padding:15px 16px!important;
+}
+
+.priority-mini{
+  min-height:92px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:center!important;
+  padding:16px!important;
+}
+
+.priority-mini-v{
+  font-size:28px!important;
+  font-weight:850!important;
+  color:var(--pc,#13a466)!important;
+}
+
+.priority-mini-l{
+  margin-top:8px!important;
+  font-size:7.2px!important;
+  line-height:1.4!important;
+}
+
+.priority-list{
+  padding:6px 12px 12px!important;
+}
+
+.priority-item{
+  min-height:62px!important;
+  margin:6px 0!important;
+  padding:11px 13px!important;
+  border:1px solid rgba(255,255,255,.76)!important;
+  border-radius:13px!important;
+  background:rgba(255,255,255,.44)!important;
+  box-shadow:0 6px 16px rgba(39,88,64,.035)!important;
+}
+
+.priority-item:hover{
+  background:rgba(241,251,246,.85)!important;
+  border-color:#fff!important;
+  transform:translateY(-1px)!important;
+  box-shadow:0 12px 24px rgba(39,88,64,.07)!important;
+}
+
+.priority-num{
+  width:32px!important;
+  height:32px!important;
+  border-radius:10px!important;
+  font-size:11px!important;
+  font-weight:850!important;
+}
+
+.priority-name{
+  font-size:12px!important;
+  font-weight:800!important;
+  color:#284b3c!important;
+}
+
+.priority-meta{
+  margin-top:4px!important;
+  font-size:9.5px!important;
+  color:#87988f!important;
+}
+
+.priority-score{
+  font-size:12px!important;
+  font-weight:850!important;
+}
+
+/* Deal rows */
+.deal-row{
+  min-height:58px!important;
+  margin:0 10px!important;
+  padding:11px 10px!important;
+  border-bottom:1px solid rgba(65,105,85,.075)!important;
+  border-radius:10px!important;
+}
+
+.deal-row:hover{
+  background:rgba(236,249,242,.74)!important;
+  transform:translateX(2px)!important;
+}
+
+.deal-nm{
+  font-size:11.5px!important;
+  font-weight:800!important;
+  color:#294b3c!important;
+}
+
+.deal-mt{
+  margin-top:4px!important;
+  color:#8a9b92!important;
+}
+
+.deal-amt{
+  font-size:12px!important;
+  font-weight:850!important;
+  color:#203d30!important;
+}
+
+/* Lead rep summary table */
+.lead-rep-summary{
+  max-height:310px!important;
+  padding:7px 10px 12px!important;
+}
+
+.lead-rep-row{
+  min-height:46px!important;
+  margin:4px 0!important;
+  padding:9px 12px!important;
+  border:1px solid rgba(255,255,255,.72)!important;
+  border-radius:11px!important;
+  background:rgba(255,255,255,.38)!important;
+}
+
+.lead-rep-head{
+  position:sticky!important;
+  top:0!important;
+  z-index:2!important;
+  background:rgba(238,247,242,.95)!important;
+  color:#647b70!important;
+}
+
+.lead-rep-row:hover{
+  background:rgba(234,248,240,.82)!important;
+}
+
+.lead-rep-name{
+  font-weight:800!important;
+  color:#294b3c!important;
+}
+
+.lead-rep-num{
+  font-weight:850!important;
+  color:#29483a!important;
+}
+
+/* =============================
+   6) PIPELINE CARDS
+   ============================= */
+.pipe-grid{
+  gap:15px!important;
+}
+
+.pcard{
+  min-height:230px!important;
+}
+
+.pc-top{
+  padding:15px 16px!important;
+  background:linear-gradient(180deg,rgba(255,255,255,.72),rgba(246,251,248,.48))!important;
+}
+
+.pc-body{
+  padding:9px 13px 12px!important;
+}
+
+.pdeal{
+  min-height:52px!important;
+  margin:3px 0!important;
+  padding:9px 8px!important;
+  border-radius:10px!important;
+  border-bottom:1px solid rgba(67,106,87,.07)!important;
+}
+
+.pdeal:hover{
+  background:rgba(236,249,242,.66)!important;
+}
+
+.pdeal-n{
+  font-size:10.5px!important;
+  font-weight:800!important;
+  color:#294b3c!important;
+}
+
+.pdeal-s{
+  margin-top:3px!important;
+  color:#8a9b92!important;
+}
+
+/* =============================
+   7) OUTREACH / COACHING
+   ============================= */
+.o-kpi{
+  grid-template-columns:repeat(6,minmax(0,1fr))!important;
+  gap:8px!important;
+  padding:14px 16px!important;
+  background:transparent!important;
+}
+
+.obox{
+  min-height:80px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:center!important;
+  border-radius:13px!important;
+  border:1px solid rgba(255,255,255,.82)!important;
+  background:rgba(255,255,255,.48)!important;
+  box-shadow:0 7px 18px rgba(39,88,64,.04)!important;
+}
+
+.obox-v{
+  font-size:23px!important;
+  font-weight:800!important;
+  color:#28493b!important;
+}
+
+.obox-l{
+  margin-top:7px!important;
+  line-height:1.35!important;
+}
+
+.o-bars{
+  padding:14px 18px 18px!important;
+}
+
+.obar-row{
+  margin-bottom:13px!important;
+}
+
+.obar-hd{
+  margin-bottom:7px!important;
+}
+
+.obar-lbl{
+  font-size:10px!important;
+  font-weight:750!important;
+}
+
+.obar-rate{
+  font-weight:850!important;
+}
+
+.obar-track{
+  height:7px!important;
+  border:1px solid rgba(255,255,255,.68)!important;
+}
+
+.coach-grid{
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:12px!important;
+  padding:16px!important;
+}
+
+.ccard{
+  min-height:190px!important;
+  padding:15px!important;
+}
+
+.ccard-rep{
+  min-height:38px!important;
+  font-size:12px!important;
+  font-weight:800!important;
+}
+
+.ci{
+  padding:9px 0!important;
+}
+
+.ci-n{
+  font-size:10.5px!important;
+}
+
+.ci-w{
+  margin-top:4px!important;
+  line-height:1.4!important;
+}
+
+/* =============================
+   8) MODAL TABLES
+   ============================= */
+.modal-body{
+  padding:8px 10px 12px!important;
+}
+
+.mrow{
+  min-height:54px!important;
+  margin:5px 0!important;
+  padding:11px 13px!important;
+  border:1px solid rgba(255,255,255,.78)!important;
+  border-radius:12px!important;
+  background:rgba(255,255,255,.38)!important;
+}
+
+.mrow:hover{
+  background:rgba(234,248,240,.80)!important;
+  transform:translateY(-1px)!important;
+}
+
+.mn{
+  font-size:11.5px!important;
+  font-weight:800!important;
+  color:#294b3c!important;
+}
+
+.mm{
+  margin-top:4px!important;
+  color:#899b92!important;
+}
+
+.mpill{
+  min-width:64px!important;
+  justify-content:center!important;
+  background:rgba(255,255,255,.64)!important;
+  border-color:rgba(255,255,255,.84)!important;
+  font-weight:800!important;
+}
+
+/* =============================
+   9) RESPONSIVE COMFORT
+   ============================= */
+@media(max-width:1380px){
+  .mkpi-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+  .o-kpi{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+}
+
+@media(max-width:1100px){
+  .priority-grid{grid-template-columns:1fr!important}
+  .coach-grid{grid-template-columns:1fr 1fr!important}
+}
+
+@media(max-width:800px){
+  .gc:has(.rtbl){overflow-x:auto!important}
+  .rtbl{min-width:780px!important}
+  .mkpi-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .o-kpi{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .coach-grid{grid-template-columns:1fr!important}
+  .priority-item{grid-template-columns:32px minmax(0,1fr)!important}
+  .priority-score{grid-column:2!important;text-align:left!important}
+}
