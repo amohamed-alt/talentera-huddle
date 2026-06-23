@@ -29,7 +29,8 @@
           '<link rel="stylesheet" href="./design-structure.css?v='+version+'">';
         const scripts=
           '<script src="./design-data-bridge.js?v='+version+'"></'+'script>'+
-          '<script src="./design-structure.js?v='+version+'"></'+'script>';
+          '<script src="./design-structure.js?v='+version+'"></'+'script>'+
+          '<script src="./design-priority-fix.js?v='+version+'"></'+'script>';
         if(!html.includes('</head>')||!html.includes('</body>'))throw new Error('The dashboard HTML is missing required closing tags.');
         html=html.replace('</head>',stylesheets+'</head>');
         html=html.replace('</body>',scripts+'</body>');
