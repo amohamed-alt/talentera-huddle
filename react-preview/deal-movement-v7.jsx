@@ -179,15 +179,18 @@
     return [...document.querySelectorAll('.card')].find(card => card.querySelector(':scope > .card-head h3')?.textContent?.trim() === title);
   }
 
-  function removeMissingFinancial() {
+  function hideMissingFinancial() {
     document.querySelectorAll('.card').forEach(card => {
       const title = card.querySelector(':scope > .card-head h3')?.textContent?.trim();
-      if (title === 'Missing Financial Data') card.remove();
+      if (title === 'Missing Financial Data') {
+        card.style.display = 'none';
+        card.setAttribute('aria-hidden', 'true');
+      }
     });
   }
 
   async function enhance() {
-    removeMissingFinancial();
+    hideMissingFinancial();
     const legacy = findCard('Deal Movement');
     if (!legacy || legacy.dataset.dm7Enhanced === 'true') return;
     const data = await loadData();
