@@ -22,9 +22,12 @@
         const response=await fetch('./index.html?previewSource='+Date.now(),{cache:'no-store'});
         if(!response.ok)throw new Error('Could not load the current dashboard. HTTP '+response.status);
         let html=await response.text();
-        const stylesheet='<link rel="stylesheet" href="./design-preview.css?v='+Date.now()+'">';
+        const version=Date.now();
+        const stylesheets=
+          '<link rel="stylesheet" href="./design-preview.css?v='+version+'">'+
+          '<link rel="stylesheet" href="./design-widgets.css?v='+version+'">';
         if(!html.includes('</head>'))throw new Error('The dashboard HTML does not contain a closing head tag.');
-        html=html.replace('</head>',stylesheet+'</head>');
+        html=html.replace('</head>',stylesheets+'</head>');
         document.open();
         document.write(html);
         document.close();
