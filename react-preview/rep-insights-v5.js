@@ -34,11 +34,16 @@
       || arr(data.repData).find(rep => String(rep.name || '').toLowerCase().split(' ')[0] === expected.split(' ')[0]);
   }
 
+  function makePeriod(key, label, note, tone, calls, connected, rate, meetings, leads) {
+    const callCount = num(calls), meetingCount = num(meetings);
+    return { key, label, note, tone, calls: callCount, connected: num(connected), rate: num(rate), meetings: meetingCount, leads: num(leads), callsPerMeeting: meetingCount ? (callCount / meetingCount).toFixed(1) : '—' };
+  }
+
   function periodData(rep) {
     return [
-      { key: 'yesterday', label: 'Yesterday', note: 'Latest completed business day', tone: '', calls: num(rep.calls?.yest), connected: num(rep.calls?.yestConn), rate: num(rep.connRateYest), meetings: num(rep.meetings?.yest), leads: num(rep.leadsYest) },
-      { key: 'mtd', label: 'Month to Date', note: 'Current month performance', tone: 'green', calls: num(rep.calls?.mtd), connected: num(rep.calls?.mtdConn), rate: num(rep.connRateMTD), meetings: num(rep.meetings?.mtd), leads: num(rep.leadsMTD) },
-      { key: 'ytd', label: 'Year to Date', note: 'Current year performance', tone: 'purple', calls: num(rep.calls?.ytd), connected: num(rep.calls?.ytdConn), rate: num(rep.connRateYTD), meetings: num(rep.meetings?.ytd), leads: num(rep.leadsYTD) }
+      makePeriod('yesterday', 'Yesterday', 'Latest completed business day', '', rep.calls?.yest, rep.calls?.yestConn, rep.connRateYest, rep.meetings?.yest, rep.leadsYest),
+      makePeriod('mtd', 'Month to Date', 'Current month performance', 'green', rep.calls?.mtd, rep.calls?.mtdConn, rep.connRateMTD, rep.meetings?.mtd, rep.leadsMTD),
+      makePeriod('ytd', 'Year to Date', 'Current year performance', 'purple', rep.calls?.ytd, rep.calls?.ytdConn, rep.connRateYTD, rep.meetings?.ytd, rep.leadsYTD)
     ];
   }
 
@@ -49,7 +54,7 @@
       ['Connection rate', `${item.rate}%`],
       ['Meetings', item.meetings],
       ['Leads', item.leads],
-      ['Open deals', '—']
+      ['Calls / meeting', item.callsPerMeeting]
     ];
     return `<article class="period-card-v5 ${item.tone}">
       <header><span>${esc(item.label)}</span><small>${esc(item.note)}</small></header>
