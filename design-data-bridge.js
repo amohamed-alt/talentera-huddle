@@ -1,21 +1,30 @@
-/* Expose the dashboard's global lexical data to preview-only enhancement files. */
+/* Expose dashboard lexical globals to preview-only enhancement files. */
 (function () {
   'use strict';
-  try {
-    if (!Object.getOwnPropertyDescriptor(window, 'D')) {
-      Object.defineProperty(window, 'D', {
-        configurable: true,
-        enumerable: false,
-        get: function () {
-          try {
-            return D;
-          } catch (error) {
-            return null;
-          }
-        }
-      });
+
+  function expose(name, getter) {
+    try {
+      if (!Object.getOwnPropertyDescriptor(window, name)) {
+        Object.defineProperty(window, name, {
+          configurable: true,
+          enumerable: false,
+          get: getter
+        });
+      }
+    } catch (error) {
+      console.warn('Preview bridge could not expose ' + name + '.', error);
     }
-  } catch (error) {
-    console.warn('Preview data bridge could not be initialized.', error);
   }
+
+  expose('D', function () {
+    try { return D; } catch (error) { return null; }
+  });
+
+  expose('esc', function () {
+    try { return esc; } catch (error) { return function (value) { return String(value || ''); }; }
+  });
+
+  expose('CONFIG', function () {
+    try { return CONFIG; } catch (error) { return null; }
+  });
 })();
