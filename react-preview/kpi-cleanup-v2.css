@@ -1,0 +1,15 @@
+.period-section .period-metric > small,
+.period-section .period-metric .metric-reason,
+.period-section .metric-reason,
+.period-section .lead-analysis-mini {
+  display: none !important;
+}
+
+.period-section .period-metric {
+  min-height: 64px !important;
+  padding-bottom: 10px !important;
+}
+
+.period-section .period-metric strong {
+  margin-bottom: 3px !important;
+}
