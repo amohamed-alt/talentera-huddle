@@ -1,0 +1,16 @@
+/* Keep Performance Breakdown KPI cards clean: value + label only. */
+.period-section .period-metric > small,
+.period-section .period-metric .metric-reason,
+.period-section .metric-reason {
+  display: none !important;
+}
+
+/* Remove the extra empty space left by hidden diagnostic text. */
+.period-section .period-metric {
+  min-height: 64px !important;
+  padding-bottom: 10px !important;
+}
+
+.period-section .period-metric strong {
+  margin-bottom: 3px !important;
+}
