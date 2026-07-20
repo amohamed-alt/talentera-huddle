@@ -4,6 +4,8 @@ const API_BASE = "https://api.hubapi.com";
 const MAX_RETRIES = 3;
 const SEARCH_PAGE_SIZE = 200;
 const SEARCH_INTERVAL_MS = 275;
+const BATCH_READ_SIZE = 100;
+const ASSOCIATION_BATCH_SIZE = 1000;
 
 let searchQueue: Promise<void> = Promise.resolve();
 let nextSearchAt = 0;
@@ -21,11 +23,33 @@ export interface HubSpotObjectProperty {
   label: string;
   type: string;
   fieldType?: string;
+  options?: Array<{ label: string; value: string }>;
+}
+
+export interface AssociationTarget {
+  id: string;
+  labels: string[];
+  typeIds: number[];
 }
 
 interface SearchResponse {
   results: HubSpotRecord[];
   paging?: { next?: { after?: string } };
+}
+
+interface BatchReadResponse {
+  results: HubSpotRecord[];
+}
+
+interface BatchAssociationResponse {
+  results: Array<{
+    from: { id: string };
+    to: Array<{
+      toObjectId: string;
+      associationTypes?: Array<{ typeId: number; label?: string | null }>;
+    }>;
+    paging?: { next?: { after?: string } };
+  }>;
 }
 
 interface OwnersResponse {
@@ -71,6 +95,12 @@ function getToken() {
     );
   }
   return token;
+}
+
+function chunks<T>(items: readonly T[], size: number): T[][] {
+  const output: T[][] = [];
+  for (let index = 0; index < items.length; index += size) output.push(items.slice(index, index + size));
+  return output;
 }
 
 function scheduleSearch<T>(action: () => Promise<T>): Promise<T> {
@@ -161,6 +191,69 @@ export async function searchAll(
   } while (after);
 
   return records;
+}
+
+export async function batchReadObjects(
+  objectType: string,
+  ids: readonly string[],
+  properties: readonly string[],
+): Promise<HubSpotRecord[]> {
+  const records: HubSpotRecord[] = [];
+  for (const group of chunks([...new Set(ids.filter(Boolean))], BATCH_READ_SIZE)) {
+    const response = await hubspotRequest<BatchReadResponse>(`/crm/v3/objects/${objectType}/batch/read`, {
+      method: "POST",
+      body: JSON.stringify({
+        properties,
+        inputs: group.map((id) => ({ id })),
+      }),
+    });
+    records.push(...response.results);
+  }
+  return records;
+}
+
+export async function batchReadAssociations(
+  fromObjectType: string,
+  toObjectType: string,
+  ids: readonly string[],
+): Promise<Map<string, AssociationTarget[]>> {
+  const output = new Map<string, AssociationTarget[]>();
+  const uniqueIds = [...new Set(ids.filter(Boolean))];
+
+  for (const group of chunks(uniqueIds, ASSOCIATION_BATCH_SIZE)) {
+    let inputs = group.map((id) => ({ id }));
+    while (inputs.length) {
+      const response = await hubspotRequest<BatchAssociationResponse>(
+        `/crm/v4/associations/${fromObjectType}/${toObjectType}/batch/read`,
+        {
+          method: "POST",
+          body: JSON.stringify({ inputs }),
+        },
+      );
+
+      const nextInputs: Array<{ id: string; after: string }> = [];
+      for (const result of response.results) {
+        const current = output.get(result.from.id) ?? [];
+        const seen = new Set(current.map((item) => item.id));
+        for (const target of result.to ?? []) {
+          if (seen.has(String(target.toObjectId))) continue;
+          current.push({
+            id: String(target.toObjectId),
+            labels: (target.associationTypes ?? []).map((item) => item.label ?? "").filter(Boolean),
+            typeIds: (target.associationTypes ?? []).map((item) => item.typeId),
+          });
+          seen.add(String(target.toObjectId));
+        }
+        output.set(result.from.id, current);
+        const after = result.paging?.next?.after;
+        if (after) nextInputs.push({ id: result.from.id, after });
+      }
+      inputs = nextInputs;
+    }
+  }
+
+  for (const id of uniqueIds) if (!output.has(id)) output.set(id, []);
+  return output;
 }
 
 export async function listOwners(): Promise<HubSpotOwner[]> {
