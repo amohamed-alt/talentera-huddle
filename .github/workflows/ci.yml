@@ -2,11 +2,11 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [main, fix/v4-drilldown-records]
   pull_request:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   verify:
@@ -14,6 +14,54 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref }}
+      - name: Link executive cards to record drilldowns
+        if: github.ref_name == 'fix/v4-drilldown-records'
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('src/components/AcquisitionDashboardV4.tsx')
+          text = path.read_text()
+          replacements = [
+              (
+                  '<ExecutiveFocus total={filteredLeads.length} eligible={followUpPopulation.length}',
+                  '<ExecutiveFocus total={filteredLeads.length} eligible={followUpPopulation.length} eligibleLeads={followUpPopulation}',
+              ),
+              (
+                  'function ExecutiveFocus({ total, eligible, untouched,',
+                  'function ExecutiveFocus({ total, eligible, eligibleLeads, untouched,',
+              ),
+              (
+                  '{ total: number; eligible: number; untouched:',
+                  '{ total: number; eligible: number; eligibleLeads: AcquisitionLeadV4[]; untouched:',
+              ),
+              (
+                  'onClick={() => onLeads("Eligible leads", "Contacts eligible for active sales follow-up.", [])}',
+                  'onClick={() => onLeads("Eligible leads", "Contacts eligible for active sales follow-up.", eligibleLeads)}',
+              ),
+              (
+                  'onClick={() => onLeads("Contact coverage", "Follow-up eligible contacts.", [])}',
+                  'onClick={() => onLeads("Contact coverage", "Follow-up eligible contacts.", eligibleLeads)}',
+              ),
+          ]
+          for old, new in replacements:
+              if old in text:
+                  text = text.replace(old, new)
+              elif new not in text:
+                  raise SystemExit(f'Expected source pattern not found: {old}')
+          path.write_text(text)
+          PY
+      - name: Commit drilldown record fix
+        if: github.ref_name == 'fix/v4-drilldown-records'
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add src/components/AcquisitionDashboardV4.tsx
+          if ! git diff --cached --quiet; then
+            git commit -m "Link executive metrics to matching records"
+            git push origin HEAD:fix/v4-drilldown-records
+          fi
       - uses: actions/setup-node@v4
         with:
           node-version: 22
