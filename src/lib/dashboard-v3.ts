@@ -44,9 +44,9 @@ const ALL_REPS = [
   ...DEAL_ONLY_REPS.map((rep) => ({ ...rep, role: "deals-only" as const })),
 ];
 
-const ACTIVITY_IDS = new Set(ACTIVITY_REPS.map((rep) => rep.id));
-const DEAL_ONLY_IDS = new Set(DEAL_ONLY_REPS.map((rep) => rep.id));
-const ALL_IDS = new Set(ALL_REPS.map((rep) => rep.id));
+const ACTIVITY_IDS = new Set<string>(ACTIVITY_REPS.map((rep) => rep.id));
+const DEAL_ONLY_IDS = new Set<string>(DEAL_ONLY_REPS.map((rep) => rep.id));
+const ALL_IDS = new Set<string>(ALL_REPS.map((rep) => rep.id));
 
 function emptyKpis(): KpiSet {
   return {
