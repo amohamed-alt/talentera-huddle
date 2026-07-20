@@ -37,7 +37,7 @@ jobs:
               sha: process.env.DEPLOY_SHA,
               state: 'pending',
               context: 'hostinger/acquisition-deploy',
-              description: 'Deploying fresh Acquisition V2 service to Hostinger',
+              description: 'Deploying Acquisition Intelligence V4 to Hostinger',
               target_url: process.env.DEPLOY_URL,
             });
 
@@ -95,7 +95,13 @@ jobs:
             if HEALTH_RESPONSE="$health" EXPECTED_SHA="$DEPLOY_SHA" node -e '
               try {
                 const health = JSON.parse(process.env.HEALTH_RESPONSE || "{}");
-                process.exit(health.uiVersion === "sdr-style-v2" && health.buildRef === process.env.EXPECTED_SHA ? 0 : 1);
+                process.exit(
+                  health.uiVersion === "acquisition-intelligence-v4" &&
+                  health.dataModel === "company-ranked-status-aware" &&
+                  health.buildRef === process.env.EXPECTED_SHA
+                    ? 0
+                    : 1
+                );
               } catch {
                 process.exit(1);
               }
@@ -108,12 +114,82 @@ jobs:
           done
 
           if [ "$matched" != "true" ]; then
-            echo "::error::The public domain did not switch to build ${DEPLOY_SHA} within the rollout window."
+            echo "::error::The public domain did not switch to V4 build ${DEPLOY_SHA} within the rollout window."
             echo "Last health response: ${last_health}"
             exit 1
           fi
 
-          echo "Public domain verified on exact build ${DEPLOY_SHA}."
+          echo "Public domain verified on exact V4 build ${DEPLOY_SHA}."
+
+      - name: Verify live HubSpot intelligence payload
+        shell: bash
+        run: |
+          set -euo pipefail
+          today="$(date -u +%F)"
+          from="$(date -u +%Y-%m-01)"
+          endpoint="https://acquisition.dashboardtalentera.tech/api/dashboard?from=${from}&to=${today}&refresh=1&smoke=${DEPLOY_SHA}"
+          payload=/tmp/acquisition-dashboard-v4.json
+          validated=false
+
+          echo "Validating live HubSpot data from ${from} to ${today}..."
+          for attempt in $(seq 1 6); do
+            echo "Dashboard smoke attempt ${attempt}/6"
+            if curl --fail --silent --show-error --max-time 240 \
+              -H 'Cache-Control: no-cache' \
+              "$endpoint" \
+              -o "$payload"; then
+              if DASHBOARD_FILE="$payload" node <<'NODE'
+          const fs = require('fs');
+          const data = JSON.parse(fs.readFileSync(process.env.DASHBOARD_FILE, 'utf8'));
+          const requiredArrays = [
+            'leads', 'companies', 'deals', 'followUpLeads', 'excludedLeads',
+            'leadStatusBreakdown', 'lifecycleBreakdown', 'sourceBreakdown',
+            'rankSummary', 'activities', 'activityTrend', 'repActivity'
+          ];
+          const missing = requiredArrays.filter((key) => !Array.isArray(data[key]));
+          if (data?.meta?.uiVersion !== 'acquisition-intelligence-v4') {
+            throw new Error(`Unexpected uiVersion: ${data?.meta?.uiVersion || 'missing'}`);
+          }
+          if (data?.meta?.companyRankProperty !== 'rank') {
+            throw new Error(`Unexpected Company Rank property: ${data?.meta?.companyRankProperty || 'missing'}`);
+          }
+          if (missing.length) throw new Error(`Missing array fields: ${missing.join(', ')}`);
+          if (!data.leads.length) throw new Error('No leads returned for month-to-date smoke range');
+          if (!data.companies.length) throw new Error('No associated companies returned');
+          if (!data.leadStatusBreakdown.length) throw new Error('Lead Status breakdown is empty');
+          if (!data.activityTrend.length) throw new Error('Activity trend is empty');
+          if (!data.companies.some((company) => ['A', 'B'].includes(company.rank))) {
+            throw new Error('No Rank A/B companies were resolved from Company.rank');
+          }
+          console.log(JSON.stringify({
+            uiVersion: data.meta.uiVersion,
+            rankProperty: data.meta.companyRankProperty,
+            leads: data.leads.length,
+            companies: data.companies.length,
+            rankABCompanies: data.companies.filter((company) => ['A', 'B'].includes(company.rank)).length,
+            leadStatuses: data.leadStatusBreakdown.length,
+            activities: data.activities.length,
+            trendPoints: data.activityTrend.length,
+            warnings: data.meta.warnings?.length || 0,
+          }, null, 2));
+          NODE
+              then
+                validated=true
+                break
+              fi
+            fi
+            sleep 15
+          done
+
+          if [ "$validated" != "true" ]; then
+            echo "::error::The live Acquisition Intelligence V4 payload failed validation."
+            if [ -s "$payload" ]; then
+              echo "Response preview:"
+              head -c 1200 "$payload" || true
+              echo
+            fi
+            exit 1
+          fi
 
       - name: Mark deployment successful
         if: success()
@@ -126,7 +202,7 @@ jobs:
               sha: process.env.DEPLOY_SHA,
               state: 'success',
               context: 'hostinger/acquisition-deploy',
-              description: 'Verified fresh Acquisition V2 build on Hostinger',
+              description: 'Verified V4 build and live HubSpot intelligence payload',
               target_url: process.env.DEPLOY_URL,
             });
 
@@ -141,6 +217,6 @@ jobs:
               sha: process.env.DEPLOY_SHA,
               state: 'failure',
               context: 'hostinger/acquisition-deploy',
-              description: 'Fresh Acquisition V2 deployment failed verification',
+              description: 'Acquisition Intelligence V4 failed production verification',
               target_url: process.env.DEPLOY_URL,
             });
