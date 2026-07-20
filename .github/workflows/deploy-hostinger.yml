@@ -24,6 +24,8 @@ jobs:
     env:
       DEPLOY_SHA: ${{ github.event.workflow_run.head_sha || github.sha }}
       DEPLOY_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+      HOSTINGER_API_KEY: ${{ secrets.HOSTINGER_API_KEY || secrets.HOSTINGER_API_TOKEN }}
+      HUBSPOT_TOKEN: ${{ secrets.HUBSPOT_PRIVATE_APP_TOKEN || secrets.HUBSPOT_TOKEN || secrets.HUBSPOT_ACCESS_TOKEN }}
     steps:
       - name: Mark deployment pending
         uses: actions/github-script@v7
@@ -44,23 +46,23 @@ jobs:
         with:
           ref: ${{ env.DEPLOY_SHA }}
 
-      - name: Validate deployment secrets
-        env:
-          HOSTINGER_API_KEY: ${{ secrets.HOSTINGER_API_KEY || secrets.HOSTINGER_API_TOKEN }}
-          HUBSPOT_PRIVATE_APP_TOKEN: ${{ secrets.HUBSPOT_PRIVATE_APP_TOKEN }}
+      - name: Validate Hostinger API key
         run: |
-          test -n "$HOSTINGER_API_KEY" || { echo "::error::Missing HOSTINGER_API_KEY"; exit 1; }
-          test -n "$HUBSPOT_PRIVATE_APP_TOKEN" || { echo "::error::Missing HUBSPOT_PRIVATE_APP_TOKEN"; exit 1; }
+          test -n "$HOSTINGER_API_KEY" || { echo "::error::Missing HOSTINGER_API_KEY or HOSTINGER_API_TOKEN"; exit 1; }
+
+      - name: Validate HubSpot token
+        run: |
+          test -n "$HUBSPOT_TOKEN" || { echo "::error::Missing HUBSPOT_PRIVATE_APP_TOKEN, HUBSPOT_TOKEN, or HUBSPOT_ACCESS_TOKEN"; exit 1; }
 
       - name: Deploy Docker Compose
         uses: hostinger/deploy-on-vps@v2
         with:
-          api-key: ${{ secrets.HOSTINGER_API_KEY || secrets.HOSTINGER_API_TOKEN }}
+          api-key: ${{ env.HOSTINGER_API_KEY }}
           virtual-machine: "1604210"
           project-name: talentera-acquisition
           docker-compose-path: docker-compose.yml
           environment-variables: |
-            HUBSPOT_PRIVATE_APP_TOKEN=${{ secrets.HUBSPOT_PRIVATE_APP_TOKEN }}
+            HUBSPOT_PRIVATE_APP_TOKEN=${{ env.HUBSPOT_TOKEN }}
             HUBSPOT_PORTAL_ID=145742477
             HUBSPOT_UI_DOMAIN=app-eu1.hubspot.com
             HUBSPOT_TIMEZONE=Asia/Riyadh
