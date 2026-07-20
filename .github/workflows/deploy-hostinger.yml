@@ -20,7 +20,7 @@ jobs:
       github.event_name == 'workflow_dispatch' ||
       (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main')
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
     env:
       DEPLOY_SHA: ${{ github.event.workflow_run.head_sha || github.sha }}
       DEPLOY_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
@@ -68,29 +68,52 @@ jobs:
             HUBSPOT_TIMEZONE=Asia/Riyadh
             ACQUISITION_BUILD_REF=${{ env.DEPLOY_SHA }}
 
-      - name: Verify exact public build
+      - name: Wait for and verify exact public build
         run: |
-          health_file="$(mktemp)"
-          curl --fail --silent --show-error \
-            --retry 45 \
-            --retry-delay 8 \
-            --retry-all-errors \
-            -H 'Cache-Control: no-cache' \
-            "https://acquisition.dashboardtalentera.tech/api/health?build=${DEPLOY_SHA}" \
-            --output "$health_file"
-          cat "$health_file"
-          node - "$health_file" <<'NODE'
-          const fs = require('node:fs');
-          const file = process.argv[2];
-          const health = JSON.parse(fs.readFileSync(file, 'utf8'));
-          const expected = process.env.DEPLOY_SHA;
-          if (health.uiVersion !== 'sdr-style-v2') {
-            throw new Error(`Unexpected UI version: ${health.uiVersion ?? 'missing'}`);
-          }
-          if (health.buildRef !== expected) {
-            throw new Error(`Public build mismatch. Expected ${expected}, received ${health.buildRef ?? 'missing'}`);
-          }
-          NODE
+          echo "Waiting for Hostinger to finish the asynchronous Docker rollout..."
+          sleep 20
+          matched=false
+          last_health=""
+
+          for attempt in $(seq 1 90); do
+            health="$(curl --silent --show-error --max-time 20 \
+              -H 'Cache-Control: no-cache' \
+              "https://acquisition.dashboardtalentera.tech/api/health?build=${DEPLOY_SHA}&attempt=${attempt}" \
+              || true)"
+            last_health="$health"
+
+            current="$(HEALTH_RESPONSE="$health" node -e '
+              try {
+                const health = JSON.parse(process.env.HEALTH_RESPONSE || "{}");
+                process.stdout.write(`${health.uiVersion || "missing"} / ${health.buildRef || "missing"}`);
+              } catch {
+                process.stdout.write("unavailable / unavailable");
+              }
+            ')"
+            echo "Attempt ${attempt}/90: ${current}"
+
+            if HEALTH_RESPONSE="$health" EXPECTED_SHA="$DEPLOY_SHA" node -e '
+              try {
+                const health = JSON.parse(process.env.HEALTH_RESPONSE || "{}");
+                process.exit(health.uiVersion === "sdr-style-v2" && health.buildRef === process.env.EXPECTED_SHA ? 0 : 1);
+              } catch {
+                process.exit(1);
+              }
+            '; then
+              matched=true
+              break
+            fi
+
+            sleep 8
+          done
+
+          if [ "$matched" != "true" ]; then
+            echo "::error::The public domain did not switch to build ${DEPLOY_SHA} within the rollout window."
+            echo "Last health response: ${last_health}"
+            exit 1
+          fi
+
+          echo "Public domain verified on exact build ${DEPLOY_SHA}."
 
       - name: Mark deployment successful
         if: success()
