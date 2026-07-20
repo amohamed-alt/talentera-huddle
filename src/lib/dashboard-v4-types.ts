@@ -28,8 +28,8 @@ export interface AcquisitionCompanyV4 {
   name: string;
   country: string;
   rank: string;
-  ownerId: string;
-  ownerName: string;
+  ownerIds: string[];
+  ownerNames: string[];
   contacts: number;
   eligibleContacts: number;
   contactedContacts: number;
