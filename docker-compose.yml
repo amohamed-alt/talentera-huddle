@@ -3,6 +3,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        ACQUISITION_BUILD_REF: ${ACQUISITION_BUILD_REF:-local}
     restart: unless-stopped
     environment:
       NODE_ENV: production
@@ -18,11 +20,13 @@ services:
     labels:
       - traefik.enable=true
       - traefik.docker.network=n8n_default
-      - traefik.http.routers.talentera-acquisition.rule=Host(`acquisition.dashboardtalentera.tech`)
-      - traefik.http.routers.talentera-acquisition.entrypoints=websecure
-      - traefik.http.routers.talentera-acquisition.tls=true
-      - traefik.http.routers.talentera-acquisition.tls.certresolver=mytlschallenge
-      - traefik.http.services.talentera-acquisition.loadbalancer.server.port=3000
+      - traefik.http.routers.talentera-acquisition-v2.rule=Host(`acquisition.dashboardtalentera.tech`)
+      - traefik.http.routers.talentera-acquisition-v2.priority=100
+      - traefik.http.routers.talentera-acquisition-v2.entrypoints=websecure
+      - traefik.http.routers.talentera-acquisition-v2.tls=true
+      - traefik.http.routers.talentera-acquisition-v2.tls.certresolver=mytlschallenge
+      - traefik.http.routers.talentera-acquisition-v2.service=talentera-acquisition-v2
+      - traefik.http.services.talentera-acquisition-v2.loadbalancer.server.port=3000
     healthcheck:
       test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://127.0.0.1:3000/api/health"]
       interval: 30s
