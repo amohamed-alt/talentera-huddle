@@ -1,0 +1,35 @@
+services:
+  acquisition-dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: "3000"
+      HOSTNAME: 0.0.0.0
+      HUBSPOT_PRIVATE_APP_TOKEN: ${HUBSPOT_PRIVATE_APP_TOKEN}
+      HUBSPOT_PORTAL_ID: ${HUBSPOT_PORTAL_ID:-145742477}
+      HUBSPOT_UI_DOMAIN: ${HUBSPOT_UI_DOMAIN:-app-eu1.hubspot.com}
+      HUBSPOT_TIMEZONE: ${HUBSPOT_TIMEZONE:-Asia/Riyadh}
+      ACQUISITION_BUILD_REF: ${ACQUISITION_BUILD_REF:-local}
+    networks:
+      - n8n_default
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=n8n_default
+      - traefik.http.routers.talentera-acquisition.rule=Host(`acquisition.dashboardtalentera.tech`)
+      - traefik.http.routers.talentera-acquisition.entrypoints=websecure
+      - traefik.http.routers.talentera-acquisition.tls=true
+      - traefik.http.routers.talentera-acquisition.tls.certresolver=mytlschallenge
+      - traefik.http.services.talentera-acquisition.loadbalancer.server.port=3000
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://127.0.0.1:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+
+networks:
+  n8n_default:
+    external: true

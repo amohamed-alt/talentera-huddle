@@ -1,0 +1,6 @@
+**
+!package.json
+!tsconfig.json
+!next-env.d.ts
+!next.config.mjs
+!src/**
