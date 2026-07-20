@@ -3,8 +3,8 @@
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
 import {
   Activity, AlertTriangle, ArrowUpRight, BadgeCheck, BarChart3, BriefcaseBusiness,
-  Building2, CalendarDays, CheckCircle2, ChevronRight, CircleDollarSign, Clock3,
-  Database, ExternalLink, Filter, Gauge, Layers3, ListFilter, ListTodo, Mail,
+  CalendarDays, CheckCircle2, ChevronRight, CircleDollarSign, Clock3,
+  Database, Filter, Gauge, Layers3, ListFilter, ListTodo, Mail,
   Phone, RefreshCw, Search, ShieldCheck, Target, TrendingUp, UserRound, UsersRound, X,
   type LucideIcon,
 } from "lucide-react";
@@ -252,7 +252,7 @@ export function AcquisitionDashboard() {
             </div>
             <div className="two-column wide-left">
               <Section title="Open pipeline by stage" description="Deal count and value by HubSpot stage."><StageBars rows={data.stages}/></Section>
-              <Section title="Largest open deals" description="Highest-value open opportunities in the current view."><DealTable rows={openDeals.sort((a, b) => b.amount - a.amount).slice(0, 12)}/></Section>
+              <Section title="Largest open deals" description="Highest-value open opportunities in the current view."><DealTable rows={[...openDeals].sort((a, b) => b.amount - a.amount).slice(0, 12)}/></Section>
             </div>
             <div className="two-column">
               <Section title="Deals at risk" description="Overdue, cold, stuck or no next activity."><DealTable rows={dealsAtRisk.slice(0, 15)}/></Section>
