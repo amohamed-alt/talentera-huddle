@@ -16,6 +16,13 @@ export interface SearchFilter {
   values?: string[];
 }
 
+export interface HubSpotObjectProperty {
+  name: string;
+  label: string;
+  type: string;
+  fieldType?: string;
+}
+
 interface SearchResponse {
   results: HubSpotRecord[];
   paging?: { next?: { after?: string } };
@@ -37,6 +44,10 @@ interface PipelinesResponse {
     label: string;
     stages: Array<{ id: string; label: string }>;
   }>;
+}
+
+interface PropertiesResponse {
+  results: HubSpotObjectProperty[];
 }
 
 export class HubSpotApiError extends Error {
@@ -178,4 +189,9 @@ export async function listDealStages(): Promise<Map<string, string>> {
     for (const stage of pipeline.stages) stages.set(stage.id, stage.label);
   }
   return stages;
+}
+
+export async function listObjectProperties(objectType: string): Promise<HubSpotObjectProperty[]> {
+  const response = await hubspotRequest<PropertiesResponse>(`/crm/v3/properties/${objectType}`);
+  return response.results;
 }
