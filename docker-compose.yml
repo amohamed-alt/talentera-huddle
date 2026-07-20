@@ -1,5 +1,5 @@
 services:
-  acquisition-dashboard:
+  acquisition-dashboard-v2:
     build:
       context: .
       dockerfile: Dockerfile
@@ -20,13 +20,13 @@ services:
     labels:
       - traefik.enable=true
       - traefik.docker.network=n8n_default
-      - traefik.http.routers.talentera-acquisition-v2.rule=Host(`acquisition.dashboardtalentera.tech`)
-      - traefik.http.routers.talentera-acquisition-v2.priority=100
-      - traefik.http.routers.talentera-acquisition-v2.entrypoints=websecure
-      - traefik.http.routers.talentera-acquisition-v2.tls=true
-      - traefik.http.routers.talentera-acquisition-v2.tls.certresolver=mytlschallenge
-      - traefik.http.routers.talentera-acquisition-v2.service=talentera-acquisition-v2
-      - traefik.http.services.talentera-acquisition-v2.loadbalancer.server.port=3000
+      - traefik.http.routers.talentera-acquisition-fresh-v2.rule=Host(`acquisition.dashboardtalentera.tech`)
+      - traefik.http.routers.talentera-acquisition-fresh-v2.priority=1000
+      - traefik.http.routers.talentera-acquisition-fresh-v2.entrypoints=websecure
+      - traefik.http.routers.talentera-acquisition-fresh-v2.tls=true
+      - traefik.http.routers.talentera-acquisition-fresh-v2.tls.certresolver=mytlschallenge
+      - traefik.http.routers.talentera-acquisition-fresh-v2.service=talentera-acquisition-fresh-v2
+      - traefik.http.services.talentera-acquisition-fresh-v2.loadbalancer.server.port=3000
     healthcheck:
       test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://127.0.0.1:3000/api/health"]
       interval: 30s
