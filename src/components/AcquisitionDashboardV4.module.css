@@ -1,0 +1,620 @@
+.chartGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin: 14px 0;
+}
+
+.chartGridWide {
+  grid-template-columns: minmax(0, 1.45fr) minmax(340px, .8fr);
+}
+
+.chartPanel {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.donutLayout {
+  display: grid;
+  grid-template-columns: 190px minmax(0, 1fr);
+  align-items: center;
+  gap: 18px;
+  padding: 14px 18px 20px;
+}
+
+.donut {
+  width: 170px;
+  height: 170px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  position: relative;
+  box-shadow: inset 0 0 0 1px rgba(25, 78, 54, .06);
+}
+
+.donut::after {
+  content: "";
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 0 1px rgba(25, 78, 54, .06);
+}
+
+.donut > div {
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.donut strong {
+  color: #173b2e;
+  font-size: 24px;
+}
+
+.donut span {
+  margin-top: 2px;
+  color: #758a80;
+  font-size: 9px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.legendList {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.legendList button {
+  display: grid;
+  grid-template-columns: 9px minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 9px;
+  border: 1px solid #e0e9e4;
+  border-radius: 10px;
+  background: #fbfdfc;
+  text-align: left;
+  cursor: pointer;
+}
+
+.legendList button:hover {
+  border-color: #8fcbb1;
+  background: #f1f8f4;
+}
+
+.legendList button > i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.legendList button > span {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+}
+
+.legendList strong {
+  overflow: hidden;
+  color: #214436;
+  font-size: 9px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.legendList small {
+  margin-top: 2px;
+  color: #7b8e85;
+  font-size: 7px;
+}
+
+.legendList b {
+  color: #183b2e;
+  font-size: 11px;
+}
+
+.legendList em {
+  color: #75897f;
+  font-size: 8px;
+  font-style: normal;
+}
+
+.horizontalBars {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px 18px 20px;
+}
+
+.horizontalBars button {
+  padding: 10px 11px;
+  border: 1px solid #dfe9e4;
+  border-radius: 11px;
+  background: #fbfdfc;
+  text-align: left;
+  cursor: pointer;
+}
+
+.horizontalBars button:hover {
+  border-color: #8fcbb1;
+  background: #f3f9f6;
+}
+
+.horizontalBars button > div:first-child {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.horizontalBars button > div:first-child span {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.horizontalBars button > div:first-child i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.horizontalBars strong {
+  color: #24493a;
+  font-size: 9px;
+}
+
+.horizontalBars em {
+  color: #60796d;
+  font-size: 8px;
+  font-style: normal;
+}
+
+.horizontalBars small {
+  display: block;
+  margin-top: 5px;
+  color: #7a8d84;
+  font-size: 7px;
+}
+
+.barTrack {
+  height: 7px;
+  margin-top: 8px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #edf3f0;
+}
+
+.barTrack i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+}
+
+.lineChart {
+  padding: 10px 16px 18px;
+}
+
+.lineLegend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 5px;
+}
+
+.lineLegend button {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 8px;
+  border: 1px solid #dfe9e4;
+  border-radius: 999px;
+  background: #fff;
+  color: #486458;
+  font-size: 8px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.lineLegend i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.lineChart svg {
+  width: 100%;
+  min-height: 220px;
+  overflow: visible;
+}
+
+.lineChart svg line {
+  stroke: #dce7e1;
+  stroke-width: 1;
+}
+
+.axisLabels {
+  display: flex;
+  justify-content: space-between;
+  color: #7b8e85;
+  font-size: 7px;
+}
+
+.rankMatrix {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  padding: 14px 18px 20px;
+}
+
+.rankMatrix article {
+  overflow: hidden;
+  border: 1px solid #dce7e1;
+  border-radius: 14px;
+  background: #fbfdfc;
+}
+
+.rankMatrix header {
+  display: grid;
+  grid-template-columns: 38px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 9px;
+  padding: 12px;
+  border-bottom: 1px solid #e4ece8;
+}
+
+.rankMatrix header > div {
+  min-width: 0;
+}
+
+.rankMatrix header strong,
+.rankMatrix header small {
+  display: block;
+}
+
+.rankMatrix header strong {
+  color: #1d4334;
+  font-size: 10px;
+}
+
+.rankMatrix header small {
+  margin-top: 2px;
+  color: #819189;
+  font-size: 7px;
+}
+
+.rankMatrix header b {
+  color: #153d2d;
+  font-size: 23px;
+}
+
+.rankBadge,
+.rankChip {
+  display: inline-grid;
+  place-items: center;
+  min-width: 30px;
+  height: 30px;
+  padding: 0 7px;
+  border-radius: 9px;
+  background: #eef3f0;
+  color: #50685d;
+  font-size: 9px;
+  font-weight: 900;
+}
+
+.rankChip {
+  height: 24px;
+  min-width: 26px;
+  border-radius: 7px;
+}
+
+.rankA { background: #e8f7ef; color: #08724a; }
+.rankB { background: #eef3ff; color: #416aba; }
+.rankC { background: #fff4de; color: #9b6617; }
+.rankUnknown { background: #f0f2f1; color: #6e7e76; }
+
+.rankMatrix article > div {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 7px;
+  padding: 10px;
+}
+
+.rankMatrix article > div button {
+  padding: 9px;
+  border: 1px solid #e0e9e4;
+  border-radius: 9px;
+  background: #fff;
+  text-align: left;
+  cursor: pointer;
+}
+
+.rankMatrix article > div button:hover {
+  border-color: #8fcbb1;
+  background: #f1f8f4;
+}
+
+.rankMatrix article > div strong,
+.rankMatrix article > div span {
+  display: block;
+}
+
+.rankMatrix article > div strong {
+  color: #173d2e;
+  font-size: 18px;
+}
+
+.rankMatrix article > div span {
+  margin-top: 2px;
+  color: #70867b;
+  font-size: 7px;
+  font-weight: 700;
+}
+
+.rankMatrix footer {
+  padding: 8px 11px;
+  border-top: 1px solid #e6eeea;
+  color: #788d82;
+  font-size: 7px;
+}
+
+.pipelineBars,
+.healthBars {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px 18px 20px;
+}
+
+.pipelineBars button,
+.healthBars button {
+  padding: 10px 11px;
+  border: 1px solid #dfe9e4;
+  border-radius: 11px;
+  background: #fbfdfc;
+  text-align: left;
+  cursor: pointer;
+}
+
+.pipelineBars button:hover,
+.healthBars button:hover {
+  border-color: #8fcbb1;
+  background: #f2f8f5;
+}
+
+.pipelineBars button > div:first-child,
+.healthBars button > span {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.pipelineBars strong,
+.healthBars strong {
+  color: #234637;
+  font-size: 9px;
+}
+
+.pipelineBars span,
+.healthBars small {
+  color: #72877d;
+  font-size: 7px;
+}
+
+.pipelineBars button > i,
+.healthBars button > div {
+  display: block;
+  height: 7px;
+  margin-top: 8px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #eaf1ed;
+}
+
+.pipelineBars button > i b,
+.healthBars button > div i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: #17865c;
+}
+
+.healthBars button > span {
+  justify-content: flex-start;
+}
+
+.healthBars button > span i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.healthBars button > span b {
+  margin-left: auto;
+  color: #173d2e;
+  font-size: 12px;
+}
+
+.healthBars small {
+  display: block;
+  margin-top: 5px;
+}
+
+.repBars {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  padding: 14px 18px 20px;
+}
+
+.repBars > button {
+  padding: 12px;
+  border: 1px solid #dce7e1;
+  border-radius: 13px;
+  background: #fbfdfc;
+  text-align: left;
+  cursor: pointer;
+}
+
+.repBars > button:hover {
+  border-color: #8fcbb1;
+  transform: translateY(-1px);
+}
+
+.repBars header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 11px;
+}
+
+.repBars header span {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border-radius: 9px;
+  background: #e2f1e9;
+  color: #147552;
+  font-size: 8px;
+  font-weight: 900;
+}
+
+.repBars header strong {
+  color: #214436;
+  font-size: 9px;
+}
+
+.metricBar {
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr) 30px;
+  align-items: center;
+  gap: 6px;
+  margin-top: 7px;
+}
+
+.metricBar span,
+.metricBar em {
+  color: #72877d;
+  font-size: 7px;
+  font-style: normal;
+}
+
+.metricBar em {
+  text-align: right;
+  color: #274c3d;
+  font-weight: 900;
+}
+
+.metricBar i {
+  height: 6px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #eaf1ed;
+}
+
+.metricBar b {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+}
+
+.eligibility {
+  display: inline-flex;
+  padding: 4px 7px;
+  border-radius: 999px;
+  background: #e9f5ef;
+  color: #147552;
+  font-size: 7px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.excluded {
+  background: #fff0ed;
+  color: #b9433a;
+}
+
+.converted {
+  background: #edf2ff;
+  color: #456dbd;
+}
+
+.drawerToolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  border-bottom: 1px solid #dfe9e4;
+  background: #f8fbf9;
+}
+
+.drawerToolbar label {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 10px;
+  border: 1px solid #d8e4de;
+  border-radius: 9px;
+  background: #fff;
+}
+
+.drawerToolbar input {
+  width: 100%;
+  border: 0;
+  outline: 0;
+  color: #24483a;
+  font: inherit;
+}
+
+.drawerToolbar > div {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.drawerToolbar > div button {
+  width: 31px;
+  height: 31px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #d8e4de;
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
+}
+
+.drawerToolbar > div button:disabled {
+  opacity: .4;
+  cursor: default;
+}
+
+.drawerToolbar > div span {
+  color: #5f766b;
+  font-size: 8px;
+  font-weight: 800;
+}
+
+@media (max-width: 1250px) {
+  .rankMatrix { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .repBars { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 980px) {
+  .chartGrid,
+  .chartGridWide { grid-template-columns: 1fr; }
+  .donutLayout { grid-template-columns: 1fr; justify-items: center; }
+  .legendList { width: 100%; }
+}
+
+@media (max-width: 680px) {
+  .rankMatrix,
+  .repBars { grid-template-columns: 1fr; }
+  .drawerToolbar { align-items: stretch; flex-direction: column; }
+}

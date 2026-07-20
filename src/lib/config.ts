@@ -15,7 +15,7 @@ const OBJECT_IDS = {
 
 export type HubSpotObjectType = keyof typeof OBJECT_IDS;
 
-export function hubspotRecordUrl(objectType: "contact" | "company" | "deal", id: string) {
+export function hubspotRecordUrl(objectType: HubSpotObjectType, id: string) {
   return `https://${HUBSPOT_UI_DOMAIN}/contacts/${HUBSPOT_PORTAL_ID}/record/${OBJECT_IDS[objectType]}/${id}?utm_source=acquisition_dashboard&utm_medium=dashboard`;
 }
 

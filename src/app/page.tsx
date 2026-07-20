@@ -1,5 +1,5 @@
-import { AcquisitionDashboardDetailed } from "@/components/AcquisitionDashboardDetailed";
+import { AcquisitionDashboardV4 } from "@/components/AcquisitionDashboardV4";
 
 export default function HomePage() {
-  return <AcquisitionDashboardDetailed/>;
+  return <AcquisitionDashboardV4/>;
 }

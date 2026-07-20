@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import { buildDetailedAcquisitionDashboard } from "@/lib/dashboard-v3";
+import { buildAcquisitionDashboardV4 } from "@/lib/dashboard-v4";
 
 export const runtime = "nodejs";
-export const maxDuration = 60;
+export const maxDuration = 120;
 
 const datePattern = /^\d{4}-\d{2}-\d{2}$/;
 const querySchema = z.object({
@@ -34,7 +34,7 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const data = await buildDetailedAcquisitionDashboard(
+    const data = await buildAcquisitionDashboardV4(
       parsed.data.from,
       parsed.data.to,
       request.nextUrl.searchParams.get("refresh") === "1",
@@ -43,7 +43,7 @@ export async function GET(request: NextRequest) {
       headers: { "Cache-Control": "private, max-age=0, must-revalidate" },
     });
   } catch (error) {
-    console.error("Acquisition dashboard load failed", error);
+    console.error("Acquisition dashboard V4 load failed", error);
     return NextResponse.json({
       error: "Unable to load the live HubSpot dashboard",
       details: error instanceof Error ? error.message : "Unknown error",
