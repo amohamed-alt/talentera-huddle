@@ -68,13 +68,29 @@ jobs:
             HUBSPOT_TIMEZONE=Asia/Riyadh
             ACQUISITION_BUILD_REF=${{ env.DEPLOY_SHA }}
 
-      - name: Verify public health
+      - name: Verify exact public build
         run: |
+          health_file="$(mktemp)"
           curl --fail --silent --show-error \
             --retry 45 \
             --retry-delay 8 \
             --retry-all-errors \
-            https://acquisition.dashboardtalentera.tech/api/health
+            -H 'Cache-Control: no-cache' \
+            "https://acquisition.dashboardtalentera.tech/api/health?build=${DEPLOY_SHA}" \
+            --output "$health_file"
+          cat "$health_file"
+          node - "$health_file" <<'NODE'
+          const fs = require('node:fs');
+          const file = process.argv[2];
+          const health = JSON.parse(fs.readFileSync(file, 'utf8'));
+          const expected = process.env.DEPLOY_SHA;
+          if (health.uiVersion !== 'sdr-style-v2') {
+            throw new Error(`Unexpected UI version: ${health.uiVersion ?? 'missing'}`);
+          }
+          if (health.buildRef !== expected) {
+            throw new Error(`Public build mismatch. Expected ${expected}, received ${health.buildRef ?? 'missing'}`);
+          }
+          NODE
 
       - name: Mark deployment successful
         if: success()
@@ -87,7 +103,7 @@ jobs:
               sha: process.env.DEPLOY_SHA,
               state: 'success',
               context: 'hostinger/acquisition-deploy',
-              description: 'Acquisition dashboard deployed successfully',
+              description: 'Verified exact Acquisition build on Hostinger',
               target_url: process.env.DEPLOY_URL,
             });
 
@@ -102,6 +118,6 @@ jobs:
               sha: process.env.DEPLOY_SHA,
               state: 'failure',
               context: 'hostinger/acquisition-deploy',
-              description: 'Acquisition dashboard deployment failed',
+              description: 'Acquisition dashboard deployment failed verification',
               target_url: process.env.DEPLOY_URL,
             });
