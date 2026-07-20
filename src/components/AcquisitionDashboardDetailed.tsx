@@ -200,25 +200,25 @@ export function AcquisitionDashboardDetailed() {
     if (rep?.role === "deals-only" && (activeTab === "focus" || activeTab === "leads")) setActiveTab("pipeline");
   }
   function openLeads(title: string, description: string, leads: LeadRow[]) { setDrilldown({ kind: "leads", title, description, leads }); }
-  function openDeals(title: string, description: string, deals: DealRow[]) { setDrilldown({ kind: "deals", title, description, deals }); }
+  function openDealsDrawer(title: string, description: string, deals: DealRow[]) { setDrilldown({ kind: "deals", title, description, deals }); }
   function openHubSpot(objectId: string) { window.open(objectListUrl(portalId, objectId), "_blank", "noopener,noreferrer"); }
 
   const kpiCards = dealOnly ? [
-    { label: "Open pipeline", value: formatCurrency(baseKpis.openPipeline), helper: `${baseKpis.openDeals} open deals`, icon: CircleDollarSign, tone: "amber", action: () => openDeals("Open pipeline", `${ownerName} open opportunities.`, openDeals) },
-    { label: "Deals at risk", value: formatNumber(riskDeals.length), helper: "Cold, stuck, overdue or no next step", icon: AlertTriangle, tone: "red", action: () => openDeals("Deals at risk", `${ownerName} deals requiring attention.`, riskDeals) },
-    { label: "Cold deals", value: formatNumber(coldDeals.length), helper: "21+ days without movement", icon: Clock3, tone: "amber", action: () => openDeals("Cold deals", "Deals with no meaningful movement for 21+ days.", coldDeals) },
-    { label: "Stuck deals", value: formatNumber(stuckDeals.length), helper: "14+ days and no next activity", icon: Layers3, tone: "purple", action: () => openDeals("Stuck deals", "Deals with no next activity and no movement for 14+ days.", stuckDeals) },
-    { label: "No future task", value: formatNumber(noFutureDeals.length), helper: "Missing next activity", icon: ListTodo, tone: "blue", action: () => openDeals("No future task", "Open deals without a next activity.", noFutureDeals) },
-    { label: "Won revenue", value: formatCurrency(baseKpis.wonRevenue), helper: `${baseKpis.dealsWon} won in period`, icon: TrendingUp, tone: "green", action: () => openDeals("Won deals", `${ownerName} won deals in the selected period.`, wonDeals) },
+    { label: "Open pipeline", value: formatCurrency(baseKpis.openPipeline), helper: `${baseKpis.openDeals} open deals`, icon: CircleDollarSign, tone: "amber", action: () => openDealsDrawer("Open pipeline", `${ownerName} open opportunities.`, openDeals) },
+    { label: "Deals at risk", value: formatNumber(riskDeals.length), helper: "Cold, stuck, overdue or no next step", icon: AlertTriangle, tone: "red", action: () => openDealsDrawer("Deals at risk", `${ownerName} deals requiring attention.`, riskDeals) },
+    { label: "Cold deals", value: formatNumber(coldDeals.length), helper: "21+ days without movement", icon: Clock3, tone: "amber", action: () => openDealsDrawer("Cold deals", "Deals with no meaningful movement for 21+ days.", coldDeals) },
+    { label: "Stuck deals", value: formatNumber(stuckDeals.length), helper: "14+ days and no next activity", icon: Layers3, tone: "purple", action: () => openDealsDrawer("Stuck deals", "Deals with no next activity and no movement for 14+ days.", stuckDeals) },
+    { label: "No future task", value: formatNumber(noFutureDeals.length), helper: "Missing next activity", icon: ListTodo, tone: "blue", action: () => openDealsDrawer("No future task", "Open deals without a next activity.", noFutureDeals) },
+    { label: "Won revenue", value: formatCurrency(baseKpis.wonRevenue), helper: `${baseKpis.dealsWon} won in period`, icon: TrendingUp, tone: "green", action: () => openDealsDrawer("Won deals", `${ownerName} won deals in the selected period.`, wonDeals) },
   ] : [
     { label: "New leads", value: formatNumber(baseKpis.newLeads), helper: `${baseKpis.onlineLeads} online · ${baseKpis.offlineLeads} offline`, icon: UsersRound, tone: "green", action: () => openLeads("New leads", `${ownerName} contacts created in the selected period.`, selectedLeads) },
     { label: "Calls", value: formatNumber(baseKpis.calls), helper: `${baseKpis.connectedCalls} connected · ${baseKpis.connectionRate}%`, icon: Phone, tone: "teal", action: () => openHubSpot("0-48") },
     { label: "Meetings", value: formatNumber(baseKpis.meetingsBooked), helper: `${baseKpis.meetingsCompleted} completed`, icon: CalendarDays, tone: "purple", action: () => openHubSpot("0-47") },
     { label: "Contact rate", value: `${baseKpis.contactRate}%`, helper: `${baseKpis.contactedLeads}/${baseKpis.newLeads} contacted`, icon: ShieldCheck, tone: "blue", action: () => openLeads("Contact coverage", `${ownerName} contact coverage.`, selectedLeads) },
-    { label: "Open pipeline", value: formatCurrency(baseKpis.openPipeline), helper: `${baseKpis.openDeals} open deals`, icon: CircleDollarSign, tone: "amber", action: () => openDeals("Open pipeline", `${ownerName} open opportunities.`, openDeals) },
+    { label: "Open pipeline", value: formatCurrency(baseKpis.openPipeline), helper: `${baseKpis.openDeals} open deals`, icon: CircleDollarSign, tone: "amber", action: () => openDealsDrawer("Open pipeline", `${ownerName} open opportunities.`, openDeals) },
     { label: "Open tasks", value: formatNumber(baseKpis.openTasks), helper: `${baseKpis.overdueTasks} overdue`, icon: ListTodo, tone: "blue", action: () => openHubSpot("0-27") },
-    { label: "Deals at risk", value: formatNumber(riskDeals.length), helper: "Overdue, cold, stuck or no next step", icon: AlertTriangle, tone: "red", action: () => openDeals("Deals at risk", `${ownerName} deals requiring attention.`, riskDeals) },
-    { label: "Won revenue", value: formatCurrency(baseKpis.wonRevenue), helper: `${baseKpis.dealsWon} won in period`, icon: TrendingUp, tone: "green", action: () => openDeals("Won deals", `${ownerName} won deals in the selected period.`, wonDeals) },
+    { label: "Deals at risk", value: formatNumber(riskDeals.length), helper: "Overdue, cold, stuck or no next step", icon: AlertTriangle, tone: "red", action: () => openDealsDrawer("Deals at risk", `${ownerName} deals requiring attention.`, riskDeals) },
+    { label: "Won revenue", value: formatCurrency(baseKpis.wonRevenue), helper: `${baseKpis.dealsWon} won in period`, icon: TrendingUp, tone: "green", action: () => openDealsDrawer("Won deals", `${ownerName} won deals in the selected period.`, wonDeals) },
   ];
 
   return <main className="app-shell">
@@ -270,13 +270,13 @@ export function AcquisitionDashboardDetailed() {
             <div className="kpi-grid">{kpiCards.map((card) => <KpiCard key={card.label} {...card}/>)}</div>
             {!dealOnly && <YesterdayPanel kpis={selectedRep?.yesterday ?? data.yesterday} title={ownerId === "all" ? "Team execution recap" : `${ownerName} execution recap`}/>} 
             {!dealOnly && <div className="two-column"><Section title="Leads requiring contact" description="Online, offline and SLA follow-up records with full HubSpot details."><LeadSummary online={onlineUntouched} offline={offlineUntouched} all={untouchedLeads} onOpen={openLeads}/></Section><Section title="Rank A/B coverage by country" description={`Detected property: ${data.meta.rankProperty || "Not found"}`}><RankCoverage rows={visibleCoverage}/></Section></div>}
-            <DealHealth cold={coldDeals} stuck={stuckDeals} noFuture={noFutureDeals} overdue={overdueDeals} risk={riskDeals} onOpen={openDeals}/>
-            <DealWorkspace tab={dealTab} setTab={setDealTab} groups={dealGroups} labels={dealLabels} ownerName={ownerName} onOpen={openDeals}/>
+            <DealHealth cold={coldDeals} stuck={stuckDeals} noFuture={noFutureDeals} overdue={overdueDeals} risk={riskDeals} onOpen={openDealsDrawer}/>
+            <DealWorkspace tab={dealTab} setTab={setDealTab} groups={dealGroups} labels={dealLabels} ownerName={ownerName} onOpen={openDealsDrawer}/>
             {ownerId === "all" && <Section title="Role-based team scoreboard" description="Only the four Acquisition reps have activities. Fadi and Faizan are shown as deals-only."><TeamTable rows={data.reps} onSelect={(rep) => selectOwner(rep)}/></Section>}
           </>}
 
           {activeTab === "focus" && !dealOnly && <>
-            <ExecutionFocus kpis={baseKpis} untouched={untouchedLeads} risk={riskDeals} noFuture={noFutureDeals} overdue={overdueDeals} onLeads={openLeads} onDeals={openDeals} onHubSpot={openHubSpot}/>
+            <ExecutionFocus kpis={baseKpis} untouched={untouchedLeads} risk={riskDeals} noFuture={noFutureDeals} overdue={overdueDeals} onLeads={openLeads} onDeals={openDealsDrawer} onHubSpot={openHubSpot}/>
             <div className="two-column"><Section title="Online leads requiring follow-up" description="Inbound and online-source contacts ordered by priority."><LeadTable rows={onlineUntouched.slice(0, 20)}/></Section><Section title="Offline leads requiring follow-up" description="Outbound, imported and offline-source contacts ordered by priority."><LeadTable rows={offlineUntouched.slice(0, 20)}/></Section></div>
             <div className="two-column"><Section title="Deals with no future activity" description="Open deals without a next activity date."><DealTable rows={noFutureDeals.slice(0, 20)}/></Section><Section title="Close date overdue" description="Open deals whose target close date has passed."><DealTable rows={overdueDeals.slice(0, 20)}/></Section></div>
           </>}
@@ -289,9 +289,9 @@ export function AcquisitionDashboardDetailed() {
 
           {activeTab === "pipeline" && <>
             <FinancialPanel data={visibleFinancial}/>
-            <DealHealth cold={coldDeals} stuck={stuckDeals} noFuture={noFutureDeals} overdue={overdueDeals} risk={riskDeals} onOpen={openDeals}/>
+            <DealHealth cold={coldDeals} stuck={stuckDeals} noFuture={noFutureDeals} overdue={overdueDeals} risk={riskDeals} onOpen={openDealsDrawer}/>
             <div className="two-column wide-left"><Section title="Open pipeline by stage" description="Deal count and value by HubSpot stage."><StageBars rows={visibleStages}/></Section><Section title="Largest open deals" description="Highest-value opportunities in the current view."><DealTable rows={[...openDeals].sort((a, b) => b.amount - a.amount).slice(0, 15)}/></Section></div>
-            <DealWorkspace tab={dealTab} setTab={setDealTab} groups={dealGroups} labels={dealLabels} ownerName={ownerName} onOpen={openDeals}/>
+            <DealWorkspace tab={dealTab} setTab={setDealTab} groups={dealGroups} labels={dealLabels} ownerName={ownerName} onOpen={openDealsDrawer}/>
           </>}
 
           {activeTab === "team" && <>
