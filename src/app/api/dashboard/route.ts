@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import { buildAcquisitionDashboard } from "@/lib/dashboard";
+import { buildDetailedAcquisitionDashboard } from "@/lib/dashboard-v3";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
@@ -34,7 +34,7 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const data = await buildAcquisitionDashboard(
+    const data = await buildDetailedAcquisitionDashboard(
       parsed.data.from,
       parsed.data.to,
       request.nextUrl.searchParams.get("refresh") === "1",
