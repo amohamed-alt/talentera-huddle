@@ -7,7 +7,8 @@ export async function GET() {
   return NextResponse.json({
     ok: true,
     service: "talentera-acquisition-command-center",
-    uiVersion: "sdr-style-v2",
+    uiVersion: "acquisition-intelligence-v4",
+    dataModel: "company-ranked-status-aware",
     buildRef: process.env.ACQUISITION_BUILD_REF ?? "local",
     timestamp: new Date().toISOString(),
     hubspotConfigured: Boolean(process.env.HUBSPOT_PRIVATE_APP_TOKEN),
