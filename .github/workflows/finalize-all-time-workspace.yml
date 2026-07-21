@@ -1,0 +1,48 @@
+name: Finalize All-Time Workspace
+
+on:
+  push:
+    branches:
+      - feature/all-time-lead-workspace
+
+permissions:
+  contents: write
+
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feature/all-time-lead-workspace
+      - name: Apply final typing and browser-cache fixes
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          def replace(path, old, new):
+              p = Path(path)
+              text = p.read_text()
+              if old not in text:
+                  if new in text:
+                      return
+                  raise SystemExit(f"Pattern not found in {path}: {old[:140]}")
+              p.write_text(text.replace(old, new))
+
+          replace('src/lib/lead-workspace.ts', '  type HubSpotObjectProperty,\n} from "@/lib/hubspot";', '  type HubSpotObjectProperty,\n  type SearchFilter,\n} from "@/lib/hubspot";')
+          replace('src/lib/lead-workspace.ts', 'const ownerNames = new Map<string, string>(ACQUISITION_REPS.map((owner) => [owner.id, owner.name]));\n', '')
+          replace('src/lib/lead-workspace.ts', '  const filters = [\n    { propertyName: "hubspot_owner_id", operator: "IN", values: [...ACQUISITION_OWNER_IDS] },\n  ];', '  const filters: SearchFilter[] = [\n    { propertyName: "hubspot_owner_id", operator: "IN", values: [...ACQUISITION_OWNER_IDS] },\n  ];')
+          # The same literal exists in both full and delta sync; replace all occurrences.
+          p = Path('src/lib/lead-workspace.ts')
+          text = p.read_text().replace('  const filters = [\n    { propertyName: "hs_lastmodifieddate", operator: "BETWEEN", value: timestamp(overlapStart), highValue: timestamp(now) },', '  const filters: SearchFilter[] = [\n    { propertyName: "hs_lastmodifieddate", operator: "BETWEEN", value: timestamp(overlapStart), highValue: timestamp(now) },')
+          p.write_text(text)
+
+          replace('src/components/LeadWorkspace.tsx', 'const response = await fetch(`/api/lead-workspace?${query}`, { cache: "no-store" });', 'const response = await fetch(`/api/lead-workspace?${query}`, refresh === "none" ? { cache: "default" } : { cache: "no-store" });')
+
+          Path('.github/workflows/finalize-all-time-workspace.yml').unlink()
+          PY
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add -A
+          git commit -m "Finalize all-time workspace performance behavior"
+          git push origin HEAD:feature/all-time-lead-workspace
