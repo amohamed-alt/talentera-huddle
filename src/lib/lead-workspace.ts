@@ -9,6 +9,7 @@ import {
   searchAll,
   type AssociationTarget,
   type HubSpotObjectProperty,
+  type SearchFilter,
 } from "@/lib/hubspot";
 import type { HubSpotRecord } from "@/lib/types";
 import type {
@@ -71,7 +72,6 @@ interface WorkspaceQuery {
   refresh: "none" | "delta" | "full";
 }
 
-const ownerNames = new Map<string, string>(ACQUISITION_REPS.map((owner) => [owner.id, owner.name]));
 const syncLocks = new Map<number, Promise<WorkspaceSnapshot>>();
 let statusDefinitionCache: {
   expiresAt: number;
@@ -389,7 +389,7 @@ async function writeSnapshot(snapshot: WorkspaceSnapshot) {
 async function fullSync(year: number, previous: WorkspaceSnapshot | null): Promise<WorkspaceSnapshot> {
   const now = new Date();
   const end = year === now.getUTCFullYear() ? now : yearEnd(year);
-  const filters = [
+  const filters: SearchFilter[] = [
     { propertyName: "hubspot_owner_id", operator: "IN", values: [...ACQUISITION_OWNER_IDS] },
   ];
   if (year !== 0) {
@@ -426,7 +426,7 @@ async function deltaSync(year: number, previous: WorkspaceSnapshot): Promise<Wor
   const previousCursor = new Date(previous.cursor).getTime();
   const floor = year === 0 ? 0 : yearStart(year).getTime();
   const overlapStart = new Date(Math.max(floor, Number.isFinite(previousCursor) ? previousCursor - DELTA_INTERVAL_MS : floor));
-  const filters = [
+  const filters: SearchFilter[] = [
     { propertyName: "hs_lastmodifieddate", operator: "BETWEEN", value: timestamp(overlapStart), highValue: timestamp(now) },
     { propertyName: "hubspot_owner_id", operator: "IN", values: [...ACQUISITION_OWNER_IDS] },
   ];

@@ -140,7 +140,7 @@ export function LeadWorkspace() {
         since: lastSeenRef.current,
         refresh,
       });
-      const response = await fetch(`/api/lead-workspace?${query}`, { cache: "no-store" });
+      const response = await fetch(`/api/lead-workspace?${query}`, refresh === "none" ? { cache: "default" } : { cache: "no-store" });
       const payload = await response.json() as WorkspacePageResponse & { error?: string; details?: string };
       if (!response.ok) throw new Error(payload.error || payload.details || "Unable to load lead workspace");
       setData(payload);
