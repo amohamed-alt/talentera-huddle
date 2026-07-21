@@ -152,6 +152,7 @@ export interface AcquisitionDashboardData {
   kpis: KpiSet;
   yesterday: KpiSet;
   reps: RepPerformance[];
+  yesterdayReps: RepPerformance[];
   sources: SourceBreakdown[];
   countries: CountryCoverage[];
   stages: StageBreakdown[];
