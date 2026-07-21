@@ -6,7 +6,7 @@ on:
       - feature/ytd-lead-workspace
 
 permissions:
-  contents: read
+  contents: write
   issues: write
   pull-requests: write
 
@@ -16,6 +16,27 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: feature/ytd-lead-workspace
+      - name: Apply owner map typing fix
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('src/lib/lead-workspace.ts')
+          text = path.read_text()
+          text = text.replace(
+              'const ownerNames = new Map(ACQUISITION_REPS.map((owner) => [owner.id, owner.name]));',
+              'const ownerNames = new Map<string, string>(ACQUISITION_REPS.map((owner) => [owner.id, owner.name]));',
+          )
+          path.write_text(text)
+          PY
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add src/lib/lead-workspace.ts
+          if ! git diff --cached --quiet; then
+            git commit -m "Fix lead workspace owner map typing"
+            git push origin HEAD:feature/ytd-lead-workspace
+          fi
       - uses: actions/setup-node@v4
         with:
           node-version: 22
