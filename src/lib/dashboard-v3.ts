@@ -1,3 +1,11 @@
+import {
+  ACQUISITION_OWNER_ID_SET,
+  ACQUISITION_OWNER_IDS,
+  DASHBOARD_OWNER_ID_SET,
+  DASHBOARD_REPS,
+  DEAL_ONLY_OWNER_ID_SET,
+  DEAL_ONLY_OWNER_IDS,
+} from "@/lib/acquisition-reps";
 import { buildAcquisitionDashboard } from "@/lib/dashboard";
 import type {
   AcquisitionDashboardData,
@@ -27,26 +35,16 @@ export interface DetailedAcquisitionDashboard extends Omit<AcquisitionDashboardD
   };
 }
 
-const ACTIVITY_REPS = [
-  { id: "76369997", name: "Ursula Waked" },
-  { id: "31558980", name: "Zein Fares" },
-  { id: "32332250", name: "Ahmad Khawajah" },
-  { id: "32332251", name: "Mohammed Khalid Aldaghir" },
-] as const;
-
-const DEAL_ONLY_REPS = [
-  { id: "76369998", name: "Fadi Zanona" },
-  { id: "76369995", name: "Mohammed Faizan" },
-] as const;
-
-const ALL_REPS = [
-  ...ACTIVITY_REPS.map((rep) => ({ ...rep, role: "acquisition" as const })),
-  ...DEAL_ONLY_REPS.map((rep) => ({ ...rep, role: "deals-only" as const })),
+const ACTIVITY_FIELDS: Array<keyof KpiSet> = [
+  "newLeads", "onlineLeads", "offlineLeads", "contactedLeads", "untouchedLeads",
+  "untouchedOver24h", "calls", "connectedCalls", "meetingsBooked", "meetingsCompleted",
+  "openTasks", "overdueTasks", "tasksCompleted",
 ];
 
-const ACTIVITY_IDS = new Set<string>(ACTIVITY_REPS.map((rep) => rep.id));
-const DEAL_ONLY_IDS = new Set<string>(DEAL_ONLY_REPS.map((rep) => rep.id));
-const ALL_IDS = new Set<string>(ALL_REPS.map((rep) => rep.id));
+const DEAL_FIELDS: Array<keyof KpiSet> = [
+  "openDeals", "openPipeline", "dealsCreated", "dealsWon", "dealsLost", "pipelineCreated",
+  "wonRevenue", "dealsAtRisk", "noFutureActivityDeals", "overdueCloseDeals", "coldDeals", "stuckDeals",
+];
 
 function emptyKpis(): KpiSet {
   return {
@@ -79,17 +77,6 @@ function emptyKpis(): KpiSet {
     stuckDeals: 0,
   };
 }
-
-const ACTIVITY_FIELDS: Array<keyof KpiSet> = [
-  "newLeads", "onlineLeads", "offlineLeads", "contactedLeads", "untouchedLeads",
-  "untouchedOver24h", "calls", "connectedCalls", "meetingsBooked", "meetingsCompleted",
-  "openTasks", "overdueTasks", "tasksCompleted",
-];
-
-const DEAL_FIELDS: Array<keyof KpiSet> = [
-  "openDeals", "openPipeline", "dealsCreated", "dealsWon", "dealsLost", "pipelineCreated",
-  "wonRevenue", "dealsAtRisk", "noFutureActivityDeals", "overdueCloseDeals", "coldDeals", "stuckDeals",
-];
 
 function roleAdjustedKpis(source: KpiSet | undefined, role: RepRole): KpiSet {
   const result = emptyKpis();
@@ -187,27 +174,12 @@ function financialSummary(deals: DealRow[], kpis: KpiSet): FinancialSummary {
   };
 }
 
-function zonedToday() {
-  return new Intl.DateTimeFormat("en-CA", {
-    timeZone: "Asia/Riyadh",
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-  }).format(new Date());
-}
-
-function previousDay(day: string) {
-  const date = new Date(`${day}T12:00:00.000Z`);
-  date.setUTCDate(date.getUTCDate() - 1);
-  return date.toISOString().slice(0, 10);
-}
-
-function buildRepRows(base: AcquisitionDashboardData, yesterdayBase: AcquisitionDashboardData): DetailedRepPerformance[] {
+function buildRepRows(base: AcquisitionDashboardData): DetailedRepPerformance[] {
   const current = new Map(base.reps.map((rep) => [rep.ownerId, rep]));
-  const yesterday = new Map(yesterdayBase.reps.map((rep) => [rep.ownerId, rep]));
+  const yesterday = new Map(base.yesterdayReps.map((rep) => [rep.ownerId, rep]));
   const owners = new Map(base.owners.map((owner) => [owner.id, owner]));
 
-  return ALL_REPS.map((configured) => {
+  return DASHBOARD_REPS.map((configured) => {
     const currentKpis = roleAdjustedKpis(current.get(configured.id), configured.role);
     const yesterdayKpis = roleAdjustedKpis(yesterday.get(configured.id), configured.role);
     return {
@@ -226,24 +198,19 @@ export async function buildDetailedAcquisitionDashboard(
   to: string,
   bypassCache = false,
 ): Promise<DetailedAcquisitionDashboard> {
-  const yesterday = previousDay(zonedToday());
   const base = await buildAcquisitionDashboard(from, to, bypassCache);
-  const yesterdayBase = from === yesterday && to === yesterday
-    ? base
-    : await buildAcquisitionDashboard(yesterday, yesterday, bypassCache);
-
-  const reps = buildRepRows(base, yesterdayBase);
+  const reps = buildRepRows(base);
   const teamKpis = aggregateTeam(reps);
   const yesterdayReps = reps.map((rep) => ({ ...rep, ...rep.yesterday }));
   const yesterdayKpis = aggregateTeam(yesterdayReps);
 
-  const leads = base.allLeads.filter((lead) => ACTIVITY_IDS.has(lead.ownerId));
-  const deals = base.allDeals.filter((deal) => ALL_IDS.has(deal.ownerId));
+  const leads = base.allLeads.filter((lead) => ACQUISITION_OWNER_ID_SET.has(lead.ownerId));
+  const deals = base.allDeals.filter((deal) => DASHBOARD_OWNER_ID_SET.has(deal.ownerId));
   const openDeals = deals.filter((deal) => deal.isOpen).sort((a, b) => b.amount - a.amount);
   const priorityLeads = [...leads].sort((a, b) => b.priorityScore - a.priorityScore || b.ageHours - a.ageHours);
-  const dealsAtRisk = openDeals.filter((deal) => deal.riskReason).sort((a, b) => b.amount - a.amount);
+  const dealsAtRisk = openDeals.filter((deal) => Boolean(deal.riskReason)).sort((a, b) => b.amount - a.amount);
   const noFuture = openDeals.filter((deal) => !deal.nextActivity).sort((a, b) => b.amount - a.amount);
-  const overdue = openDeals.filter((deal) => deal.closeDate && new Date(deal.closeDate).getTime() < Date.now()).sort((a, b) => b.amount - a.amount);
+  const overdue = openDeals.filter((deal) => Boolean(deal.closeDate) && new Date(deal.closeDate).getTime() < Date.now()).sort((a, b) => b.amount - a.amount);
   const cold = openDeals.filter((deal) => deal.ageDays >= 21).sort((a, b) => b.ageDays - a.ageDays);
   const stuck = openDeals.filter((deal) => !deal.nextActivity && deal.ageDays >= 14).sort((a, b) => b.ageDays - a.ageDays);
 
@@ -252,28 +219,29 @@ export async function buildDetailedAcquisitionDashboard(
     meta: {
       ...base.meta,
       uiVersion: "rep-details-v3",
-      activityOwnerIds: [...ACTIVITY_IDS],
-      dealOnlyOwnerIds: [...DEAL_ONLY_IDS],
+      activityOwnerIds: [...ACQUISITION_OWNER_IDS],
+      dealOnlyOwnerIds: [...DEAL_ONLY_OWNER_IDS],
     },
-    owners: base.owners.filter((owner) => ALL_IDS.has(owner.id)),
+    owners: base.owners.filter((owner) => DASHBOARD_OWNER_ID_SET.has(owner.id)),
     kpis: teamKpis,
     yesterday: yesterdayKpis,
     reps,
+    yesterdayReps: base.yesterdayReps,
     sources: sourceBreakdown(leads),
     countries: countryCoverage(leads),
     stages: stageBreakdown(openDeals),
-    dailyActivities: [],
+    dailyActivities: base.dailyActivities,
     financial: financialSummary(deals, teamKpis),
     allLeads: priorityLeads,
     priorityLeads: priorityLeads.slice(0, 500),
     onlineLeads: priorityLeads.filter((lead) => lead.sourceBucket === "online").slice(0, 500),
     offlineLeads: priorityLeads.filter((lead) => lead.sourceBucket === "offline").slice(0, 500),
     allDeals: deals,
-    dealsAtRisk: dealsAtRisk.slice(0, 500),
-    noFutureActivityDeals: noFuture.slice(0, 500),
-    overdueCloseDeals: overdue.slice(0, 500),
-    coldDeals: cold.slice(0, 500),
-    stuckDeals: stuck.slice(0, 500),
-    openDeals: openDeals.slice(0, 1000),
+    dealsAtRisk: dealsAtRisk.slice(0, 1000),
+    noFutureActivityDeals: noFuture.slice(0, 1000),
+    overdueCloseDeals: overdue.slice(0, 1000),
+    coldDeals: cold.slice(0, 1000),
+    stuckDeals: stuck.slice(0, 1000),
+    openDeals: openDeals.slice(0, 1500),
   };
 }

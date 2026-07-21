@@ -1,3 +1,4 @@
+import { ACQUISITION_OWNER_IDS } from "@/lib/acquisition-reps";
 import type { HubSpotOwner, HubSpotRecord } from "@/lib/types";
 
 const API_BASE = "https://api.hubapi.com";
@@ -6,6 +7,7 @@ const SEARCH_PAGE_SIZE = 200;
 const SEARCH_INTERVAL_MS = 275;
 const BATCH_READ_SIZE = 100;
 const ASSOCIATION_BATCH_SIZE = 1000;
+const LEGACY_ACTIVITY_OWNER_IDS = new Set(["32332250", "32332251"]);
 
 let searchQueue: Promise<void> = Promise.resolve();
 let nextSearchAt = 0;
@@ -103,6 +105,20 @@ function chunks<T>(items: readonly T[], size: number): T[][] {
   return output;
 }
 
+function normalizeSearchFilters(objectType: string, filters: SearchFilter[]) {
+  if (!["calls", "meetings", "tasks"].includes(objectType)) return filters;
+  return filters.map((filter) => {
+    if (
+      filter.propertyName === "hubspot_owner_id"
+      && filter.operator === "IN"
+      && filter.values?.some((ownerId) => LEGACY_ACTIVITY_OWNER_IDS.has(ownerId))
+    ) {
+      return { ...filter, values: [...ACQUISITION_OWNER_IDS] };
+    }
+    return filter;
+  });
+}
+
 function scheduleSearch<T>(action: () => Promise<T>): Promise<T> {
   const run = searchQueue.then(async () => {
     const delay = Math.max(0, nextSearchAt - Date.now());
@@ -169,6 +185,7 @@ export async function searchAll(
   sorts: string[] = [],
 ): Promise<HubSpotRecord[]> {
   const records: HubSpotRecord[] = [];
+  const normalizedFilters = normalizeSearchFilters(objectType, filters);
   let after: string | undefined;
 
   do {
@@ -177,7 +194,7 @@ export async function searchAll(
       {
         method: "POST",
         body: JSON.stringify({
-          filterGroups: filters.length ? [{ filters }] : [],
+          filterGroups: normalizedFilters.length ? [{ filters: normalizedFilters }] : [],
           properties,
           sorts,
           limit: SEARCH_PAGE_SIZE,

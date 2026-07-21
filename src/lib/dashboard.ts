@@ -4,7 +4,12 @@ import {
   HUBSPOT_TIMEZONE,
   hubspotRecordUrl,
 } from "@/lib/config";
-import { listDealStages, listObjectProperties, listOwners, searchAll } from "@/lib/hubspot";
+import {
+  ACQUISITION_OWNER_IDS,
+  DASHBOARD_OWNER_IDS,
+  DASHBOARD_OWNER_ID_SET,
+} from "@/lib/acquisition-reps";
+import { listDealStages, listOwners, searchAll } from "@/lib/hubspot";
 import type {
   AcquisitionDashboardData,
   CountryCoverage,
@@ -19,7 +24,7 @@ import type {
   StageBreakdown,
 } from "@/lib/types";
 
-const CONTACT_BASE_PROPERTIES = [
+const CONTACT_PROPERTIES = [
   "firstname", "lastname", "email", "phone", "jobtitle", "company", "country", "createdate",
   "hubspot_owner_id", "hs_analytics_source", "hs_lead_status", "lifecyclestage",
   "notes_last_contacted", "notes_next_activity_date",
@@ -42,9 +47,10 @@ const TASK_PROPERTIES = [
   "hs_timestamp", "hs_task_status", "hs_task_priority", "hs_task_subject", "hubspot_owner_id",
 ] as const;
 
-const cache = new Map<string, { expiresAt: number; data: AcquisitionDashboardData }>();
-const CACHE_TTL_MS = 15 * 60 * 1000;
+const CACHE_TTL_MS = 30 * 60 * 1000;
 const DAY_MS = 86_400_000;
+const cache = new Map<string, { expiresAt: number; data: AcquisitionDashboardData }>();
+const pending = new Map<string, Promise<AcquisitionDashboardData>>();
 
 function value(record: HubSpotRecord, property: string) {
   return String(record.properties[property] ?? "").trim();
@@ -59,10 +65,10 @@ function timestamp(date: string, endOfDay = false) {
   return String(new Date(`${date}T${endOfDay ? "23:59:59.999" : "00:00:00.000"}Z`).getTime());
 }
 
-function zonedDay(raw: string, timezone = HUBSPOT_TIMEZONE) {
+function zonedDay(raw: string) {
   if (!raw) return "";
   return new Intl.DateTimeFormat("en-CA", {
-    timeZone: timezone,
+    timeZone: HUBSPOT_TIMEZONE,
     year: "numeric",
     month: "2-digit",
     day: "2-digit",
@@ -101,14 +107,19 @@ function sourceBucket(raw: string): LeadRow["sourceBucket"] {
   return raw === "OFFLINE" ? "offline" : "online";
 }
 
-function normalizedRank(raw: string) {
-  const normalized = raw.trim().toUpperCase().replace(/RANK|TIER|COMPANY|ACCOUNT|[-_]/g, " ").replace(/\s+/g, " ").trim();
-  if (normalized === "A" || normalized === "1") return "A";
-  if (normalized === "B" || normalized === "2") return "B";
-  return raw.trim();
+function ownerId(record: HubSpotRecord) {
+  return value(record, "hubspot_owner_id") || "unassigned";
 }
 
-function createEmptyKpis(): KpiSet {
+function isCompletedTask(record: HubSpotRecord) {
+  return value(record, "hs_task_status").toUpperCase() === "COMPLETED";
+}
+
+function isCompletedMeeting(record: HubSpotRecord) {
+  return /completed|successful|held/i.test(value(record, "hs_meeting_outcome"));
+}
+
+function emptyKpis(): KpiSet {
   return {
     newLeads: 0,
     onlineLeads: 0,
@@ -140,18 +151,6 @@ function createEmptyKpis(): KpiSet {
   };
 }
 
-function ownerId(record: HubSpotRecord) {
-  return value(record, "hubspot_owner_id") || "unassigned";
-}
-
-function isCompletedTask(record: HubSpotRecord) {
-  return value(record, "hs_task_status").toUpperCase() === "COMPLETED";
-}
-
-function isCompletedMeeting(record: HubSpotRecord) {
-  return /completed|successful|held/i.test(value(record, "hs_meeting_outcome"));
-}
-
 async function safeLoad<T>(label: string, warnings: string[], action: () => Promise<T>, fallback: T): Promise<T> {
   try {
     return await action();
@@ -162,31 +161,19 @@ async function safeLoad<T>(label: string, warnings: string[], action: () => Prom
   }
 }
 
-function findRankProperty(properties: Array<{ name: string; label: string }>) {
-  const exactNames = ["company_rank", "account_rank", "company_tier", "account_tier", "rank"];
-  for (const name of exactNames) {
-    const match = properties.find((property) => property.name.toLowerCase() === name);
-    if (match) return match.name;
-  }
-  const byLabel = properties.find((property) => /(?:company|account).*\b(?:rank|tier)\b|\b(?:rank|tier)\b.*(?:company|account)/i.test(property.label));
-  return byLabel?.name ?? "";
-}
-
-function toLeadRow(record: HubSpotRecord, owners: Map<string, HubSpotOwner>, rankProperty: string): LeadRow {
+function toLeadRow(record: HubSpotRecord, owners: Map<string, HubSpotOwner>): LeadRow {
   const email = value(record, "email");
   const rawSource = value(record, "hs_analytics_source");
   const createdAt = value(record, "createdate") || record.createdAt || "";
   const lastContacted = value(record, "notes_last_contacted");
   const nextActivity = value(record, "notes_next_activity_date");
   const ageHours = createdAt ? Math.max(0, Math.round((Date.now() - new Date(createdAt).getTime()) / 3_600_000)) : 0;
-  const rank = rankProperty ? normalizedRank(value(record, rankProperty)) : "";
   const bucket = sourceBucket(rawSource);
   const priorityScore = Math.min(100,
-    (!lastContacted ? 30 : 0)
+    (!lastContacted ? 35 : 0)
     + (bucket === "online" ? 25 : 5)
     + (ageHours >= 24 ? 20 : 0)
-    + (!nextActivity ? 10 : 0)
-    + (rank === "A" ? 15 : rank === "B" ? 8 : 0),
+    + (!nextActivity ? 15 : 0),
   );
   const id = ownerId(record);
   const name = [value(record, "firstname"), value(record, "lastname")].filter(Boolean).join(" ") || email || `Contact ${record.id}`;
@@ -194,7 +181,7 @@ function toLeadRow(record: HubSpotRecord, owners: Map<string, HubSpotOwner>, ran
   return {
     id: String(record.id),
     ownerId: id,
-    ownerName: id === "unassigned" ? "Unassigned" : owners.get(id)?.name || id,
+    ownerName: owners.get(id)?.name || id,
     name,
     email,
     phone: value(record, "phone"),
@@ -205,7 +192,7 @@ function toLeadRow(record: HubSpotRecord, owners: Map<string, HubSpotOwner>, ran
     sourceBucket: bucket,
     leadStatus: value(record, "hs_lead_status") || "New",
     lifecycleStage: value(record, "lifecyclestage"),
-    rank,
+    rank: "",
     createdAt,
     lastContacted,
     nextActivity,
@@ -226,8 +213,8 @@ function toDealRow(record: HubSpotRecord, stages: Map<string, string>, owners: M
   const cold = isOpen && ageDays >= 21;
   const stuck = isOpen && !nextActivity && ageDays >= 14;
   const riskReason = [
-    overdue ? "Close date overdue" : "",
     isOpen && !nextActivity ? "No future activity" : "",
+    overdue ? "Close date overdue" : "",
     cold ? "Cold 21+ days" : "",
     stuck ? "Stuck" : "",
   ].filter(Boolean).join(" · ");
@@ -236,7 +223,7 @@ function toDealRow(record: HubSpotRecord, stages: Map<string, string>, owners: M
   return {
     id: String(record.id),
     ownerId: id,
-    ownerName: id === "unassigned" ? "Unassigned" : owners.get(id)?.name || id,
+    ownerName: owners.get(id)?.name || id,
     name: value(record, "dealname") || `Deal ${record.id}`,
     stage: stages.get(value(record, "dealstage")) || value(record, "dealstage") || "Unknown stage",
     pipeline: value(record, "pipeline"),
@@ -286,6 +273,7 @@ function computeKpis(
   const stuck = openDealRows.filter((deal) => !deal.nextActivity && deal.ageDays >= 14);
 
   return {
+    ...emptyKpis(),
     newLeads: contacts.length,
     onlineLeads,
     offlineLeads,
@@ -376,16 +364,6 @@ function countryCoverage(leads: LeadRow[]): CountryCoverage[] {
     if (lead.sourceBucket === "online") current.online += 1;
     if (lead.lastContacted) current.contacted += 1;
     else current.untouched += 1;
-    if (lead.rank === "A") {
-      current.rankATotal += 1;
-      if (lead.lastContacted) current.rankAContacted += 1;
-      else current.rankAUntouched += 1;
-    }
-    if (lead.rank === "B") {
-      current.rankBTotal += 1;
-      if (lead.lastContacted) current.rankBContacted += 1;
-      else current.rankBUntouched += 1;
-    }
     rows.set(country, current);
   }
   return [...rows.values()].sort((left, right) => right.leads - left.leads);
@@ -419,59 +397,54 @@ function dailyActivities(
     cursor = shiftDay(cursor, 1);
     guard += 1;
   }
-  const ensure = (day: string) => rows.get(day);
-  for (const record of contacts) ensure(zonedDay(value(record, "createdate") || record.createdAt || ""))!.leads += 1;
+  for (const record of contacts) {
+    const row = rows.get(zonedDay(value(record, "createdate") || record.createdAt || ""));
+    if (row) row.leads += 1;
+  }
   for (const record of calls) {
-    const row = ensure(zonedDay(value(record, "hs_timestamp")));
+    const row = rows.get(zonedDay(value(record, "hs_timestamp")));
     if (!row) continue;
     row.calls += 1;
     if (value(record, "hs_call_disposition") === CONNECTED_CALL_DISPOSITION) row.connected += 1;
   }
   for (const record of meetings) {
-    const row = ensure(zonedDay(value(record, "hs_timestamp")));
+    const row = rows.get(zonedDay(value(record, "hs_timestamp")));
     if (row) row.meetings += 1;
   }
   for (const record of tasks) {
-    const row = ensure(zonedDay(value(record, "hs_timestamp")));
+    const row = rows.get(zonedDay(value(record, "hs_timestamp")));
     if (row && isCompletedTask(record)) row.tasksCompleted += 1;
   }
   for (const record of deals) {
-    const row = ensure(zonedDay(value(record, "createdate") || record.createdAt || ""));
+    const row = rows.get(zonedDay(value(record, "createdate") || record.createdAt || ""));
     if (row) row.dealsCreated += 1;
   }
   return [...rows.values()];
 }
 
-export async function buildAcquisitionDashboard(from: string, to: string, bypassCache = false): Promise<AcquisitionDashboardData> {
-  const cacheKey = `${from}:${to}`;
-  const cached = cache.get(cacheKey);
-  if (!bypassCache && cached && cached.expiresAt > Date.now()) return cached.data;
-
+async function buildFreshDashboard(from: string, to: string): Promise<AcquisitionDashboardData> {
   const warnings: string[] = [];
   const today = zonedDay(new Date().toISOString());
   const yesterday = shiftDay(today, -1);
   const queryFrom = from < yesterday ? from : yesterday;
   const queryTo = to > yesterday ? to : yesterday;
-  const combinedBetween = { operator: "BETWEEN", value: timestamp(queryFrom), highValue: timestamp(queryTo, true) };
+  const between = { operator: "BETWEEN", value: timestamp(queryFrom), highValue: timestamp(queryTo, true) };
+  const activityOwnerFilter = { propertyName: "hubspot_owner_id", operator: "IN", values: [...ACQUISITION_OWNER_IDS] };
+  const dealOwnerFilter = { propertyName: "hubspot_owner_id", operator: "IN", values: [...DASHBOARD_OWNER_IDS] };
 
-  const [owners, stages, contactProperties] = await Promise.all([
+  const [owners, stages] = await Promise.all([
     safeLoad<HubSpotOwner[]>("Owners", warnings, () => listOwners(), []),
     safeLoad("Deal stages", warnings, () => listDealStages(), new Map<string, string>()),
-    safeLoad("Contact properties", warnings, () => listObjectProperties("contacts"), []),
   ]);
 
-  const rankProperty = findRankProperty(contactProperties);
-  if (!rankProperty) warnings.push("No contact company-rank property was detected; Rank A/B sections will show zero until one is available.");
-  const contactFields = rankProperty ? [...CONTACT_BASE_PROPERTIES, rankProperty] : [...CONTACT_BASE_PROPERTIES];
-
   const [allContacts, allCalls, allMeetings, allTasks, allCreatedDeals, allClosedDeals, openDeals] = await Promise.all([
-    safeLoad("Contacts", warnings, () => searchAll("contacts", contactFields, [{ propertyName: "createdate", ...combinedBetween }], ["-createdate"]), []),
-    safeLoad("Calls", warnings, () => searchAll("calls", CALL_PROPERTIES, [{ propertyName: "hs_timestamp", ...combinedBetween }], ["-hs_timestamp"]), []),
-    safeLoad("Meetings", warnings, () => searchAll("meetings", MEETING_PROPERTIES, [{ propertyName: "hs_timestamp", ...combinedBetween }], ["-hs_timestamp"]), []),
-    safeLoad("Tasks", warnings, () => searchAll("tasks", TASK_PROPERTIES, [{ propertyName: "hs_timestamp", ...combinedBetween }], ["hs_timestamp"]), []),
-    safeLoad("Created deals", warnings, () => searchAll("deals", DEAL_PROPERTIES, [{ propertyName: "createdate", ...combinedBetween }], ["-createdate"]), []),
-    safeLoad("Closed deals", warnings, () => searchAll("deals", DEAL_PROPERTIES, [{ propertyName: "closedate", ...combinedBetween }], ["-closedate"]), []),
-    safeLoad("Open deals", warnings, () => searchAll("deals", DEAL_PROPERTIES, [{ propertyName: "hs_is_closed", operator: "EQ", value: "false" }], ["closedate"]), []),
+    safeLoad("Contacts", warnings, () => searchAll("contacts", CONTACT_PROPERTIES, [{ propertyName: "createdate", ...between }, activityOwnerFilter], ["-createdate"]), []),
+    safeLoad("Calls", warnings, () => searchAll("calls", CALL_PROPERTIES, [{ propertyName: "hs_timestamp", ...between }, activityOwnerFilter], ["-hs_timestamp"]), []),
+    safeLoad("Meetings", warnings, () => searchAll("meetings", MEETING_PROPERTIES, [{ propertyName: "hs_timestamp", ...between }, activityOwnerFilter], ["-hs_timestamp"]), []),
+    safeLoad("Tasks", warnings, () => searchAll("tasks", TASK_PROPERTIES, [{ propertyName: "hs_timestamp", ...between }, activityOwnerFilter], ["hs_timestamp"]), []),
+    safeLoad("Created deals", warnings, () => searchAll("deals", DEAL_PROPERTIES, [{ propertyName: "createdate", ...between }, dealOwnerFilter], ["-createdate"]), []),
+    safeLoad("Closed deals", warnings, () => searchAll("deals", DEAL_PROPERTIES, [{ propertyName: "closedate", ...between }, dealOwnerFilter], ["-closedate"]), []),
+    safeLoad("Open deals", warnings, () => searchAll("deals", DEAL_PROPERTIES, [{ propertyName: "hs_is_closed", operator: "EQ", value: "false" }, dealOwnerFilter], ["closedate"]), []),
   ]);
 
   const ownerMap = new Map(owners.map((owner) => [owner.id, owner]));
@@ -492,19 +465,33 @@ export async function buildAcquisitionDashboard(from: string, to: string, bypass
   const allDealRecords = uniqueRecords([...openDeals, ...allCreatedDeals, ...allClosedDeals]);
   const allDealRows = allDealRecords.map((record) => toDealRow(record, stages, ownerMap));
   const openDealRows = allDealRows.filter((deal) => deal.isOpen);
-  const leadRows = contacts.map((record) => toLeadRow(record, ownerMap, rankProperty));
+  const leadRows = contacts.map((record) => toLeadRow(record, ownerMap));
 
-  const activeOwnerIds = new Set<string>();
-  for (const record of [...contacts, ...calls, ...meetings, ...tasks, ...createdDeals, ...closedDeals, ...openDeals]) activeOwnerIds.add(ownerId(record));
-  const configuredOwnerIds = (process.env.ACQUISITION_OWNER_IDS ?? "").split(",").map((item) => item.trim()).filter(Boolean);
-  const ownerIds = configuredOwnerIds.length ? configuredOwnerIds : [...activeOwnerIds];
-
-  const reps: RepPerformance[] = ownerIds.map((id) => ({
+  const buildRep = (
+    id: string,
+    repContacts: HubSpotRecord[],
+    repCalls: HubSpotRecord[],
+    repMeetings: HubSpotRecord[],
+    repTasks: HubSpotRecord[],
+    repCreatedDeals: HubSpotRecord[],
+    repClosedDeals: HubSpotRecord[],
+  ): RepPerformance => ({
     ownerId: id,
-    ownerName: id === "unassigned" ? "Unassigned" : ownerMap.get(id)?.name || id,
+    ownerName: ownerMap.get(id)?.name || id,
     ownerEmail: ownerMap.get(id)?.email,
-    ...metricsForOwner(id, contacts, calls, meetings, tasks, createdDeals, closedDeals, openDeals, openDealRows),
-  })).sort((left, right) => right.openPipeline - left.openPipeline || right.newLeads - left.newLeads);
+    ...metricsForOwner(id, repContacts, repCalls, repMeetings, repTasks, repCreatedDeals, repClosedDeals, openDeals, openDealRows),
+  });
+
+  const reps = DASHBOARD_OWNER_IDS.map((id) => buildRep(id, contacts, calls, meetings, tasks, createdDeals, closedDeals));
+  const yesterdayReps = DASHBOARD_OWNER_IDS.map((id) => buildRep(
+    id,
+    yesterdayContacts,
+    yesterdayCalls,
+    yesterdayMeetings,
+    yesterdayTasks,
+    yesterdayCreatedDeals,
+    yesterdayClosedDeals,
+  ));
 
   const kpis = computeKpis(contacts, calls, meetings, tasks, createdDeals, closedDeals, openDeals, openDealRows);
   const yesterdayKpis = computeKpis(
@@ -518,8 +505,7 @@ export async function buildAcquisitionDashboard(from: string, to: string, bypass
     openDealRows,
   );
 
-  const priorityLeads = [...leadRows]
-    .sort((left, right) => right.priorityScore - left.priorityScore || new Date(right.createdAt).getTime() - new Date(left.createdAt).getTime());
+  const priorityLeads = [...leadRows].sort((left, right) => right.priorityScore - left.priorityScore || new Date(right.createdAt).getTime() - new Date(left.createdAt).getTime());
   const onlineLeads = priorityLeads.filter((lead) => lead.sourceBucket === "online");
   const offlineLeads = priorityLeads.filter((lead) => lead.sourceBucket === "offline");
   const dealsAtRisk = openDealRows.filter((deal) => Boolean(deal.riskReason)).sort((left, right) => right.amount - left.amount);
@@ -527,23 +513,24 @@ export async function buildAcquisitionDashboard(from: string, to: string, bypass
   const overdueCloseDeals = openDealRows.filter((deal) => Boolean(deal.closeDate) && new Date(deal.closeDate).getTime() < Date.now()).sort((left, right) => right.amount - left.amount);
   const coldDeals = openDealRows.filter((deal) => deal.ageDays >= 21).sort((left, right) => right.ageDays - left.ageDays);
   const stuckDeals = openDealRows.filter((deal) => !deal.nextActivity && deal.ageDays >= 14).sort((left, right) => right.ageDays - left.ageDays);
-
   const financialDeals = allDealRows.filter((deal) => inRange(deal.createdAt || deal.closeDate, from, to) || deal.isOpen);
   const sumByStage = (pattern: RegExp) => financialDeals.filter((deal) => pattern.test(deal.stage)).reduce((sum, deal) => sum + deal.amount, 0);
-  const data: AcquisitionDashboardData = {
+
+  return {
     meta: {
       generatedAt: new Date().toISOString(),
       from,
       to,
       portalId: HUBSPOT_PORTAL_ID,
       timezone: HUBSPOT_TIMEZONE,
-      rankProperty,
+      rankProperty: "Company.rank via association",
       warnings,
     },
-    owners,
+    owners: owners.filter((owner) => DASHBOARD_OWNER_ID_SET.has(owner.id)),
     kpis,
     yesterday: yesterdayKpis,
     reps,
+    yesterdayReps,
     sources: sourceBreakdown(leadRows),
     countries: countryCoverage(leadRows),
     stages: stageBreakdown(openDealRows),
@@ -557,18 +544,38 @@ export async function buildAcquisitionDashboard(from: string, to: string, bypass
       atRiskPipeline: dealsAtRisk.reduce((sum, deal) => sum + deal.amount, 0),
     },
     allLeads: priorityLeads.slice(0, 2000),
-    priorityLeads: priorityLeads.slice(0, 250),
+    priorityLeads: priorityLeads.slice(0, 500),
     onlineLeads: onlineLeads.slice(0, 500),
     offlineLeads: offlineLeads.slice(0, 500),
-    allDeals: allDealRows.slice(0, 1500),
-    dealsAtRisk: dealsAtRisk.slice(0, 500),
-    noFutureActivityDeals: noFutureActivityDeals.slice(0, 500),
-    overdueCloseDeals: overdueCloseDeals.slice(0, 500),
-    coldDeals: coldDeals.slice(0, 500),
-    stuckDeals: stuckDeals.slice(0, 500),
-    openDeals: [...openDealRows].sort((left, right) => right.amount - left.amount).slice(0, 1000),
+    allDeals: allDealRows.slice(0, 2000),
+    dealsAtRisk: dealsAtRisk.slice(0, 1000),
+    noFutureActivityDeals: noFutureActivityDeals.slice(0, 1000),
+    overdueCloseDeals: overdueCloseDeals.slice(0, 1000),
+    coldDeals: coldDeals.slice(0, 1000),
+    stuckDeals: stuckDeals.slice(0, 1000),
+    openDeals: [...openDealRows].sort((left, right) => right.amount - left.amount).slice(0, 1500),
   };
+}
 
-  cache.set(cacheKey, { expiresAt: Date.now() + CACHE_TTL_MS, data });
-  return data;
+export async function buildAcquisitionDashboard(
+  from: string,
+  to: string,
+  bypassCache = false,
+): Promise<AcquisitionDashboardData> {
+  const cacheKey = `${from}:${to}`;
+  const cached = cache.get(cacheKey);
+  if (!bypassCache && cached && cached.expiresAt > Date.now()) return cached.data;
+
+  const pendingKey = `${cacheKey}:${bypassCache ? "refresh" : "normal"}`;
+  const existing = pending.get(pendingKey);
+  if (existing) return existing;
+
+  const request = buildFreshDashboard(from, to)
+    .then((data) => {
+      cache.set(cacheKey, { expiresAt: Date.now() + CACHE_TTL_MS, data });
+      return data;
+    })
+    .finally(() => pending.delete(pendingKey));
+  pending.set(pendingKey, request);
+  return request;
 }
