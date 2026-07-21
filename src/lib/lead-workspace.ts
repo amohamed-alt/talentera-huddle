@@ -101,7 +101,7 @@ function yearEnd(year: number) {
 }
 
 function snapshotPath(year: number) {
-  return path.join(CACHE_DIR, `lead-workspace-${year}.json`);
+  return path.join(CACHE_DIR, year === 0 ? "lead-workspace-all.json" : `lead-workspace-${year}.json`);
 }
 
 function optionMap(properties: HubSpotObjectProperty[], propertyName: string) {
@@ -389,10 +389,13 @@ async function writeSnapshot(snapshot: WorkspaceSnapshot) {
 async function fullSync(year: number, previous: WorkspaceSnapshot | null): Promise<WorkspaceSnapshot> {
   const now = new Date();
   const end = year === now.getUTCFullYear() ? now : yearEnd(year);
-  const records = await searchAll("contacts", CONTACT_PROPERTIES, [
-    { propertyName: "createdate", operator: "BETWEEN", value: timestamp(yearStart(year)), highValue: timestamp(end) },
+  const filters = [
     { propertyName: "hubspot_owner_id", operator: "IN", values: [...ACQUISITION_OWNER_IDS] },
-  ], ["-createdate"]);
+  ];
+  if (year !== 0) {
+    filters.unshift({ propertyName: "createdate", operator: "BETWEEN", value: timestamp(yearStart(year)), highValue: timestamp(end) });
+  }
+  const records = await searchAll("contacts", CONTACT_PROPERTIES, filters, ["-createdate"]);
   const leads = await buildLeads(records);
   const changedAt = now.toISOString();
   const previousMap = new Map((previous?.leads ?? []).map((lead) => [lead.id, lead]));
@@ -421,12 +424,16 @@ async function deltaSync(year: number, previous: WorkspaceSnapshot): Promise<Wor
   const now = new Date();
   const end = year === now.getUTCFullYear() ? now : yearEnd(year);
   const previousCursor = new Date(previous.cursor).getTime();
-  const overlapStart = new Date(Math.max(yearStart(year).getTime(), Number.isFinite(previousCursor) ? previousCursor - DELTA_INTERVAL_MS : yearStart(year).getTime()));
-  const records = await searchAll("contacts", CONTACT_PROPERTIES, [
-    { propertyName: "createdate", operator: "BETWEEN", value: timestamp(yearStart(year)), highValue: timestamp(end) },
+  const floor = year === 0 ? 0 : yearStart(year).getTime();
+  const overlapStart = new Date(Math.max(floor, Number.isFinite(previousCursor) ? previousCursor - DELTA_INTERVAL_MS : floor));
+  const filters = [
     { propertyName: "hs_lastmodifieddate", operator: "BETWEEN", value: timestamp(overlapStart), highValue: timestamp(now) },
     { propertyName: "hubspot_owner_id", operator: "IN", values: [...ACQUISITION_OWNER_IDS] },
-  ], ["-hs_lastmodifieddate"]);
+  ];
+  if (year !== 0) {
+    filters.unshift({ propertyName: "createdate", operator: "BETWEEN", value: timestamp(yearStart(year)), highValue: timestamp(end) });
+  }
+  const records = await searchAll("contacts", CONTACT_PROPERTIES, filters, ["-hs_lastmodifieddate"]);
   const updatedLeads = await buildLeads(records);
   const leadMap = new Map(previous.leads.map((lead) => [lead.id, lead]));
   const changes: WorkspaceChange[] = [];
@@ -461,12 +468,7 @@ async function ensureSnapshot(year: number, refresh: WorkspaceQuery["refresh"]):
   if (!snapshot || refresh === "full") {
     return { snapshot: await runLocked(year, () => fullSync(year, snapshot)), mode: "full" };
   }
-  const lastFull = new Date(snapshot.fullSyncedAt).getTime();
-  if (!Number.isFinite(lastFull) || Date.now() - lastFull >= FULL_INTERVAL_MS) {
-    return { snapshot: await runLocked(year, () => fullSync(year, snapshot)), mode: "full" };
-  }
-  const lastDelta = new Date(snapshot.generatedAt).getTime();
-  if (refresh === "delta" || !Number.isFinite(lastDelta) || Date.now() - lastDelta >= DELTA_INTERVAL_MS) {
+  if (refresh === "delta") {
     return { snapshot: await runLocked(year, () => deltaSync(year, snapshot)), mode: "delta" };
   }
   return { snapshot, mode: "cache" };
@@ -549,7 +551,7 @@ export async function queryLeadWorkspace(query: WorkspaceQuery): Promise<Workspa
 async function upsertRefreshedLead(lead: WorkspaceLead) {
   const created = new Date(lead.createdAt);
   if (Number.isNaN(created.getTime())) return;
-  const year = created.getUTCFullYear();
+  const year = 0;
   const snapshot = await readSnapshot(year);
   if (!snapshot) return;
   const map = new Map(snapshot.leads.map((row) => [row.id, row]));

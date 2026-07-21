@@ -12,7 +12,7 @@ const stateValues = [
 ] as const;
 
 const querySchema = z.object({
-  year: z.coerce.number().int().min(2020).max(2100).default(new Date().getUTCFullYear()),
+  year: z.coerce.number().int().min(0).max(2100).default(0),
   ownerId: z.string().default("all"),
   source: z.enum(["all", "online", "offline", "unknown"]).default("all"),
   state: z.enum(stateValues).default("all"),

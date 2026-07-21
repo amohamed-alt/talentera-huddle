@@ -67,8 +67,7 @@ function urgencyLabel(urgency: WorkspaceLead["advice"]["urgency"]) {
 }
 
 export function LeadWorkspace() {
-  const currentYear = new Date().getUTCFullYear();
-  const [year] = useState(currentYear);
+  const [year] = useState(0);
   const [ownerId, setOwnerId] = useState("all");
   const [source, setSource] = useState<"all" | "online" | "offline" | "unknown">("all");
   const [stateFilter, setStateFilter] = useState<StateFilter>("all");
@@ -76,7 +75,7 @@ export function LeadWorkspace() {
   const [searchInput, setSearchInput] = useState("");
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(50);
+  const [pageSize, setPageSize] = useState(25);
   const [data, setData] = useState<WorkspacePageResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -202,7 +201,7 @@ export function LeadWorkspace() {
     icon: typeof UsersRound;
     tone: string;
   }> = data ? [
-    { label: "All YTD leads", value: data.summary.total, helper: `${data.summary.followUpEligible} follow-up eligible`, state: "all", icon: UsersRound, tone: "green" },
+    { label: "All-time leads", value: data.summary.total, helper: `${data.summary.followUpEligible} follow-up eligible`, state: "all", icon: UsersRound, tone: "green" },
     { label: "Online untouched", value: data.summary.onlineUntouched, helper: `${data.summary.overdueFollowUps} over 24h`, state: "online-untouched", icon: Inbox, tone: "red" },
     { label: "Online contacted", value: data.summary.onlineContacted, helper: "Inbound with contact history", state: "online-contacted", icon: CheckCircle2, tone: "blue" },
     { label: "Offline untouched", value: data.summary.offlineUntouched, helper: "Research signal before touch", state: "offline-untouched", icon: Target, tone: "amber" },
@@ -215,8 +214,8 @@ export function LeadWorkspace() {
     <header className={styles.topbar}>
       <div className={styles.titleBlock}>
         <span>Talentera · Acquisition Intelligence</span>
-        <h1>YTD Lead Workspace</h1>
-        <p>Prioritised lead queues, live HubSpot tasks and low-memory incremental sync.</p>
+        <h1>All-Time Lead Workspace</h1>
+        <p>Every Acquisition lead since HubSpot go-live, ready from a persisted snapshot.</p>
       </div>
       <div className={styles.topActions}>
         <span className={styles.livePill}><CircleDot size={13}/>LIVE · HUBSPOT</span>
@@ -229,7 +228,7 @@ export function LeadWorkspace() {
 
     <div className={styles.layout}>
       <aside className={styles.sidebar}>
-        <div className={styles.brand}><div className={styles.brandLogo}/><small>LEAD OPERATING SYSTEM</small></div>
+        <div className={styles.brand}><div className={styles.brandLogo}/><small>ALL-TIME LEAD OPERATING SYSTEM</small></div>
         <nav className={styles.sideNav}>
           <a href="#queue"><UsersRound size={17}/>Smart queue</a>
           <a href="#changes"><History size={17}/>Recent changes</a>
@@ -237,16 +236,16 @@ export function LeadWorkspace() {
         </nav>
         <div className={styles.syncInfo}>
           <Database size={18}/>
-          <div><strong>Snapshot</strong><span>{data ? formatDateTime(data.meta.generatedAt) : "Loading…"}</span><small>{data ? `${data.meta.syncMode} sync · v${data.meta.version}` : "Disk-backed cache"}</small></div>
+          <div><strong>Snapshot</strong><span>{data ? formatDateTime(data.meta.generatedAt) : "Loading…"}</span><small>{data ? `${data.meta.syncMode} sync · v${data.meta.version}` : "Pre-synced disk snapshot"}</small></div>
         </div>
-        <button className={styles.fullSyncButton} onClick={() => void loadWorkspace("full")} disabled={refreshing}>Full reconcile</button>
+        <button className={styles.fullSyncButton} onClick={() => void loadWorkspace("full")} disabled={refreshing}>Rebuild all history</button>
       </aside>
 
       <section className={styles.content}>
         <div className={styles.contextBar}>
-          <div><span>REPORTING PERIOD</span><strong>01 Jan {year} – Today</strong></div>
+          <div><span>REPORTING PERIOD</span><strong>All HubSpot history</strong></div>
           <div><span>SNAPSHOT SIZE</span><strong>{formatNumber(data?.meta.totalSnapshotLeads ?? 0)} leads</strong></div>
-          <div><span>RESOURCE MODE</span><strong>Disk cache + paginated API</strong></div>
+          <div><span>READY MODE</span><strong>Pre-synced · instant open</strong></div>
         </div>
 
         {error && <div className={styles.errorBanner}><AlertCircle size={18}/><div><strong>Workspace could not load</strong><span>{error}</span></div><button onClick={() => void loadWorkspace("delta")}>Retry</button></div>}
@@ -279,7 +278,7 @@ export function LeadWorkspace() {
 
         <section id="queue" className={styles.queuePanel}>
           <div className={styles.sectionHeader}>
-            <div><span>SMART WORK QUEUE</span><h2>{stateFilter === "all" ? "All YTD leads" : stateLabels[stateFilter]}</h2><p>{formatNumber(data?.meta.totalFiltered ?? 0)} matching records · sorted by action priority.</p></div>
+            <div><span>SMART WORK QUEUE</span><h2>{stateFilter === "all" ? "All-time leads" : stateLabels[stateFilter]}</h2><p>{formatNumber(data?.meta.totalFiltered ?? 0)} matching records · sorted by action priority.</p></div>
             <label className={styles.pageSize}>Rows<select value={pageSize} onChange={(event) => { setPageSize(Number(event.target.value)); setPage(1); }}><option value={25}>25</option><option value={50}>50</option><option value={100}>100</option></select></label>
           </div>
 
@@ -287,7 +286,7 @@ export function LeadWorkspace() {
             <table>
               <thead><tr><th>Lead</th><th>Source & state</th><th>Status</th><th>Last contact</th><th>Next activity</th><th>Guidance</th><th/></tr></thead>
               <tbody>
-                {loading && <tr><td colSpan={7}><div className={styles.loadingRow}><LoaderCircle className={styles.spin} size={20}/>Loading the saved YTD snapshot…</div></td></tr>}
+                {loading && <tr><td colSpan={7}><div className={styles.loadingRow}><LoaderCircle className={styles.spin} size={20}/>Opening the ready workspace…</div></td></tr>}
                 {!loading && !data?.rows.length && <tr><td colSpan={7}><div className={styles.emptyRow}>No leads match the current filters.</div></td></tr>}
                 {!loading && data?.rows.map((lead) => <LeadRow key={lead.id} lead={lead} changed={changedLeadIds.has(lead.id)} onOpen={() => void openLead(lead)}/>) }
               </tbody>
