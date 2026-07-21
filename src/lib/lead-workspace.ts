@@ -71,7 +71,7 @@ interface WorkspaceQuery {
   refresh: "none" | "delta" | "full";
 }
 
-const ownerNames = new Map(ACQUISITION_REPS.map((owner) => [owner.id, owner.name]));
+const ownerNames = new Map<string, string>(ACQUISITION_REPS.map((owner) => [owner.id, owner.name]));
 const syncLocks = new Map<number, Promise<WorkspaceSnapshot>>();
 let statusDefinitionCache: {
   expiresAt: number;
