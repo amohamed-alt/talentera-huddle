@@ -1,0 +1,25 @@
+name: Workspace Typecheck Diagnostics
+
+on:
+  push:
+    branches:
+      - feature/ytd-lead-workspace
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install --no-audit --no-fund --silent
+      - name: Print TypeScript diagnostics
+        run: |
+          set +e
+          npm run typecheck --silent 2>&1 | grep -E "error TS|^src/" || true
+          exit 0
