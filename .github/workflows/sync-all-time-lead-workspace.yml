@@ -1,0 +1,64 @@
+name: Keep All-Time Lead Workspace Ready
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+    - cron: "17 2 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: all-time-lead-workspace-sync
+  cancel-in-progress: false
+
+jobs:
+  delta-sync:
+    if: github.event_name == 'workflow_dispatch' || github.event.schedule == '*/10 * * * *'
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Sync only changed HubSpot contacts
+        run: |
+          set -euo pipefail
+          curl --fail --silent --show-error --max-time 420 \
+            -H 'Cache-Control: no-cache' \
+            'https://acquisition.dashboardtalentera.tech/api/lead-workspace?year=0&page=1&pageSize=10&refresh=delta&scheduled=1' \
+            -o /tmp/workspace-delta.json
+          node - <<'NODE'
+          const fs = require('fs');
+          const data = JSON.parse(fs.readFileSync('/tmp/workspace-delta.json', 'utf8'));
+          if (!['delta', 'full'].includes(data?.meta?.syncMode)) throw new Error(`Unexpected sync mode: ${data?.meta?.syncMode}`);
+          if (data?.meta?.year !== 0) throw new Error('Workspace is not using all-time scope');
+          console.log(JSON.stringify({
+            version: data.meta.version,
+            total: data.meta.totalSnapshotLeads,
+            changes: data.changes?.length || 0,
+            generatedAt: data.meta.generatedAt,
+          }, null, 2));
+          NODE
+
+  full-reconcile:
+    if: github.event.schedule == '17 2 * * *'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Reconcile all HubSpot history once daily
+        run: |
+          set -euo pipefail
+          curl --fail --silent --show-error --max-time 1500 \
+            -H 'Cache-Control: no-cache' \
+            'https://acquisition.dashboardtalentera.tech/api/lead-workspace?year=0&page=1&pageSize=10&refresh=full&scheduled=1' \
+            -o /tmp/workspace-full.json
+          node - <<'NODE'
+          const fs = require('fs');
+          const data = JSON.parse(fs.readFileSync('/tmp/workspace-full.json', 'utf8'));
+          if (data?.meta?.syncMode !== 'full') throw new Error(`Unexpected full mode: ${data?.meta?.syncMode}`);
+          if (data?.meta?.year !== 0 || !data?.meta?.totalSnapshotLeads) throw new Error('All-time snapshot validation failed');
+          console.log(JSON.stringify({
+            version: data.meta.version,
+            total: data.meta.totalSnapshotLeads,
+            generatedAt: data.meta.generatedAt,
+          }, null, 2));
+          NODE
