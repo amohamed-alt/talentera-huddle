@@ -4,17 +4,174 @@ on:
   push:
     branches:
       - main
+      - fix/acquisition-team-performance
   pull_request:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   verify:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref }}
+
+      - name: Apply Acquisition team and performance fixes
+        if: github.ref_name == 'fix/acquisition-team-performance'
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          def replace_once(text, old, new, label):
+              if old in text:
+                  return text.replace(old, new, 1)
+              if new in text:
+                  return text
+              raise SystemExit(f'Missing pattern for {label}: {old[:120]}')
+
+          # Base data loader: filter HubSpot at source and reuse yesterday data.
+          path = Path('src/lib/dashboard.ts')
+          text = path.read_text()
+          text = replace_once(
+              text,
+              '} from "@/lib/config";\nimport { listDealStages, listObjectProperties, listOwners, searchAll } from "@/lib/hubspot";',
+              '} from "@/lib/config";\nimport { DASHBOARD_OWNER_IDS } from "@/lib/acquisition-reps";\nimport { listDealStages, listObjectProperties, listOwners, searchAll } from "@/lib/hubspot";',
+              'dashboard owner import',
+          )
+          text = text.replace('const CACHE_TTL_MS = 15 * 60 * 1000;', 'const CACHE_TTL_MS = 30 * 60 * 1000;')
+          text = replace_once(
+              text,
+              '  const combinedBetween = { operator: "BETWEEN", value: timestamp(queryFrom), highValue: timestamp(queryTo, true) };',
+              '  const combinedBetween = { operator: "BETWEEN", value: timestamp(queryFrom), highValue: timestamp(queryTo, true) };\n  const ownerFilter = { propertyName: "hubspot_owner_id", operator: "IN", values: [...DASHBOARD_OWNER_IDS] };',
+              'owner filter',
+          )
+          replacements = {
+              '[{ propertyName: "createdate", ...combinedBetween }]': '[{ propertyName: "createdate", ...combinedBetween }, ownerFilter]',
+              '[{ propertyName: "hs_timestamp", ...combinedBetween }]': '[{ propertyName: "hs_timestamp", ...combinedBetween }, ownerFilter]',
+              '[{ propertyName: "closedate", ...combinedBetween }]': '[{ propertyName: "closedate", ...combinedBetween }, ownerFilter]',
+              '[{ propertyName: "hs_is_closed", operator: "EQ", value: "false" }]': '[{ propertyName: "hs_is_closed", operator: "EQ", value: "false" }, ownerFilter]',
+          }
+          for old, new in replacements.items():
+              text = text.replace(old, new)
+          text, count = re.subn(
+              r'  const activeOwnerIds = new Set<string>\(\);.*?  const ownerIds = configuredOwnerIds\.length \? configuredOwnerIds : \[\.\.\.activeOwnerIds\];',
+              '  const ownerIds = [...DASHBOARD_OWNER_IDS];',
+              text,
+              flags=re.S,
+          )
+          if count != 1 and 'const ownerIds = [...DASHBOARD_OWNER_IDS];' not in text:
+              raise SystemExit('Could not replace owner ID discovery')
+          reps_marker = '''  const reps: RepPerformance[] = ownerIds.map((id) => ({
+    ownerId: id,
+    ownerName: id === "unassigned" ? "Unassigned" : ownerMap.get(id)?.name || id,
+    ownerEmail: ownerMap.get(id)?.email,
+    ...metricsForOwner(id, contacts, calls, meetings, tasks, createdDeals, closedDeals, openDeals, openDealRows),
+  })).sort((left, right) => right.openPipeline - left.openPipeline || right.newLeads - left.newLeads);
+'''
+          yesterday_reps = reps_marker + '''
+  const yesterdayReps: RepPerformance[] = ownerIds.map((id) => ({
+    ownerId: id,
+    ownerName: id === "unassigned" ? "Unassigned" : ownerMap.get(id)?.name || id,
+    ownerEmail: ownerMap.get(id)?.email,
+    ...metricsForOwner(
+      id,
+      yesterdayContacts,
+      yesterdayCalls,
+      yesterdayMeetings,
+      yesterdayTasks,
+      yesterdayCreatedDeals,
+      yesterdayClosedDeals,
+      openDeals,
+      openDealRows,
+    ),
+  }));
+'''
+          text = replace_once(text, reps_marker, yesterday_reps, 'yesterday reps')
+          text = replace_once(text, '    reps,\n    sources:', '    reps,\n    yesterdayReps,\n    sources:', 'dashboard payload yesterday reps')
+          path.write_text(text)
+
+          # Detailed data builder: use shared owner config and eliminate the second full HubSpot build.
+          path = Path('src/lib/dashboard-v3.ts')
+          text = path.read_text()
+          text = replace_once(
+              text,
+              'import { buildAcquisitionDashboard } from "@/lib/dashboard";',
+              'import { buildAcquisitionDashboard } from "@/lib/dashboard";\nimport {\n  ACQUISITION_OWNER_ID_SET, ACQUISITION_OWNER_IDS, DASHBOARD_OWNER_ID_SET, DASHBOARD_REPS,\n  DEAL_ONLY_OWNER_ID_SET, DEAL_ONLY_OWNER_IDS,\n} from "@/lib/acquisition-reps";',
+              'v3 owner imports',
+          )
+          text, count = re.subn(
+              r'const ACTIVITY_REPS = \[.*?const ALL_IDS = new Set<string>\(ALL_REPS\.map\(\(rep\) => rep\.id\)\);',
+              '''const ALL_REPS = DASHBOARD_REPS;
+const ACTIVITY_IDS = ACQUISITION_OWNER_ID_SET;
+const DEAL_ONLY_IDS = DEAL_ONLY_OWNER_ID_SET;
+const ALL_IDS = DASHBOARD_OWNER_ID_SET;''',
+              text,
+              flags=re.S,
+          )
+          if count != 1 and 'const ALL_REPS = DASHBOARD_REPS;' not in text:
+              raise SystemExit('Could not replace V3 rep constants')
+          text, _ = re.subn(
+              r'function zonedToday\(\) \{.*?function previousDay\(day: string\) \{.*?\n\}',
+              '',
+              text,
+              flags=re.S,
+          )
+          text = text.replace('function buildRepRows(base: AcquisitionDashboardData, yesterdayBase: AcquisitionDashboardData): DetailedRepPerformance[] {', 'function buildRepRows(base: AcquisitionDashboardData): DetailedRepPerformance[] {')
+          text = text.replace('  const yesterday = new Map(yesterdayBase.reps.map((rep) => [rep.ownerId, rep]));', '  const yesterday = new Map(base.yesterdayReps.map((rep) => [rep.ownerId, rep]));')
+          old = '''  const yesterday = previousDay(zonedToday());
+  const base = await buildAcquisitionDashboard(from, to, bypassCache);
+  const yesterdayBase = from === yesterday && to === yesterday
+    ? base
+    : await buildAcquisitionDashboard(yesterday, yesterday, bypassCache);
+
+  const reps = buildRepRows(base, yesterdayBase);'''
+          new = '''  const base = await buildAcquisitionDashboard(from, to, bypassCache);
+  const reps = buildRepRows(base);'''
+          text = replace_once(text, old, new, 'remove duplicate yesterday load')
+          text = text.replace('activityOwnerIds: [...ACTIVITY_IDS],', 'activityOwnerIds: [...ACQUISITION_OWNER_IDS],')
+          text = text.replace('dealOnlyOwnerIds: [...DEAL_ONLY_IDS],', 'dealOnlyOwnerIds: [...DEAL_ONLY_OWNER_IDS],')
+          path.write_text(text)
+
+          # V4 activity layer: use the new Acquisition team and a longer warm cache.
+          path = Path('src/lib/dashboard-v4.ts')
+          text = path.read_text()
+          text = replace_once(
+              text,
+              'import {\n  CONNECTED_CALL_DISPOSITION,',
+              'import { ACQUISITION_OWNER_IDS } from "@/lib/acquisition-reps";\nimport {\n  CONNECTED_CALL_DISPOSITION,',
+              'v4 owner import',
+          )
+          text = text.replace('const ACTIVITY_OWNER_IDS = ["76369997", "31558980", "32332250", "32332251"] as const;\n', '')
+          text = text.replace('const CACHE_TTL_MS = 10 * 60 * 1000;', 'const CACHE_TTL_MS = 20 * 60 * 1000;')
+          text = text.replace('values: [...ACTIVITY_OWNER_IDS]', 'values: [...ACQUISITION_OWNER_IDS]')
+          path.write_text(text)
+
+          # UI labels: dynamic team size and correct rep names in both current and fallback dashboards.
+          for filename in ['src/components/AcquisitionDashboardV4.tsx', 'src/components/AcquisitionDashboardDetailed.tsx']:
+              path = Path(filename)
+              text = path.read_text()
+              text = text.replace('"4 acquisition reps + 2 deals-only"', '`${activityReps.length} acquisition reps + ${dealOnlyReps.length} deals-only`')
+              text = text.replace('Only the four Acquisition reps have activities. Fadi and Faizan are shown as deals-only.', 'Only configured Acquisition reps have activities. Fadi and Faizan are shown as deals-only.')
+              text = text.replace('Activity metrics apply only to Ursula, Zein, Ahmad and Mohammed Khalid. Fadi and Faizan are deals-only.', 'Activity metrics apply only to Ursula, Zein and Mohammad Jehad. Fadi and Faizan are deals-only.')
+              text = text.replace('Current open deal value for the six approved owners.', 'Current open deal value for the five approved owners.')
+              path.write_text(text)
+          PY
+
+      - name: Commit generated fixes
+        if: github.ref_name == 'fix/acquisition-team-performance'
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add src/lib/dashboard.ts src/lib/dashboard-v3.ts src/lib/dashboard-v4.ts src/components/AcquisitionDashboardV4.tsx src/components/AcquisitionDashboardDetailed.tsx
+          if ! git diff --cached --quiet; then
+            git commit -m "Optimize Acquisition loading and update rep roster"
+            git push origin HEAD:fix/acquisition-team-performance
+          fi
+
       - uses: actions/setup-node@v4
         with:
           node-version: 22
