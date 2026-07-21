@@ -15,6 +15,9 @@ services:
       HUBSPOT_UI_DOMAIN: ${HUBSPOT_UI_DOMAIN:-app-eu1.hubspot.com}
       HUBSPOT_TIMEZONE: ${HUBSPOT_TIMEZONE:-Asia/Riyadh}
       ACQUISITION_BUILD_REF: ${ACQUISITION_BUILD_REF:-local}
+      LEAD_WORKSPACE_CACHE_DIR: /app/data
+    volumes:
+      - acquisition-workspace-data:/app/data
     networks:
       - n8n_default
     labels:
@@ -37,3 +40,6 @@ services:
 networks:
   n8n_default:
     external: true
+
+volumes:
+  acquisition-workspace-data:
