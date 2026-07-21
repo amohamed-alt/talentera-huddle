@@ -1,0 +1,178 @@
+name: Verify YTD Lead Workspace
+
+on:
+  workflow_run:
+    workflows: [Deploy Acquisition Dashboard to Hostinger]
+    types: [completed]
+
+permissions:
+  contents: read
+  statuses: write
+
+concurrency:
+  group: talentera-ytd-workspace-production-smoke
+  cancel-in-progress: true
+
+jobs:
+  verify-workspace:
+    if: >-
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.head_branch == 'main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      DEPLOY_SHA: ${{ github.event.workflow_run.head_sha }}
+      RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+    steps:
+      - name: Mark workspace verification pending
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: process.env.DEPLOY_SHA,
+              state: 'pending',
+              context: 'hostinger/workspace-smoke',
+              description: 'Validating YTD workspace, delta sync and live lead detail',
+              target_url: process.env.RUN_URL,
+            });
+
+      - name: Verify YTD snapshot and pagination
+        shell: bash
+        run: |
+          set -euo pipefail
+          year="$(date -u +%Y)"
+          base="https://acquisition.dashboardtalentera.tech"
+          snapshot=/tmp/ytd-workspace.json
+
+          curl --fail --silent --show-error --max-time 360 \
+            -H 'Cache-Control: no-cache' \
+            "${base}/api/lead-workspace?year=${year}&page=1&pageSize=10&refresh=delta&smoke=${DEPLOY_SHA}" \
+            -o "$snapshot"
+
+          WORKSPACE_FILE="$snapshot" EXPECTED_YEAR="$year" node <<'NODE'
+          const fs = require('fs');
+          const data = JSON.parse(fs.readFileSync(process.env.WORKSPACE_FILE, 'utf8'));
+          const allowedStates = new Set([
+            'online-untouched', 'online-contacted', 'offline-untouched', 'offline-contacted',
+            'unqualified', 'converted', 'excluded', 'unknown'
+          ]);
+          if (data?.meta?.year !== Number(process.env.EXPECTED_YEAR)) throw new Error('Unexpected workspace year');
+          if (!Number.isInteger(data?.meta?.version) || data.meta.version < 1) throw new Error('Invalid snapshot version');
+          if (!Array.isArray(data?.rows) || !data.rows.length) throw new Error('Workspace returned no YTD leads');
+          if (!Array.isArray(data?.changes)) throw new Error('Workspace changes journal is missing');
+          if (!Array.isArray(data?.owners) || data.owners.length !== 3) throw new Error('Workspace owner roster is invalid');
+          if (data?.meta?.page !== 1 || data?.meta?.pageSize !== 10) throw new Error('Server-side pagination is invalid');
+          if (data?.summary?.total !== data?.meta?.totalSnapshotLeads) throw new Error('Workspace summary and snapshot total differ');
+          const requiredSummary = [
+            'total', 'followUpEligible', 'contacted', 'untouched', 'onlineUntouched', 'onlineContacted',
+            'offlineUntouched', 'offlineContacted', 'unqualified', 'converted', 'excluded',
+            'rankA', 'rankB', 'overdueFollowUps', 'noNextActivity'
+          ];
+          for (const key of requiredSummary) {
+            if (typeof data.summary?.[key] !== 'number') throw new Error(`Missing numeric summary: ${key}`);
+          }
+          for (const lead of data.rows) {
+            if (!allowedStates.has(lead.state)) throw new Error(`Unexpected lead state: ${lead.state}`);
+            if (!lead.advice?.title || !Array.isArray(lead.advice?.suggestedChannels)) throw new Error('Next-best-action advice is missing');
+          }
+          fs.writeFileSync('/tmp/workspace-contact-id', String(data.rows[0].id));
+          fs.writeFileSync('/tmp/workspace-cursor', String(data.meta.cursor));
+          console.log(JSON.stringify({
+            total: data.meta.totalSnapshotLeads,
+            pageRows: data.rows.length,
+            syncMode: data.meta.syncMode,
+            version: data.meta.version,
+            onlineUntouched: data.summary.onlineUntouched,
+            onlineContacted: data.summary.onlineContacted,
+            offlineUntouched: data.summary.offlineUntouched,
+            offlineContacted: data.summary.offlineContacted,
+            changes: data.changes.length,
+          }, null, 2));
+          NODE
+
+      - name: Verify live lead tasks and activities
+        shell: bash
+        run: |
+          set -euo pipefail
+          base="https://acquisition.dashboardtalentera.tech"
+          contact_id="$(cat /tmp/workspace-contact-id)"
+          detail=/tmp/workspace-lead-detail.json
+
+          curl --fail --silent --show-error --max-time 240 \
+            -H 'Cache-Control: no-cache' \
+            "${base}/api/lead-workspace/${contact_id}?smoke=${DEPLOY_SHA}" \
+            -o "$detail"
+
+          DETAIL_FILE="$detail" CONTACT_ID="$contact_id" node <<'NODE'
+          const fs = require('fs');
+          const data = JSON.parse(fs.readFileSync(process.env.DETAIL_FILE, 'utf8'));
+          if (String(data?.lead?.id) !== process.env.CONTACT_ID) throw new Error('Live lead detail returned a different contact');
+          if (!Array.isArray(data?.tasks)) throw new Error('Live tasks array is missing');
+          if (!Array.isArray(data?.activities)) throw new Error('Live activities array is missing');
+          if (!data?.fetchedAt) throw new Error('Live detail timestamp is missing');
+          console.log(JSON.stringify({
+            lead: data.lead.name,
+            state: data.lead.state,
+            tasks: data.tasks.length,
+            activities: data.activities.length,
+            fetchedAt: data.fetchedAt,
+          }, null, 2));
+          NODE
+
+      - name: Verify delta-only refresh
+        shell: bash
+        run: |
+          set -euo pipefail
+          year="$(date -u +%Y)"
+          cursor="$(cat /tmp/workspace-cursor)"
+          encoded_cursor="$(node -p 'encodeURIComponent(process.argv[1])' "$cursor")"
+          payload=/tmp/workspace-delta.json
+
+          curl --fail --silent --show-error --max-time 240 \
+            -H 'Cache-Control: no-cache' \
+            "https://acquisition.dashboardtalentera.tech/api/lead-workspace?year=${year}&page=1&pageSize=10&refresh=delta&since=${encoded_cursor}&smoke=${DEPLOY_SHA}" \
+            -o "$payload"
+
+          DELTA_FILE="$payload" node <<'NODE'
+          const fs = require('fs');
+          const data = JSON.parse(fs.readFileSync(process.env.DELTA_FILE, 'utf8'));
+          if (!['delta', 'cache'].includes(data?.meta?.syncMode)) throw new Error(`Unexpected delta mode: ${data?.meta?.syncMode}`);
+          if (!Array.isArray(data?.changes)) throw new Error('Delta changes array is missing');
+          console.log(JSON.stringify({
+            syncMode: data.meta.syncMode,
+            version: data.meta.version,
+            changedRecords: data.changes.length,
+          }, null, 2));
+          NODE
+
+      - name: Mark workspace verification successful
+        if: success()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: process.env.DEPLOY_SHA,
+              state: 'success',
+              context: 'hostinger/workspace-smoke',
+              description: 'Verified YTD snapshot, delta sync, advice, tasks and activities',
+              target_url: process.env.RUN_URL,
+            });
+
+      - name: Mark workspace verification failed
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: process.env.DEPLOY_SHA,
+              state: 'failure',
+              context: 'hostinger/workspace-smoke',
+              description: 'YTD workspace production verification failed',
+              target_url: process.env.RUN_URL,
+            });
