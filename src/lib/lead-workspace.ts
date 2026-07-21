@@ -313,7 +313,7 @@ async function buildLeads(records: HubSpotRecord[]): Promise<WorkspaceLead[]> {
       company: companyName || value(record, "company"),
       country: value(record, "country") || companyCountry,
       ownerId,
-      ownerName: ownerNames.get(ownerId) ?? ownerId,
+      ownerName: ACQUISITION_REPS.find((owner) => owner.id === ownerId)?.name ?? ownerId,
       source: source.label,
       sourceBucket: source.bucket,
       rawLeadStatus,
