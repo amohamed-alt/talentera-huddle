@@ -1,4 +1,4 @@
-name: Verify YTD Lead Workspace
+name: Verify All-Time Lead Workspace
 
 on:
   workflow_run:
@@ -10,7 +10,7 @@ permissions:
   statuses: write
 
 concurrency:
-  group: talentera-ytd-workspace-production-smoke
+  group: talentera-all-time-workspace-production-smoke
   cancel-in-progress: true
 
 jobs:
@@ -19,7 +19,7 @@ jobs:
       github.event.workflow_run.conclusion == 'success' &&
       github.event.workflow_run.head_branch == 'main'
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 35
     env:
       DEPLOY_SHA: ${{ github.event.workflow_run.head_sha }}
       RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
@@ -34,33 +34,32 @@ jobs:
               sha: process.env.DEPLOY_SHA,
               state: 'pending',
               context: 'hostinger/workspace-smoke',
-              description: 'Validating YTD workspace, delta sync and live lead detail',
+              description: 'Building and validating the all-time ready workspace',
               target_url: process.env.RUN_URL,
             });
 
-      - name: Verify YTD snapshot and pagination
+      - name: Build all-time snapshot and verify pagination
         shell: bash
         run: |
           set -euo pipefail
-          year="$(date -u +%Y)"
           base="https://acquisition.dashboardtalentera.tech"
-          snapshot=/tmp/ytd-workspace.json
+          snapshot=/tmp/all-time-workspace.json
 
-          curl --fail --silent --show-error --max-time 360 \
+          curl --fail --silent --show-error --max-time 1500 \
             -H 'Cache-Control: no-cache' \
-            "${base}/api/lead-workspace?year=${year}&page=1&pageSize=10&refresh=delta&smoke=${DEPLOY_SHA}" \
+            "${base}/api/lead-workspace?year=0&page=1&pageSize=10&refresh=full&smoke=${DEPLOY_SHA}" \
             -o "$snapshot"
 
-          WORKSPACE_FILE="$snapshot" EXPECTED_YEAR="$year" node <<'NODE'
+          WORKSPACE_FILE="$snapshot" node <<'NODE'
           const fs = require('fs');
           const data = JSON.parse(fs.readFileSync(process.env.WORKSPACE_FILE, 'utf8'));
           const allowedStates = new Set([
             'online-untouched', 'online-contacted', 'offline-untouched', 'offline-contacted',
             'unqualified', 'converted', 'excluded', 'unknown'
           ]);
-          if (data?.meta?.year !== Number(process.env.EXPECTED_YEAR)) throw new Error('Unexpected workspace year');
+          if (data?.meta?.year !== 0) throw new Error('Workspace is not using all-time scope');
           if (!Number.isInteger(data?.meta?.version) || data.meta.version < 1) throw new Error('Invalid snapshot version');
-          if (!Array.isArray(data?.rows) || !data.rows.length) throw new Error('Workspace returned no YTD leads');
+          if (!Array.isArray(data?.rows) || !data.rows.length) throw new Error('Workspace returned no all-time leads');
           if (!Array.isArray(data?.changes)) throw new Error('Workspace changes journal is missing');
           if (!Array.isArray(data?.owners) || data.owners.length !== 3) throw new Error('Workspace owner roster is invalid');
           if (data?.meta?.page !== 1 || data?.meta?.pageSize !== 10) throw new Error('Server-side pagination is invalid');
@@ -79,6 +78,7 @@ jobs:
           }
           fs.writeFileSync('/tmp/workspace-contact-id', String(data.rows[0].id));
           fs.writeFileSync('/tmp/workspace-cursor', String(data.meta.cursor));
+          fs.writeFileSync('/tmp/workspace-total', String(data.meta.totalSnapshotLeads));
           console.log(JSON.stringify({
             total: data.meta.totalSnapshotLeads,
             pageRows: data.rows.length,
@@ -90,6 +90,27 @@ jobs:
             offlineContacted: data.summary.offlineContacted,
             changes: data.changes.length,
           }, null, 2));
+          NODE
+
+      - name: Verify instant cached open
+        shell: bash
+        run: |
+          set -euo pipefail
+          base="https://acquisition.dashboardtalentera.tech"
+          start_ms="$(date +%s%3N)"
+          curl --fail --silent --show-error --max-time 20 \
+            -H 'Cache-Control: no-cache' \
+            "${base}/api/lead-workspace?year=0&page=1&pageSize=25&refresh=none&smoke=${DEPLOY_SHA}" \
+            -o /tmp/workspace-ready.json
+          end_ms="$(date +%s%3N)"
+          elapsed="$((end_ms - start_ms))"
+          WORKSPACE_FILE=/tmp/workspace-ready.json EXPECTED_TOTAL="$(cat /tmp/workspace-total)" ELAPSED_MS="$elapsed" node <<'NODE'
+          const fs = require('fs');
+          const data = JSON.parse(fs.readFileSync(process.env.WORKSPACE_FILE, 'utf8'));
+          if (data?.meta?.year !== 0 || data?.meta?.syncMode !== 'cache') throw new Error('Ready open did not use the persisted all-time cache');
+          if (String(data?.meta?.totalSnapshotLeads) !== process.env.EXPECTED_TOTAL) throw new Error('Cached total changed unexpectedly');
+          if (!Array.isArray(data?.rows) || data.rows.length > 25) throw new Error('Ready page size is invalid');
+          console.log(JSON.stringify({ elapsedMs: Number(process.env.ELAPSED_MS), total: data.meta.totalSnapshotLeads, rows: data.rows.length }, null, 2));
           NODE
 
       - name: Verify live lead tasks and activities
@@ -112,39 +133,28 @@ jobs:
           if (!Array.isArray(data?.tasks)) throw new Error('Live tasks array is missing');
           if (!Array.isArray(data?.activities)) throw new Error('Live activities array is missing');
           if (!data?.fetchedAt) throw new Error('Live detail timestamp is missing');
-          console.log(JSON.stringify({
-            lead: data.lead.name,
-            state: data.lead.state,
-            tasks: data.tasks.length,
-            activities: data.activities.length,
-            fetchedAt: data.fetchedAt,
-          }, null, 2));
+          console.log(JSON.stringify({ lead: data.lead.name, state: data.lead.state, tasks: data.tasks.length, activities: data.activities.length, fetchedAt: data.fetchedAt }, null, 2));
           NODE
 
       - name: Verify delta-only refresh
         shell: bash
         run: |
           set -euo pipefail
-          year="$(date -u +%Y)"
           cursor="$(cat /tmp/workspace-cursor)"
           encoded_cursor="$(node -p 'encodeURIComponent(process.argv[1])' "$cursor")"
           payload=/tmp/workspace-delta.json
 
-          curl --fail --silent --show-error --max-time 240 \
+          curl --fail --silent --show-error --max-time 420 \
             -H 'Cache-Control: no-cache' \
-            "https://acquisition.dashboardtalentera.tech/api/lead-workspace?year=${year}&page=1&pageSize=10&refresh=delta&since=${encoded_cursor}&smoke=${DEPLOY_SHA}" \
+            "https://acquisition.dashboardtalentera.tech/api/lead-workspace?year=0&page=1&pageSize=10&refresh=delta&since=${encoded_cursor}&smoke=${DEPLOY_SHA}" \
             -o "$payload"
 
           DELTA_FILE="$payload" node <<'NODE'
           const fs = require('fs');
           const data = JSON.parse(fs.readFileSync(process.env.DELTA_FILE, 'utf8'));
-          if (!['delta', 'cache'].includes(data?.meta?.syncMode)) throw new Error(`Unexpected delta mode: ${data?.meta?.syncMode}`);
+          if (data?.meta?.year !== 0 || data?.meta?.syncMode !== 'delta') throw new Error(`Unexpected delta mode: ${data?.meta?.syncMode}`);
           if (!Array.isArray(data?.changes)) throw new Error('Delta changes array is missing');
-          console.log(JSON.stringify({
-            syncMode: data.meta.syncMode,
-            version: data.meta.version,
-            changedRecords: data.changes.length,
-          }, null, 2));
+          console.log(JSON.stringify({ syncMode: data.meta.syncMode, version: data.meta.version, changedRecords: data.changes.length }, null, 2));
           NODE
 
       - name: Mark workspace verification successful
@@ -158,7 +168,7 @@ jobs:
               sha: process.env.DEPLOY_SHA,
               state: 'success',
               context: 'hostinger/workspace-smoke',
-              description: 'Verified YTD snapshot, delta sync, advice, tasks and activities',
+              description: 'Verified all-time snapshot, instant open, delta sync and live detail',
               target_url: process.env.RUN_URL,
             });
 
@@ -173,6 +183,6 @@ jobs:
               sha: process.env.DEPLOY_SHA,
               state: 'failure',
               context: 'hostinger/workspace-smoke',
-              description: 'YTD workspace production verification failed',
+              description: 'All-time workspace production verification failed',
               target_url: process.env.RUN_URL,
             });
