@@ -27,7 +27,7 @@ export default function HomePage() {
         boxShadow: "0 10px 24px rgba(0,0,0,.08)",
       }}
     >
-      Open YTD Lead Workspace →
+      Open All-Time Lead Workspace →
     </Link>
     <AcquisitionDashboardV4/>
   </>;
