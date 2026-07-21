@@ -7,6 +7,8 @@ on:
 
 permissions:
   contents: read
+  issues: write
+  pull-requests: write
 
 jobs:
   diagnose:
@@ -18,8 +20,21 @@ jobs:
         with:
           node-version: 22
       - run: npm install --no-audit --no-fund --silent
-      - name: Print TypeScript diagnostics
+      - name: Capture TypeScript diagnostics
         run: |
           set +e
-          npm run typecheck --silent 2>&1 | grep -E "error TS|^src/" || true
+          npm run typecheck --silent > /tmp/typecheck.log 2>&1
+          grep -E "error TS|^src/" /tmp/typecheck.log > /tmp/typecheck-errors.log || true
           exit 0
+      - name: Comment diagnostics
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const errors = fs.readFileSync('/tmp/typecheck-errors.log', 'utf8').trim() || 'No TypeScript errors found.';
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: 12,
+              body: `Temporary typecheck diagnostics:\n\n\`\`\`text\n${errors.slice(0, 60000)}\n\`\`\``,
+            });
